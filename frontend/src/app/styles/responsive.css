@@ -1,0 +1,103 @@
+/* ===== RESPONSIVE DESIGN MEJORADO ===== */
+@media (max-width: 768px) {
+  .infoHeader {
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 15px;
+    text-align: center;
+  }
+  
+  .line {
+    width: 80%;
+    height: 2px;
+    margin: 5px auto;
+  }
+  
+  .appBar {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .navList {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-size: 1.1rem;
+  }
+
+  .searchContainer {
+    width: 100%;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .searchInput {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .heroSection {
+    top: 140px; /* Ajustado para móviles */
+  }
+
+  .contactNumbers {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .benefitsContainer {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .infoHeader {
+    font-size: 0.8rem;
+    padding: 8px 10px;
+  }
+  
+  .navItem a {
+    padding: 12px 14px;
+    font-size: 1rem;
+  }
+  
+  .logoImage {
+    width: 300px;
+    right: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .offerBanner {
+    padding: 20px 15px;
+    margin-top: -25px;
+    font-size: 1.5rem;
+  }
+  
+  .offerBanner h2 {
+    font-size: 2rem;
+  }
+  
+  .offerBanner::before {
+    background-size: 150px 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .offerBanner {
+    padding: 15px 10px;
+    margin-top: -20px;
+    font-size: 1.2rem;
+  }
+  
+  .offerBanner h2 {
+    font-size: 1.6rem;
+  }
+  
+  .offerBanner::before {
+    background-size: 100px 30px;
+    animation-duration: 20s;
+  }
+}

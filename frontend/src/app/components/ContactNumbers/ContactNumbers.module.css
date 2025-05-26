@@ -1,0 +1,357 @@
+/* Estilos mejorados para ContactNumbers - Armonizado con header/footer */
+
+.contactNumbers {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+  flex-wrap: wrap;
+  width: 100%;
+  z-index: 10;
+  margin-top: 460px;
+  /* Reducido para no interferir con "PRODUCTOS DEL MES" */
+  gap: 120px;
+  /* Aumentado para mayor separación horizontal */
+  position: relative;
+}
+
+/* Partículas de fondo similares al header */
+.contactNumbers::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    radial-gradient(1px 1px at 30px 25px, rgba(37, 211, 102, 0.15), transparent),
+    radial-gradient(1px 1px at 80px 35px, rgba(255, 255, 255, 0.1), transparent),
+    radial-gradient(1px 1px at 150px 20px, rgba(18, 140, 126, 0.1), transparent);
+  background-repeat: repeat;
+  background-size: 180px 60px;
+  animation: contactSparkle 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes contactSparkle {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-180px);
+  }
+}
+
+.tooltipContainer {
+  position: relative;
+  display: inline-block;
+  margin: 0;
+  /* Eliminado margen para usar gap del contenedor */
+}
+
+/* Botones rediseñados con gradientes y efectos modernos */
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 24px;
+  border-radius: 16px;
+  border: 2px solid rgba(37, 211, 102, 0.4);
+  color: white;
+  font-size: 1.1rem;
+  font-family: var(--font-prompt), 'Prompt', sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+
+  /* Gradiente de fondo manteniendo verdes auténticos de WhatsApp */
+  background: linear-gradient(135deg,
+      rgba(37, 211, 102, 0.95) 0%,
+      /* Verde claro WhatsApp */
+      rgba(32, 169, 82, 1) 40%,
+      /* Verde principal WhatsApp */
+      rgba(18, 140, 126, 0.98) 100%);
+  /* Verde oscuro WhatsApp */
+  background-size: 300% 300%;
+  animation: contactGradientFlow 8s ease infinite;
+
+  /* Sombra inicial elegante con verdes WhatsApp */
+  box-shadow:
+    0 4px 15px rgba(37, 211, 102, 0.35),
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Animación del gradiente de fondo */
+@keyframes contactGradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Efecto de brillo interno */
+.contactItem::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.1) 50%,
+      transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+}
+
+/* Borde brillante animado */
+.contactItem::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg,
+      rgba(37, 211, 102, 0.6),
+      rgba(32, 169, 82, 0.7),
+      rgba(18, 140, 126, 0.6));
+  background-size: 400% 400%;
+  border-radius: 18px;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  animation: borderRotate 3s linear infinite;
+}
+
+@keyframes borderRotate {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Estados hover mejorados */
+.contactItem:hover {
+  transform: translateY(-3px) scale(1.02);
+  border-color: rgba(37, 211, 102, 0.8);
+
+  /* Sombra hover más dramática con verdes WhatsApp */
+  box-shadow:
+    0 8px 25px rgba(37, 211, 102, 0.45),
+    0 4px 15px rgba(32, 169, 82, 0.4),
+    0 0 20px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.contactItem:hover::before {
+  transform: translateX(100%);
+}
+
+.contactItem:hover::after {
+  opacity: 1;
+}
+
+/* Efecto de clic */
+.contactItem:active {
+  transform: translateY(-1px) scale(0.98);
+  transition: transform 0.1s ease;
+}
+
+/* Icono de WhatsApp mejorado */
+.phoneIcon {
+  display: flex;
+  align-items: center;
+  font-size: 1.4rem;
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.3));
+  transition: all 0.3s ease;
+}
+
+.contactItem:hover .phoneIcon {
+  transform: scale(1.1) rotate(5deg);
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.6));
+}
+
+/* Tooltip rediseñado */
+.tooltipText {
+  visibility: hidden;
+  width: 240px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f1419 100%);
+  color: #fff;
+  text-align: center;
+  border-radius: 12px;
+  padding: 12px 16px;
+  position: absolute;
+  z-index: 100;
+  bottom: 130%;
+  left: 50%;
+  margin-left: -120px;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+  font-size: 0.95rem;
+  line-height: 1.4;
+  font-weight: 500;
+
+  /* Efectos visuales del tooltip */
+  box-shadow:
+    0 8px 25px rgba(0, 0, 0, 0.3),
+    0 0 20px rgba(0, 180, 216, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 180, 216, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+/* Flecha del tooltip mejorada */
+.tooltipText::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -8px;
+  border-width: 8px;
+  border-style: solid;
+  border-color: #1a1a2e transparent transparent transparent;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Animación de aparición del tooltip */
+.tooltipContainer:hover .tooltipText {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(-5px);
+}
+
+/* Responsive design mejorado */
+@media (max-width: 992px) {
+  .contactNumbers {
+    margin-top: 440px;
+    gap: 25px;
+    /* Mantiene separación en tablets */
+  }
+
+  .contactItem {
+    padding: 12px 20px;
+    font-size: 1rem;
+  }
+
+  .tooltipText {
+    width: 200px;
+    margin-left: -100px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .contactNumbers {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 420px;
+    gap: 20px;
+    /* Separación vertical en móviles */
+    padding: 15px 20px;
+  }
+
+  .contactItem {
+    width: 100%;
+    max-width: 350px;
+    justify-content: center;
+    padding: 16px 24px;
+    font-size: 1.1rem;
+  }
+
+  .tooltipText {
+    width: 280px;
+    margin-left: -140px;
+    bottom: 110%;
+  }
+
+  .contactNumbers::before {
+    background-size: 150px 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .contactNumbers {
+    margin-top: 400px;
+    padding: 10px 15px;
+  }
+
+  .contactItem {
+    max-width: 320px;
+    padding: 14px 20px;
+    font-size: 1rem;
+    border-radius: 14px;
+  }
+
+  .phoneIcon {
+    font-size: 1.3rem;
+  }
+
+  .tooltipText {
+    width: 250px;
+    margin-left: -125px;
+    font-size: 0.85rem;
+    padding: 10px 14px;
+  }
+
+  .contactNumbers::before {
+    background-size: 120px 40px;
+    animation-duration: 25s;
+  }
+}
+
+/* Efectos adicionales para dispositivos que soportan hover */
+@media (hover: hover) {
+  .contactItem:hover {
+    animation-play-state: paused;
+    /* Pausa la animación del gradiente en hover */
+  }
+}
+
+/* Modo de alto contraste */
+@media (prefers-contrast: high) {
+  .contactItem {
+    background: #25d366;
+    /* Verde oficial WhatsApp para alto contraste */
+    border-color: #ffffff;
+  }
+
+  .tooltipText {
+    background: #000000;
+    border-color: #ffffff;
+  }
+}
+
+/* Respeto por la preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+
+  .contactItem,
+  .contactNumbers::before,
+  .contactItem::after {
+    animation: none;
+  }
+
+  .contactItem {
+    transition: transform 0.2s ease;
+  }
+}

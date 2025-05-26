@@ -1,0 +1,95 @@
+/* Estilos para el contenedor del formulario */
+.formWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+/* Eliminar estilo predeterminado de botones */
+.form button {
+  border: none;
+  background: none;
+  color: #8b8ba7;
+  cursor: pointer;
+}
+
+/* Estilo del contenedor de input */
+.form {
+  --timing: 0.3s;
+  --width-of-input: 400px;
+  --height-of-input: 40px;
+  --border-height: 5px;
+  --input-bg: #fff;
+  --border-color: #48cae4;
+  --border-radius: 30px;
+  --after-border-radius: 1px;
+  position: relative;
+  width: var(--width-of-input);
+  height: var(--height-of-input);
+  display: flex;
+  align-items: center;
+  padding-inline: 0.8em;
+  border-radius: var(--border-radius);
+  transition: border-radius 0.5s ease;
+  background: var(--input-bg, #fff);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo del Input */
+.input {
+  font-size: 0.9rem;
+  background-color: transparent;
+  width: 100%;
+  height: 100%;
+  padding-inline: 0.5em;
+  padding-block: 0.7em;
+  border: none;
+}
+
+.input:focus {
+  outline: none;
+}
+
+/* Estilo del borde animado */
+.form:before {
+  content: "";
+  position: absolute;
+  background: var(--border-color);
+  transform: scaleX(0);
+  transform-origin: center;
+  width: 100%;
+  height: var(--border-height);
+  left: 0;
+  bottom: 0;
+  border-radius: 1px;
+  transition: transform var(--timing) ease;
+}
+
+/* Hover en el Input */
+.form:focus-within {
+  border-radius: var(--after-border-radius);
+}
+
+/* Código del borde animado */
+.form:focus-within:before {
+  transform: scale(1);
+}
+
+/* Estilo del botón de cerrar */
+.reset {
+  border: none;
+  background: none;
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* Botón de cerrar mostrado al escribir */
+.input:not(:placeholder-shown) ~ .reset {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Tamaño de iconos SVG */
+.form svg {
+  width: 17px;
+  margin-top: 3px;
+}

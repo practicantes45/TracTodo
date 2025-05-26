@@ -1,0 +1,877 @@
+/* Global Styles - Versión Mejorada con Headers Animados */
+
+:root {
+  --primary-color: #002a5c;
+  --secondary-color: #d9252a;
+  --accent-color: #00b4d8;
+  --light-color: #f5f5f5;
+  --dark-color: #333333;
+  --success-color: #28a745;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  line-height: 1.5;
+}
+
+/* Layout */
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ===== HEADER INFO CON EFECTOS ANIMADOS ===== */
+.infoHeader {
+  display: flex;
+  background: linear-gradient(135deg, #0a0a1e 0%, #1a1a2e 25%, var(--primary-color) 50%, #16213e 75%, #0f1419 100%);
+  background-size: 400% 400%;
+  animation: headerGradientFlow 12s ease infinite;
+  color: white;
+  padding: 12px 20px;
+  gap: 12px;
+  font-size: .9rem;
+  margin-bottom: 0;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Animación del gradiente del header */
+@keyframes headerGradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Partículas sutiles para el header */
+.infoHeader::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(1px 1px at 20px 20px, rgba(0, 180, 216, 0.3), transparent),
+    radial-gradient(1px 1px at 60px 15px, rgba(255, 255, 255, 0.15), transparent),
+    radial-gradient(1px 1px at 120px 25px, rgba(0, 180, 216, 0.4), transparent),
+    radial-gradient(1px 1px at 180px 10px, rgba(255, 255, 255, 0.1), transparent);
+  background-repeat: repeat;
+  background-size: 200px 40px;
+  animation: headerSparkle 15s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes headerSparkle {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-200px); }
+}
+
+/* Efecto de brillo sutil en el header */
+.infoHeader::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 120%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(0, 180, 216, 0.03) 25%, 
+    rgba(0, 180, 216, 0.06) 50%, 
+    rgba(0, 180, 216, 0.03) 75%, 
+    transparent 100%);
+  transform: translateX(-100%);
+  animation: headerWave 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes headerWave {
+  0%, 100% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+}
+
+.locationInfo,
+.scheduleInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  z-index: 2;
+  padding: 2px 8px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.locationInfo:hover,
+.scheduleInfo:hover {
+  background: rgba(0, 180, 216, 0.1);
+  transform: translateY(-1px);
+  text-shadow: 0 0 8px rgba(0, 180, 216, 0.4);
+}
+
+.locationIcon svg,
+.calendarIcon svg {
+  color: #ffffff;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 0 3px rgba(0, 180, 216, 0.3));
+}
+
+.locationInfo:hover .locationIcon svg,
+.scheduleInfo:hover .calendarIcon svg {
+  color: var(--accent-color);
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 6px rgba(0, 180, 216, 0.6));
+}
+
+.locationIcon svg {
+  font-size: 26px;
+}
+
+.calendarIcon svg {
+  font-size: 22px;
+}
+
+.line {
+  width: 2px;
+  height: 35px;
+  background: linear-gradient(to bottom, 
+    rgba(224, 224, 224, 0.3), 
+    rgba(0, 180, 216, 0.6), 
+    rgba(224, 224, 224, 0.3));
+  margin: 0 8px;
+  align-self: stretch;
+  position: relative;
+  z-index: 2;
+  border-radius: 1px;
+  animation: linePulse 3s ease-in-out infinite;
+}
+
+@keyframes linePulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+/* ===== NAVIGATION BAR CON EFECTOS MEJORADOS ===== */
+.appBar {
+  background: linear-gradient(135deg, rgba(10, 16, 135, 0.8) 0%, rgba(0, 42, 92, 0.9) 50%, rgba(15, 20, 25, 0.85) 100%);
+  background-size: 300% 300%;
+  animation: navGradientFlow 10s ease infinite;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0px;
+  z-index: 100;
+  position: relative;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 180, 216, 0.2);
+}
+
+@keyframes navGradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Efecto de ondas más sutil para la navbar */
+.appBar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(1px 1px at 30px 25px, rgba(0, 180, 216, 0.2), transparent),
+    radial-gradient(1px 1px at 80px 35px, rgba(255, 255, 255, 0.1), transparent),
+    radial-gradient(1px 1px at 150px 20px, rgba(0, 180, 216, 0.15), transparent);
+  background-repeat: repeat;
+  background-size: 180px 60px;
+  animation: navSparkle 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes navSparkle {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-180px); }
+}
+
+/* Línea brillante en la parte superior de la navbar */
+.appBar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    var(--accent-color) 20%, 
+    #00d4ff 50%, 
+    var(--accent-color) 80%, 
+    transparent 100%);
+  animation: navTopGlow 4s ease-in-out infinite;
+}
+
+@keyframes navTopGlow {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+.logoContainer {
+  cursor: pointer;
+}
+
+.navList {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  font-size: 1.3rem;
+  position: relative;
+  z-index: 2;
+}
+
+.navItem {
+  display: inline;
+  margin: 0 10px;
+}
+
+.navItem a {
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  transition: all 0.4s ease;
+  font-family: var(--font-mina), 'Mina', sans-serif; /* CAMBIADO de noto-sans */
+  font-weight: 700; 
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Efecto hover mejorado y más sutil para los enlaces de navegación */
+.navItem a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: rgba(0, 180, 216, 0.08);
+  transition: width 0.25s ease;
+  z-index: -1;
+}
+
+.navItem a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--accent-color);
+  transition: all 0.25s ease;
+  transform: translateX(-50%);
+  border-radius: 1px;
+}
+
+.navItem a:hover {
+  color: var(--accent-color);
+  text-shadow: 0 0 5px rgba(0, 180, 216, 0.3);
+}
+
+.navItem a:hover::before {
+  width: 100%;
+}
+
+.navItem a:hover::after {
+  width: 70%;
+}
+
+/* Search Bar con efectos mejorados */
+.searchContainer {
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+.searchInput {
+  padding: 10px 15px;
+  border-radius: 25px;
+  border: 2px solid rgba(0, 180, 216, 0.3);
+  width: 300px;
+  background: rgba(255, 255, 255, 0.95);
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: var(--accent-color);
+  box-shadow: 0 0 20px rgba(0, 180, 216, 0.3);
+  background: rgba(255, 255, 255, 1);
+}
+
+.searchButton {
+  background: transparent;
+  border: none;
+  margin-left: -35px;
+  cursor: pointer;
+  color: var(--accent-color);
+  transition: all 0.3s ease;
+  padding: 5px;
+  border-radius: 50%;
+}
+
+.searchButton:hover {
+  background: rgba(0, 180, 216, 0.1);
+  transform: scale(1.1);
+}
+
+/* Main Content */
+.mainContent {
+  flex: 1;
+  width: 100%;
+  padding-top: 550px;
+}
+
+/* Hero Section */
+.heroSection {
+  position: absolute;
+  height: 560px;
+  width: 100%;
+  left: 0;
+  background-image: url('/imgs/fondocamion.png');
+  background-size: cover;
+  background-position: center;
+  color: white;
+  top: 85px; /* Ajustado para el nuevo header más alto */
+}
+
+.logoImage {
+  position: absolute;
+  z-index: 2;
+  right: 30px;
+  margin-top: 30px;
+  width: 470px;
+}
+
+.heroOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.heroContent {
+  max-width: 800px;
+  padding: 0 20px;
+}
+
+.heroContent h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.heroContent h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.heroCta {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  font-size: 1.2rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.heroCta:hover {
+  background-color: #e08c00;
+}
+
+/* Contact Numbers */
+.contactNumbers {
+  display: flex;
+  justify-content: space-around;
+  background-color: rgba(199, 191, 191, 0);
+  padding: 10px 0;
+  flex-wrap: wrap;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+/* Tooltip Contact Item */
+.tooltipContainer {
+  position: relative;
+  display: inline-block;
+  margin: 5px;
+}
+
+.contactItem {
+  display: flex;
+  background-color: rgb(32, 169, 82);
+  gap: 10px;
+  padding: 12px 23px;
+  border-radius: 12px;
+  border: none;
+  color: white;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s ease-out;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.contactItem:hover {
+  background-color: #128C7E;
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Tooltip text */
+.tooltipText {
+  visibility: hidden;
+  width: 220px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 8px;
+  padding: 8px;
+  position: absolute;
+  z-index: 100;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -110px;
+  opacity: 0;
+  transition: opacity 0.3s, visibility 0.3s;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* Tooltip arrow */
+.tooltipText::after {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+/* Show tooltip on hover */
+.tooltipContainer:hover .tooltipText {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Offer Banner */
+/* ===== BANNER PRODUCTOS DEL MES MEJORADO ===== */
+.offerBanner {
+  background: linear-gradient(135deg, #8B0000 0%, #DC143C 25%, var(--secondary-color) 50%, #B22222 75%, #800000 100%);
+  background-size: 400% 400%;
+  animation: redGradientFlow 12s ease infinite;
+  color: white;
+  text-align: center;
+  padding: 25px 0;
+  font-size: 2rem;
+  margin-top: -51px; /* Ajusta este valor para mover arriba (+) o abajo (-) */
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(217, 37, 42, 0.4);
+  z-index: 5;
+}
+
+/* Animación del gradiente rojo */
+@keyframes redGradientFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Partículas rojas flotantes */
+.offerBanner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 25px 20px, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(1px 1px at 50px 30px, rgba(255, 200, 200, 0.3), transparent),
+    radial-gradient(1px 1px at 90px 15px, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(2px 2px at 130px 25px, rgba(255, 150, 150, 0.4), transparent),
+    radial-gradient(1px 1px at 170px 10px, rgba(255, 255, 255, 0.2), transparent);
+  background-repeat: repeat;
+  background-size: 200px 50px;
+  animation: redSparkle 15s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes redSparkle {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-200px); }
+}
+
+/* Efecto de onda roja brillante */
+.offerBanner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 120%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.1) 25%, 
+    rgba(255, 255, 255, 0.2) 50%, 
+    rgba(255, 255, 255, 0.1) 75%, 
+    transparent 100%);
+  transform: translateX(-100%);
+  animation: redWave 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes redWave {
+  0%, 100% { transform: translateX(-100%); }
+  50% { transform: translateX(100%); }
+}
+
+.offerBanner h2 {
+  margin: 0;
+  font-size: 2.5rem;
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+  font-weight: 700;
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  transform: scale(0.8);
+  animation: zoomInGlow 1.5s ease-out 0.5s forwards;
+}
+
+/* Animación de zoom con brillo */
+@keyframes zoomInGlow {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+    text-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  }
+}
+
+/* Efecto hover adicional para interactividad */
+.offerBanner:hover h2 {
+  transform: scale(1.05);
+  text-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+}
+
+/* Línea brillante en la parte inferior */
+.offerBanner {
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(90deg, transparent, #FF6B6B, #FF1744, #FF6B6B, transparent) 1;
+  animation: borderGlow 4s ease-in-out infinite;
+}
+
+@keyframes borderGlow {
+  0%, 100% { border-image-source: linear-gradient(90deg, transparent, #FF6B6B, #FF1744, #FF6B6B, transparent); }
+  50% { border-image-source: linear-gradient(90deg, transparent, #FF1744, #FFFFFF, #FF1744, transparent); }
+}
+
+/* Sección de carrusel */
+.carouselSection {
+  padding: 0;
+  margin-top: 20px;
+  margin-bottom: 40px;
+}
+
+/* Sección de marcas destacadas */
+.brandSection {
+  background-color: #0e86ca;
+  padding: 20px 0 50px 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.brandSection h2 {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: white;
+  text-align: center;
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif; /* AGREGADO */
+  font-weight: 700; /* Ubuntu tiene 300, 400, 500, 700 */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  position: relative;
+  z-index: 3;
+  padding: 0 20px;
+}
+
+/* Contenedor para imagen de fondo - 100% width */
+.brandBackgroundContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 50%;
+  transform: translate(-50%, -50%);
+  margin: 0 auto;
+  z-index: 1;
+  pointer-events: none;
+  margin-top: 25px;
+}
+
+/* Contenedor para las tarjetas - centrado y controlado */
+.brandCardsContainer {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  z-index: 3;
+}
+
+.brandGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 140px;
+  row-gap: 60px;
+  margin-bottom: 40px;
+  position: relative;
+  justify-items: center;
+}
+
+.brandCard {
+  background-color: rgba(255, 255, 255, 0.849);
+  border-radius: 12px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 170px;
+  width: 100%;
+  max-width: 280px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+}
+
+.brandCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.brandLogo {
+  max-width: 85%;
+  max-height: 85%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: grayscale(20%);
+  transition: filter 0.3s ease, transform 0.3s ease;
+  min-width: 120px;
+  min-height: 60px;
+}
+
+.brandLogo.large {
+  max-width: 90%;
+  max-height: 90%;
+  min-width: 140px;
+  min-height: 70px;
+}
+
+.brandLogo.extraLarge {
+  max-width: 100%;
+  max-height: 100%;
+  min-width: 160px;
+  min-height: 80px;
+}
+
+.brandCard:hover .brandLogo {
+  filter: grayscale(0%);
+  transform: scale(1.08);
+}
+
+/* Imagen de croquis como fondo */
+.fondoCroquis {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: auto;
+  opacity: 0.15;
+  object-fit: cover;
+  min-width: 100%;
+  max-width: none;
+}
+
+/* Benefits Section */
+.benefitsSection {
+  background-color: #f8f9fa;
+  padding: 80px 20px;
+  margin: 0;
+}
+
+.benefitsContainer {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Nuevas cards con efecto hover mejorado */
+.card-container {
+  width: 300px;
+  height: 300px;
+  position: relative;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  position: relative;
+}
+
+/* Contenido frontal - lo que se ve inicialmente (BLANCO CON AZUL) */
+.front-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+  padding: 20px;
+  text-align: center;
+}
+
+.front-content .icon-container {
+  margin-bottom: 20px;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.front-content .icon-container svg {
+  width: 60px;
+  height: 60px;
+  fill: var(--primary-color);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.front-content .benefit-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary-color);
+  opacity: 1;
+  margin: 0;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+/* Contenido completo - se muestra en hover */
+.content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 15px;
+  background: linear-gradient(-45deg, #1a1a2e 0%, #152656 50%, var(--primary-color) 100%);
+  color: #e8e8e8;
+  padding: 30px;
+  line-height: 1.5;
+  border-radius: inherit;
+  pointer-events: none;
+  transform: translateY(100%);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.content .heading {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  background: linear-gradient(-45deg, #44d3ef 0%, #95edff 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.content p {
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.6;
+  color: #e8e8e8;
+}
+
+/* Efectos hover - RESETEO COMPLETO DE COLORES */
+.card:hover .content {
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.card:hover .front-content {
+  transform: translateY(-20%);
+}
+
+.card:hover .front-content .benefit-title {
+  opacity: 0;
+  transform: scale(0.8);
+  color: white;
+}
+
+.card:hover .front-content .icon-container {
+  transform: scale(1.2) rotate(10deg);
+}
+
+.card:hover .front-content .icon-container svg {
+  fill: rgba(255, 255, 255, 0.3);
+}
+
