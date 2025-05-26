@@ -1,0 +1,223 @@
+/* ScrollToTop.module.css - Botón para volver al inicio */
+
+.scrollToTop {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 55px;
+    height: 55px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1000;
+
+    /* Gradiente que combina con la paleta del sitio */
+    background: linear-gradient(135deg,
+            var(--primary-color, #002a5c) 0%,
+            var(--accent-color, #00b4d8) 50%,
+            var(--primary-color, #002a5c) 100%);
+    background-size: 200% 200%;
+
+    /* Efectos visuales */
+    box-shadow:
+        0 4px 20px rgba(0, 42, 92, 0.4),
+        0 2px 10px rgba(0, 180, 216, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+
+    /* Transiciones suaves */
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+
+    /* Estado inicial - invisible */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px) scale(0.8);
+
+    /* Animación del gradiente */
+    animation: gradientShift 3s ease-in-out infinite;
+
+    /* Efecto de resplandor sutil */
+    filter: drop-shadow(0 0 10px rgba(0, 180, 216, 0.3));
+
+    /* Backdrop filter para modernidad */
+    backdrop-filter: blur(10px);
+
+    /* Border sutil */
+    border: 2px solid rgba(0, 180, 216, 0.2);
+}
+
+/* Animación del gradiente de fondo */
+@keyframes gradientShift {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* Estado visible */
+.scrollToTop.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+/* Icono dentro del botón */
+.icon {
+    color: white;
+    font-size: 1.4rem;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+
+/* Efectos hover */
+.scrollToTop:hover {
+    transform: translateY(-3px) scale(1.05);
+
+    /* Sombra más pronunciada en hover */
+    box-shadow:
+        0 8px 30px rgba(0, 42, 92, 0.5),
+        0 4px 20px rgba(0, 180, 216, 0.4),
+        0 0 0 4px rgba(0, 180, 216, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+
+    /* Intensificar el resplandor */
+    filter: drop-shadow(0 0 20px rgba(0, 180, 216, 0.6));
+
+    /* Pausar la animación del gradiente en hover */
+    animation-play-state: paused;
+}
+
+/* Efecto al hacer hover en el icono */
+.scrollToTop:hover .icon {
+    transform: translateY(-2px) scale(1.1);
+    color: #ffffff;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4));
+}
+
+/* Efecto al hacer clic */
+.scrollToTop:active {
+    transform: translateY(-1px) scale(0.95);
+    transition: transform 0.1s ease;
+
+    box-shadow:
+        0 4px 15px rgba(0, 42, 92, 0.6),
+        0 2px 8px rgba(0, 180, 216, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Partículas flotantes alrededor del botón */
+.scrollToTop::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50%;
+    background: linear-gradient(45deg,
+            transparent 30%,
+            rgba(0, 180, 216, 0.1) 50%,
+            transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+    animation: rotate 4s linear infinite;
+}
+
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.scrollToTop:hover::before {
+    opacity: 1;
+}
+
+/* Pulso sutil cuando aparece */
+.scrollToTop.visible {
+    animation:
+        gradientShift 3s ease-in-out infinite,
+        entrancePulse 0.6s ease-out;
+}
+
+@keyframes entrancePulse {
+    0% {
+        transform: translateY(20px) scale(0.8);
+        opacity: 0;
+    }
+
+    50% {
+        transform: translateY(-5px) scale(1.1);
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .scrollToTop {
+        width: 50px;
+        height: 50px;
+        bottom: 25px;
+        right: 25px;
+    }
+
+    .icon {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .scrollToTop {
+        width: 45px;
+        height: 45px;
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .icon {
+        font-size: 1.1rem;
+    }
+}
+
+/* Accessibility - respeto por las preferencias de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+    .scrollToTop {
+        animation: none;
+        transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+
+    .scrollToTop::before {
+        animation: none;
+    }
+
+    .scrollToTop.visible {
+        animation: none;
+    }
+}
+
+/* Alto contraste para accesibilidad */
+@media (prefers-contrast: high) {
+    .scrollToTop {
+        background: #000000;
+        border-color: #ffffff;
+        box-shadow: 0 2px 10px rgba(255, 255, 255, 0.3);
+    }
+
+    .icon {
+        color: #ffffff;
+    }
+}

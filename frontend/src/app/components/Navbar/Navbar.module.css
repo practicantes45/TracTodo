@@ -1,0 +1,339 @@
+/* Navbar.module.css - Navegación con estado activo */
+
+/* ===== NAVIGATION BAR CON EFECTOS MEJORADOS ===== */
+.appBar {
+  background: linear-gradient(135deg, rgba(10, 16, 135, 0.8) 0%, rgba(0, 42, 92, 0.9) 50%, rgba(15, 20, 25, 0.85) 100%);
+  background-size: 300% 300%;
+  animation: navGradientFlow 10s ease infinite;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0px;
+  z-index: 100;
+  position: relative;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 180, 216, 0.2);
+}
+
+@keyframes navGradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Efecto de ondas más sutil para la navbar */
+.appBar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    radial-gradient(1px 1px at 30px 25px, rgba(0, 180, 216, 0.2), transparent),
+    radial-gradient(1px 1px at 80px 35px, rgba(255, 255, 255, 0.1), transparent),
+    radial-gradient(1px 1px at 150px 20px, rgba(0, 180, 216, 0.15), transparent);
+  background-repeat: repeat;
+  background-size: 180px 60px;
+  animation: navSparkle 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes navSparkle {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-180px);
+  }
+}
+
+/* Línea brillante en la parte superior de la navbar */
+.appBar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      var(--accent-color, #00b4d8) 20%,
+      #00d4ff 50%,
+      var(--accent-color, #00b4d8) 80%,
+      transparent 100%);
+  animation: navTopGlow 4s ease-in-out infinite;
+}
+
+@keyframes navTopGlow {
+
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.navList {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  font-size: 1.3rem;
+  position: relative;
+  z-index: 2;
+}
+
+.navItem {
+  display: inline;
+  margin: 0 10px;
+}
+
+.navLink {
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  transition: all 0.4s ease;
+  font-family: var(--font-mina), 'Mina', sans-serif;
+  font-weight: 700;
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  display: block;
+}
+
+/* Efecto base para todos los enlaces */
+.navLink::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: rgba(0, 180, 216, 0.08);
+  transition: width 0.25s ease;
+  z-index: -1;
+}
+
+.navLink::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: var(--accent-color, #00b4d8);
+  transition: all 0.25s ease;
+  transform: translateX(-50%);
+  border-radius: 1px;
+}
+
+/* Estado hover para enlaces normales */
+.navLink:hover {
+  color: var(--accent-color, #00b4d8);
+  text-shadow: 0 0 5px rgba(0, 180, 216, 0.3);
+}
+
+.navLink:hover::before {
+  width: 100%;
+}
+
+.navLink:hover::after {
+  width: 70%;
+}
+
+/* ===== ESTADO ACTIVO - ENLACE SELECCIONADO (VERSIÓN SUTIL) ===== */
+.navLink.active {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.08);
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+  font-weight: 700;
+  transform: scale(1.01);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Fondo completo para el enlace activo */
+.navLink.active::before {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+/* Subrayado permanente y más ancho para el enlace activo */
+.navLink.active::after {
+  width: 80%;
+  height: 2px;
+  background: linear-gradient(90deg,
+      var(--accent-color, #00b4d8) 0%,
+      #00d4ff 50%,
+      var(--accent-color, #00b4d8) 100%);
+  box-shadow: 0 0 6px rgba(0, 180, 216, 0.4);
+  animation: activeGlow 3s ease-in-out infinite;
+}
+
+/* Animación del subrayado activo */
+@keyframes activeGlow {
+
+  0%,
+  100% {
+    opacity: 0.7;
+    box-shadow: 0 0 6px rgba(0, 180, 216, 0.4);
+  }
+
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 12px rgba(0, 180, 216, 0.6);
+  }
+}
+
+/* Efecto hover sobre el enlace activo - más sutil */
+.navLink.active:hover {
+  color: var(--accent-color, #00b4d8);
+  text-shadow: 0 0 8px rgba(0, 180, 216, 0.5);
+  transform: scale(1.02);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(0, 180, 216, 0.3);
+}
+
+.navLink.active:hover::after {
+  width: 85%;
+  background: linear-gradient(90deg,
+      #00d4ff 0%,
+      #ffffff 50%,
+      #00d4ff 100%);
+  box-shadow: 0 0 15px rgba(0, 180, 216, 0.8);
+}
+
+/* Indicador adicional para el enlace activo */
+.navLink.active::before {
+  background: linear-gradient(135deg,
+      rgba(0, 180, 216, 0.1) 0%,
+      rgba(0, 180, 216, 0.2) 50%,
+      rgba(0, 180, 216, 0.1) 100%);
+  border: 1px solid rgba(0, 180, 216, 0.3);
+}
+
+/* Search Bar */
+.searchSection {
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .appBar {
+    flex-direction: column;
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .navList {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-size: 1.1rem;
+  }
+
+  .searchSection {
+    width: 100%;
+    justify-content: center;
+    margin-top: 10px;
+  }
+
+  .navLink {
+    padding: 12px 14px;
+    margin: 5px;
+    border-radius: 6px;
+  }
+
+  .navLink.active {
+    transform: scale(1);
+  }
+
+  .navLink.active:hover {
+    transform: scale(1.02);
+  }
+}
+
+@media (max-width: 480px) {
+  .navLink {
+    padding: 12px 14px;
+    font-size: 1rem;
+  }
+
+  .navList {
+    font-size: 1rem;
+  }
+
+  .navLink.active::after {
+    width: 80%;
+    height: 2px;
+  }
+}
+
+/* Efectos adicionales para dispositivos que soportan hover */
+@media (hover: hover) {
+  .navLink.active {
+    animation: activeEntrance 0.5s ease-out;
+  }
+}
+
+@keyframes activeEntrance {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+/* Modo de alto contraste */
+@media (prefers-contrast: high) {
+  .navLink.active {
+    background: #ffffff;
+    color: #000000;
+    border: 2px solid #000000;
+  }
+
+  .navLink.active::after {
+    background: #000000;
+  }
+}
+
+/* Respeto por la preferencia de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+
+  .appBar,
+  .appBar::before,
+  .appBar::after,
+  .navLink.active::after {
+    animation: none;
+  }
+
+  .navLink {
+    transition: color 0.2s ease, background-color 0.2s ease;
+  }
+}
