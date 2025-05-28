@@ -2,8 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FaTimes, FaBars } from 'react-icons/fa';
-import SearchBar from '../SearchBar/SearchBar';
+import { IoClose } from 'react-icons/io5';
 import styles from './MobileMenu.module.css';
 
 const MobileMenu = () => {
@@ -18,7 +17,7 @@ const MobileMenu = () => {
         { href: '/entretenimiento', label: 'Extras' }
     ];
 
-    // Cerrar menú cuando cambia la ruta
+    // Cerrar menú cuando cambie la ruta
     useEffect(() => {
         setIsOpen(false);
     }, [pathname]);
@@ -31,7 +30,7 @@ const MobileMenu = () => {
             document.body.style.overflow = 'unset';
         }
 
-        // Cleanup
+        // Cleanup al desmontar el componente
         return () => {
             document.body.style.overflow = 'unset';
         };
@@ -39,6 +38,10 @@ const MobileMenu = () => {
 
     const toggleMenu = () => {
         setIsOpen(!isOpen);
+    };
+
+    const handleLinkClick = () => {
+        setIsOpen(false);
     };
 
     const closeMenu = () => {
@@ -49,76 +52,65 @@ const MobileMenu = () => {
         <>
             {/* Botón hamburguesa */}
             <button 
-                className={styles.hamburgerButton}
+                className={`${styles.hamburgerButton} ${isOpen ? `${styles.active} ${styles.menuIsOpen}` : ''}`}
                 onClick={toggleMenu}
-                aria-label="Abrir menú de navegación"
+                aria-label="Menú de navegación"
                 aria-expanded={isOpen}
             >
-                {isOpen ? <FaTimes /> : <FaBars />}
+                <span className={styles.hamburgerLine}></span>
+                <span className={styles.hamburgerLine}></span>
+                <span className={styles.hamburgerLine}></span>
             </button>
 
             {/* Overlay de fondo */}
             <div 
                 className={`${styles.overlay} ${isOpen ? styles.overlayOpen : ''}`}
                 onClick={closeMenu}
-            />
+            ></div>
 
             {/* Menú lateral */}
-            <div className={`${styles.mobileMenu} ${isOpen ? styles.menuOpen : ''}`}>
-                {/* Header del menú */}
+            <nav className={`${styles.mobileMenu} ${isOpen ? styles.menuOpen : ''}`}>
+                {/* Header del menú con logo y botón cerrar */}
                 <div className={styles.menuHeader}>
                     <div className={styles.logoContainer}>
                         <img 
-                            src="/imgs/logoblanco.png" 
-                            alt="TRACTODO Logo" 
+                            src="/imgs/logopeke2.png" 
+                            alt="TRACTODO" 
                             className={styles.menuLogo}
                         />
                     </div>
+                    {/* Botón de cerrar */}
                     <button 
                         className={styles.closeButton}
                         onClick={closeMenu}
                         aria-label="Cerrar menú"
                     >
-                        <FaTimes />
+                        <IoClose />
                     </button>
                 </div>
 
-                {/* Barra de búsqueda en el menú */}
-                <div className={styles.menuSearchContainer}>
-                    <SearchBar />
-                </div>
-
                 {/* Lista de navegación */}
-                <nav className={styles.menuNav}>
-                    <ul className={styles.menuList}>
-                        {navItems.map((item) => (
-                            <li key={item.href} className={styles.menuItem}>
-                                <Link 
-                                    href={item.href}
-                                    className={`${styles.menuLink} ${pathname === item.href ? styles.activeLink : ''}`}
-                                    onClick={closeMenu}
-                                >
-                                    <span className={styles.linkText}>{item.label}</span>
-                                    {pathname === item.href && (
-                                        <span className={styles.activeIndicator}>●</span>
-                                    )}
-                                </Link>
-                            </li>
-                        ))}
-                    </ul>
-                </nav>
+                <ul className={styles.menuList}>
+                    {navItems.map((item) => (
+                        <li key={item.href} className={styles.menuItem}>
+                            <Link 
+                                href={item.href}
+                                className={`${styles.menuLink} ${pathname === item.href ? styles.activeLink : ''}`}
+                                onClick={handleLinkClick}
+                            >
+                                {item.label}
+                            </Link>
+                        </li>
+                    ))}
+                </ul>
 
-                {/* Footer del menú con información de contacto */}
+                {/* Footer del menú con slogan */}
                 <div className={styles.menuFooter}>
-                    <div className={styles.contactInfo}>
-                        <p className={styles.contactText}>¿Necesitas ayuda?</p>
-                        <p className={styles.contactSubtext}>Contáctanos</p>
-                    </div>
-                    <div className={styles.socialLinks}>
-                        <span className={styles.socialText}>Síguenos en redes</span>
-                    </div>
+                    <p className={styles.menuSlogan}>
+                        <span className={styles.brandName}>Tractodo</span> lo tiene todo.
+                    </p>
                 </div>
-            </div>
+            </nav>
         </>
     );
 };

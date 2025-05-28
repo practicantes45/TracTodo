@@ -9,14 +9,6 @@ const montserrat = Montserrat({
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
 });
 
-// const notoSans = Noto_Sans({
-//   subsets: ['latin'],
-//   display: 'swap',
-//   variable: '--font-noto-sans',
-//   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-// });
-
-
 const ubuntu = Ubuntu({
   subsets: ['latin'],
   display: 'swap',
@@ -38,15 +30,28 @@ const mina = Mina({
   weight: ['400','700'],
 });
 
-
 export const metadata = {
   title: 'Frontend',
   description: 'Sitio del Frontend',
+  // Meta tags para controlar el caché del navegador
+  other: {
+    'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
+    'Pragma': 'no-cache',
+    'Expires': '0',
+  }
 }
 
 export default function RootLayout({ children }) {
   return (
     <html lang="es" className={`${montserrat.variable} ${ubuntu.variable} ${prompt.variable} ${mina.variable}`}>
+      <head>
+        {/* Meta tags adicionales para evitar caché */}
+        <meta httpEquiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        <meta httpEquiv="Pragma" content="no-cache" />
+        <meta httpEquiv="Expires" content="0" />
+        {/* Versioning para forzar actualización */}
+        <meta name="version" content={Date.now().toString()} />
+      </head>
       <body>
         {children}
       </body>

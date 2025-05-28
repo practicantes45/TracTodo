@@ -1,4 +1,4 @@
-/* Estilos mejorados para ContactNumbers - Armonizado con header/footer */
+/* ContactNumbers.module.css - Completamente Responsivo - CORREGIDO BREAKPOINTS ESPECÍFICOS */
 
 .contactNumbers {
   display: flex;
@@ -7,11 +7,10 @@
   flex-wrap: wrap;
   width: 100%;
   z-index: 10;
-  margin-top: 460px;
-  /* Reducido para no interferir con "PRODUCTOS DEL MES" */
-  gap: 120px;
-  /* Aumentado para mayor separación horizontal */
   position: relative;
+  /* Ajuste dinámico del margen superior según el dispositivo */
+  margin-top: 420px;
+  gap: 40px; /* REDUCIDO de 120px a 40px para que quepan los 4 elementos */
 }
 
 /* Partículas de fondo similares al header */
@@ -36,7 +35,6 @@
   0% {
     transform: translateX(0);
   }
-
   100% {
     transform: translateX(-180px);
   }
@@ -46,7 +44,6 @@
   position: relative;
   display: inline-block;
   margin: 0;
-  /* Eliminado margen para usar gap del contenedor */
 }
 
 /* Botones rediseñados con gradientes y efectos modernos */
@@ -54,11 +51,11 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 24px;
+  padding: 14px 20px; /* REDUCIDO padding de 14px 24px a 14px 20px */
   border-radius: 16px;
   border: 2px solid rgba(37, 211, 102, 0.4);
   color: white;
-  font-size: 1.1rem;
+  font-size: 1rem; /* REDUCIDO de 1.1rem a 1rem */
   font-family: var(--font-prompt), 'Prompt', sans-serif;
   font-weight: 600;
   cursor: pointer;
@@ -70,11 +67,8 @@
   /* Gradiente de fondo manteniendo verdes auténticos de WhatsApp */
   background: linear-gradient(135deg,
       rgba(37, 211, 102, 0.95) 0%,
-      /* Verde claro WhatsApp */
       rgba(32, 169, 82, 1) 40%,
-      /* Verde principal WhatsApp */
       rgba(18, 140, 126, 0.98) 100%);
-  /* Verde oscuro WhatsApp */
   background-size: 300% 300%;
   animation: contactGradientFlow 8s ease infinite;
 
@@ -90,11 +84,9 @@
   0% {
     background-position: 0% 50%;
   }
-
   50% {
     background-position: 100% 50%;
   }
-
   100% {
     background-position: 0% 50%;
   }
@@ -141,11 +133,9 @@
   0% {
     background-position: 0% 50%;
   }
-
   50% {
     background-position: 100% 50%;
   }
-
   100% {
     background-position: 0% 50%;
   }
@@ -155,8 +145,6 @@
 .contactItem:hover {
   transform: translateY(-3px) scale(1.02);
   border-color: rgba(37, 211, 102, 0.8);
-
-  /* Sombra hover más dramática con verdes WhatsApp */
   box-shadow:
     0 8px 25px rgba(37, 211, 102, 0.45),
     0 4px 15px rgba(32, 169, 82, 0.4),
@@ -182,7 +170,7 @@
 .phoneIcon {
   display: flex;
   align-items: center;
-  font-size: 1.4rem;
+  font-size: 1.3rem; /* REDUCIDO de 1.4rem a 1.3rem */
   filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.3));
   transition: all 0.3s ease;
 }
@@ -211,8 +199,6 @@
   font-size: 0.95rem;
   line-height: 1.4;
   font-weight: 500;
-
-  /* Efectos visuales del tooltip */
   box-shadow:
     0 8px 25px rgba(0, 0, 0, 0.3),
     0 0 20px rgba(0, 180, 216, 0.2),
@@ -241,90 +227,417 @@
   transform: translateY(-5px);
 }
 
-/* Responsive design mejorado */
-@media (max-width: 992px) {
+/* ===== RESPONSIVE DESIGN COMPLETO ===== */
+
+/* Desktop muy grande (1400px+) - AJUSTADO */
+@media (min-width: 1400px) {
   .contactNumbers {
-    margin-top: 440px;
-    gap: 25px;
-    /* Mantiene separación en tablets */
+    gap: 60px; /* REDUCIDO de 150px a 60px */
+    padding: 25px 0;
   }
 
   .contactItem {
-    padding: 12px 20px;
+    padding: 16px 24px; /* Restaurar padding más grande en pantallas grandes */
+    font-size: 1.1rem; /* Restaurar font-size más grande */
+  }
+
+  .phoneIcon {
+    font-size: 1.4rem; /* Restaurar tamaño de icono más grande */
+  }
+
+  .tooltipText {
+    width: 260px;
+    margin-left: -130px;
     font-size: 1rem;
+  }
+}
+
+/* Desktop estándar (1200px - 1399px) - AJUSTADO */
+@media (max-width: 1399px) and (min-width: 1200px) {
+  .contactNumbers {
+    gap: 50px; /* REDUCIDO de 130px a 50px */
+  }
+
+  .contactItem {
+    padding: 14px 22px; /* AJUSTADO */
+    font-size: 1.05rem; /* AJUSTADO */
+  }
+}
+
+/* ===== CORREGIDO: PROBLEMA ESPECÍFICO 1025px - 1198px ===== */
+@media (max-width: 1199px) and (min-width: 1025px) {
+  .contactNumbers {
+    margin-top: 420px; /* MANTENIDO igual al base para evitar que bajen */
+    gap: 35px; /* REDUCIDO más para que quepan mejor */
+    padding: 18px 0;
+    flex-wrap: wrap; /* ASEGURAR que puedan hacer wrap si es necesario */
+    justify-content: center; /* CENTRADO */
+  }
+
+  .contactItem {
+    padding: 12px 16px; /* REDUCIDO para que quepan */
+    font-size: 0.9rem; /* REDUCIDO */
+    min-width: 180px; /* AÑADIDO: ancho mínimo controlado */
+    max-width: 220px; /* AÑADIDO: ancho máximo controlado */
+  }
+
+  .phoneIcon {
+    font-size: 1.1rem; /* REDUCIDO */
+  }
+
+  .tooltipText {
+    width: 200px;
+    margin-left: -100px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Laptops y pantallas medianas (993px - 1024px) - AJUSTADO */
+@media (max-width: 1024px) and (min-width: 993px) {
+  .contactNumbers {
+    margin-top: 420px;
+    gap: 30px; /* REDUCIDO más */
+    padding: 18px 0;
+  }
+
+  .contactItem {
+    padding: 12px 16px; /* REDUCIDO */
+    font-size: 0.9rem; /* REDUCIDO */
+    min-width: 170px; /* CONTROLADO */
+    max-width: 200px; /* CONTROLADO */
+  }
+
+  .phoneIcon {
+    font-size: 1.1rem;
+  }
+
+  .tooltipText {
+    width: 190px;
+    margin-left: -95px;
+    font-size: 0.85rem;
+  }
+}
+
+/* Tablets grandes (769px - 992px) - MANTENIDO */
+@media (max-width: 992px) and (min-width: 769px) {
+  .contactNumbers {
+    margin-top: 100px;
+    gap: 40px;
+    padding: 15px 0;
+    justify-content: center;
+  }
+
+  .contactItem {
+    padding: 12px 18px;
+    font-size: 0.95rem;
+    border-radius: 14px;
+  }
+
+  .phoneIcon {
+    font-size: 1.2rem;
   }
 
   .tooltipText {
     width: 200px;
     margin-left: -100px;
     font-size: 0.9rem;
+    padding: 10px 14px;
+  }
+
+  .contactNumbers::before {
+    background-size: 160px 55px;
+    animation-duration: 22s;
   }
 }
 
-@media (max-width: 768px) {
+/* ===== CORREGIDO: PROBLEMA ESPECÍFICO 661px - 768px ===== */
+@media (max-width: 768px) and (min-width: 661px) {
+  .contactNumbers {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* GRID 2x2 para evitar desbordamiento */
+    align-items: start;
+    justify-content: center;
+    margin-top: -20px;
+    gap: 25px; /* REDUCIDO para que quepan mejor */
+    padding: 20px 15px;
+    max-width: 100%; /* AÑADIDO: controlar ancho máximo */
+  }
+
+  .contactItem {
+    width: 100%;
+    max-width: 280px; /* REDUCIDO de 400px a 280px */
+    justify-content: center;
+    padding: 12px 16px; /* REDUCIDO padding */
+    font-size: 0.9rem; /* REDUCIDO font-size */
+    border-radius: 14px;
+  }
+
+  .phoneIcon {
+    font-size: 1.1rem; /* REDUCIDO */
+  }
+
+  .tooltipText {
+    width: 220px; /* REDUCIDO */
+    margin-left: -110px;
+    bottom: 120%;
+    font-size: 0.85rem; /* REDUCIDO */
+  }
+
+  .contactNumbers::before {
+    background-size: 140px 50px;
+    animation-duration: 25s;
+  }
+}
+
+/* Tablets estándar (601px - 660px) - NUEVO BREAKPOINT */
+@media (max-width: 660px) and (min-width: 601px) {
+  .contactNumbers {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: start;
+    justify-content: center;
+    margin-top: -20px;
+    gap: 20px; /* AÚN MÁS REDUCIDO */
+    padding: 18px 12px;
+  }
+
+  .contactItem {
+    width: 100%;
+    max-width: 250px; /* MÁS PEQUEÑO */
+    justify-content: center;
+    padding: 11px 14px; /* MÁS PEQUEÑO */
+    font-size: 0.85rem; /* MÁS PEQUEÑO */
+    border-radius: 12px;
+  }
+
+  .phoneIcon {
+    font-size: 1rem;
+  }
+
+  .tooltipText {
+    width: 200px;
+    margin-left: -100px;
+    font-size: 0.8rem;
+  }
+}
+
+/* Móviles grandes (481px - 600px) */
+@media (max-width: 600px) and (min-width: 481px) {
   .contactNumbers {
     flex-direction: column;
     align-items: center;
-    margin-top: 420px;
-    gap: 20px;
-    /* Separación vertical en móviles */
-    padding: 15px 20px;
+    margin-top: 40px;
+    gap: 25px;
+    padding: 18px 20px;
+  }
+
+  .contactItem {
+    width: 100%;
+    max-width: 380px;
+    justify-content: center;
+    padding: 14px 22px;
+    font-size: 1rem;
+    border-radius: 14px;
+  }
+
+  .phoneIcon {
+    font-size: 1.25rem;
+  }
+
+  .tooltipText {
+    width: 280px;
+    margin-left: -140px;
+    bottom: 115%;
+    font-size: 0.85rem;
+    padding: 10px 14px;
+  }
+
+  .contactNumbers::before {
+    background-size: 130px 45px;
+    animation-duration: 25s;
+  }
+}
+
+/* Móviles estándar (376px - 480px) */
+@media (max-width: 480px) and (min-width: 376px) {
+  .contactNumbers {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+    gap: 18px;
+    padding: 15px 15px;
   }
 
   .contactItem {
     width: 100%;
     max-width: 350px;
     justify-content: center;
-    padding: 16px 24px;
-    font-size: 1.1rem;
+    padding: 14px 20px;
+    font-size: 0.95rem;
+    border-radius: 14px;
+    gap: 10px;
+  }
+
+  .phoneIcon {
+    font-size: 1.2rem;
   }
 
   .tooltipText {
-    width: 280px;
-    margin-left: -140px;
+    width: 260px;
+    margin-left: -130px;
+    font-size: 0.85rem;
+    padding: 10px 12px;
     bottom: 110%;
   }
 
   .contactNumbers::before {
-    background-size: 150px 50px;
+    background-size: 120px 40px;
+    animation-duration: 28s;
   }
 }
 
-@media (max-width: 480px) {
+/* Móviles pequeños (320px - 375px) */
+@media (max-width: 375px) and (min-width: 320px) {
   .contactNumbers {
-    margin-top: 400px;
-    padding: 10px 15px;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+    gap: 15px;
+    padding: 12px 10px;
   }
 
   .contactItem {
+    width: 100%;
     max-width: 320px;
-    padding: 14px 20px;
-    font-size: 1rem;
-    border-radius: 14px;
+    justify-content: center;
+    padding: 12px 18px;
+    font-size: 0.9rem;
+    border-radius: 12px;
+    gap: 8px;
   }
 
   .phoneIcon {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
   }
 
   .tooltipText {
-    width: 250px;
-    margin-left: -125px;
-    font-size: 0.85rem;
-    padding: 10px 14px;
+    width: 240px;
+    margin-left: -120px;
+    font-size: 0.8rem;
+    padding: 8px 12px;
+    bottom: 110%;
   }
 
   .contactNumbers::before {
-    background-size: 120px 40px;
-    animation-duration: 25s;
+    background-size: 100px 35px;
+    animation-duration: 30s;
   }
 }
+
+/* Móviles muy pequeños (menos de 320px) */
+@media (max-width: 319px) {
+  .contactNumbers {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+    gap: 12px;
+    padding: 10px 8px;
+  }
+
+  .contactItem {
+    width: 100%;
+    max-width: 280px;
+    justify-content: center;
+    padding: 10px 15px;
+    font-size: 0.85rem;
+    border-radius: 10px;
+    gap: 6px;
+  }
+
+  .phoneIcon {
+    font-size: 1rem;
+  }
+
+  .tooltipText {
+    width: 200px;
+    margin-left: -100px;
+    font-size: 0.75rem;
+    padding: 8px 10px;
+    bottom: 105%;
+  }
+
+  .contactNumbers::before {
+    background-size: 80px 30px;
+    animation-duration: 32s;
+  }
+}
+
+/* ===== RESPONSIVE PARA ORIENTACIÓN HORIZONTAL ===== */
+
+/* Tablets en landscape */
+@media (max-width: 1024px) and (orientation: landscape) and (min-height: 600px) {
+  .contactNumbers {
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 320px;
+    gap: 35px;
+    padding: 15px 20px;
+  }
+
+  .contactItem {
+    max-width: 200px;
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+
+  .tooltipText {
+    width: 180px;
+    margin-left: -90px;
+    font-size: 0.8rem;
+  }
+}
+
+/* Móviles en landscape */
+@media (max-width: 768px) and (orientation: landscape) and (max-height: 500px) {
+  .contactNumbers {
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 280px;
+    gap: 25px;
+    padding: 10px 15px;
+    flex-wrap: wrap;
+  }
+
+  .contactItem {
+    max-width: 160px;
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    gap: 6px;
+  }
+
+  .phoneIcon {
+    font-size: 1rem;
+  }
+
+  .tooltipText {
+    width: 160px;
+    margin-left: -80px;
+    font-size: 0.75rem;
+    padding: 6px 10px;
+  }
+
+  .contactNumbers::before {
+    background-size: 100px 30px;
+    animation-duration: 35s;
+  }
+}
+
+/* ===== EFECTOS ADICIONALES RESPONSIVOS ===== */
 
 /* Efectos adicionales para dispositivos que soportan hover */
 @media (hover: hover) {
   .contactItem:hover {
     animation-play-state: paused;
-    /* Pausa la animación del gradiente en hover */
   }
 }
 
@@ -332,7 +645,6 @@
 @media (prefers-contrast: high) {
   .contactItem {
     background: #25d366;
-    /* Verde oficial WhatsApp para alto contraste */
     border-color: #ffffff;
   }
 
@@ -344,7 +656,6 @@
 
 /* Respeto por la preferencia de movimiento reducido */
 @media (prefers-reduced-motion: reduce) {
-
   .contactItem,
   .contactNumbers::before,
   .contactItem::after {
@@ -353,5 +664,46 @@
 
   .contactItem {
     transition: transform 0.2s ease;
+  }
+
+  .tooltipText {
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+  }
+}
+
+/* ===== AJUSTES PARA DISPOSITIVOS DE ALTA DENSIDAD ===== */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .contactItem {
+    border-width: 1px;
+  }
+
+  .tooltipText {
+    border-width: 1px;
+  }
+}
+
+/* ===== AJUSTES PARA PANTALLAS ULTRA ANCHAS ===== */
+@media (min-width: 1600px) {
+  .contactNumbers {
+    gap: 80px;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .contactItem {
+    padding: 18px 32px;
+    font-size: 1.25rem;
+  }
+
+  .phoneIcon {
+    font-size: 1.6rem;
+  }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  .contactNumbers {
+    display: none;
   }
 }

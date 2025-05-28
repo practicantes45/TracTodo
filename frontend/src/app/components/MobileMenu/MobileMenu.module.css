@@ -1,28 +1,58 @@
-/* MobileMenu.module.css - Menú hamburguesa responsivo */
+/* MobileMenu.module.css - Menú Hamburguesa Responsivo con elementos más grandes */
 
 /* ===== BOTÓN HAMBURGUESA ===== */
 .hamburgerButton {
-  display: none; /* Oculto por defecto en desktop */
-  background: none;
+  display: none; /* Oculto por defecto, se muestra solo en móvil */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  background: transparent;
   border: none;
-  color: white;
-  font-size: 1.5rem;
   cursor: pointer;
   padding: 8px;
-  border-radius: 4px;
+  border-radius: 8px;
   transition: all 0.3s ease;
   position: relative;
   z-index: 1001;
 }
 
 .hamburgerButton:hover {
-  background: rgba(0, 180, 216, 0.1);
-  color: var(--accent-color, #00b4d8);
-  transform: scale(1.1);
+  background: rgba(255, 255, 255, 0.1);
 }
 
-.hamburgerButton:active {
-  transform: scale(0.95);
+/* Líneas del hamburguesa con animación */
+.hamburgerLine {
+  width: 24px;
+  height: 2px;
+  background: white;
+  margin: 2px 0;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
+  border-radius: 2px;
+  transform-origin: center;
+}
+
+/* Animación para convertir hamburguesa en X */
+.hamburgerButton.active .hamburgerLine:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburgerButton.active .hamburgerLine:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.hamburgerButton.active .hamburgerLine:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* MANTENER: Ocultar botón hamburguesa cuando el menú está abierto */
+.hamburgerButton.menuIsOpen {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: scale(0.8);
 }
 
 /* ===== OVERLAY DE FONDO ===== */
@@ -33,11 +63,11 @@
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(5px);
+  backdrop-filter: blur(2px);
+  z-index: 999;
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
-  z-index: 999;
 }
 
 .overlayOpen {
@@ -50,37 +80,27 @@
   position: fixed;
   top: 0;
   left: -100%;
-  width: 280px;
-  height: 100%;
-  background: linear-gradient(180deg, 
-    #0a0a1e 0%, 
-    #1a1a2e 15%, 
-    var(--primary-color, #002a5c) 40%, 
-    #16213e 70%, 
-    #0f1419 100%
-  );
-  background-size: 100% 400%;
-  animation: menuGradientFlow 15s ease infinite;
-  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
-  transition: left 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+  width: 320px; /* AUMENTADO de 280px a 320px */
+  height: 100vh;
+  background: linear-gradient(135deg, #0a0a1e 0%, #1a1a2e 25%, var(--primary-color, #002a5c) 50%, #16213e 75%, #0f1419 100%);
+  background-size: 400% 400%;
+  animation: menuGradientFlow 12s ease infinite;
   z-index: 1000;
+  transition: left 0.4s cubic-bezier(0.23, 1, 0.320, 1);
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  border-right: 2px solid rgba(0, 180, 216, 0.2);
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
 }
 
+/* Animación del gradiente del menú */
 @keyframes menuGradientFlow {
-  0% { background-position: 0% 0%; }
-  50% { background-position: 0% 100%; }
-  100% { background-position: 0% 0%; }
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-.menuOpen {
-  left: 0;
-}
-
-/* Partículas de fondo en el menú */
+/* Partículas flotantes en el menú */
 .mobileMenu::before {
   content: '';
   position: absolute;
@@ -89,84 +109,123 @@
   width: 100%;
   height: 100%;
   background-image: 
-    radial-gradient(1px 1px at 20px 30px, rgba(0, 180, 216, 0.3), transparent),
-    radial-gradient(1px 1px at 40px 70px, rgba(255, 255, 255, 0.15), transparent),
-    radial-gradient(1px 1px at 60px 110px, rgba(0, 180, 216, 0.2), transparent),
-    radial-gradient(1px 1px at 80px 150px, rgba(255, 255, 255, 0.1), transparent);
+    radial-gradient(2px 2px at 30px 40px, rgba(0, 180, 216, 0.4), transparent),
+    radial-gradient(1px 1px at 80px 80px, rgba(255, 255, 255, 0.2), transparent),
+    radial-gradient(1px 1px at 120px 120px, rgba(0, 180, 216, 0.3), transparent),
+    radial-gradient(2px 2px at 200px 160px, rgba(255, 255, 255, 0.1), transparent);
   background-repeat: repeat;
-  background-size: 100px 180px;
+  background-size: 250px 200px;
   animation: menuSparkle 25s linear infinite;
   pointer-events: none;
 }
 
 @keyframes menuSparkle {
   0% { transform: translateY(0); }
-  100% { transform: translateY(-180px); }
+  100% { transform: translateY(-200px); }
+}
+
+/* Estado abierto del menú */
+.menuOpen {
+  left: 0;
 }
 
 /* ===== HEADER DEL MENÚ ===== */
 .menuHeader {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 20px 20px 15px;
+  justify-content: space-between; /* Logo a la izquierda, botón cerrar a la derecha */
+  padding: 25px; /* AUMENTADO de 20px a 25px */
   border-bottom: 1px solid rgba(0, 180, 216, 0.2);
   position: relative;
   z-index: 2;
+  min-height: 100px; /* AUMENTADO de 80px a 100px */
 }
 
 .logoContainer {
-  flex: 1;
+  flex-shrink: 0; /* CAMBIADO: ya no se centra, se posiciona a la izquierda */
+  display: flex;
+  align-items: center;
 }
 
 .menuLogo {
-  height: 40px;
+  height: 50px; /* AUMENTADO de 40px a 55px */
   width: auto;
-  filter: drop-shadow(0 0 8px rgba(0, 180, 216, 0.3));
+  filter: brightness(1.1);
 }
 
+/* ===== BOTÓN DE CERRAR ===== */
 .closeButton {
-  background: none;
+  background: transparent;
   border: none;
-  color: white;
-  font-size: 1.3rem;
+  color: #e0e0e0;
+  font-size: 2rem; /* AUMENTADO de 1.5rem a 2rem */
   cursor: pointer;
-  padding: 8px;
+  padding: 10px; /* AUMENTADO de 8px a 10px */
   border-radius: 50%;
-  transition: all 0.3s ease;
+  width: 50px; /* AUMENTADO de 40px a 50px */
+  height: 50px; /* AUMENTADO de 40px a 50px */
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+/* Efecto de fondo en hover */
+.closeButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(220, 53, 69, 0.1);
+  border-radius: 50%;
+  transform: scale(0);
+  transition: transform 0.3s ease;
+  z-index: -1;
 }
 
 .closeButton:hover {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--accent-color, #00b4d8);
+  color: #ff4757;
   transform: rotate(90deg);
+  background: rgba(255, 71, 87, 0.1);
+  border: 1px solid rgba(255, 71, 87, 0.3);
 }
 
-/* ===== BÚSQUEDA EN EL MENÚ ===== */
-.menuSearchContainer {
-  padding: 15px 20px;
-  border-bottom: 1px solid rgba(0, 180, 216, 0.1);
-  position: relative;
-  z-index: 2;
+.closeButton:hover::before {
+  transform: scale(1);
 }
 
-/* ===== NAVEGACIÓN DEL MENÚ ===== */
-.menuNav {
-  flex: 1;
-  padding: 10px 0;
-  position: relative;
-  z-index: 2;
+.closeButton:active {
+  transform: rotate(90deg) scale(0.95);
 }
 
+/* Efecto de pulso sutil en el botón cerrar */
+.closeButton {
+  animation: closePulse 3s ease-in-out infinite;
+}
+
+@keyframes closePulse {
+  0%, 100% { 
+    box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.4);
+  }
+  50% { 
+    box-shadow: 0 0 0 8px rgba(255, 71, 87, 0);
+  }
+}
+
+/* ===== LISTA DE NAVEGACIÓN ===== */
 .menuList {
   list-style: none;
-  margin: 0;
   padding: 0;
+  margin: 0;
+  flex: 1;
+  padding-top: 25px; /* AUMENTADO de 20px a 25px */
+  position: relative;
+  z-index: 2;
 }
 
 .menuItem {
@@ -174,13 +233,11 @@
 }
 
 .menuLink {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 18px 25px;
+  display: block;
   color: #e0e0e0;
   text-decoration: none;
-  font-size: 1.1rem;
+  padding: 22px 25px; /* AUMENTADO de 18px 20px a 22px 25px */
+  font-size: 1.3rem; /* AUMENTADO de 1.1rem a 1.3rem */
   font-weight: 600;
   font-family: var(--font-mina), 'Mina', sans-serif;
   transition: all 0.3s ease;
@@ -189,6 +246,7 @@
   overflow: hidden;
 }
 
+/* Efecto hover en enlaces */
 .menuLink::before {
   content: '';
   position: absolute;
@@ -196,61 +254,57 @@
   left: 0;
   width: 0;
   height: 100%;
-  background: linear-gradient(90deg, 
-    rgba(0, 180, 216, 0.1), 
-    rgba(0, 180, 216, 0.05)
-  );
+  background: rgba(0, 180, 216, 0.1);
   transition: width 0.3s ease;
   z-index: -1;
 }
 
 .menuLink:hover {
-  color: white;
-  background: rgba(0, 180, 216, 0.1);
-  transform: translateX(8px);
+  color: var(--accent-color, #00b4d8);
+  border-left-color: var(--accent-color, #00b4d8);
   text-shadow: 0 0 8px rgba(0, 180, 216, 0.4);
+  transform: translateX(8px);
 }
 
 .menuLink:hover::before {
   width: 100%;
 }
 
-.linkText {
-  flex: 1;
-}
-
-/* ===== ESTADO ACTIVO ===== */
+/* ===== ENLACE ACTIVO ===== */
 .menuLink.activeLink {
   color: var(--accent-color, #00b4d8);
-  background: rgba(0, 180, 216, 0.15);
   border-left-color: var(--accent-color, #00b4d8);
+  background: rgba(0, 180, 216, 0.15);
+  text-shadow: 0 0 10px rgba(0, 180, 216, 0.6);
   font-weight: 700;
-  text-shadow: 0 0 10px rgba(0, 180, 216, 0.5);
-  transform: translateX(5px);
+  position: relative;
 }
 
 .menuLink.activeLink::before {
   width: 100%;
-  background: linear-gradient(90deg, 
-    rgba(0, 180, 216, 0.2), 
-    rgba(0, 180, 216, 0.1)
-  );
+  background: rgba(0, 180, 216, 0.2);
 }
 
-.activeIndicator {
+/* Indicador adicional para enlace activo */
+.menuLink.activeLink::after {
+  content: '▶';
+  position: absolute;
+  right: 25px; /* AUMENTADO de 20px a 25px */
+  top: 50%;
+  transform: translateY(-50%);
   color: var(--accent-color, #00b4d8);
-  font-size: 1.5rem;
-  animation: activePulse 2s ease-in-out infinite;
+  font-size: 1rem; /* AUMENTADO de 0.8rem a 1rem */
+  animation: activeArrow 2s ease-in-out infinite;
 }
 
-@keyframes activePulse {
+@keyframes activeArrow {
   0%, 100% { 
-    opacity: 0.7; 
-    transform: scale(1);
+    opacity: 0.7;
+    transform: translateY(-50%) translateX(0);
   }
   50% { 
-    opacity: 1; 
-    transform: scale(1.2);
+    opacity: 1;
+    transform: translateY(-50%) translateX(3px);
   }
 }
 
@@ -258,124 +312,139 @@
 .menuLink.activeLink:hover {
   color: #00d4ff;
   border-left-color: #00d4ff;
-  background: rgba(0, 180, 216, 0.2);
-  transform: translateX(10px);
+  text-shadow: 0 0 15px rgba(0, 212, 255, 0.8);
+  background: rgba(0, 180, 216, 0.25);
+  transform: translateX(12px);
 }
 
 /* ===== FOOTER DEL MENÚ ===== */
 .menuFooter {
-  margin-top: auto;
-  padding: 20px;
+  padding: 25px; /* AUMENTADO de 20px a 25px */
   border-top: 1px solid rgba(0, 180, 216, 0.2);
+  text-align: center;
   position: relative;
   z-index: 2;
 }
 
-.contactInfo {
-  margin-bottom: 15px;
-}
-
-.contactText {
-  color: white;
-  font-size: 1rem;
-  font-weight: 600;
-  margin: 0 0 5px 0;
-  text-shadow: 0 0 6px rgba(0, 180, 216, 0.3);
-}
-
-.contactSubtext {
+.menuSlogan {
   color: #b8b8b8;
-  font-size: 0.9rem;
+  font-size: 1.1rem; /* AUMENTADO de 1rem a 1.1rem */
   margin: 0;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  font-weight: 300;
 }
 
-.socialLinks {
-  text-align: center;
-}
-
-.socialText {
-  color: #888;
-  font-size: 0.85rem;
-  font-style: italic;
+.brandName {
+  color: var(--accent-color, #00b4d8);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 0 0 8px rgba(0, 180, 216, 0.4);
 }
 
 /* ===== RESPONSIVE - MOSTRAR SOLO EN MÓVIL ===== */
 @media (max-width: 768px) {
   .hamburgerButton {
-    display: block;
+    display: flex;
   }
 }
 
 @media (max-width: 480px) {
   .mobileMenu {
     width: 100%;
-    max-width: 320px;
+    max-width: 350px; /* AUMENTADO de 320px a 350px */
   }
   
   .menuLink {
-    padding: 16px 20px;
-    font-size: 1rem;
+    padding: 20px 25px; /* AUMENTADO de 16px 20px a 20px 25px */
+    font-size: 1.2rem; /* AUMENTADO de 1rem a 1.2rem */
   }
   
   .menuLogo {
-    height: 35px;
+    height: 60px; /* AUMENTADO de 35px a 50px */
   }
   
-  .menuSearchContainer {
-    padding: 12px 15px;
+  .closeButton {
+    left: 15px; /* AUMENTADO de 15px a 20px */
+    font-size: 2rem; /* AUMENTADO de 1.3rem a 1.8rem */
+    width: 60px; /* AUMENTADO de 36px a 45px */
+    height: 60px; /* AUMENTADO de 36px a 45px */
   }
   
-  .menuFooter {
-    padding: 15px;
+  .menuHeader {
+    padding: 20px; /* AUMENTADO de 15px a 20px */
+    min-height: 90px; /* AUMENTADO de 70px a 90px */
+  }
+  
+  .menuSlogan {
+    font-size: 1rem; /* Mantener legible en móviles pequeños */
   }
 }
 
-/* ===== ANIMACIONES DE ENTRADA ===== */
-.mobileMenu.menuOpen .menuItem {
-  animation: slideInFromLeft 0.4s ease-out forwards;
+/* ===== EFECTOS ADICIONALES ===== */
+
+/* Efecto de entrada para los elementos del menú */
+.menuOpen .menuItem {
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: slideInMenu 0.4s ease-out forwards;
 }
 
-.mobileMenu.menuOpen .menuItem:nth-child(1) { animation-delay: 0.1s; }
-.mobileMenu.menuOpen .menuItem:nth-child(2) { animation-delay: 0.15s; }
-.mobileMenu.menuOpen .menuItem:nth-child(3) { animation-delay: 0.2s; }
-.mobileMenu.menuOpen .menuItem:nth-child(4) { animation-delay: 0.25s; }
-.mobileMenu.menuOpen .menuItem:nth-child(5) { animation-delay: 0.3s; }
+.menuOpen .menuItem:nth-child(1) { animation-delay: 0.1s; }
+.menuOpen .menuItem:nth-child(2) { animation-delay: 0.15s; }
+.menuOpen .menuItem:nth-child(3) { animation-delay: 0.2s; }
+.menuOpen .menuItem:nth-child(4) { animation-delay: 0.25s; }
+.menuOpen .menuItem:nth-child(5) { animation-delay: 0.3s; }
 
-@keyframes slideInFromLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
+@keyframes slideInMenu {
   to {
     opacity: 1;
     transform: translateX(0);
   }
 }
 
-/* ===== ACCESIBILIDAD ===== */
+/* Animación de entrada para el botón cerrar */
+.menuOpen .closeButton {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.5);
+  animation: closeButtonIn 0.5s ease-out 0.2s forwards;
+}
+
+@keyframes closeButtonIn {
+  to {
+    opacity: 1;
+    transform: rotate(0deg) scale(1);
+  }
+}
+
+/* Respeto por preferencias de movimiento reducido */
 @media (prefers-reduced-motion: reduce) {
   .mobileMenu,
+  .hamburgerLine,
   .overlay,
   .menuLink,
-  .hamburgerButton {
+  .closeButton {
     transition: none;
   }
   
   .mobileMenu::before,
-  .activeIndicator {
+  .closeButton {
     animation: none;
   }
   
-  .mobileMenu.menuOpen .menuItem {
+  .menuOpen .menuItem,
+  .menuOpen .closeButton {
     animation: none;
+    opacity: 1;
+    transform: none;
   }
 }
 
-/* Alto contraste */
+/* Modo de alto contraste */
 @media (prefers-contrast: high) {
   .mobileMenu {
     background: #000000;
-    border-right-color: #ffffff;
+    border-right: 2px solid #ffffff;
   }
   
   .menuLink {
@@ -385,10 +454,19 @@
   .menuLink.activeLink {
     background: #ffffff;
     color: #000000;
-    border-left-color: #000000;
   }
   
-  .overlay {
-    background: rgba(255, 255, 255, 0.8);
+  .hamburgerLine {
+    background: #ffffff;
+  }
+  
+  .closeButton {
+    color: #ffffff;
+    border: 1px solid #ffffff;
+  }
+  
+  .closeButton:hover {
+    background: #ffffff;
+    color: #000000;
   }
 }

@@ -27,7 +27,7 @@ body {
   min-height: 100vh;
 }
 
-/* ===== HEADER INFO CON EFECTOS ANIMADOS ===== */
+/* ===== HEADER INFO CON EFECTOS ANIMADOS - CORREGIDO ===== */
 .infoHeader {
   display: flex;
   background: linear-gradient(135deg, #0a0a1e 0%, #1a1a2e 25%, var(--primary-color) 50%, #16213e 75%, #0f1419 100%);
@@ -41,6 +41,12 @@ body {
   position: relative;
   overflow: hidden;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  /* AGREGADO: altura mínima para evitar cortes */
+  min-height: 60px;
+  /* AGREGADO: asegurar que el contenido esté centrado */
+  align-items: center;
+  /* AGREGADO: evitar que se deforme */
+  flex-shrink: 0;
 }
 
 /* Animación del gradiente del header */
@@ -50,7 +56,7 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-/* Partículas sutiles para el header */
+/* Partículas sutiles para el header - AJUSTADAS */
 .infoHeader::before {
   content: '';
   position: absolute;
@@ -64,7 +70,7 @@ body {
     radial-gradient(1px 1px at 120px 25px, rgba(0, 180, 216, 0.4), transparent),
     radial-gradient(1px 1px at 180px 10px, rgba(255, 255, 255, 0.1), transparent);
   background-repeat: repeat;
-  background-size: 200px 40px;
+  background-size: 200px 60px; /* AUMENTADO de 40px a 60px para cubrir toda la altura */
   animation: headerSparkle 15s linear infinite;
   pointer-events: none;
 }
@@ -108,6 +114,8 @@ body {
   padding: 2px 8px;
   border-radius: 4px;
   transition: all 0.3s ease;
+  /* AGREGADO: evitar que se encojan */
+  flex-shrink: 0;
 }
 
 .locationInfo:hover,
@@ -152,6 +160,8 @@ body {
   z-index: 2;
   border-radius: 1px;
   animation: linePulse 3s ease-in-out infinite;
+  /* AGREGADO: evitar que se encoja */
+  flex-shrink: 0;
 }
 
 @keyframes linePulse {
@@ -347,7 +357,7 @@ body {
   padding-top: 550px;
 }
 
-/* Hero Section */
+/* Hero Section - AJUSTADO */
 .heroSection {
   position: absolute;
   height: 560px;
@@ -356,16 +366,21 @@ body {
   background-image: url('/imgs/fondocamion.png');
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
   color: white;
-  top: 85px; /* Ajustado para el nuevo header más alto */
+  top: 120px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .logoImage {
   position: absolute;
   z-index: 2;
   right: 30px;
-  margin-top: 30px;
-  width: 470px;
+  margin-top: -80px;
+  width: 400px;
+  object-fit: contain;
 }
 
 .heroOverlay {
@@ -410,7 +425,7 @@ body {
   background-color: #e08c00;
 }
 
-/* Contact Numbers */
+/* Contact Numbers - POSICIÓN BASE */
 .contactNumbers {
   display: flex;
   justify-content: space-around;
@@ -497,7 +512,7 @@ body {
   text-align: center;
   padding: 25px 0;
   font-size: 2rem;
-  margin-top: -51px; /* Ajusta este valor para mover arriba (+) o abajo (-) */
+  margin-top: -20px; /* Ajusta este valor para mover arriba (+) o abajo (-) */
   position: relative;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(217, 37, 42, 0.4);
@@ -844,7 +859,7 @@ body {
 }
 
 .content p {
-  font-size: 14px;
+  font-size: 17px;
   font-weight: 400;
   margin: 0;
   line-height: 1.6;

@@ -1,7 +1,10 @@
+/* SearchBar.module.css - Responsivo con mejor diseño móvil */
+
 /* Estilos para el contenedor del formulario */
 .formWrapper {
   display: flex;
   justify-content: center;
+  width: 100%;
 }
 
 /* Eliminar estilo predeterminado de botones */
@@ -32,6 +35,7 @@
   transition: border-radius 0.5s ease;
   background: var(--input-bg, #fff);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 100%;
 }
 
 /* Estilo del Input */
@@ -92,4 +96,83 @@
 .form svg {
   width: 17px;
   margin-top: 3px;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablet */
+@media (max-width: 992px) {
+  .form {
+    --width-of-input: 350px;
+  }
+}
+
+/* Móvil */
+@media (max-width: 768px) {
+  .formWrapper {
+    width: 100%;
+    max-width: none;
+  }
+  
+  .form {
+    --width-of-input: 100%;
+    --height-of-input: 44px; /* Más alto para toques móviles */
+    max-width: 100%;
+    min-width: 100%; /* Cambiado para ocupar todo el ancho */
+    width: 100%;
+  }
+  
+  .input {
+    font-size: 16px; /* Evita zoom en iOS */
+    padding-inline: 0.7em;
+    width: 100%;
+  }
+  
+  .input::placeholder {
+    font-size: 14px;
+    color: #999;
+  }
+  
+  .form svg {
+    width: 18px;
+    margin-top: 2px;
+  }
+}
+
+/* Móvil pequeño */
+@media (max-width: 480px) {
+  .form {
+    --height-of-input: 42px;
+    --border-radius: 25px;
+    padding-inline: 0.6em;
+  }
+  
+  .input {
+    font-size: 15px;
+    padding-inline: 0.5em;
+  }
+  
+  .input::placeholder {
+    font-size: 13px;
+  }
+  
+  .form svg {
+    width: 16px;
+  }
+}
+
+/* Móvil extra pequeño */
+@media (max-width: 360px) {
+  .form {
+    --height-of-input: 40px;
+    padding-inline: 0.5em;
+  }
+  
+  .input {
+    font-size: 14px;
+  }
+  
+  .input::placeholder {
+    font-size: 12px;
+  }
 }
