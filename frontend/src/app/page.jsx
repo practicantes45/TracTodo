@@ -104,10 +104,7 @@ export default function HomePage() {
                                 <div className="content">
                                     <p className="heading">Calidad Garantizada</p>
                                     <p>
-                                        Refacciones de la más alta calidad, certificadas y probadas para
-                                        garantizar el máximo rendimiento de tu motor diésel. Trabajamos
-                                        con proveedores certificados y realizamos controles de calidad
-                                        rigurosos en cada producto.
+                                        Refacciones de alta calidad, certificadas y probadas para máximo rendimiento.
                                     </p>
                                 </div>
                             </div>
@@ -126,9 +123,8 @@ export default function HomePage() {
                                 <div className="content">
                                     <p className="heading">Amplio Stock</p>
                                     <p>
-                                        Mantenemos inventario completo de refacciones para las principales
-                                        marcas, disponible para entrega inmediata. Con más de 5,000 productos
-                                        en stock y conexiones directas con fabricantes para pedidos especiales.
+                                        Amplio inventario de refacciones para las principales marcas
+                                        ¡Listos para enviar!
                                     </p>
                                 </div>
                             </div>
@@ -147,9 +143,8 @@ export default function HomePage() {
                                 <div className="content">
                                     <p className="heading">Precios Competitivos</p>
                                     <p>
-                                        Ofrecemos los mejores precios del mercado sin comprometer la calidad,
-                                        con opciones de financiamiento disponibles. Descuentos por volumen
-                                        y programas especiales para clientes frecuentes.
+                                        Precios justos, calidad garantizada
+                                        ¡El mejor valor para ti!
                                     </p>
                                 </div>
                             </div>
@@ -168,10 +163,7 @@ export default function HomePage() {
                                 <div className="content">
                                     <p className="heading">Garantía Confiable</p>
                                     <p>
-                                        Respaldamos todos nuestros productos con garantía extendida
-                                        y servicio post-venta especializado para tu tranquilidad.
-                                        Nuestro equipo técnico está disponible para resolver cualquier
-                                        inconveniente que puedas tener.
+                                        Respaldo total: Garantía extendida y servicio post-venta de confianza
                                     </p>
                                 </div>
                             </div>
@@ -182,7 +174,7 @@ export default function HomePage() {
 
             {/* Footer con estado activo */}
             <Footer />
-            
+
             {/* Botón ScrollToTop */}
             <ScrollToTop />
         </div>

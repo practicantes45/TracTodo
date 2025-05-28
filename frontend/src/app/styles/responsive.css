@@ -1,103 +1,342 @@
-/* ===== RESPONSIVE DESIGN MEJORADO ===== */
+/* ===== RESPONSIVE DESIGN MEJORADO CON MENÚ MÓVIL ===== */
+
+/* Tablet */
+@media (max-width: 992px) {
+  .heroSection {
+    top: 120px;
+    height: 520px;
+    /* REDUCIDO ligeramente para tablet */
+    background-position: center center;
+  }
+
+  .mainContent {
+    padding-top: 580px;
+  }
+
+  .logoImage {
+    width: 400px;
+    right: 25px;
+  }
+}
+
+/* Móvil */
 @media (max-width: 768px) {
+
+  /* Header info responsive - MEJORADO */
   .infoHeader {
     flex-direction: column;
     gap: 8px;
-    padding: 10px 15px;
+    margin-bottom: 0px;
+    padding: 6px 15px;
     text-align: center;
+    height: auto;
+    min-height: 60px;
   }
-  
+
   .line {
     width: 80%;
     height: 2px;
     margin: 5px auto;
   }
-  
+
+  /* Navbar ya no cambia a columna, mantiene estructura horizontal */
   .appBar {
-    flex-direction: column;
-    gap: 15px;
-    padding: 15px;
+    padding: 15px 20px;
   }
 
-  .navList {
-    width: 100%;
-    justify-content: center;
-    flex-wrap: wrap;
-    font-size: 1.1rem;
-  }
-
-  .searchContainer {
-    width: 100%;
-    justify-content: center;
-    margin-top: 10px;
-  }
-
-  .searchInput {
-    width: 100%;
-    max-width: 400px;
-  }
-
+  /* Hero section ajustado para móvil - MEJORADO */
   .heroSection {
-    top: 140px; /* Ajustado para móviles */
+    top: 132px;
+    height: 400px;
+    /* REDUCIDO de 500px a 400px */
+    background-size: cover;
+    background-position: center 30%;
+    /* AJUSTADO: posición del fondo más centrada */
   }
 
+  /* OCULTAR el logo en dispositivos móviles */
+  .logoImage {
+    display: none !important;
+  }
+
+  /* Main content ajustado */
+  .mainContent {
+    padding-top: 480px;
+    /* REDUCIDO de 550px a 480px */
+  }
+
+  /* Contact numbers responsive - SUBIDOS MÁS ARRIBA */
   .contactNumbers {
     flex-direction: column;
     align-items: center;
+    margin-top: 320px;
+    /* REDUCIDO de 400px a 320px - SUBIDO 80px */
+    gap: 15px;
+    padding: 15px 20px;
   }
-  
+
+  /* Benefits section responsive */
   .benefitsContainer {
     grid-template-columns: 1fr;
     gap: 30px;
+    padding: 0 20px;
+  }
+
+  /* Brand section responsive */
+  .brandGrid {
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 60px;
+    row-gap: 40px;
+  }
+
+  .brandCard {
+    height: 140px;
+    max-width: 220px;
   }
 }
 
+
+/* Móvil pequeño */
 @media (max-width: 480px) {
+
+  /* Header info más compacto */
   .infoHeader {
     font-size: 0.8rem;
-    padding: 8px 10px;
+    padding: 10px;
+    min-height: 90px;
   }
-  
-  .navItem a {
-    padding: 12px 14px;
-    font-size: 1rem;
+
+  /* Navbar más compacta */
+  .appBar {
+    padding: 12px 15px;
   }
-  
+
+  /* Hero section más pequeño - OPTIMIZADO PARA MÓVILES PEQUEÑOS */
+  .heroSection {
+    top: 125px;
+    height: 350px;
+    /* REDUCIDO de 450px a 350px */
+    background-size: cover;
+    background-position: center 25%;
+    /* AJUSTADO para mejor encuadre */
+  }
+
+  /* CONFIRMADO: Logo oculto en móviles pequeños también */
   .logoImage {
-    width: 300px;
-    right: 15px;
+    display: none !important;
+  }
+
+  /* Main content ajustado */
+  .mainContent {
+    padding-top: 420px;
+    /* REDUCIDO de 500px a 420px */
+  }
+
+  /* Contact numbers más arriba y más compacto - MÁS SUBIDOS */
+  .contactNumbers {
+    margin-top: 280px;
+    /* REDUCIDO de 380px a 280px - SUBIDO 100px MÁS */
+    gap: 12px;
+    padding: 10px 15px;
+  }
+
+  /* Brand grid en una columna */
+  .brandGrid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 0 20px;
+  }
+
+  .brandCard {
+    height: 120px;
+    max-width: 250px;
+    margin: 0 auto;
+  }
+
+  /* Benefits más compacto */
+  .benefitsContainer {
+    gap: 25px;
+    padding: 0 15px;
   }
 }
 
+/* ===== MÓVILES MUY PEQUEÑOS (320px) ===== */
+@media (max-width: 360px) {
+  .heroSection {
+    height: 320px;
+    /* AÚN MÁS PEQUEÑO para móviles muy pequeños */
+    background-position: center 20%;
+  }
+
+  .mainContent {
+    padding-top: 390px;
+  }
+
+  .contactNumbers {
+    margin-top: 250px;
+    /* SUBIDO AÚN MÁS */
+    gap: 10px;
+    padding: 8px 12px;
+  }
+}
+
+@media(max-width: 1234px) {
+  .offerBanner {
+    padding: 20px 15px;
+    margin-top: -60px;
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 993px) {
+  .offerBanner {
+    padding: 20px 15px;
+    margin-top: -120px;
+    font-size: 1.5rem;
+  }
+}
+
+/* Offer banner responsive */
 @media (max-width: 768px) {
   .offerBanner {
     padding: 20px 15px;
-    margin-top: -25px;
+    margin-top: -130px;
     font-size: 1.5rem;
   }
-  
+
   .offerBanner h2 {
     font-size: 2rem;
   }
-  
+
   .offerBanner::before {
     background-size: 150px 40px;
+  }
+}
+
+
+@media (max-width: 660px) {
+  .offerBanner {
+    padding: 15px 10px;
+    margin-top: -130px;
+    font-size: 1.3rem;
+  }
+
+  .offerBanner h2 {
+    font-size: 1.8rem;
+  }
+
+  .offerBanner::before {
+    background-size: 120px 35px;
+    animation-duration: 25s;
   }
 }
 
 @media (max-width: 480px) {
   .offerBanner {
     padding: 15px 10px;
-    margin-top: -20px;
+    margin-top: -130px;
     font-size: 1.2rem;
   }
-  
+
   .offerBanner h2 {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
   }
-  
+
   .offerBanner::before {
     background-size: 100px 30px;
     animation-duration: 20s;
   }
 }
+
+/* Footer responsive */
+@media (max-width: 768px) {
+  .footerContent {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    padding: 25px 20px 15px;
+    text-align: center;
+  }
+
+  .footerSection {
+    align-items: center;
+  }
+
+  .socialContainer {
+    justify-content: center;
+  }
+
+  .contactInfo {
+    align-items: center;
+  }
+}
+
+/* Ajustes específicos para la nueva estructura de navegación */
+@media (max-width: 768px) {
+
+  /* Asegurar que el contenido no se superponga con la nueva navbar */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Ajustar espaciado cuando el menú móvil esté activo */
+  body.menu-open {
+    overflow: hidden;
+  }
+}
+
+/* Landscape móvil - MEJORADO PARA ORIENTACIÓN HORIZONTAL */
+@media (max-width: 768px) and (orientation: landscape) {
+  .heroSection {
+    height: 300px;
+    /* MÁS PEQUEÑO en landscape */
+    top: 110px;
+    background-position: center 35%;
+    /* MEJOR POSICIÓN en landscape */
+  }
+
+  /* CONFIRMADO: Logo oculto también en landscape móvil */
+  .logoImage {
+    display: none !important;
+  }
+
+  .mainContent {
+    padding-top: 360px;
+    /* AJUSTADO para landscape */
+  }
+
+  .contactNumbers {
+    margin-top: 240px;
+    /* SUBIDO en landscape también */
+    flex-direction: row;
+    justify-content: center;
+    gap: 15px;
+    /* GAP más pequeño para que quepan en landscape */
+    flex-wrap: wrap;
+    /* PERMITE que se envuelvan si es necesario */
+  }
+}
+
+/* ===== AJUSTES ADICIONALES PARA BACKGROUND RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .heroSection {
+    background-attachment: scroll;
+    /* MEJOR RENDIMIENTO en dispositivos móviles */
+  }
+}
+
+/* Para dispositivos con pantallas muy anchas pero cortas (landscape tablets) */
+@media (max-width: 1024px) and (orientation: landscape) and (max-height: 600px) {
+  .heroSection {
+    background-size: cover;
+    background-position: center 40%;
+  }
+}
+
+/* Optimización adicional para imágenes en dispositivos de alta densidad */
+@media (max-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
+  .heroSection {
+    background-size: cover;
+    background-position: center 30%;
+  }
+}
+
