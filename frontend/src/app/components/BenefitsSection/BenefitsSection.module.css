@@ -1,0 +1,437 @@
+/* ===== BENEFITS SECTION - DISEÑO RESPONSIVO MEJORADO CON TÍTULO ===== */
+
+.benefitsSection {
+  background-color: #f8f9fa;
+  padding: 80px 20px;
+  margin: 0;
+  width: 100%;
+  overflow-x: hidden; /* Evita scroll horizontal */
+}
+
+/* ===== NUEVO: HEADER DE SECCIÓN CON TÍTULO "¿POR QUÉ ELEGIRNOS?" ===== */
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.sectionTitle {
+  font-size: 3rem;
+  color: var(--primary-color);
+  margin-bottom: 0;
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+  font-weight: 700;
+  position: relative;
+}
+
+.sectionTitle::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 4px;
+  background: var(--accent-color);
+  margin: 15px auto 0;
+  border-radius: 2px;
+}
+
+/* ===== CONTENEDOR PRINCIPAL CON GRID INTELIGENTE ===== */
+.benefitsContainer {
+  display: grid;
+  gap: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+  
+  /* Grid responsivo mejorado */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  justify-items: center;
+  align-items: start;
+}
+
+/* ===== TARJETAS CON EFECTOS HOVER ===== */
+.cardContainer {
+  width: 100%;
+  max-width: 300px;
+  height: 300px;
+  position: relative;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  cursor: pointer;
+  margin: 0 auto;
+}
+
+.card {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  position: relative;
+}
+
+/* ===== CONTENIDO FRONTAL (INICIAL) ===== */
+.frontContent {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+  padding: 20px;
+  text-align: center;
+}
+
+.frontContent .iconContainer {
+  margin-bottom: 20px;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.frontContent .iconContainer svg {
+  width: 60px;
+  height: 60px;
+  fill: var(--primary-color);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.frontContent .benefitTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--primary-color);
+  opacity: 1;
+  margin: 0;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+/* ===== CONTENIDO HOVER (DETALLADO) ===== */
+.content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 15px;
+  background: linear-gradient(-45deg, #1a1a2e 0%, #152656 50%, var(--primary-color) 100%);
+  color: #e8e8e8;
+  padding: 30px;
+  line-height: 1.5;
+  border-radius: inherit;
+  pointer-events: none;
+  transform: translateY(100%);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.content .heading {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  background: linear-gradient(-45deg, #44d3ef 0%, #95edff 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.content p:not(.heading) {
+  font-size: 17px;
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.6;
+  color: #e8e8e8;
+}
+
+/* ===== EFECTOS HOVER ===== */
+.card:hover .content {
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.card:hover .frontContent {
+  transform: translateY(-20%);
+}
+
+.card:hover .frontContent .benefitTitle {
+  opacity: 0;
+  transform: scale(0.8);
+  color: white;
+}
+
+.card:hover .frontContent .iconContainer {
+  transform: scale(1.2) rotate(10deg);
+}
+
+.card:hover .frontContent .iconContainer svg {
+  fill: rgba(255, 255, 255, 0.3);
+}
+
+/* ===== RESPONSIVE DESIGN MEJORADO ===== */
+
+/* =============================================
+   PANTALLAS EXTRA GRANDES (1400px+)
+   ============================================= */
+@media (min-width: 1400px) {
+  .benefitsContainer {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 1600px;
+    gap: 50px;
+  }
+  
+  .cardContainer {
+    max-width: 320px;
+    height: 320px;
+  }
+}
+
+/* =============================================
+   PANTALLAS GRANDES (1200px - 1399px)
+   ============================================= */
+@media (min-width: 1200px) and (max-width: 1399px) {
+  .benefitsContainer {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 1300px;
+    gap: 35px;
+  }
+  
+  .cardContainer {
+    max-width: 290px;
+    height: 290px;
+  }
+}
+
+/* =============================================
+   PANTALLAS MEDIANAS GRANDES (993px - 1199px)
+   SOLUCIÓN AL PROBLEMA PRINCIPAL
+   ============================================= */
+@media (min-width: 993px) and (max-width: 1199px) {
+  .benefitsSection {
+    padding: 70px 15px;
+  }
+  
+  .benefitsContainer {
+    /* CAMBIO CLAVE: 3 columnas en lugar de 4 */
+    grid-template-columns: repeat(3, 1fr);
+    max-width: 1000px;
+    gap: 25px;
+    padding: 0 15px;
+  }
+  
+  .cardContainer {
+    max-width: 280px;
+    height: 280px;
+  }
+  
+  /* Ajustar contenido para que quepa mejor */
+  .frontContent .benefitTitle {
+    font-size: 22px;
+  }
+  
+  .content .heading {
+    font-size: 26px;
+  }
+  
+  .content p:not(.heading) {
+    font-size: 16px;
+  }
+
+  /* Título responsivo */
+  .sectionTitle {
+    font-size: 2.5rem;
+  }
+}
+
+/* =============================================
+   TABLET (769px - 992px)
+   ============================================= */
+@media (min-width: 769px) and (max-width: 992px) {
+  .benefitsSection {
+    padding: 60px 15px;
+  }
+  
+  .benefitsContainer {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 800px;
+    gap: 30px;
+  }
+  
+  .cardContainer {
+    max-width: 300px;
+    height: 280px;
+  }
+
+  .sectionTitle {
+    font-size: 2.5rem;
+  }
+}
+
+/* =============================================
+   MÓVIL GRANDE (481px - 768px)
+   ============================================= */
+@media (min-width: 481px) and (max-width: 768px) {
+  .benefitsSection {
+    padding: 50px 15px;
+  }
+  
+  .benefitsContainer {
+    grid-template-columns: 1fr;
+    gap: 25px;
+    padding: 0 20px;
+    max-width: 100%;
+  }
+  
+  .cardContainer {
+    width: 100%;
+    max-width: 400px;
+    height: 260px;
+    margin: 0 auto;
+  }
+  
+  .frontContent .iconContainer svg {
+    width: 50px;
+    height: 50px;
+  }
+  
+  .frontContent .benefitTitle {
+    font-size: 20px;
+  }
+  
+  .content .heading {
+    font-size: 24px;
+  }
+  
+  .content p:not(.heading) {
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  .sectionTitle {
+    font-size: 2rem;
+    margin-bottom: 30px;
+  }
+
+  .sectionHeader {
+    margin-bottom: 30px;
+  }
+}
+
+/* =============================================
+   MÓVIL PEQUEÑO (hasta 480px)
+   ============================================= */
+@media (max-width: 480px) {
+  .benefitsSection {
+    padding: 40px 10px;
+  }
+  
+  .benefitsContainer {
+    gap: 20px;
+    padding: 0 15px;
+  }
+  
+  .cardContainer {
+    max-width: 320px;
+    height: 240px;
+  }
+  
+  .frontContent {
+    padding: 15px;
+  }
+  
+  .frontContent .iconContainer svg {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .frontContent .benefitTitle {
+    font-size: 18px;
+  }
+  
+  .content {
+    padding: 20px;
+  }
+  
+  .content .heading {
+    font-size: 22px;
+  }
+  
+  .content p:not(.heading) {
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .sectionTitle {
+    font-size: 1.8rem;
+  }
+
+  .sectionHeader {
+    margin-bottom: 25px;
+  }
+}
+
+/* =============================================
+   MÓVILES MUY PEQUEÑOS (hasta 360px)
+   ============================================= */
+@media (max-width: 360px) {
+  .benefitsSection {
+    padding: 35px 8px;
+  }
+  
+  .cardContainer {
+    max-width: 280px;
+    height: 220px;
+  }
+  
+  .frontContent .benefitTitle {
+    font-size: 16px;
+  }
+  
+  .content .heading {
+    font-size: 20px;
+  }
+  
+  .content p:not(.heading) {
+    font-size: 13px;
+  }
+
+  .sectionTitle {
+    font-size: 1.6rem;
+  }
+}
+
+/* =============================================
+   LANDSCAPE MÓVIL
+   ============================================= */
+@media (max-width: 768px) and (orientation: landscape) {
+  .benefitsContainer {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .cardContainer {
+    height: 200px;
+    max-width: 300px;
+  }
+  
+  .content {
+    padding: 15px;
+  }
+  
+  .content .heading {
+    font-size: 20px;
+  }
+  
+  .content p:not(.heading) {
+    font-size: 14px;
+  }
+
+  .sectionTitle {
+    font-size: 1.8rem;
+  }
+
+  .sectionHeader {
+    margin-bottom: 25px;
+  }
+}

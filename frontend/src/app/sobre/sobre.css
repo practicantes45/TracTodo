@@ -1,0 +1,760 @@
+/* ===== SOBRE NOSOTROS - ESTILOS ESPECÍFICOS ===== */
+
+/* Importar estilos globales */
+@import url('../styles/global.css');
+@import url('../styles/responsive.css');
+
+/* ===== HERO SECTION PARA SOBRE NOSOTROS ===== */
+.sobre-page .heroSection {
+  position: absolute;
+  height: 560px;
+  width: 100%;
+  left: 0;
+  background-image: url('/imgs/fondocamion4.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  top: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.heroContent {
+  max-width: 800px;
+  padding: 0 20px;
+  z-index: 2;
+}
+
+.heroContent h1 {
+  font-size: 3.5rem;
+  margin-bottom: 15px;
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+  font-weight: 700;
+  text-shadow: 
+    2px 2px 4px rgba(0, 0, 0, 0.8),
+    0 0 10px rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(0, 42, 92, 0.4);
+  opacity: 0;
+  animation: fadeInUp 1s ease-out 0.5s forwards;
+}
+
+.heroContent p {
+  font-size: 1.3rem;
+  margin-bottom: 0;
+  opacity: 0.9;
+  font-weight: 400;
+  text-shadow: 
+    1px 1px 3px rgba(0, 0, 0, 0.8),
+    0 0 8px rgba(0, 0, 0, 0.5),
+    0 0 15px rgba(0, 42, 92, 0.3);
+  opacity: 0;
+  animation: fadeInUp 1s ease-out 0.8s forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== MAIN CONTENT ADJUSTMENT - ESPECÍFICO PARA SOBRE ===== */
+.sobre-page .mainContent {
+  flex: 1;
+  width: 100%;
+  padding-top: 550px;
+}
+
+/* ===== SECCIÓN ¿QUIÉNES SOMOS? - DISEÑO DINÁMICO Y ATRACTIVO ===== */
+.aboutSection {
+  background: linear-gradient(145deg, #f0f8ff 0%, #e6f3ff 30%, #ffffff 70%, #f8f9fa 100%);
+  padding: 20px 20px 80px 20px;
+  margin: 0;
+  margin-top: -60px;
+  position: relative;
+  overflow: hidden;
+}
+
+
+
+.aboutContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 2;
+}
+
+/* NUEVO: Contenedor principal con efectos modernos */
+.aboutContentWithImage {
+  display: flex;
+  align-items: flex-start;
+  gap: 60px;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 25px;
+  padding: 50px;
+  box-shadow: 
+    0 20px 60px rgba(0, 42, 92, 0.08),
+    0 8px 25px rgba(0, 180, 216, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 180, 216, 0.1);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+}
+
+.aboutContentWithImage:hover {
+  transform: translateY(-5px);
+  box-shadow: 
+    0 30px 80px rgba(0, 42, 92, 0.12),
+    0 12px 35px rgba(0, 180, 216, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+
+/* Efecto de brillo sutil en movimiento */
+.aboutContentWithImage::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(0, 180, 216, 0.05) 50%, 
+    transparent 100%);
+  transition: left 2s ease;
+  pointer-events: none;
+}
+
+.aboutContentWithImage:hover::after {
+  left: 100%;
+}
+
+/* NUEVO: Contenido de texto con efectos mejorados */
+.aboutTextContent {
+  flex: 1;
+  min-width: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.aboutTextContent h2 {
+  font-size: 3.2rem;
+  color: var(--primary-color);
+  text-align: left;
+  margin-bottom: 35px;
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+  font-weight: 700;
+  position: relative;
+  text-shadow: 0 2px 4px rgba(0, 42, 92, 0.1);
+  letter-spacing: -1px;
+}
+
+.aboutTextContent h2::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent-color) 0%, #00d4ff 50%, var(--accent-color) 100%);
+  margin: 20px 0 0 0;
+  border-radius: 2px;
+  animation: expandUnderline 1.5s ease-out 0.5s forwards;
+  box-shadow: 0 2px 8px rgba(0, 180, 216, 0.3);
+}
+
+@keyframes expandUnderline {
+  from { width: 0; }
+  to { width: 120px; }
+}
+
+.aboutTextContent p {
+  font-size: 1.25rem;
+  line-height: 1.8;
+  color: #444;
+  margin-bottom: 28px;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  font-weight: 400;
+  text-align: justify;
+  position: relative;
+  padding-left: 25px;
+  transition: all 0.3s ease;
+}
+
+/* Indicador visual para los párrafos */
+.aboutTextContent p::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 4px;
+  height: 4px;
+  background: var(--accent-color);
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 180, 216, 0.5);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  50% { 
+    transform: scale(1.5);
+    opacity: 1;
+  }
+}
+
+.aboutTextContent p:hover {
+  color: #222;
+  transform: translateX(5px);
+}
+
+.aboutTextContent p:hover::before {
+  background: var(--secondary-color);
+  animation-play-state: paused;
+  transform: scale(1.5);
+}
+
+/* NUEVO: Contenido de imagen con efectos sutiles */
+.aboutImageContent {
+  flex: 0 0 480px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 20px;
+  position: relative;
+}
+
+.aboutTruckImage {
+  width: 100%;
+  max-width: 450px;
+  height: auto;
+  border-radius: 18px;
+  box-shadow: 
+    0 15px 40px rgba(0, 42, 92, 0.15),
+    0 5px 15px rgba(0, 180, 216, 0.1);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+  position: relative;
+  z-index: 2;
+  filter: brightness(1.02) contrast(1.05);
+}
+
+.aboutTruckImage:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 
+    0 25px 60px rgba(0, 42, 92, 0.25),
+    0 10px 25px rgba(0, 180, 216, 0.15);
+  filter: brightness(1.05) contrast(1.08);
+}
+
+/* ===== ELIMINADA: SECCIÓN IMAGEN DE CAMIÓN INDEPENDIENTE ===== */
+/* La sección .truckImageSection ha sido eliminada ya que la imagen ahora está integrada */
+
+/* ===== SECCIÓN MISIÓN Y VISIÓN ===== */
+.missionVisionSection {
+  background: linear-gradient(135deg, var(--primary-color) 0%, #0e86ca 100%);
+  padding: 80px 20px;
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.missionVisionSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(2px 2px at 30px 40px, rgba(255, 255, 255, 0.1), transparent),
+    radial-gradient(1px 1px at 80px 80px, rgba(0, 180, 216, 0.15), transparent),
+    radial-gradient(1px 1px at 150px 120px, rgba(255, 255, 255, 0.08), transparent);
+  background-repeat: repeat;
+  background-size: 200px 160px;
+  animation: floatingParticles 25s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes floatingParticles {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-160px); }
+}
+
+.missionVisionContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  position: relative;
+  z-index: 2;
+}
+
+.missionCard,
+.visionCard {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 40px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.missionCard:hover,
+.visionCard:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.missionCard h3,
+.visionCard h3 {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  margin-bottom: 25px;
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+  font-weight: 700;
+}
+
+.missionCard p,
+.visionCard p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--dark-color);
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  font-weight: 400;
+  text-align: justify;
+}
+
+/* ===== SECCIÓN VALORES ===== */
+.valuesSection {
+  background-color: #ffffff;
+  padding: 80px 20px;
+  margin: 0;
+}
+
+.valuesContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.valuesContainer h2 {
+  font-size: 3rem;
+  color: var(--primary-color);
+  margin-bottom: 50px;
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+  font-weight: 700;
+  position: relative;
+}
+
+.valuesContainer h2::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 4px;
+  background: var(--accent-color);
+  margin: 15px auto 0;
+  border-radius: 2px;
+}
+
+.valuesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.valueCard {
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  padding: 30px;
+  border-radius: 12px;
+  text-align: left;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid var(--accent-color);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.valueCard::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: rgba(0, 180, 216, 0.05);
+  transition: width 0.3s ease;
+}
+
+.valueCard:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+  border-left-color: var(--secondary-color);
+}
+
+.valueCard:hover::before {
+  width: 100%;
+}
+
+.valueCard h4 {
+  font-size: 1.5rem;
+  color: var(--primary-color);
+  margin-bottom: 15px;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  font-weight: 700;
+  position: relative;
+  z-index: 2;
+}
+
+.valueCard p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--dark-color);
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  font-weight: 400;
+  position: relative;
+  z-index: 2;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Tablet Grande (1024px - 1199px) */
+@media (max-width: 1199px) and (min-width: 1024px) {
+  .aboutContentWithImage {
+    gap: 40px;
+    padding: 40px;
+  }
+  
+  .aboutImageContent {
+    flex: 0 0 420px;
+  }
+  
+  .aboutTextContent h2 {
+    font-size: 2.8rem;
+  }
+  
+  .aboutTextContent p {
+    font-size: 1.15rem;
+  }
+}
+
+/* Tablet (769px - 1023px) */
+@media (max-width: 1023px) and (min-width: 769px) {
+  .aboutSection {
+    padding: 15px 15px 70px 15px;
+    margin-top: -50px;
+  }
+  
+  .aboutContentWithImage {
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+    padding: 40px 30px;
+  }
+  
+  .aboutImageContent {
+    flex: none;
+    order: 1;
+  }
+  
+  .aboutTextContent {
+    order: 2;
+    text-align: center;
+  }
+  
+  .aboutTextContent h2 {
+    text-align: center;
+    font-size: 2.6rem;
+  }
+  
+  .aboutTextContent h2::after {
+    margin: 20px auto 0;
+    width: 100px;
+  }
+  
+  .aboutTruckImage {
+    max-width: 500px;
+  }
+  
+  .aboutTextContent p {
+    padding-left: 0;
+    text-align: center;
+  }
+  
+  .aboutTextContent p::before {
+    display: none;
+  }
+}
+
+/* Tablet (992px) */
+@media (max-width: 992px) {
+  .heroContent h1 {
+    font-size: 2.8rem;
+    text-shadow: 
+      2px 2px 4px rgba(0, 0, 0, 0.9),
+      0 0 8px rgba(0, 0, 0, 0.7),
+      0 0 16px rgba(0, 42, 92, 0.5);
+  }
+  
+  .heroContent p {
+    font-size: 1.1rem;
+    text-shadow: 
+      1px 1px 3px rgba(0, 0, 0, 0.9),
+      0 0 6px rgba(0, 0, 0, 0.6);
+  }
+  
+  .sobre-page .mainContent {
+    padding-top: 520px;
+  }
+  
+  .sobre-page .heroSection {
+    height: 520px;
+  }
+  
+  .missionVisionContainer {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  
+  .aboutTextContent h2,
+  .valuesContainer h2 {
+    font-size: 2.5rem;
+  }
+  
+  .valuesGrid {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+  }
+}
+
+/* Móvil (768px) */
+@media (max-width: 768px) {
+  .sobre-page .heroSection {
+    height: 400px;
+    top: 132px;
+  }
+  
+  .heroContent h1 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    text-shadow: 
+      2px 2px 4px rgba(0, 0, 0, 0.9),
+      0 0 8px rgba(0, 0, 0, 0.7),
+      0 0 15px rgba(0, 42, 92, 0.5);
+  }
+  
+  .heroContent p {
+    font-size: 1rem;
+    text-shadow: 
+      1px 1px 3px rgba(0, 0, 0, 0.9),
+      0 0 6px rgba(0, 0, 0, 0.6);
+  }
+  
+  .sobre-page .mainContent {
+    padding-top: 480px;
+  }
+  
+  /* Layout móvil: imagen arriba, texto abajo */
+  .aboutContentWithImage {
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+    padding: 30px 20px;
+    border-radius: 20px;
+  }
+  
+  .aboutImageContent {
+    order: 1;
+    flex: none;
+  }
+  
+  .aboutTextContent {
+    order: 2;
+    text-align: center;
+  }
+  
+  .aboutTextContent h2 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 25px;
+  }
+  
+  .aboutTextContent h2::after {
+    margin: 15px auto 0;
+    width: 80px;
+  }
+  
+  .aboutTextContent p {
+    padding-left: 0;
+    text-align: center;
+    font-size: 1.1rem;
+  }
+  
+  .aboutTextContent p::before {
+    display: none;
+  }
+  
+  .aboutTruckImage {
+    max-width: 400px;
+  }
+  
+  .aboutSection,
+  .missionVisionSection,
+  .valuesSection {
+    padding: 10px 15px 60px 15px;
+  }
+  
+  .aboutSection {
+    margin-top: -40px;
+  }
+  
+  .missionCard h3,
+  .visionCard h3 {
+    font-size: 2rem;
+  }
+  
+  .missionCard,
+  .visionCard {
+    padding: 30px 25px;
+  }
+  
+  .valuesGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .valueCard {
+    padding: 25px 20px;
+  }
+}
+
+/* Móvil pequeño (480px) */
+@media (max-width: 480px) {
+  .sobre-page .heroSection {
+    height: 300px;
+  }
+  
+  .heroContent h1 {
+    font-size: 1.8rem;
+    text-shadow: 
+      2px 2px 4px rgba(0, 0, 0, 0.9),
+      0 0 8px rgba(0, 0, 0, 0.7),
+      0 0 12px rgba(0, 42, 92, 0.5);
+  }
+  
+  .heroContent p {
+    font-size: 0.9rem;
+    text-shadow: 
+      1px 1px 3px rgba(0, 0, 0, 0.9),
+      0 0 5px rgba(0, 0, 0, 0.6);
+  }
+  
+  .sobre-page .mainContent {
+    padding-top: 350px;
+  }
+  
+  .aboutSection,
+  .missionVisionSection,
+  .valuesSection {
+    padding: 50px 10px;
+  }
+  
+  .aboutTextContent h2,
+  .valuesContainer h2 {
+    font-size: 1.8rem;
+  }
+  
+  .missionCard h3,
+  .visionCard h3 {
+    font-size: 1.8rem;
+  }
+  
+  .missionCard,
+  .visionCard {
+    padding: 25px 20px;
+  }
+  
+  .valueCard {
+    padding: 20px 15px;
+  }
+  
+  .aboutTextContent p {
+    font-size: 1.1rem;
+  }
+  
+  .missionCard p,
+  .visionCard p {
+    font-size: 1rem;
+  }
+  
+  .aboutTruckImage {
+    max-width: 350px;
+  }
+}
+
+/* Landscape móvil */
+@media (max-width: 768px) and (orientation: landscape) {
+  .sobre-page .heroSection {
+    height: 300px;
+  }
+  
+  .sobre-page .mainContent {
+    padding-top: 360px;
+  }
+  
+  .heroContent h1 {
+    font-size: 2rem;
+    text-shadow: 
+      2px 2px 4px rgba(0, 0, 0, 0.9),
+      0 0 8px rgba(0, 0, 0, 0.7),
+      0 0 15px rgba(0, 42, 92, 0.5);
+  }
+  
+  .heroContent p {
+    font-size: 0.95rem;
+    text-shadow: 
+      1px 1px 3px rgba(0, 0, 0, 0.9),
+      0 0 6px rgba(0, 0, 0, 0.6);
+  }
+  
+  /* En landscape móvil, mantener imagen arriba */
+  .aboutContentWithImage {
+    flex-direction: column;
+    gap: 20px;
+    padding: 25px 20px;
+  }
+  
+  .aboutTruckImage {
+    max-width: 300px;
+  }
+  
+  .aboutTextContent p {
+    font-size: 1rem;
+  }
+}

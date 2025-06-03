@@ -34,7 +34,7 @@ const SearchBar = () => {
 
   // Placeholders diferentes para móvil y desktop
   const placeholder = isMobile 
-    ? "Buscar productos..." 
+    ? "Nombre / Número de parte / Palabras Clave" 
     : "Nombre / Número de parte / Palabras Clave";
 
   return (

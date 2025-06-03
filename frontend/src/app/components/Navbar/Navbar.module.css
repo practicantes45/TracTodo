@@ -276,6 +276,119 @@
 /* ===== RESPONSIVE DESIGN ===== */
 
 /* Móviles */
+@media(max-width: 1175px) {
+  .appBar {
+    display: none; /* Ocultar la navbar desktop en móvil */
+  }
+  .navList{
+    font-size: 19.6px; /* Aumentar el tamaño de fuente en móvil */
+  }
+}
+
+@media(max-width: 1097px) {
+  .appBar {
+    display: none; /* Ocultar la navbar desktop en móvil */
+  }
+  .navList{
+    font-size: 20px; /* Aumentar el tamaño de fuente en móvil */
+  }
+}
+
+@media(max-width:1078px){
+  .appBar {
+    display: none; /* Ocultar la navbar desktop en móvil */
+  }
+  .navList {
+    font-size: 19px; /* Ajustar el tamaño de fuente en pantallas más pequeñas */
+  }
+}
+
+
+@media(max-width:1044px){
+  .appBar {
+    display: none; /* Ocultar la navbar desktop en móvil */
+  }
+  .navList {
+    font-size: 18px; /* Ajustar el tamaño de fuente en pantallas más pequeñas */
+  }
+  .navItem{
+    margin: 0 5px;
+  }
+}
+
+@media(max-width: 992px) {
+  .appBar {
+    display: none; /* Ocultar la navbar desktop en móvil */
+  }
+  .navList {
+    font-size: 17px; /* Ajustar el tamaño de fuente en pantallas más pequeñas */
+  }
+  .navItem{
+    margin: 0 5px;
+  }
+}
+
+@media(max-width: 933px) {
+  .appBar {
+    display: none; /* Ocultar la navbar desktop en móvil */
+  }
+  .navList {
+    font-size: 16.5px; /* Ajustar el tamaño de fuente en pantallas más pequeñas */
+  }
+  .navItem{
+    margin: 0 5px;
+  }
+}
+
+@media(max-width: 913px) {
+  .appBar {
+    display: none; /* Ocultar la navbar desktop en móvil */
+  }
+  .navList {
+    font-size: 16px; /* Ajustar el tamaño de fuente en pantallas más pequeñas */
+  }
+  .navItem{
+    margin: 0 4px;
+  }
+}
+
+@media(max-width: 891px) {
+  .appBar {
+    display: none; /* Ocultar la navbar desktop en móvil */
+  }
+  .navList {
+    font-size: 16px; /* Ajustar el tamaño de fuente en pantallas más pequeñas */
+  }
+  .navItem{
+    margin: 0 3.5px;
+  }
+}
+
+@media(max-width: 874px) {
+  .appBar {
+    display: none; /* Ocultar la navbar desktop en móvil */
+  }
+  .navList {
+    font-size: 15.8px; /* Ajustar el tamaño de fuente en pantallas más pequeñas */
+  }
+  .navItem{
+    margin: 0 3.3px;
+  }
+}
+
+@media(max-width: 855px) {
+  .appBar {
+    display: none; /* Ocultar la navbar desktop en móvil */
+  }
+  .navList {
+    font-size: 15px; /* Ajustar el tamaño de fuente en pantallas más pequeñas */
+  }
+  .navItem{
+    margin: 0 3px;
+  }
+}
+
+
 @media (max-width: 768px) {
   /* Mostrar la barra de búsqueda móvil encima de todo */
   .mobileSearchWrapper {
