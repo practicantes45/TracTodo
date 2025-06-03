@@ -74,67 +74,75 @@ const ProductCarousel = () => {
   };
 
   return (
-    <div className={styles.carouselContainer}>
-      <button 
-        className={`${styles.carouselButton} ${styles.prev}`} 
-        onClick={prevSlide}
-        aria-label="Producto anterior"
-      >
-        &lt;
-      </button>
-      
-      <div className={styles.carouselSlides}>
-        {products.map((product, index) => (
-          <div 
-            key={product.id} 
-            className={`${styles.slide} ${index === currentSlide ? styles.active : ''}`}
-            style={{
-              transform: `translateX(${100 * (index - currentSlide)}%)`,
-            }}
-          >
-            <div className={styles.slideContent}>
-              <div className={styles.imageContainer}>
-                {/* Si no tienes imágenes, puedes usar un div con fondo de color como placeholder */}
-                {product.image ? (
-                  <img src={product.image} alt={product.name} className={styles.productImage} />
-                ) : (
-                  <div className={styles.imagePlaceholder}></div>
-                )}
-              </div>
-              <div className={styles.productInfo}>
-                <h2 className={styles.productName}>{product.name}</h2>
-                <p className={styles.productPrice}>{product.price}</p>
-                <button 
-                  className={styles.ctaButton}
-                  onClick={() => handleWhatsAppClick(product)}
-                >
-                  {product.ctaText}
-                </button>
+    <section className={styles.productSection}>
+      {/* Banner de PRODUCTOS DEL MES */}
+      <div className={styles.offerBanner}>
+        <h2>PRODUCTOS DEL MES</h2>
+      </div>
+
+      {/* Carrusel de productos */}
+      <div className={styles.carouselContainer}>
+        <button 
+          className={`${styles.carouselButton} ${styles.prev}`} 
+          onClick={prevSlide}
+          aria-label="Producto anterior"
+        >
+          &lt;
+        </button>
+        
+        <div className={styles.carouselSlides}>
+          {products.map((product, index) => (
+            <div 
+              key={product.id} 
+              className={`${styles.slide} ${index === currentSlide ? styles.active : ''}`}
+              style={{
+                transform: `translateX(${100 * (index - currentSlide)}%)`,
+              }}
+            >
+              <div className={styles.slideContent}>
+                <div className={styles.imageContainer}>
+                  {/* Si no tienes imágenes, puedes usar un div con fondo de color como placeholder */}
+                  {product.image ? (
+                    <img src={product.image} alt={product.name} className={styles.productImage} />
+                  ) : (
+                    <div className={styles.imagePlaceholder}></div>
+                  )}
+                </div>
+                <div className={styles.productInfo}>
+                  <h2 className={styles.productName}>{product.name}</h2>
+                  <p className={styles.productPrice}>{product.price}</p>
+                  <button 
+                    className={styles.ctaButton}
+                    onClick={() => handleWhatsAppClick(product)}
+                  >
+                    {product.ctaText}
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+        
+        <button 
+          className={`${styles.carouselButton} ${styles.next}`} 
+          onClick={nextSlide}
+          aria-label="Siguiente producto"
+        >
+          &gt;
+        </button>
+        
+        <div className={styles.indicators}>
+          {products.map((_, index) => (
+            <button
+              key={index}
+              className={`${styles.indicator} ${index === currentSlide ? styles.active : ''}`}
+              onClick={() => goToSlide(index)}
+              aria-label={`Ir a producto ${index + 1}`}
+            />
+          ))}
+        </div>
       </div>
-      
-      <button 
-        className={`${styles.carouselButton} ${styles.next}`} 
-        onClick={nextSlide}
-        aria-label="Siguiente producto"
-      >
-        &gt;
-      </button>
-      
-      <div className={styles.indicators}>
-        {products.map((_, index) => (
-          <button
-            key={index}
-            className={`${styles.indicator} ${index === currentSlide ? styles.active : ''}`}
-            onClick={() => goToSlide(index)}
-            aria-label={`Ir a producto ${index + 1}`}
-          />
-        ))}
-      </div>
-    </div>
+    </section>
   );
 };
 

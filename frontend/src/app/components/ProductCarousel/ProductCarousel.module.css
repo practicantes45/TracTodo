@@ -1,12 +1,172 @@
 /* components/ProductCarousel/ProductCarousel.module.css */
 
+/* ===== SECCIÓN COMPLETA DE PRODUCTOS ===== */
+.productSection {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* ===== BANNER PRODUCTOS DEL MES INTEGRADO ===== */
+.offerBanner {
+  background: linear-gradient(135deg, #8B0000 0%, #DC143C 25%, #d9252a 50%, #B22222 75%, #800000 100%);
+  background-size: 400% 400%;
+  animation: redGradientFlow 12s ease infinite;
+  color: white;
+  text-align: center;
+  padding: 25px 0;
+  font-size: 2rem;
+  position: relative;
+  margin-top: -70px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(217, 37, 42, 0.4);
+  z-index: 5;
+}
+
+/* Animación del gradiente rojo */
+@keyframes redGradientFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Partículas rojas flotantes */
+.offerBanner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    radial-gradient(2px 2px at 25px 20px, rgba(255, 255, 255, 0.4), transparent),
+    radial-gradient(1px 1px at 50px 30px, rgba(255, 200, 200, 0.3), transparent),
+    radial-gradient(1px 1px at 90px 15px, rgba(255, 255, 255, 0.5), transparent),
+    radial-gradient(2px 2px at 130px 25px, rgba(255, 150, 150, 0.4), transparent),
+    radial-gradient(1px 1px at 170px 10px, rgba(255, 255, 255, 0.2), transparent);
+  background-repeat: repeat;
+  background-size: 200px 50px;
+  animation: redSparkle 15s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes redSparkle {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-200px);
+  }
+}
+
+/* Efecto de onda roja brillante */
+.offerBanner::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 120%;
+  height: 100%;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.1) 25%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0.1) 75%,
+      transparent 100%);
+  transform: translateX(-100%);
+  animation: redWave 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes redWave {
+
+  0%,
+  100% {
+    transform: translateX(-100%);
+  }
+
+  50% {
+    transform: translateX(100%);
+  }
+}
+
+.offerBanner h2 {
+  margin: 0;
+  font-size: 2.5rem;
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 700;
+  position: relative;
+  z-index: 2;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  opacity: 0;
+  transform: scale(0.8);
+  animation: zoomInGlow 1.5s ease-out 0.5s forwards;
+}
+
+/* Animación de zoom con brillo */
+@keyframes zoomInGlow {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+    text-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+  }
+}
+
+/* Efecto hover adicional para interactividad */
+.offerBanner:hover h2 {
+  transform: scale(1.05);
+  text-shadow: 0 0 25px rgba(255, 255, 255, 0.8);
+  transition: all 0.3s ease;
+}
+
+/* Línea brillante en la parte inferior */
+.offerBanner {
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(90deg, transparent, #FF6B6B, #FF1744, #FF6B6B, transparent) 1;
+  animation: borderGlow 4s ease-in-out infinite;
+}
+
+@keyframes borderGlow {
+
+  0%,
+  100% {
+    border-image-source: linear-gradient(90deg, transparent, #FF6B6B, #FF1744, #FF6B6B, transparent);
+  }
+
+  50% {
+    border-image-source: linear-gradient(90deg, transparent, #FF1744, #FFFFFF, #FF1744, transparent);
+  }
+}
+
+/* ===== CARRUSEL DE PRODUCTOS ===== */
 .carouselContainer {
   position: relative;
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
   overflow: hidden;
-  height: 400px; /* Ajusta según necesites */
+  height: 400px;
   background-color: #f5f5f5;
   border-radius: 8px;
   margin-bottom: 40px;
@@ -80,11 +240,11 @@
   font-size: 3.5rem;
   font-weight: bold;
   margin-bottom: 30px;
-  color: var(--secondary-color, #d9252a);
+  color: #d9252a;
 }
 
 .ctaButton {
-  background-color: var(--secondary-color, #d9252a);
+  background-color: #d9252a;
   color: white;
   border: none;
   padding: 15px 30px;
@@ -153,45 +313,78 @@
 }
 
 .indicator.active {
-  background-color: var(--primary-color, #002a5c);
-  border-color: var(--primary-color, #002a5c);
+  background-color: #002a5c;
+  border-color: #002a5c;
 }
 
-/* Media queries para responsividad */
+/* =============================================
+   RESPONSIVE DESIGN PARA BANNER Y CARRUSEL
+   ============================================= */
+
+@media (max-width: 1234px) {
+  .offerBanner{
+    margin-top: -85px;
+  }
+}
+
+/* ===== TABLET (992px) ===== */
 @media (max-width: 992px) {
+  .offerBanner {
+    padding: 20px 15px;
+    font-size: 1.5rem;
+  }
+
+  .offerBanner h2 {
+    font-size: 2.2rem;
+  }
+
   .slideContent {
     flex-direction: column;
   }
-  
+
   .productInfo {
     padding: 20px 0;
   }
-  
+
   .productName {
     font-size: 2rem;
   }
-  
+
   .productPrice {
     font-size: 2.5rem;
     margin-bottom: 20px;
   }
 }
 
+/* ===== MÓVIL (768px) ===== */
 @media (max-width: 768px) {
+  .offerBanner {
+    padding: 20px 15px;
+    font-size: 1.5rem;
+  }
+
+  .offerBanner h2 {
+    font-size: 2rem;
+  }
+
+  .offerBanner::before {
+    background-size: 150px 40px;
+  }
+
   .carouselContainer {
     height: 500px;
   }
-  
+
   .productName {
     font-size: 1.8rem;
     margin-bottom: 10px;
   }
-  
+
   .productPrice {
     font-size: 2rem;
     margin-bottom: 15px;
   }
-  
+
   .carouselButton {
     width: 40px;
     height: 40px;
@@ -199,21 +392,105 @@
   }
 }
 
-@media (max-width: 576px) {
+/* ===== MÓVIL MEDIANO (660px) ===== */
+@media (max-width: 660px) {
+  .offerBanner {
+    padding: 15px 10px;
+    font-size: 1.3rem;
+  }
+
+  .offerBanner h2 {
+    font-size: 1.8rem;
+  }
+
+  .offerBanner::before {
+    background-size: 120px 35px;
+    animation-duration: 25s;
+  }
+}
+
+/* ===== MÓVIL PEQUEÑO (480px) ===== */
+@media (max-width: 480px) {
+  .offerBanner {
+    padding: 15px 10px;
+    font-size: 1.2rem;
+  }
+
+  .offerBanner h2 {
+    font-size: 1.8rem;
+  }
+
+  .offerBanner::before {
+    background-size: 100px 30px;
+    animation-duration: 20s;
+  }
+
   .carouselContainer {
     height: 450px;
   }
-  
+
   .productName {
     font-size: 1.5rem;
   }
-  
+
   .productPrice {
     font-size: 1.8rem;
   }
-  
+
   .ctaButton {
     padding: 10px 20px;
     font-size: 1rem;
+  }
+}
+
+/* ===== MÓVIL MUY PEQUEÑO (360px) ===== */
+@media (max-width: 360px) {
+  .offerBanner {
+    padding: 12px 8px;
+    font-size: 1.1rem;
+  }
+
+  .offerBanner h2 {
+    font-size: 1.6rem;
+  }
+
+  .carouselContainer {
+    height: 420px;
+  }
+
+  .productName {
+    font-size: 1.3rem;
+  }
+
+  .productPrice {
+    font-size: 1.6rem;
+  }
+
+  .ctaButton {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+  }
+}
+
+/* ===== LANDSCAPE MÓVIL ===== */
+@media (max-width: 768px) and (orientation: landscape) {
+  .offerBanner {
+    padding: 15px 10px;
+  }
+
+  .offerBanner h2 {
+    font-size: 1.8rem;
+  }
+
+  .carouselContainer {
+    height: 350px;
+  }
+
+  .productName {
+    font-size: 1.6rem;
+  }
+
+  .productPrice {
+    font-size: 1.8rem;
   }
 }
