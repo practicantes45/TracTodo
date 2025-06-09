@@ -137,14 +137,6 @@
   -webkit-text-fill-color: transparent;
 }
 
-.content p:not(.heading) {
-  font-size: 17px;
-  font-weight: 400;
-  margin: 0;
-  line-height: 1.6;
-  color: #e8e8e8;
-}
-
 /* ===== EFECTOS HOVER ===== */
 .card:hover .content {
   transform: translateY(0);

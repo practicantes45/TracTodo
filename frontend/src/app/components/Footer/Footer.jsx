@@ -2,11 +2,11 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { 
-  FaLinkedin, 
-  FaYoutube, 
-  FaFacebookF, 
-  FaInstagram, 
+import {
+  FaLinkedin,
+  FaYoutube,
+  FaFacebookF,
+  FaInstagram,
   FaTiktok,
   FaEnvelope,
   FaPhone,
@@ -20,7 +20,7 @@ const Footer = () => {
   const [copiedItem, setCopiedItem] = useState('');
 
   const socialLinks = [
-    { icon: FaLinkedin, href: '#', label: 'LinkedIn' },
+    { icon: FaLinkedin, href: 'http://www.linkedin.com/in/tractodo-refacciones-36abaa369', label: 'LinkedIn' },
     { icon: FaYoutube, href: 'https://www.youtube.com/@TRACTODO', label: 'YouTube' },
     { icon: FaFacebookF, href: 'https://www.facebook.com/profile.php?id=100070995052516', label: 'Facebook' },
     { icon: FaInstagram, href: 'https://www.instagram.com/tractodo.diesel.parts/reels/', label: 'Instagram' },
@@ -30,10 +30,9 @@ const Footer = () => {
   const quickLinks = [
     { href: '/', label: 'Inicio' },
     { href: '/productos', label: 'Productos' },
-    { href: '/sobre', label: 'Sobre Nosotros' },
     { href: '/ubicacion', label: 'Ubicación' },
-    { href: '/blog', label: 'Blog' },
-    { href: '/contacto', label: 'Contacto' }
+    { href: '/sobre', label: 'Sobre Nosotros' },
+    { href: '/entretenimiento', label: 'Entretenimiento' },
   ];
 
   const phoneNumbers = [
@@ -62,8 +61,8 @@ const Footer = () => {
           <ul className={styles.linksList}>
             {quickLinks.map((link, index) => (
               <li key={index}>
-                <Link 
-                  href={link.href} 
+                <Link
+                  href={link.href}
                   className={`${styles.footerLink} ${pathname === link.href ? styles.activeLink : ''}`}
                 >
                   {link.label}
@@ -80,7 +79,7 @@ const Footer = () => {
             {socialLinks.map((social, index) => {
               const IconComponent = social.icon;
               return (
-                <a 
+                <a
                   key={index}
                   href={social.href}
                   className={styles.socialLink}
@@ -103,7 +102,7 @@ const Footer = () => {
             <div className={styles.contactItem}>
               <FaMapMarkerAlt className={styles.contactIcon} />
               <div className={styles.contactContent}>
-                <span 
+                <span
                   className={styles.clickableContact}
                   onClick={() => copyToClipboard('San Cayetano, Río Extoras 56, Querétaro, San Juan del Río', 'location')}
                 >
@@ -124,7 +123,7 @@ const Footer = () => {
                 <div className={styles.phoneGridContainer}>
                   {phoneNumbers.map((phone, index) => (
                     <div key={index} className={styles.phoneNumber}>
-                      <span 
+                      <span
                         className={styles.clickableContact}
                         onClick={() => copyToClipboard(phone.number, `phone-${index}`)}
                       >
@@ -145,7 +144,7 @@ const Footer = () => {
             <div className={styles.contactItem}>
               <FaEnvelope className={styles.contactIcon} />
               <div className={styles.contactContent}>
-                <span 
+                <span
                   className={styles.clickableContact}
                   onClick={() => copyToClipboard('contacto@tractodo.com', 'email')}
                 >

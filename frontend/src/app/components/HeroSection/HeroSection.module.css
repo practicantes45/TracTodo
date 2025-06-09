@@ -87,7 +87,7 @@
 /* Tablet */
 @media (max-width: 992px) {
   .heroSection {
-    top: 120px;
+    top: 100px;
     height: 520px;
     background-position: center center;
   }
@@ -98,14 +98,14 @@
   }
 }
 
-@media(max-width: 840px) {
+@media(max-width: 874px) {
   .logoImage {
-    width: 350px;
+    width: 320px;
     max-width: 90vw;
   }
 }
 
-/* Móvil */
+/* Móvil - OCULTAR SLOGAN */
 @media (max-width: 768px) {
   .heroSection {
     top: 132px;
@@ -118,10 +118,34 @@
   .logoImage {
     display: none !important;
   }
+
+  /* OCULTAR SLOGAN EN MÓVIL */
+  .heroSlogan {
+    display: none !important;
+  }
+}
+
+@media (max-width: 661px) {
+  .heroSection {
+    top: 132px;
+    height: 400px;
+    background-size: cover;
+    background-position: center 30%;
+  }
+
+  /* Logo oculto en dispositivos móviles */
+  .logoImage {
+    display: none !important;
+  }
+
+  /* OCULTAR SLOGAN EN MÓVIL */
+  .heroSlogan {
+    display: none !important;
+  }
 }
 
 /* Móvil pequeño */
-@media (max-width: 480px) {
+@media (max-width: 481px) {
   .heroSection {
     top: 125px;
     height: 350px;
@@ -133,26 +157,48 @@
   .logoImage {
     display: none !important;
   }
+
+  /* OCULTAR SLOGAN EN MÓVIL PEQUEÑO */
+  .heroSlogan {
+    display: none !important;
+  }
 }
 
 /* Móviles muy pequeños */
-@media (max-width: 360px) {
+@media (max-width: 375px) {
   .heroSection {
-    height: 320px;
-    background-position: center 20%;
+    top: 125px;
+    height: 350px;
+    background-size: cover;
+    background-position: center 25%;
+  }
+
+  /* Logo confirmadamente oculto */
+  .logoImage {
+    display: none !important;
+  }
+
+  /* OCULTAR SLOGAN EN MÓVIL MUY PEQUEÑO */
+  .heroSlogan {
+    display: none !important;
   }
 }
 
-/* Landscape móvil */
-@media (max-width: 768px) and (orientation: landscape) {
+@media (max-width: 360px) {
   .heroSection {
-    height: 300px;
-    top: 110px;
-    background-position: center 35%;
+    top: 125px;
+    height: 350px;
+    background-size: cover;
+    background-position: center 25%;
   }
 
-  /* Logo oculto también en landscape móvil */
+  /* Logo confirmadamente oculto */
   .logoImage {
+    display: none !important;
+  }
+
+  /* OCULTAR SLOGAN EN MÓVIL EXTRA PEQUEÑO */
+  .heroSlogan {
     display: none !important;
   }
 }
