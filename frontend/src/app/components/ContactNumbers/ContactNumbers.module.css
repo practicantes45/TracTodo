@@ -11,7 +11,7 @@
   /* Ajuste dinámico del margen superior según el dispositivo */
   margin-top: -150px;
   margin-bottom: 90px;
-  gap: 40px;
+  gap: 35px;
   /* REDUCIDO de 120px a 40px para que quepan los 4 elementos */
 }
 
@@ -237,390 +237,50 @@
   transform: translateY(-5px);
 }
 
-/* ===== RESPONSIVE DESIGN COMPLETO ===== */
-
-/* Desktop muy grande (1400px+) - AJUSTADO */
-@media (min-width: 1400px) {
-  .contactNumbers {
-    gap: 60px;
-    /* REDUCIDO de 150px a 60px */
-    padding: 25px 0;
-  }
-
-  .contactItem {
-    padding: 16px 24px;
-    /* Restaurar padding más grande en pantallas grandes */
-    font-size: 1.1rem;
-    /* Restaurar font-size más grande */
-  }
-
-  .phoneIcon {
-    font-size: 1.4rem;
-    /* Restaurar tamaño de icono más grande */
-  }
-
-  .tooltipText {
-    width: 260px;
-    margin-left: -130px;
-    font-size: 1rem;
-  }
-}
-
-/* Desktop estándar (1200px - 1399px) - AJUSTADO */
-@media (max-width: 1399px) and (min-width: 1200px) {
-  .contactNumbers {
-    margin-top: -150;
-    gap: 50px;
-    /* REDUCIDO de 130px a 50px */
-  }
-
-  .contactItem {
-    padding: 14px 22px;
-    /* AJUSTADO */
-    font-size: 1.05rem;
-    /* AJUSTADO */
-  }
-}
-
-/* ===== CORREGIDO: PROBLEMA ESPECÍFICO 1025px - 1198px ===== */
-@media (max-width: 1199px) and (min-width: 1025px) {
-  .contactNumbers {
-    margin-top: -170px;
-    /* MANTENIDO igual al base para evitar que bajen */
-    gap: 35px;
-    /* REDUCIDO más para que quepan mejor */
-    padding: 18px;
-    flex-wrap: wrap;
-    /* ASEGURAR que puedan hacer wrap si es necesario */
-    justify-content: center;
-    /* CENTRADO */
-  }
-
-  .contactItem {
-    padding: 12px 15px;
-    /* REDUCIDO para que quepan */
-    font-size: 0.9rem;
-    /* REDUCIDO */
-    min-width: 180px;
-    /* AÑADIDO: ancho mínimo controlado */
-    max-width: 220px;
-    /* AÑADIDO: ancho máximo controlado */
-  }
-
-  .phoneIcon {
-    font-size: 1.1rem;
-    /* REDUCIDO */
-  }
-
-  .tooltipText {
-    width: 200px;
-    margin-left: -100px;
-    font-size: 0.85rem;
-  }
-}
-
-/* Laptops y pantallas medianas (993px - 1024px) - AJUSTADO */
-@media (max-width: 1024px) and (min-width: 993px) {
-  .contactNumbers {
-    margin-top: 0px;
-    gap: 30px;
-    /* REDUCIDO más */
-    padding: 18px 0;
-  }
-
-  .contactItem {
-    padding: 12px 16px;
-    /* REDUCIDO */
-    font-size: 0.9rem;
-    /* REDUCIDO */
-    min-width: 170px;
-    /* CONTROLADO */
-    max-width: 200px;
-    /* CONTROLADO */
-  }
-
-  .phoneIcon {
-    font-size: 1.1rem;
-  }
-
-  .tooltipText {
-    width: 190px;
-    margin-left: -95px;
-    font-size: 0.85rem;
-  }
-}
-
-/* Tablets grandes (769px - 992px) - MANTENIDO */
-@media (max-width: 992px) and (min-width: 769px) {
-  .contactNumbers {
-    margin-top: 0px;
-    gap: 40px;
-    padding: 15px 0;
-    justify-content: center;
-  }
-
-  .contactItem {
-    padding: 12px 18px;
-    font-size: 0.95rem;
-    border-radius: 14px;
-  }
-
-  .phoneIcon {
-    font-size: 1.2rem;
-  }
-
-  .tooltipText {
-    width: 200px;
-    margin-left: -100px;
-    font-size: 0.9rem;
-    padding: 10px 14px;
-  }
-
-  .contactNumbers::before {
-    background-size: 160px 55px;
-    animation-duration: 22s;
-  }
-}
-
-/* ===== CORREGIDO: PROBLEMA ESPECÍFICO 661px - 768px ===== */
-@media (max-width: 768px) and (min-width: 661px) {
-  .contactNumbers {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    /* GRID 2x2 para evitar desbordamiento */
-    align-items: start;
-    justify-content: center;
-    margin-top: -20px;
-    gap: 25px;
-    /* REDUCIDO para que quepan mejor */
-    padding: 20px 15px;
-    max-width: 100%;
-    /* AÑADIDO: controlar ancho máximo */
-  }
-
-  .contactItem {
-    width: 100%;
-    max-width: 280px;
-    /* REDUCIDO de 400px a 280px */
-    justify-content: center;
-    padding: 12px 16px;
-    /* REDUCIDO padding */
-    font-size: 0.9rem;
-    /* REDUCIDO font-size */
-    border-radius: 14px;
-  }
-
-  .phoneIcon {
-    font-size: 1.1rem;
-    /* REDUCIDO */
-  }
-
-  .tooltipText {
-    width: 220px;
-    /* REDUCIDO */
-    margin-left: -110px;
-    bottom: 120%;
-    font-size: 0.85rem;
-    /* REDUCIDO */
-  }
-
-  .contactNumbers::before {
-    background-size: 140px 50px;
-    animation-duration: 25s;
-  }
-}
-
-/* Tablets estándar (601px - 660px) - NUEVO BREAKPOINT */
-@media (max-width: 660px) and (min-width: 601px) {
-  .contactNumbers {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    align-items: start;
-    justify-content: center;
-    margin-top: -20px;
-    gap: 20px;
-    /* AÚN MÁS REDUCIDO */
-    padding: 18px 12px;
-  }
-
-  .contactItem {
-    width: 100%;
-    max-width: 250px;
-    /* MÁS PEQUEÑO */
-    justify-content: center;
-    padding: 11px 14px;
-    /* MÁS PEQUEÑO */
-    font-size: 0.85rem;
-    /* MÁS PEQUEÑO */
-    border-radius: 12px;
-  }
-
-  .phoneIcon {
-    font-size: 1rem;
-  }
-
-  .tooltipText {
-    width: 200px;
-    margin-left: -100px;
-    font-size: 0.8rem;
-  }
-}
-
-/* Móviles grandes (481px - 600px) */
-@media (max-width: 600px) and (min-width: 481px) {
-  .contactNumbers {
-    flex-direction: column;
-    align-items: center;
-    margin-top: 40px;
-    gap: 25px;
-    padding: 18px 20px;
-  }
-
-  .contactItem {
-    width: 100%;
-    max-width: 380px;
-    justify-content: center;
-    padding: 14px 22px;
-    font-size: 1rem;
-    border-radius: 14px;
-  }
-
-  .phoneIcon {
-    font-size: 1.25rem;
-  }
-
-  .tooltipText {
-    width: 280px;
-    margin-left: -140px;
-    bottom: 115%;
-    font-size: 0.85rem;
-    padding: 10px 14px;
-  }
-
-  .contactNumbers::before {
-    background-size: 130px 45px;
-    animation-duration: 25s;
-  }
-}
-
-/* Móviles estándar (376px - 480px) */
-@media (max-width: 480px) and (min-width: 376px) {
-  .contactNumbers {
-    flex-direction: column;
-    align-items: center;
-    margin-top: 50px;
-    gap: 18px;
-    padding: 15px 15px;
-  }
-
-  .contactItem {
-    width: 100%;
-    max-width: 350px;
-    justify-content: center;
-    padding: 14px 20px;
-    font-size: 0.95rem;
-    border-radius: 14px;
-    gap: 10px;
-  }
-
-  .phoneIcon {
-    font-size: 1.2rem;
-  }
-
-  .tooltipText {
-    width: 260px;
-    margin-left: -130px;
-    font-size: 0.85rem;
-    padding: 10px 12px;
-    bottom: 110%;
-  }
-
-  .contactNumbers::before {
-    background-size: 120px 40px;
-    animation-duration: 28s;
-  }
-}
-
-/* Móviles pequeños (320px - 375px) */
-@media (max-width: 375px) and (min-width: 320px) {
-  .contactNumbers {
-    flex-direction: column;
-    align-items: center;
-    margin-top: 50px;
-    gap: 15px;
-    padding: 12px 10px;
-  }
-
-  .contactItem {
-    width: 100%;
-    max-width: 320px;
-    justify-content: center;
-    padding: 12px 18px;
-    font-size: 0.9rem;
-    border-radius: 12px;
-    gap: 8px;
-  }
-
-  .phoneIcon {
-    font-size: 1.1rem;
-  }
-
-  .tooltipText {
-    width: 240px;
-    margin-left: -120px;
-    font-size: 0.8rem;
-    padding: 8px 12px;
-    bottom: 110%;
-  }
-
-  .contactNumbers::before {
-    background-size: 100px 35px;
-    animation-duration: 30s;
-  }
-}
-
-/* Móviles muy pequeños (menos de 320px) */
-@media (max-width: 319px) {
-  .contactNumbers {
-    flex-direction: column;
-    align-items: center;
-    margin-top: 50px;
-    gap: 12px;
-    padding: 10px 8px;
-  }
-
-  .contactItem {
-    width: 100%;
-    max-width: 280px;
-    justify-content: center;
-    padding: 10px 15px;
-    font-size: 0.85rem;
-    border-radius: 10px;
-    gap: 6px;
-  }
-
-  .phoneIcon {
-    font-size: 1rem;
-  }
-
-  .tooltipText {
-    width: 200px;
-    margin-left: -100px;
-    font-size: 0.75rem;
-    padding: 8px 10px;
-    bottom: 105%;
-  }
-
-  .contactNumbers::before {
-    background-size: 80px 30px;
-    animation-duration: 32s;
-  }
-}
-
-/* ===== RESPONSIVE PARA ORIENTACIÓN HORIZONTAL ===== */
-
 /* Tablets en landscape */
-@media (max-width: 1024px) and (min-width: 993px) {
+@media (max-width: 1250px){
+  .contactNumbers {
+    flex-direction: row;
+    justify-content: center;
+    margin-top: -160px;
+    gap: 35px;
+    padding: 15px 20px;
+  }
+
+  .contactItem {
+    padding: 15px 4px;
+    font-size: 0.9rem;
+
+  }
+
+  .tooltipText {
+    width: 180px;
+    margin-left: -90px;
+    font-size: 0.9rem;
+  }
+}
+@media (max-width: 1230px){
+  .contactNumbers {
+    flex-direction: row;
+    justify-content: center;
+    margin-top: -150px;
+    gap: 35px;
+    padding: 15px 20px;
+  }
+
+  .contactItem {
+    padding: 15px 4px;
+    font-size: 0.9rem;
+
+  }
+
+  .tooltipText {
+    width: 180px;
+    margin-left: -90px;
+    font-size: 0.9rem;
+  }
+}
+@media (max-width: 1101px){
   .contactNumbers {
     flex-direction: row;
     justify-content: center;
@@ -642,11 +302,11 @@
   }
 }
 
-@media (max-width: 992px) and (min-width: 924px) {
+@media (max-width: 1024px){
   .contactNumbers {
     flex-direction: row;
     justify-content: center;
-    margin-top: -210px;
+    margin-top: -150px;
     gap: 35px;
     padding: 15px 20px;
   }
@@ -664,18 +324,15 @@
   }
 }
 
-@media (max-width: 993px) and (min-width: 769px) {
+@media (max-width: 993px){
   .contactNumbers {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    justify-items: center;
-    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: -320px;
+    gap: 30px;
+    padding: 15px 12px;
+    margin-bottom: 95px;
 
-    /* flex-direction: row;
-    justify-content: center; */
-    margin-top: -300px;
-    gap: 25px;
-    padding: 20px 20px;
   }
 
   .contactItem {
@@ -691,6 +348,51 @@
   }
 }
 
+@media (max-width: 924px){
+  .contactNumbers {
+    flex-direction: row;
+    justify-content: center;
+    margin-top: -320px;
+    gap: 25px;
+    padding: 15px 10px;
+    margin-bottom: 95px;
+
+  }
+
+  .contactItem {
+    padding: 15px 4px;
+    font-size: 0.85rem;
+
+  }
+
+  .tooltipText {
+    width: 180px;
+    margin-left: -90px;
+    font-size: 0.9rem;
+  }
+}
+@media (max-width: 874px){
+  .contactNumbers {
+    flex-direction: row;
+    justify-content: center;
+    margin-top: -330px;
+    gap: 15px;
+    padding: 15px 6px;
+    margin-bottom: 95px;
+
+  }
+
+  .contactItem {
+    padding: 12px 3px;
+    font-size: 0.75rem;
+  }
+
+  .tooltipText {
+    width: 180px;
+    margin-left: -90px;
+    font-size: 0.9rem;
+  }
+}
 /* Móviles en landscape */
 @media (max-width: 768px) {
   .contactNumbers {
@@ -698,8 +400,8 @@
     grid-template-columns: 1fr 1fr;
     justify-items: center;
     align-items: start;
-    margin-top: -330px;
-    margin-bottom: 110px;
+    margin-top: -350px;
+    margin-bottom: 95px;
     gap: 25px;
     padding: 10px 20px;
     flex-wrap: wrap;
@@ -729,13 +431,50 @@
   }
 }
 
-@media (max-width: 643px) {
+@media (max-width: 730px) {
   .contactNumbers {
     display: grid;
     grid-template-columns: 1fr 1fr;
     justify-items: center;
     align-items: start;
-    margin-top: -440px;
+    margin-top: -350px;
+    margin-bottom: 95px;
+    gap: 25px;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+  }
+
+  .contactItem {
+    max-width: 200px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    gap: 6px;
+  }
+
+  .phoneIcon {
+    font-size: 1rem;
+  }
+
+  .tooltipText {
+    width: 160px;
+    margin-left: -80px;
+    font-size: 0.75rem;
+    padding: 6px 10px;
+  }
+
+  .contactNumbers::before {
+    background-size: 100px 30px;
+    animation-duration: 35s;
+  }
+}
+
+@media (max-width: 652px) {
+  .contactNumbers {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    align-items: start;
+    margin-top: -450px;
     margin-bottom: 110px;
     gap: 25px;
     padding: 10px 20px;
@@ -766,14 +505,51 @@
   }
 }
 
-@media (max-width: 481px) {
+@media (max-width: 626px) {
   .contactNumbers {
-     display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    align-items: start;
+    margin-top: -450px;
+    margin-bottom: 110px;
+    gap: 25px;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+  }
+
+  .contactItem {
+    max-width: 200px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    gap: 6px;
+  }
+
+  .phoneIcon {
+    font-size: 1rem;
+  }
+
+  .tooltipText {
+    width: 160px;
+    margin-left: -80px;
+    font-size: 0.75rem;
+    padding: 6px 10px;
+  }
+
+  .contactNumbers::before {
+    background-size: 100px 30px;
+    animation-duration: 35s;
+  }
+}
+
+@media (max-width: 480px) {
+  .contactNumbers {
+    display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: -410px;
-    margin-bottom: 100px;
-    gap: 25px;
+    margin-top: -420px;
+    margin-bottom: 90px;
+    gap: 20px;
     padding: 10px 20px;
     flex-wrap: wrap;
   }
@@ -802,14 +578,14 @@
   }
 }
 
-@media (max-width: 375px) {
+@media (max-width: 360px) {
   .contactNumbers {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: -410px;
+    margin-top: -400px;
     margin-bottom: 85px;
-    gap: 25px;
+    gap: 20px;
     padding: 20px 25px;
     flex-wrap: wrap;
   }

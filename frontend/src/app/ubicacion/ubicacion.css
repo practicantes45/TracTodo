@@ -1,0 +1,1185 @@
+/* ===== UBICACIÓN - ESTILOS ESPECÍFICOS MEJORADOS ===== */
+
+/* Importar estilos globales */
+@import url('../styles/global.css');
+@import url('../styles/responsive.css');
+
+/* ===== HERO SECTION PARA UBICACIÓN ===== */
+.ubicacion-page .heroSection {
+  position: absolute;
+  height: 560px;
+  width: 100%;
+  left: 0;
+  background-image: url('/imgs/fondocamion4.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: white;
+  top: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.1);
+  /* Overlay sutil para mejor legibilidad */
+}
+
+.heroContent {
+  max-width: 800px;
+  padding: 0 20px;
+  z-index: 2;
+}
+
+.heroContent h1 {
+  font-size: 3.5rem;
+  margin-bottom: 0;
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+  font-weight: 700;
+  text-shadow:
+    2px 2px 4px rgba(0, 0, 0, 0.8),
+    0 0 10px rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(0, 42, 92, 0.4);
+  opacity: 0;
+  animation: fadeInUp 1s ease-out 0.5s forwards;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ===== MAIN CONTENT ADJUSTMENT - ESPECÍFICO PARA UBICACIÓN ===== */
+.ubicacion-page .mainContent {
+  flex: 1;
+  width: 100%;
+  padding-top: 550px;
+}
+
+/* ===== SECCIÓN PRINCIPAL CON VIDEO Y MAPA ===== */
+.locationMainSection {
+  background: linear-gradient(145deg, #f0f8ff 0%, #e6f3ff 30%, #ffffff 70%, #f8f9fa 100%);
+  padding: 20px 20px 80px 20px;
+  margin: 0;
+  margin-top: -60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.locationContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  gap: 60px;
+  align-items: flex-start;
+  position: relative;
+  z-index: 2;
+}
+
+/* ===== SECCIÓN DEL VIDEO (LADO IZQUIERDO) ===== */
+.videoSection {
+  flex: 0 0 450px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 25px;
+  padding: 40px;
+  box-shadow:
+    0 20px 60px rgba(0, 42, 92, 0.08),
+    0 8px 25px rgba(0, 180, 216, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 180, 216, 0.1);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  text-align: center;
+}
+
+.videoSection:hover {
+  transform: translateY(-5px);
+  box-shadow:
+    0 30px 80px rgba(0, 42, 92, 0.12),
+    0 12px 35px rgba(0, 180, 216, 0.08);
+}
+
+.videoSection h2 {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+  font-weight: 700;
+  position: relative;
+  text-shadow: 0 2px 4px rgba(0, 42, 92, 0.1);
+}
+
+.videoDescription {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 30px;
+  line-height: 1.6;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+}
+
+/* ===== CONTENEDOR DEL VIDEO TIKTOK NATIVO ===== */
+.tiktokVideoContainer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  border-radius: 20px;
+  overflow: hidden;
+  max-width: 605px;
+  width: 100%;
+}
+
+/* Estilos para el embed nativo de TikTok */
+.tiktok-embed {
+  border-radius: 20px !important;
+  box-shadow: 0 15px 40px rgba(0, 42, 92, 0.15) !important;
+  transition: all 0.3s ease !important;
+  overflow: hidden !important;
+  width: 100% !important;
+  max-width: 605px !important;
+  min-width: 325px !important;
+}
+
+.tiktokVideoContainer:hover .tiktok-embed {
+  transform: translateY(-3px);
+  box-shadow: 0 25px 60px rgba(0, 42, 92, 0.2) !important;
+}
+
+/* ===== SECCIÓN DEL MAPA (LADO DERECHO) ===== */
+.mapSection {
+  flex: 1;
+  min-width: 0;
+}
+
+.mapSection h2 {
+  font-size: 2.8rem;
+  color: var(--primary-color);
+  margin-bottom: 35px;
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+  font-weight: 700;
+  position: relative;
+  text-shadow: 0 2px 4px rgba(0, 42, 92, 0.1);
+}
+
+.mapSection h2::after {
+  content: '';
+  display: block;
+  width: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent-color) 0%, #00d4ff 50%, var(--accent-color) 100%);
+  margin: 20px 0 0 0;
+  border-radius: 2px;
+  animation: expandUnderline 1.5s ease-out 0.5s forwards;
+  box-shadow: 0 2px 8px rgba(0, 180, 216, 0.3);
+}
+
+@keyframes expandUnderline {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 120px;
+  }
+}
+
+/* ===== INFORMACIÓN DE DIRECCIÓN ===== */
+.addressInfo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+.addressCard,
+.scheduleCard {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 42, 92, 0.08);
+  border: 1px solid rgba(0, 180, 216, 0.1);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.addressCard:hover,
+.scheduleCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(0, 42, 92, 0.12);
+}
+
+.addressCard h3,
+.scheduleCard h3 {
+  font-size: 1.4rem;
+  color: var(--primary-color);
+  margin-bottom: 15px;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.addressCard h3 svg,
+.scheduleCard h3 svg {
+  color: var(--accent-color);
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.addressCard:hover h3 svg,
+.scheduleCard:hover h3 svg {
+  transform: scale(1.1);
+  color: var(--primary-color);
+}
+
+.clickableAddress {
+  font-size: 1.1rem;
+  color: #555;
+  line-height: 1.6;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  display: block;
+  position: relative;
+}
+
+.clickableAddress:hover {
+  background: rgba(0, 180, 216, 0.1);
+  color: var(--primary-color);
+  transform: translateX(5px);
+}
+
+/* ===== HORARIOS DETALLADOS ===== */
+.scheduleDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.scheduleItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(40, 167, 69, 0.1);
+  border-left: 4px solid #28a745;
+}
+
+.scheduleItem.closed {
+  background: rgba(220, 53, 69, 0.1);
+  border-left-color: #dc3545;
+}
+
+.scheduleItem .day {
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+.scheduleItem .time {
+  font-weight: 700;
+  color: #28a745;
+}
+
+.scheduleItem.closed .time {
+  color: #dc3545;
+}
+
+/* ===== CONTENEDOR DEL MAPA RESPONSIVE ===== */
+.mapContainer {
+  margin-bottom: 30px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0, 42, 92, 0.15);
+  transition: all 0.3s ease;
+  position: relative;
+  padding-bottom: 56.25%;
+  /* Aspecto 16:9 para responsive */
+  height: 0;
+}
+
+.mapContainer iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
+  border: 0;
+}
+
+.mapContainer:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 25px 60px rgba(0, 42, 92, 0.2);
+}
+
+/* ===== BOTÓN DE ACCIÓN ===== */
+.actionButtons {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+.actionButton {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 15px 25px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  color: white;
+  border: 2px solid transparent;
+}
+
+.actionButton:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(0, 42, 92, 0.3);
+}
+
+.actionButton svg {
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+}
+
+.actionButton:hover svg {
+  transform: scale(1.1);
+}
+
+/* ===== TOOLTIP DE COPIADO ===== */
+.copyTooltip {
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: white;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  z-index: 1000;
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+  animation: tooltipSlideIn 0.3s ease-out;
+}
+
+.copyTooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px 6px 0 6px;
+  border-style: solid;
+  border-color: #28a745 transparent transparent transparent;
+}
+
+@keyframes tooltipSlideIn {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10px) scale(0.8);
+  }
+
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
+/* ===== SECCIÓN DE REFERENCIAS ===== */
+.referencesSection {
+  background: linear-gradient(135deg, var(--primary-color) 0%, #0e86ca 100%);
+  padding: 80px 20px;
+  margin: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.referencesSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image:
+    radial-gradient(2px 2px at 30px 40px, rgba(255, 255, 255, 0.1), transparent),
+    radial-gradient(1px 1px at 80px 80px, rgba(0, 180, 216, 0.15), transparent);
+  background-repeat: repeat;
+  background-size: 200px 160px;
+  animation: floatingParticles 25s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes floatingParticles {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-160px);
+  }
+}
+
+.referencesContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+}
+
+.referencesContainer h2 {
+  font-size: 3rem;
+  color: white;
+  margin-bottom: 50px;
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.referencesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.referenceCard {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.referenceCard:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
+
+.referenceIcon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0, 42, 92, 0.2);
+}
+
+.referenceIcon svg {
+  color: white;
+  font-size: 1.8rem;
+  transition: all 0.3s ease;
+}
+
+.referenceCard:hover .referenceIcon {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 12px 35px rgba(0, 42, 92, 0.3);
+}
+
+.referenceCard h4 {
+  font-size: 1.4rem;
+  color: var(--primary-color);
+  margin-bottom: 15px;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  font-weight: 700;
+}
+
+.referenceCard p {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--dark-color);
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+}
+
+/* ===== LOADERS Y FALLBACKS ===== */
+.loaderSpinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 180, 216, 0.1);
+  border-left: 4px solid var(--accent-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 15px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.tiktokLoader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 20px;
+  color: #666;
+  font-size: 1rem;
+}
+
+.tiktokFallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  background: linear-gradient(135deg, #000000 0%, #333333 100%);
+  border-radius: 20px;
+  color: white;
+  text-align: center;
+}
+
+.fallbackContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  padding: 30px;
+}
+
+.fallbackContent svg {
+  color: #FF0050;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 0 10px rgba(255, 0, 80, 0.5));
+}
+
+.fallbackContent h3 {
+  font-size: 1.5rem;
+  margin: 0;
+  color: white;
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+  font-weight: 700;
+}
+
+.fallbackContent p {
+  color: #cccccc;
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.fallbackButton {
+  background: linear-gradient(135deg, #FF0050, #000000);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 2px solid rgba(255, 0, 80, 0.3);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 10px;
+}
+
+.fallbackButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 0, 80, 0.4);
+  background: linear-gradient(135deg, #FF0050, #FF0080);
+}
+
+.mapLoader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(248, 249, 250, 0.9);
+  backdrop-filter: blur(5px);
+  border-radius: 15px;
+  color: #666;
+  font-size: 1rem;
+  z-index: 10;
+}
+
+/* ===== RESPONSIVE DESIGN MEJORADO ===== */
+
+/* Tablet Grande (1200px+) */
+@media (max-width: 1199px) {
+  .locationContainer {
+    gap: 40px;
+  }
+
+  .videoSection {
+    flex: 0 0 400px;
+    padding: 35px;
+  }
+
+  .videoSection h2,
+  .mapSection h2 {
+    font-size: 2.3rem;
+  }
+}
+
+/* Tablet (1024px) */
+@media (max-width: 1024px) {
+  .locationMainSection {
+    padding: 15px 15px 70px 15px;
+    margin-top: -50px;
+  }
+
+  .locationContainer {
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+  }
+
+  .videoSection {
+    flex: none;
+    max-width: 600px;
+    width: 100%;
+  }
+
+  .mapSection {
+    width: 100%;
+  }
+
+  .addressInfo {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+/* Tablet (992px) - AJUSTES CRÍTICOS PARA UBICACIÓN */
+@media (max-width: 992px) {
+  .ubicacion-page .heroSection {
+    height: 520px;
+  }
+
+  .ubicacion-page .mainContent {
+    padding-top: 520px;
+  }
+
+  .heroContent h1 {
+    margin-top: -120px;
+    font-size: 2.8rem;
+  }
+
+  .referencesGrid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+}
+
+/* Móvil (768px) - OCULTAR TÍTULO */
+@media (max-width: 768px) {
+  .ubicacion-page .heroSection {
+    height: 400px;
+  }
+
+  /* OCULTAR TÍTULO EN MÓVIL */
+  .heroContent h1 {
+    display: none !important;
+  }
+
+  .ubicacion-page .mainContent {
+    padding-top: 530px;
+  }
+  
+  /* Ajustes de layout para móvil */
+  .locationMainSection {
+    padding: 20px 10px 60px 10px;
+    margin-top: -20px;
+  }
+
+  .locationContainer {
+    flex-direction: column;
+    gap: 30px;
+    padding: 0 10px;
+  }
+
+  .videoSection {
+    flex: none;
+    width: 100%;
+    max-width: none;
+    padding: 25px 20px;
+    border-radius: 20px;
+  }
+
+  .videoSection h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+
+  .videoDescription {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+
+  .tiktokVideoContainer {
+    max-width: 100%;
+  }
+
+  .tiktok-embed {
+    max-width: 400px !important;
+    min-width: 280px !important;
+  }
+
+  .mapSection h2 {
+    font-size: 2rem;
+    margin-bottom: 25px;
+  }
+
+  .mapSection h2::after {
+    width: 80px;
+    margin: 15px 0 0 0;
+  }
+
+  .addressInfo {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-bottom: 25px;
+  }
+
+  .addressCard,
+  .scheduleCard {
+    padding: 20px 15px;
+  }
+
+  .mapContainer {
+    padding-bottom: 70%;
+    margin-bottom: 20px;
+  }
+
+  .actionButtons {
+    margin-top: 20px;
+  }
+
+  .actionButton {
+    padding: 12px 20px;
+    font-size: 1rem;
+  }
+
+  .referencesSection {
+    padding: 60px 15px;
+  }
+
+  .referencesContainer h2 {
+    font-size: 2.2rem;
+  }
+
+  .referencesGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .referenceCard {
+    padding: 25px 20px;
+  }
+}
+
+/* Móvil pequeño (480px) - MANTENER TÍTULO OCULTO */
+@media (max-width: 480px) {
+  .ubicacion-page .heroSection {
+    height: 380px;
+    top: 125px;
+  }
+
+  .ubicacion-page .mainContent {
+    padding-top: 430px;
+  }
+
+  /* CONFIRMAR QUE EL TÍTULO SIGUE OCULTO */
+  .ubicacion-page .heroContent h1 {
+    display: none !important;
+  }
+
+  .locationMainSection {
+    padding: 15px 5px 50px 5px;
+    margin-top: -10px;
+  }
+
+  .videoSection {
+    padding: 20px 15px;
+  }
+
+  .videoSection h2,
+  .mapSection h2 {
+    font-size: 1.8rem;
+  }
+
+  .tiktokVideoContainer {
+    max-width: 100%;
+  }
+
+  .tiktok-embed {
+    max-width: 350px !important;
+    min-width: 250px !important;
+  }
+
+  .tiktokLoader,
+  .tiktokFallback {
+    height: 300px;
+  }
+
+  .addressCard,
+  .scheduleCard {
+    padding: 15px 12px;
+  }
+
+  .addressCard h3,
+  .scheduleCard h3 {
+    font-size: 1.2rem;
+  }
+
+  .mapContainer {
+    padding-bottom: 80%;
+    border-radius: 10px;
+  }
+
+  .actionButton {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+
+  .referencesContainer h2 {
+    font-size: 1.8rem;
+  }
+
+  .referenceCard {
+    padding: 20px 15px;
+  }
+
+  .referenceIcon {
+    width: 45px;
+    height: 45px;
+  }
+
+  .referenceIcon svg {
+    font-size: 1.3rem;
+  }
+
+  .referenceCard h4 {
+    font-size: 1.2rem;
+  }
+}
+
+/* Ajustes para pantallas muy pequeñas (360px) - MANTENER TÍTULO OCULTO */
+@media (max-width: 360px) {
+  .ubicacion-page .heroSection {
+    height: 350px;
+    top: 120px;
+  }
+
+  .ubicacion-page .mainContent {
+    padding-top: 400px;
+  }
+
+  /* CONFIRMAR QUE EL TÍTULO SIGUE OCULTO */
+  .ubicacion-page .heroContent h1 {
+    display: none !important;
+  }
+
+  .locationMainSection {
+    padding: 10px 3px 40px 3px;
+    margin-top: 0;
+  }
+
+  .locationContainer {
+    padding: 0 5px;
+  }
+
+  .videoSection {
+    padding: 15px 10px;
+    border-radius: 15px;
+  }
+
+  .videoSection h2,
+  .mapSection h2 {
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+  }
+
+  .videoDescription {
+    font-size: 0.85rem;
+    margin-bottom: 15px;
+  }
+
+  .tiktokVideoContainer {
+    max-width: 100%;
+  }
+
+  .tiktok-embed {
+    max-width: 320px !important;
+    min-width: 230px !important;
+  }
+
+  .tiktokLoader,
+  .tiktokFallback {
+    height: 250px;
+    border-radius: 12px;
+  }
+
+  .fallbackContent {
+    padding: 15px;
+    gap: 10px;
+  }
+
+  .fallbackContent h3 {
+    font-size: 1.2rem;
+  }
+
+  .fallbackContent p {
+    font-size: 0.8rem;
+  }
+
+  .fallbackButton {
+    padding: 8px 16px;
+    font-size: 0.8rem;
+  }
+
+  .addressCard,
+  .scheduleCard {
+    padding: 12px 8px;
+  }
+
+  .addressCard h3,
+  .scheduleCard h3 {
+    font-size: 1.1rem;
+  }
+
+  .clickableAddress {
+    font-size: 0.95rem;
+    padding: 8px;
+  }
+
+  .scheduleItem {
+    padding: 6px 8px;
+    font-size: 0.85rem;
+  }
+
+  .mapContainer {
+    padding-bottom: 85%;
+    border-radius: 8px;
+    margin-bottom: 15px;
+  }
+
+  .actionButton {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    gap: 6px;
+  }
+
+  .actionButton svg {
+    font-size: 1rem;
+  }
+
+  .referencesSection {
+    padding: 40px 8px;
+  }
+
+  .referencesContainer h2 {
+    font-size: 1.6rem;
+    margin-bottom: 30px;
+  }
+
+  .referenceCard {
+    padding: 15px 10px;
+  }
+
+  .referenceIcon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 10px;
+  }
+
+  .referenceIcon svg {
+    font-size: 1.1rem;
+  }
+
+  .referenceCard h4 {
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  }
+
+  .referenceCard p {
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+}
+
+/* Ajustes especiales para iPhone SE y dispositivos similares */
+@media (max-width: 375px) and (max-height: 667px) {
+  .ubicacion-page .heroSection {
+    height: 340px;
+  }
+
+  .ubicacion-page .mainContent {
+    padding-top: 390px;
+  }
+
+  /* CONFIRMAR QUE EL TÍTULO SIGUE OCULTO */
+  .ubicacion-page .heroContent h1 {
+    display: none !important;
+  }
+}
+
+/* Ajustes para dispositivos con notch */
+@supports (padding-top: env(safe-area-inset-top)) {
+  @media (max-width: 768px) {
+    .infoHeader {
+      padding-top: calc(env(safe-area-inset-top) + 12px);
+    }
+
+    .ubicacion-page .heroSection {
+      top: calc(132px + env(safe-area-inset-top));
+    }
+
+    .ubicacion-page .mainContent {
+      padding-top: calc(530px + env(safe-area-inset-top));
+    }
+  }
+
+  @media (max-width: 480px) {
+    .ubicacion-page .mainContent {
+      padding-top: calc(430px + env(safe-area-inset-top));
+    }
+  }
+
+  @media (max-width: 360px) {
+    .ubicacion-page .mainContent {
+      padding-top: calc(400px + env(safe-area-inset-top));
+    }
+  }
+}
+
+/* Modo de alto contraste */
+@media (prefers-contrast: high) {
+
+  .videoSection,
+  .addressCard,
+  .scheduleCard {
+    background: #ffffff;
+    border: 2px solid #000000;
+  }
+
+  .actionButton {
+    background: #000000;
+    border-color: #ffffff;
+  }
+
+  .referenceCard {
+    background: #ffffff;
+    border: 2px solid #000000;
+  }
+
+  .tiktokFallback {
+    background: #000000;
+    border: 2px solid #ffffff;
+  }
+}
+
+/* Respeto por preferencias de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+
+  .videoSection,
+  .mapContainer,
+  .addressCard,
+  .scheduleCard,
+  .referenceCard,
+  .actionButton,
+  .tiktok-embed {
+    transition: none;
+  }
+
+  .referencesSection::before {
+    animation: none;
+  }
+
+  .expandUnderline,
+  .fadeInUp,
+  .tooltipSlideIn,
+  .spin,
+  .floatingParticles {
+    animation: none;
+  }
+
+  .loaderSpinner {
+    border-left-color: var(--accent-color);
+    animation: none;
+  }
+}
+
+/* Optimización para dispositivos táctiles */
+@media (hover: none) and (pointer: coarse) {
+
+  .actionButton,
+  .addressCard,
+  .scheduleCard,
+  .referenceCard {
+    transform: none;
+  }
+
+  .actionButton:active {
+    transform: scale(0.98);
+  }
+
+  .clickableAddress:active {
+    background: rgba(0, 180, 216, 0.2);
+  }
+}
+
+/* Evitar scroll horizontal en cualquier dispositivo */
+@media (max-width: 768px) {
+  body {
+    overflow-x: hidden;
+  }
+
+  .ubicacion-page {
+    overflow-x: hidden;
+  }
+
+  .locationContainer,
+  .referencesContainer {
+    overflow-x: hidden;
+  }
+}

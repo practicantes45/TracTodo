@@ -32,8 +32,7 @@ export default function SobrePage() {
                 <div className="heroSection">
                     <div className="heroOverlay">
                         <div className="heroContent">
-                            <h1>Sobre Nosotros</h1>
-                            <p>Conoce más sobre TRACTODO y nuestro compromiso con la calidad</p>
+                            <h1>Conoce nuestra historia</h1>
                         </div>
                     </div>
                 </div>
@@ -70,7 +69,7 @@ export default function SobrePage() {
                         <div className="missionCard">
                             <h3>MISIÓN</h3>
                             <p>
-                                Satisfacer con refacciones de calidad las necesidades de nuestros clientes como flotillas, transportadoras, constructoras y talleres diésel superando las expectativas de surtido de refacciones para tracto camiones, equipo pesado, camiones de equipo medio, transporte urbano, y carga. Con una cobertura nacional. 
+                                Satisfacer con refacciones de calidad las necesidades de nuestros clientes como flotillas, transportadoras, constructoras y talleres diésel superando las expectativas de surtido de refacciones para tracto camiones, equipo pesado, camiones de equipo medio, transporte urbano, y carga. Con una cobertura nacional.
                             </p>
                         </div>
                         <div className="visionCard">
@@ -88,28 +87,28 @@ export default function SobrePage() {
                         <h2>VALORES</h2>
                         <div className="valuesGrid">
                             <div className="valueCard">
-                                <h4>Calidad</h4>
-                                <p>Ofrecemos únicamente productos que cumplen con los más altos estándares de calidad y durabilidad.</p>
+                                <h4>Trato Justo</h4>
+                                <p>Relacionamiento honesto y equitativo con clientes, proveedores y colaboradores.</p>
+                            </div>
+                            <div className="valueCard">
+                                <h4>Atención Personalizada</h4>
+                                <p>Soluciones a la medida, adaptadas a las necesidades de cada cliente.</p>
+                            </div>
+                            <div className="valueCard">
+                                <h4>Trabajo en Equipo</h4>
+                                <p>Colaboración y respeto mutuo para alcanzar los objetivos comunes.</p>
                             </div>
                             <div className="valueCard">
                                 <h4>Confianza</h4>
-                                <p>Construimos relaciones duraderas basadas en la transparencia y el cumplimiento de nuestras promesas.</p>
+                                <p>Compromiso cumplido, respaldado por 15 años de experiencia.</p>
                             </div>
                             <div className="valueCard">
-                                <h4>Servicio</h4>
-                                <p>Nos enfocamos en brindar una atención personalizada y asesoría experta a cada cliente.</p>
+                                <h4>Calidad</h4>
+                                <p>Productos duraderos y confiables, garantizando el mejor rendimiento.</p>
                             </div>
                             <div className="valueCard">
-                                <h4>Innovación</h4>
-                                <p>Nos mantenemos a la vanguardia tecnológica para ofrecer las mejores soluciones del mercado.</p>
-                            </div>
-                            <div className="valueCard">
-                                <h4>Responsabilidad</h4>
-                                <p>Actuamos con integridad y compromiso social en todas nuestras operaciones comerciales.</p>
-                            </div>
-                            <div className="valueCard">
-                                <h4>Excelencia</h4>
-                                <p>Buscamos la mejora continua en todos nuestros procesos para superar las expectativas.</p>
+                                <h4>Seguridad</h4>
+                                <p>Empaquetado cuidadoso y entrega segura de nuestros productos.</p>
                             </div>
                         </div>
                     </div>

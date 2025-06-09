@@ -9,28 +9,18 @@
   /* Hero Section - Sección principal con imagen de fondo */
   .heroSection {
     top: 120px;
-    /* Posición desde arriba del viewport */
     height: 520px;
-    /* Altura reducida para tablets */
     background-position: center center;
-    /* Centra la imagen de fondo */
   }
 
   /* Main Content - Contenido principal */
   .mainContent {
-    padding-top: 580px;
-    /* Espacio superior para evitar superposición con hero */
+    padding-top: 680px;
   }
-
-  /* Logo Image - Logo flotante en el hero */
-
   .logoImage {
     position: static;
-    /* Quita position:absolute o right si lo tienes */
-    width: 350px;
-    /* O el tamaño que desees */
+    width: 330px;
     max-width: 90vw;
-    /* Para que no se desborde en pantallas pequeñas */
   }
 
   /* Benefits Section - Sección de ventajas responsive para tablet */
@@ -180,13 +170,6 @@
   .content .heading {
     font-size: 24px;
     /* Encabezado más pequeño */
-  }
-
-  .content p {
-    font-size: 15px;
-    /* Texto más pequeño */
-    line-height: 1.5;
-    /* Interlineado ajustado */
   }
 
   /* ===== BRAND SECTION RESPONSIVE ===== */

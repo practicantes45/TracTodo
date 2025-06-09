@@ -41,10 +41,10 @@
 
 .heroContent h1 {
   font-size: 3.5rem;
-  margin-bottom: 15px;
+  margin-bottom: 0;
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
   font-weight: 700;
-  text-shadow: 
+  text-shadow:
     2px 2px 4px rgba(0, 0, 0, 0.8),
     0 0 10px rgba(0, 0, 0, 0.6),
     0 0 20px rgba(0, 42, 92, 0.4);
@@ -52,24 +52,12 @@
   animation: fadeInUp 1s ease-out 0.5s forwards;
 }
 
-.heroContent p {
-  font-size: 1.3rem;
-  margin-bottom: 0;
-  opacity: 0.9;
-  font-weight: 400;
-  text-shadow: 
-    1px 1px 3px rgba(0, 0, 0, 0.8),
-    0 0 8px rgba(0, 0, 0, 0.5),
-    0 0 15px rgba(0, 42, 92, 0.3);
-  opacity: 0;
-  animation: fadeInUp 1s ease-out 0.8s forwards;
-}
-
 @keyframes fadeInUp {
   from {
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -93,8 +81,6 @@
   overflow: hidden;
 }
 
-
-
 .aboutContainer {
   max-width: 1200px;
   margin: 0 auto;
@@ -113,7 +99,7 @@
   backdrop-filter: blur(10px);
   border-radius: 25px;
   padding: 50px;
-  box-shadow: 
+  box-shadow:
     0 20px 60px rgba(0, 42, 92, 0.08),
     0 8px 25px rgba(0, 180, 216, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
@@ -125,7 +111,7 @@
 
 .aboutContentWithImage:hover {
   transform: translateY(-5px);
-  box-shadow: 
+  box-shadow:
     0 30px 80px rgba(0, 42, 92, 0.12),
     0 12px 35px rgba(0, 180, 216, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.95);
@@ -139,10 +125,10 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, 
-    transparent 0%, 
-    rgba(0, 180, 216, 0.05) 50%, 
-    transparent 100%);
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(0, 180, 216, 0.05) 50%,
+      transparent 100%);
   transition: left 2s ease;
   pointer-events: none;
 }
@@ -184,20 +170,25 @@
 }
 
 @keyframes expandUnderline {
-  from { width: 0; }
-  to { width: 120px; }
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 120px;
+  }
 }
 
 .aboutTextContent p {
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   line-height: 1.8;
-  color: #444;
-  margin-bottom: 28px;
+  margin-bottom: 25px;
+  color: #4a4a4a;
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
   font-weight: 400;
   text-align: justify;
   position: relative;
-  padding-left: 25px;
+  padding-left: 20px;
   transition: all 0.3s ease;
 }
 
@@ -216,19 +207,17 @@
 }
 
 @keyframes pulse {
-  0%, 100% { 
+
+  0%,
+  100% {
     transform: scale(1);
     opacity: 0.7;
   }
-  50% { 
+
+  50% {
     transform: scale(1.5);
     opacity: 1;
   }
-}
-
-.aboutTextContent p:hover {
-  color: #222;
-  transform: translateX(5px);
 }
 
 .aboutTextContent p:hover::before {
@@ -252,7 +241,7 @@
   max-width: 450px;
   height: auto;
   border-radius: 18px;
-  box-shadow: 
+  box-shadow:
     0 15px 40px rgba(0, 42, 92, 0.15),
     0 5px 15px rgba(0, 180, 216, 0.1);
   transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
@@ -263,14 +252,11 @@
 
 .aboutTruckImage:hover {
   transform: translateY(-8px) scale(1.02);
-  box-shadow: 
+  box-shadow:
     0 25px 60px rgba(0, 42, 92, 0.25),
     0 10px 25px rgba(0, 180, 216, 0.15);
   filter: brightness(1.05) contrast(1.08);
 }
-
-/* ===== ELIMINADA: SECCIÓN IMAGEN DE CAMIÓN INDEPENDIENTE ===== */
-/* La sección .truckImageSection ha sido eliminada ya que la imagen ahora está integrada */
 
 /* ===== SECCIÓN MISIÓN Y VISIÓN ===== */
 .missionVisionSection {
@@ -288,7 +274,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: 
+  background-image:
     radial-gradient(2px 2px at 30px 40px, rgba(255, 255, 255, 0.1), transparent),
     radial-gradient(1px 1px at 80px 80px, rgba(0, 180, 216, 0.15), transparent),
     radial-gradient(1px 1px at 150px 120px, rgba(255, 255, 255, 0.08), transparent);
@@ -299,8 +285,13 @@
 }
 
 @keyframes floatingParticles {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(-160px); }
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-160px);
+  }
 }
 
 .missionVisionContainer {
@@ -445,68 +436,67 @@
 /* ===== RESPONSIVE DESIGN ===== */
 
 /* Tablet Grande (1024px - 1199px) */
-@media (max-width: 1199px) and (min-width: 1024px) {
+@media (max-width: 1199px) {
   .aboutContentWithImage {
     gap: 40px;
     padding: 40px;
   }
-  
+
   .aboutImageContent {
     flex: 0 0 420px;
   }
-  
+
   .aboutTextContent h2 {
     font-size: 2.8rem;
   }
-  
+
   .aboutTextContent p {
     font-size: 1.15rem;
   }
 }
 
 /* Tablet (769px - 1023px) */
-@media (max-width: 1023px) and (min-width: 769px) {
+@media (max-width: 1023px) {
   .aboutSection {
     padding: 15px 15px 70px 15px;
     margin-top: -50px;
   }
-  
+
   .aboutContentWithImage {
     flex-direction: column;
     gap: 40px;
     align-items: center;
     padding: 40px 30px;
   }
-  
+
+  .aboutTextContent {
+    order: 1; /* TEXTO PRIMERO */
+  }
+
   .aboutImageContent {
     flex: none;
-    order: 1;
+    order: 2; /* IMAGEN DESPUÉS */
   }
-  
-  .aboutTextContent {
-    order: 2;
-    text-align: center;
-  }
-  
+
   .aboutTextContent h2 {
     text-align: center;
     font-size: 2.6rem;
   }
-  
+
   .aboutTextContent h2::after {
     margin: 20px auto 0;
     width: 100px;
   }
-  
+
   .aboutTruckImage {
     max-width: 500px;
   }
-  
+
   .aboutTextContent p {
     padding-left: 0;
-    text-align: center;
+    text-align: justify; /* MANTENER TEXTO JUSTIFICADO */
   }
-  
+
   .aboutTextContent p::before {
     display: none;
   }
@@ -516,71 +506,53 @@
 @media (max-width: 992px) {
   .heroContent h1 {
     font-size: 2.8rem;
-    text-shadow: 
+    text-shadow:
       2px 2px 4px rgba(0, 0, 0, 0.9),
       0 0 8px rgba(0, 0, 0, 0.7),
       0 0 16px rgba(0, 42, 92, 0.5);
   }
-  
-  .heroContent p {
-    font-size: 1.1rem;
-    text-shadow: 
-      1px 1px 3px rgba(0, 0, 0, 0.9),
-      0 0 6px rgba(0, 0, 0, 0.6);
-  }
-  
+
   .sobre-page .mainContent {
     padding-top: 520px;
   }
-  
+
   .sobre-page .heroSection {
     height: 520px;
   }
-  
+
   .missionVisionContainer {
     grid-template-columns: 1fr;
     gap: 40px;
   }
-  
+
   .aboutTextContent h2,
   .valuesContainer h2 {
     font-size: 2.5rem;
   }
-  
+
   .valuesGrid {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 25px;
   }
 }
 
-/* Móvil (768px) */
+/* Móvil (768px) - OCULTAR TÍTULO */
 @media (max-width: 768px) {
   .sobre-page .heroSection {
     height: 400px;
-    top: 132px;
+    top: 130px;
   }
-  
+
+  /* OCULTAR TÍTULO EN MÓVIL */
   .heroContent h1 {
-    font-size: 2.2rem;
-    margin-bottom: 10px;
-    text-shadow: 
-      2px 2px 4px rgba(0, 0, 0, 0.9),
-      0 0 8px rgba(0, 0, 0, 0.7),
-      0 0 15px rgba(0, 42, 92, 0.5);
+    display: none !important;
   }
-  
-  .heroContent p {
-    font-size: 1rem;
-    text-shadow: 
-      1px 1px 3px rgba(0, 0, 0, 0.9),
-      0 0 6px rgba(0, 0, 0, 0.6);
-  }
-  
+
   .sobre-page .mainContent {
     padding-top: 480px;
   }
   
-  /* Layout móvil: imagen arriba, texto abajo */
+  /* Layout móvil: TEXTO PRIMERO, imagen después */
   .aboutContentWithImage {
     flex-direction: column;
     gap: 30px;
@@ -588,173 +560,121 @@
     padding: 30px 20px;
     border-radius: 20px;
   }
-  
+
+  .aboutTextContent {
+    order: 1; /* TEXTO PRIMERO */
+  }
+
   .aboutImageContent {
-    order: 1;
+    order: 2; /* IMAGEN DESPUÉS */
     flex: none;
   }
-  
-  .aboutTextContent {
-    order: 2;
-    text-align: center;
-  }
-  
+
   .aboutTextContent h2 {
     text-align: center;
     font-size: 2rem;
     margin-bottom: 25px;
   }
-  
+
   .aboutTextContent h2::after {
     margin: 15px auto 0;
     width: 80px;
   }
-  
+
   .aboutTextContent p {
     padding-left: 0;
-    text-align: center;
+    text-align: justify; /* TEXTO JUSTIFICADO EN MÓVIL */
     font-size: 1.1rem;
   }
-  
+
   .aboutTextContent p::before {
     display: none;
   }
-  
+
   .aboutTruckImage {
     max-width: 400px;
   }
-  
+
   .aboutSection,
   .missionVisionSection,
   .valuesSection {
     padding: 10px 15px 60px 15px;
   }
-  
+
   .aboutSection {
     margin-top: -40px;
   }
-  
+
   .missionCard h3,
   .visionCard h3 {
     font-size: 2rem;
   }
-  
+
   .missionCard,
   .visionCard {
     padding: 30px 25px;
   }
-  
+
   .valuesGrid {
     grid-template-columns: 1fr;
     gap: 20px;
   }
-  
+
   .valueCard {
     padding: 25px 20px;
   }
 }
 
-/* Móvil pequeño (480px) */
+/* Móvil pequeño (480px) - MANTENER TÍTULO OCULTO */
 @media (max-width: 480px) {
   .sobre-page .heroSection {
     height: 300px;
   }
-  
+
+  /* CONFIRMAR QUE EL TÍTULO SIGUE OCULTO */
   .heroContent h1 {
-    font-size: 1.8rem;
-    text-shadow: 
-      2px 2px 4px rgba(0, 0, 0, 0.9),
-      0 0 8px rgba(0, 0, 0, 0.7),
-      0 0 12px rgba(0, 42, 92, 0.5);
+    display: none !important;
   }
-  
-  .heroContent p {
-    font-size: 0.9rem;
-    text-shadow: 
-      1px 1px 3px rgba(0, 0, 0, 0.9),
-      0 0 5px rgba(0, 0, 0, 0.6);
-  }
-  
+
   .sobre-page .mainContent {
     padding-top: 350px;
   }
-  
+
   .aboutSection,
   .missionVisionSection,
   .valuesSection {
     padding: 50px 10px;
   }
-  
+
   .aboutTextContent h2,
   .valuesContainer h2 {
     font-size: 1.8rem;
   }
-  
+
   .missionCard h3,
   .visionCard h3 {
     font-size: 1.8rem;
   }
-  
+
   .missionCard,
   .visionCard {
     padding: 25px 20px;
   }
-  
+
   .valueCard {
     padding: 20px 15px;
   }
-  
+
   .aboutTextContent p {
     font-size: 1.1rem;
   }
-  
+
   .missionCard p,
   .visionCard p {
     font-size: 1rem;
   }
-  
+
   .aboutTruckImage {
     max-width: 350px;
-  }
-}
-
-/* Landscape móvil */
-@media (max-width: 768px) and (orientation: landscape) {
-  .sobre-page .heroSection {
-    height: 300px;
-  }
-  
-  .sobre-page .mainContent {
-    padding-top: 360px;
-  }
-  
-  .heroContent h1 {
-    font-size: 2rem;
-    text-shadow: 
-      2px 2px 4px rgba(0, 0, 0, 0.9),
-      0 0 8px rgba(0, 0, 0, 0.7),
-      0 0 15px rgba(0, 42, 92, 0.5);
-  }
-  
-  .heroContent p {
-    font-size: 0.95rem;
-    text-shadow: 
-      1px 1px 3px rgba(0, 0, 0, 0.9),
-      0 0 6px rgba(0, 0, 0, 0.6);
-  }
-  
-  /* En landscape móvil, mantener imagen arriba */
-  .aboutContentWithImage {
-    flex-direction: column;
-    gap: 20px;
-    padding: 25px 20px;
-  }
-  
-  .aboutTruckImage {
-    max-width: 300px;
-  }
-  
-  .aboutTextContent p {
-    font-size: 1rem;
   }
 }
