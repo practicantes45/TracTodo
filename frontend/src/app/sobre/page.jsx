@@ -36,9 +36,8 @@ export default function SobrePage() {
                         </div>
                     </div>
                 </div>
-
                 {/* Números de contacto */}
-                <ContactNumbers />
+                <ContactNumbers pageContext="sobre" />
 
                 {/* Sección ¿Quiénes Somos? - MODIFICADA para layout horizontal */}
                 <section className="aboutSection">

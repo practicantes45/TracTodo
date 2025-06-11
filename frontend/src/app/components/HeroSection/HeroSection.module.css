@@ -1,14 +1,14 @@
-/* HeroSection.module.css - Componente separado del Hero */
+/* HeroSection.module.css - UNIFICADO CON OTRAS PÁGINAS */
 
-/* Hero Section - EXACTAMENTE IGUAL A GLOBAL.CSS */
+/* Hero Section - EXACTAMENTE IGUAL A UBICACIÓN Y SOBRE */
 .heroSection {
   position: absolute;
-  height: 560px;
+  height: 580px; /* ALTURA UNIFICADA */
   width: 100%;
   left: 0;
   background-image: url('/imgs/fondocamion4.png');
   background-size: cover;
-  background-position: center;
+  background-position: center center; /* CORREGIDO: posición idéntica */
   background-repeat: no-repeat;
   color: white;
   top: 120px;
@@ -27,6 +27,8 @@
   align-items: center;
   justify-content: center;
   text-align: center;
+  /* Overlay sutil uniforme */
+  background: rgba(0, 0, 0, 0.1);
 }
 
 .heroContent {
@@ -82,14 +84,13 @@
   }
 }
 
-/* ===== RESPONSIVE DESIGN ===== */
+/* ===== RESPONSIVE DESIGN UNIFICADO ===== */
 
-/* Tablet */
+/* Tablet (992px) - IGUAL A OTRAS PÁGINAS */
 @media (max-width: 992px) {
   .heroSection {
-    top: 100px;
-    height: 520px;
-    background-position: center center;
+    height: 540px; /* ALTURA CONSISTENTE */
+    background-position: center center; /* CORREGIDO: posición idéntica */
   }
 
   .logoImage {
@@ -105,13 +106,12 @@
   }
 }
 
-/* Móvil - OCULTAR SLOGAN */
+/* Móvil (768px) - IGUAL A OTRAS PÁGINAS */
 @media (max-width: 768px) {
   .heroSection {
-    top: 132px;
-    height: 400px;
-    background-size: cover;
-    background-position: center 30%;
+    height: 420px; /* ALTURA CONSISTENTE */
+    top: 130px;
+    background-position: center center; /* CORREGIDO: posición idéntica */
   }
 
   /* Logo oculto en dispositivos móviles */
@@ -127,10 +127,9 @@
 
 @media (max-width: 661px) {
   .heroSection {
-    top: 132px;
-    height: 400px;
-    background-size: cover;
-    background-position: center 30%;
+    height: 420px; /* ALTURA CONSISTENTE */
+    top: 130px;
+    background-position: center center; /* CORREGIDO: posición idéntica */
   }
 
   /* Logo oculto en dispositivos móviles */
@@ -144,13 +143,12 @@
   }
 }
 
-/* Móvil pequeño */
+/* Móvil pequeño (480px) - IGUAL A OTRAS PÁGINAS */
 @media (max-width: 481px) {
   .heroSection {
+    height: 380px; /* ALTURA CONSISTENTE */
     top: 125px;
-    height: 350px;
-    background-size: cover;
-    background-position: center 25%;
+    background-position: center center; /* CORREGIDO: posición idéntica */
   }
 
   /* Logo confirmadamente oculto */
@@ -164,13 +162,12 @@
   }
 }
 
-/* Móviles muy pequeños */
+/* Móviles muy pequeños (360px) - IGUAL A OTRAS PÁGINAS */
 @media (max-width: 375px) {
   .heroSection {
-    top: 125px;
-    height: 350px;
-    background-size: cover;
-    background-position: center 25%;
+    height: 350px; /* ALTURA CONSISTENTE */
+    top: 120px;
+    background-position: center center; /* CORREGIDO: posición idéntica */
   }
 
   /* Logo confirmadamente oculto */
@@ -186,10 +183,9 @@
 
 @media (max-width: 360px) {
   .heroSection {
-    top: 125px;
-    height: 350px;
-    background-size: cover;
-    background-position: center 25%;
+    height: 350px; /* ALTURA CONSISTENTE */
+    top: 120px;
+    background-position: center center; /* CORREGIDO: posición idéntica */
   }
 
   /* Logo confirmadamente oculto */
