@@ -36,10 +36,10 @@ export default function HomePage() {
             {/* Contenido principal */}
             <main className="mainContent">
                 {/* Hero Section con logo y slogan centrados */}
-               <HeroSection />
+                <HeroSection />
 
                 {/* Números de contacto*/}
-                <ContactNumbers />
+                <ContactNumbers pageContext="home" />
 
                 <section className="carouselSection">
                     <ProductCarousel />

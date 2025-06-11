@@ -1,5 +1,6 @@
-/* ContactNumbers.module.css - Completamente Responsivo - CORREGIDO BREAKPOINTS ESPECÍFICOS */
+/* ContactNumbers.module.css - Con Contextos Específicos por Página */
 
+/* ===== ESTILOS BASE (Se mantienen iguales para todas las páginas) ===== */
 .contactNumbers {
   display: flex;
   justify-content: center;
@@ -8,11 +9,7 @@
   width: 100%;
   z-index: 10;
   position: relative;
-  /* Ajuste dinámico del margen superior según el dispositivo */
-  margin-top: -150px;
-  margin-bottom: 90px;
   gap: 35px;
-  /* REDUCIDO de 120px a 40px para que quepan los 4 elementos */
 }
 
 /* Partículas de fondo similares al header */
@@ -55,12 +52,10 @@
   align-items: center;
   gap: 12px;
   padding: 14px 20px;
-  /* REDUCIDO padding de 14px 24px a 14px 20px */
   border-radius: 16px;
   border: 2px solid rgba(37, 211, 102, 0.4);
   color: white;
   font-size: 1rem;
-  /* REDUCIDO de 1.1rem a 1rem */
   font-family: var(--font-prompt), 'Prompt', sans-serif;
   font-weight: 600;
   cursor: pointer;
@@ -180,7 +175,6 @@
   display: flex;
   align-items: center;
   font-size: 1.3rem;
-  /* REDUCIDO de 1.4rem a 1.3rem */
   filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.3));
   transition: all 0.3s ease;
 }
@@ -237,9 +231,36 @@
   transform: translateY(-5px);
 }
 
-/* Tablets en landscape */
-@media (max-width: 1250px){
-  .contactNumbers {
+/* ===== CONTEXTOS ESPECÍFICOS POR PÁGINA ===== */
+
+/* PÁGINA DE INICIO - Posicionamiento por defecto */
+.contactNumbersHome {
+  margin-top: -150px;
+  margin-bottom: 90px;
+}
+
+/* PÁGINA SOBRE NOSOTROS - Ajuste específico */
+.contactNumbersSobre {
+  margin-top: -150px;
+  margin-bottom: 90px;
+}
+
+/* PÁGINA UBICACIÓN - Ajuste específico */
+.contactNumbersUbicacion {
+  margin-top: -150px;
+  margin-bottom: 90px;
+}
+
+/* ===== RESPONSIVE DESIGN CONTEXTUAL ===== */
+
+/* ==================== TODAS LAS PÁGINAS - ESTILOS BASE ==================== */
+
+/* Tablets y Desktop grandes */
+@media (max-width: 1250px) {
+
+  .contactNumbersHome,
+  .contactNumbersSobre,
+  .contactNumbersUbicacion {
     flex-direction: row;
     justify-content: center;
     margin-top: -160px;
@@ -250,7 +271,6 @@
   .contactItem {
     padding: 15px 4px;
     font-size: 0.9rem;
-
   }
 
   .tooltipText {
@@ -259,8 +279,12 @@
     font-size: 0.9rem;
   }
 }
-@media (max-width: 1230px){
-  .contactNumbers {
+
+@media (max-width: 1230px) {
+
+  .contactNumbersHome,
+  .contactNumbersSobre,
+  .contactNumbersUbicacion {
     flex-direction: row;
     justify-content: center;
     margin-top: -150px;
@@ -271,7 +295,6 @@
   .contactItem {
     padding: 15px 4px;
     font-size: 0.9rem;
-
   }
 
   .tooltipText {
@@ -280,8 +303,12 @@
     font-size: 0.9rem;
   }
 }
-@media (max-width: 1101px){
-  .contactNumbers {
+
+@media (max-width: 1101px) {
+
+  .contactNumbersHome,
+  .contactNumbersSobre,
+  .contactNumbersUbicacion {
     flex-direction: row;
     justify-content: center;
     margin-top: -150px;
@@ -292,7 +319,6 @@
   .contactItem {
     padding: 15px 4px;
     font-size: 0.9rem;
-
   }
 
   .tooltipText {
@@ -302,8 +328,11 @@
   }
 }
 
-@media (max-width: 1024px){
-  .contactNumbers {
+@media (max-width: 1024px) {
+
+  .contactNumbersHome,
+  .contactNumbersSobre,
+  .contactNumbersUbicacion {
     flex-direction: row;
     justify-content: center;
     margin-top: -150px;
@@ -314,7 +343,6 @@
   .contactItem {
     padding: 15px 4px;
     font-size: 0.9rem;
-
   }
 
   .tooltipText {
@@ -324,21 +352,22 @@
   }
 }
 
-@media (max-width: 993px){
-  .contactNumbers {
+@media (max-width: 993px) {
+
+  .contactNumbersHome,
+  .contactNumbersSobre,
+  .contactNumbersUbicacion {
     flex-direction: row;
     justify-content: center;
     margin-top: -320px;
     gap: 30px;
     padding: 15px 12px;
     margin-bottom: 95px;
-
   }
 
   .contactItem {
     padding: 15px 4px;
     font-size: 0.9rem;
-
   }
 
   .tooltipText {
@@ -348,21 +377,22 @@
   }
 }
 
-@media (max-width: 924px){
-  .contactNumbers {
+@media (max-width: 924px) {
+
+  .contactNumbersHome,
+  .contactNumbersSobre,
+  .contactNumbersUbicacion {
     flex-direction: row;
     justify-content: center;
     margin-top: -320px;
     gap: 25px;
     padding: 15px 10px;
     margin-bottom: 95px;
-
   }
 
   .contactItem {
     padding: 15px 4px;
     font-size: 0.85rem;
-
   }
 
   .tooltipText {
@@ -371,15 +401,18 @@
     font-size: 0.9rem;
   }
 }
-@media (max-width: 874px){
-  .contactNumbers {
+
+@media (max-width: 874px) {
+
+  .contactNumbersHome,
+  .contactNumbersSobre,
+  .contactNumbersUbicacion {
     flex-direction: row;
     justify-content: center;
     margin-top: -330px;
     gap: 15px;
     padding: 15px 6px;
     margin-bottom: 95px;
-
   }
 
   .contactItem {
@@ -393,15 +426,28 @@
     font-size: 0.9rem;
   }
 }
+
 /* Móviles en landscape */
 @media (max-width: 768px) {
-  .contactNumbers {
+  .contactNumbersHome {
     display: grid;
     grid-template-columns: 1fr 1fr;
     justify-items: center;
     align-items: start;
     margin-top: -350px;
     margin-bottom: 95px;
+    gap: 25px;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+  }
+
+  .contactNumbersSobre,
+  .contactNumbersUbicacion {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    align-items: start;
+    margin-top: -420px;
     gap: 25px;
     padding: 10px 20px;
     flex-wrap: wrap;
@@ -432,13 +478,25 @@
 }
 
 @media (max-width: 730px) {
-  .contactNumbers {
+  .contactNumbersHome {
     display: grid;
     grid-template-columns: 1fr 1fr;
     justify-items: center;
     align-items: start;
     margin-top: -350px;
     margin-bottom: 95px;
+    gap: 25px;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+  }
+
+  .contactNumbersSobre,
+  .contactNumbersUbicacion {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    align-items: start;
+    margin-top: -420px;
     gap: 25px;
     padding: 10px 20px;
     flex-wrap: wrap;
@@ -469,13 +527,25 @@
 }
 
 @media (max-width: 652px) {
-  .contactNumbers {
-    display: grid;
+
+  .contactNumbersHome{
+      display: grid;
     grid-template-columns: 1fr 1fr;
     justify-items: center;
     align-items: start;
     margin-top: -450px;
     margin-bottom: 110px;
+    gap: 25px;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+  }
+  .contactNumbersSobre,
+  .contactNumbersUbicacion {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    align-items: start;
+    margin-top: -420px;
     gap: 25px;
     padding: 10px 20px;
     flex-wrap: wrap;
@@ -506,13 +576,25 @@
 }
 
 @media (max-width: 626px) {
-  .contactNumbers {
+
+  .contactNumbersHome{
     display: grid;
     grid-template-columns: 1fr 1fr;
     justify-items: center;
     align-items: start;
     margin-top: -450px;
     margin-bottom: 110px;
+    gap: 25px;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+  }
+  .contactNumbersSobre,
+  .contactNumbersUbicacion {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    justify-items: center;
+    align-items: start;
+    margin-top: -420px;
     gap: 25px;
     padding: 10px 20px;
     flex-wrap: wrap;
@@ -543,13 +625,24 @@
 }
 
 @media (max-width: 480px) {
-  .contactNumbers {
+
+  .contactNumbersHome{
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: -420px;
     margin-bottom: 90px;
     gap: 20px;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+  }
+  .contactNumbersSobre,
+  .contactNumbersUbicacion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: -400px;
+    gap: 25px;
     padding: 10px 20px;
     flex-wrap: wrap;
   }
@@ -579,8 +672,9 @@
 }
 
 @media (max-width: 360px) {
-  .contactNumbers {
-    display: flex;
+
+  .contactNumbersHome{
+     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: -400px;
@@ -589,11 +683,22 @@
     padding: 20px 25px;
     flex-wrap: wrap;
   }
+  .contactNumbersSobre,
+  .contactNumbersUbicacion {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: -400px;
+    margin-bottom: 40px;
+    gap: 20px;
+    padding: 20px 25px;
+    flex-wrap: wrap;
+  }
 
   .contactItem {
     max-width: 220px;
     padding: 8px 12px;
-    font-size: .95rem;
+    font-size: 0.95rem;
     gap: 6px;
     justify-content: center;
   }

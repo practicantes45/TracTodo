@@ -1,9 +1,6 @@
-// SOLUCIÓN 1: Mejorar la carga del TikTok con fallback
-// Actualizar el componente de TikTok en ubicacion/page.jsx
-
 'use client';
 import './ubicacion.css';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { FaCalendarCheck, FaMapMarkedAlt, FaCar, FaBuilding, FaShoppingCart, FaClock, FaPlay } from "react-icons/fa";
 import Navbar from '../components/Navbar/Navbar';
 import ContactNumbers from '../components/ContactNumbers/ContactNumbers';
@@ -12,57 +9,6 @@ import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
 
 export default function UbicacionPage() {
     const [copiedItem, setCopiedItem] = useState('');
-    const [tiktokLoaded, setTiktokLoaded] = useState(false);
-    const [mapLoaded, setMapLoaded] = useState(false);
-    const [loadingTiktok, setLoadingTiktok] = useState(true);
-
-    // Mejorar la carga del script de TikTok
-    useEffect(() => {
-        const loadTikTokScript = () => {
-            return new Promise((resolve, reject) => {
-                // Verificar si ya existe
-                if (document.querySelector('script[src*="tiktok.com/embed"]')) {
-                    setTiktokLoaded(true);
-                    setLoadingTiktok(false);
-                    resolve(true);
-                    return;
-                }
-
-                const script = document.createElement('script');
-                script.src = 'https://www.tiktok.com/embed.js';
-                script.async = true;
-                
-                script.onload = () => {
-                    setTiktokLoaded(true);
-                    setLoadingTiktok(false);
-                    resolve(true);
-                };
-                
-                script.onerror = () => {
-                    setLoadingTiktok(false);
-                    reject(new Error('Failed to load TikTok script'));
-                };
-                
-                document.head.appendChild(script);
-            });
-        };
-
-        // Cargar con un pequeño delay para mejorar rendimiento
-        const timer = setTimeout(() => {
-            loadTikTokScript().catch(() => {
-                console.log('TikTok script failed to load, showing fallback');
-            });
-        }, 1000);
-
-        return () => {
-            clearTimeout(timer);
-        };
-    }, []);
-
-    // Función para manejar errores del mapa
-    const handleMapError = () => {
-        setMapLoaded(false);
-    };
 
     const copyToClipboard = async (text, type) => {
         try {
@@ -76,7 +22,7 @@ export default function UbicacionPage() {
 
     return (
         <div className="layout ubicacion-page">
-            {/* Headers y Navbar igual que antes */}
+            {/* Headers y Navbar */}
             <header className="infoHeader">
                 <div className="locationInfo">
                     <span className="locationIcon"><FaMapMarkedAlt /></span>
@@ -100,61 +46,33 @@ export default function UbicacionPage() {
                     </div>
                 </div>
 
-                <ContactNumbers />
+                <ContactNumbers pageContext="ubicacion" />
 
-                {/* Sección principal con video y mapa MEJORADA */}
+                {/* Sección principal con video YouTube y mapa */}
                 <section className="locationMainSection">
                     <div className="locationContainer">
-                        {/* MEJORADO: Video section con fallback */}
+                        {/* Video section con YouTube */}
                         <div className="videoSection">
                             <h2>¿CÓMO LLEGAR?</h2>
                             <p className="videoDescription">
                                 Mira este video donde te explicamos paso a paso cómo llegar a nuestras instalaciones
                             </p>
                             
-                            <div className="tiktokVideoContainer">
-                                {loadingTiktok && (
-                                    <div className="tiktokLoader">
-                                        <div className="loaderSpinner"></div>
-                                        <p>Cargando video...</p>
-                                    </div>
-                                )}
-                                
-                                {!loadingTiktok && !tiktokLoaded && (
-                                    <div className="tiktokFallback">
-                                        <div className="fallbackContent">
-                                            <FaPlay size={40} />
-                                            <h3>Video de TikTok</h3>
-                                            <p>¡Llegar a Tractodo es muy fácil!</p>
-                                            <a 
-                                                href="https://www.tiktok.com/@tractodo4/video/7463634041762303237"
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="fallbackButton"
-                                            >
-                                                Ver en TikTok
-                                            </a>
-                                        </div>
-                                    </div>
-                                )}
-                                
-                                {!loadingTiktok && (
-                                    <blockquote 
-                                        className="tiktok-embed" 
-                                        cite="https://www.tiktok.com/@tractodo4/video/7463634041762303237" 
-                                        data-video-id="7463634041762303237" 
-                                        style={{maxWidth: '605px', minWidth: '325px'}}
-                                    >
-                                        <section> 
-                                            <a target="_blank" title="@tractodo4" href="https://www.tiktok.com/@tractodo4?refer=embed">@tractodo4</a> 
-                                            ¡Llegar a Tractodo es muy fácil! 🚛✨ Nos encontramos en Río Extoras 56, San Cayetano, San Juan del Río, Qro.
-                                        </section> 
-                                    </blockquote>
-                                )}
+                            <div className="youtubeVideoContainer">
+                                <iframe
+                                    width="100%"
+                                    height="315"
+                                    src="https://www.youtube.com/embed/TU_VIDEO_ID_AQUI"
+                                    title="Cómo llegar a TRACTODO"
+                                    frameBorder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    allowFullScreen
+                                    className="youtubeVideo"
+                                ></iframe>
                             </div>
                         </div>
 
-                        {/* MEJORADO: Map section con fallback */}
+                        {/* Map section */}
                         <div className="mapSection">
                             <h2>NUESTRA UBICACIÓN</h2>
                             
@@ -188,15 +106,8 @@ export default function UbicacionPage() {
                                 </div>
                             </div>
 
-                            {/* MEJORADO: Mapa con mejor manejo de errores */}
+                            {/* Mapa de Google */}
                             <div className="mapContainer">
-                                {!mapLoaded && (
-                                    <div className="mapLoader">
-                                        <div className="loaderSpinner"></div>
-                                        <p>Cargando mapa...</p>
-                                    </div>
-                                )}
-                                
                                 <iframe
                                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3734.567!2d-99.9842!3d20.3881!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d31f8c8f8c8f8c%3A0x8f8c8f8c8f8c8f8c!2sR%C3%ADo%20Extoras%2056%2C%20San%20Cayetano%2C%2076800%20San%20Juan%20del%20R%C3%ADo%2C%20Qro.!5e0!3m2!1ses!2smx!4v1620000000000!5m2!1ses!2smx"
                                     width="100%"
@@ -206,8 +117,6 @@ export default function UbicacionPage() {
                                     loading="lazy"
                                     referrerPolicy="no-referrer-when-downgrade"
                                     title="Ubicación de TRACTODO en Google Maps"
-                                    onLoad={() => setMapLoaded(true)}
-                                    onError={handleMapError}
                                 ></iframe>
                             </div>
 
@@ -226,7 +135,7 @@ export default function UbicacionPage() {
                     </div>
                 </section>
 
-                {/* Resto del componente igual */}
+                {/* Sección de referencias */}
                 <section className="referencesSection">
                     <div className="referencesContainer">
                         <h2>REFERENCIAS PARA LLEGAR</h2>
@@ -243,7 +152,7 @@ export default function UbicacionPage() {
                                     <FaBuilding />
                                 </div>
                                 <h4>Tienda de Azulejos y Bomberos</h4>
-                                <p>Junto a la agencia Nissan enararás la tienda de azulejos y la estación de bomberos. Estos son puntos clave para ubicarnos.</p>
+                                <p>Junto a la agencia Nissan encontrarás la tienda de azulejos y la estación de bomberos. Estos son puntos clave para ubicarnos.</p>
                             </div>
                             <div className="referenceCard">
                                 <div className="referenceIcon">

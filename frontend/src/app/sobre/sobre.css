@@ -4,15 +4,15 @@
 @import url('../styles/global.css');
 @import url('../styles/responsive.css');
 
-/* ===== HERO SECTION PARA SOBRE NOSOTROS ===== */
+/* ===== HERO SECTION PARA SOBRE NOSOTROS - UNIFICADO ===== */
 .sobre-page .heroSection {
   position: absolute;
-  height: 560px;
+  height: 580px; /* ALTURA UNIFICADA */
   width: 100%;
   left: 0;
   background-image: url('/imgs/fondocamion4.png');
   background-size: cover;
-  background-position: center;
+  background-position: center center; /* CORREGIDO: posición idéntica */
   background-repeat: no-repeat;
   color: white;
   top: 120px;
@@ -68,7 +68,7 @@
 .sobre-page .mainContent {
   flex: 1;
   width: 100%;
-  padding-top: 550px;
+  padding-top: 580px; /* IGUAL A LA ALTURA DEL HERO */
 }
 
 /* ===== SECCIÓN ¿QUIÉNES SOMOS? - DISEÑO DINÁMICO Y ATRACTIVO ===== */
@@ -76,13 +76,13 @@
   background: linear-gradient(145deg, #f0f8ff 0%, #e6f3ff 30%, #ffffff 70%, #f8f9fa 100%);
   padding: 20px 20px 80px 20px;
   margin: 0;
-  margin-top: -60px;
+  margin-top: -100px; /* AJUSTE ESPECÍFICO UNIFICADO */
   position: relative;
   overflow: hidden;
 }
 
 .aboutContainer {
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   padding: 0 20px;
   position: relative;
@@ -459,7 +459,7 @@
 @media (max-width: 1023px) {
   .aboutSection {
     padding: 15px 15px 70px 15px;
-    margin-top: -50px;
+    margin-top: -60px; /* AJUSTE RESPONSIVE */
   }
 
   .aboutContentWithImage {
@@ -504,7 +504,17 @@
 
 /* Tablet (992px) */
 @media (max-width: 992px) {
+  .sobre-page .heroSection {
+    height: 540px; /* ALTURA CONSISTENTE */
+    background-position: center center; /* CORREGIDO: posición idéntica */
+  }
+
+  .sobre-page .mainContent {
+    padding-top: 540px; /* AJUSTADO UNIFICADO */
+  }
+
   .heroContent h1 {
+    margin-top: -150px;
     font-size: 2.8rem;
     text-shadow:
       2px 2px 4px rgba(0, 0, 0, 0.9),
@@ -512,12 +522,8 @@
       0 0 16px rgba(0, 42, 92, 0.5);
   }
 
-  .sobre-page .mainContent {
-    padding-top: 520px;
-  }
-
-  .sobre-page .heroSection {
-    height: 520px;
+  .aboutSection {
+    margin-top: -60px; /* AJUSTE RESPONSIVE */
   }
 
   .missionVisionContainer {
@@ -539,8 +545,9 @@
 /* Móvil (768px) - OCULTAR TÍTULO */
 @media (max-width: 768px) {
   .sobre-page .heroSection {
-    height: 400px;
+    height: 420px; /* ALTURA CONSISTENTE */
     top: 130px;
+    background-position: center center; /* CORREGIDO: posición idéntica */
   }
 
   /* OCULTAR TÍTULO EN MÓVIL */
@@ -549,7 +556,11 @@
   }
 
   .sobre-page .mainContent {
-    padding-top: 480px;
+    padding-top: 480px; /* CONSISTENTE */
+  }
+
+  .aboutSection {
+    margin-top: -20px; /* AJUSTE RESPONSIVE */
   }
   
   /* Layout móvil: TEXTO PRIMERO, imagen después */
@@ -601,10 +612,6 @@
     padding: 10px 15px 60px 15px;
   }
 
-  .aboutSection {
-    margin-top: -40px;
-  }
-
   .missionCard h3,
   .visionCard h3 {
     font-size: 2rem;
@@ -628,7 +635,9 @@
 /* Móvil pequeño (480px) - MANTENER TÍTULO OCULTO */
 @media (max-width: 480px) {
   .sobre-page .heroSection {
-    height: 300px;
+    height: 380px; /* ALTURA CONSISTENTE */
+    top: 125px;
+    background-position: center center; /* CORREGIDO: posición idéntica */
   }
 
   /* CONFIRMAR QUE EL TÍTULO SIGUE OCULTO */
@@ -637,10 +646,14 @@
   }
 
   .sobre-page .mainContent {
-    padding-top: 350px;
+    padding-top: 430px; /* CONSISTENTE */
   }
 
-  .aboutSection,
+  .aboutSection {
+    margin-top: -60px; /* AJUSTE RESPONSIVE */
+    padding: 50px 10px;
+  }
+
   .missionVisionSection,
   .valuesSection {
     padding: 50px 10px;
@@ -676,5 +689,27 @@
 
   .aboutTruckImage {
     max-width: 350px;
+  }
+}
+
+/* Ajustes para pantallas muy pequeñas (360px) - MANTENER TÍTULO OCULTO */
+@media (max-width: 360px) {
+  .sobre-page .heroSection {
+    height: 350px; /* ALTURA CONSISTENTE */
+    top: 120px;
+    background-position: center center; /* CORREGIDO: posición idéntica */
+  }
+
+  .sobre-page .mainContent {
+    padding-top: 400px; /* CONSISTENTE */
+  }
+
+  /* CONFIRMAR QUE EL TÍTULO SIGUE OCULTO */
+  .sobre-page .heroContent h1 {
+    display: none !important;
+  }
+
+  .aboutSection {
+    margin-top: -40px; /* AJUSTE RESPONSIVE */
   }
 }

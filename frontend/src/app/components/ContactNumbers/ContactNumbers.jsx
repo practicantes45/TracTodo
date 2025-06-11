@@ -2,7 +2,7 @@ import React from 'react';
 import { FaWhatsapp } from "react-icons/fa";
 import styles from './ContactNumbers.module.css';
 
-const ContactNumbers = () => {
+const ContactNumbers = ({ pageContext = 'home' }) => {
     const contactList = [
         {
             name: "Alan",
@@ -66,8 +66,15 @@ const ContactNumbers = () => {
         }
     };
 
+    // NUEVA LÓGICA: Aplicar clases contextuales según la página
+    const getContainerClasses = () => {
+        const baseClass = styles.contactNumbers;
+        const contextClass = styles[`contactNumbers${pageContext.charAt(0).toUpperCase() + pageContext.slice(1)}`];
+        return `${baseClass} ${contextClass || ''}`.trim();
+    };
+
     return (
-        <div className={styles.contactNumbers}>
+        <div className={getContainerClasses()}>
             {contactList.map((contact, index) => (
                 <div key={index} className={styles.tooltipContainer}>
                     <button 
