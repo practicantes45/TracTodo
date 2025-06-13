@@ -1,6 +1,7 @@
 'use client';
 import './productos.css';
-import { FaCalendarCheck, FaMapMarkedAlt, FaFilter, FaWhatsapp, FaSortAlphaDown, FaSortAlphaUp } from "react-icons/fa";
+import { FaCalendarCheck, FaMapMarkedAlt, FaFilter, FaWhatsapp, FaSortAlphaDown, FaSortAlphaUp, FaTimes } from "react-icons/fa";
+import { useState } from 'react';
 import Navbar from '../components/Navbar/Navbar';
 import ContactNumbers from '../components/ContactNumbers/ContactNumbers';
 import Footer from '../components/Footer/Footer';
@@ -92,17 +93,61 @@ const productosData = [
 
 const marcasDisponibles = ["Cummins", "Navistar", "Volvo", "Mercedes Benz", "Deutz", "Otros"];
 
+// Lista de contactos (misma que en ContactNumbers)
+const contactList = [
+  {
+    name: "Alan",
+    phoneNumber: "+524272245923",
+    message: "Hola Alan, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
+  },
+  {
+    name: "Laura",
+    phoneNumber: "+524272033515",
+    message: "Hola Laura, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
+  },
+  {
+    name: "Oscar",
+    phoneNumber: "+524272032672",
+    message: "Hola Oscar, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
+  },
+  {
+    name: "Hugo",
+    phoneNumber: "+524424128926",
+    message: "Hola Hugo, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
+  }
+];
+
 export default function ProductosPage() {
+  // Estados para el filtro móvil
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  const [selectedMarcas, setSelectedMarcas] = useState([]);
+  const [selectedOrden, setSelectedOrden] = useState('A-Z');
 
   const handleWhatsAppClick = (producto, e) => {
     // Prevenir que se abra la página del producto cuando se hace click en WhatsApp
     e.stopPropagation();
     
-    const message = encodeURIComponent(
-      `Hola, estoy interesado en ${producto.nombre} con precio de $${producto.precio.toLocaleString()}. ¿Podría proporcionarme más información?`
-    );
-    const phoneNumber = '524272245923';
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=${phoneNumber}&text=${message}`;
+    // Seleccionar un contacto aleatorio
+    const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
+    
+    // Personalizar el mensaje con los datos del producto
+    const personalizedMessage = randomContact.message
+      .replace('{producto}', producto.nombre)
+      .replace('{precio}', producto.precio.toLocaleString());
+    
+    // Limpiar el número de teléfono
+    const cleanPhoneNumber = randomContact.phoneNumber.replace(/\D/g, '');
+    const formattedNumber = cleanPhoneNumber.startsWith('52') 
+      ? cleanPhoneNumber 
+      : `52${cleanPhoneNumber}`;
+    
+    // Codificar el mensaje
+    const encodedMessage = encodeURIComponent(personalizedMessage);
+    
+    // Crear la URL de WhatsApp
+    const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodedMessage}`;
+    
+    // Abrir WhatsApp
     window.open(whatsappUrl, '_blank');
   };
 
@@ -110,6 +155,28 @@ export default function ProductosPage() {
     // Por ahora solo un console.log, después conectaremos con el backend
     console.log('Producto seleccionado:', producto);
     // En el futuro: router.push(`/productos/${producto.id}`);
+  };
+
+  // Funciones para manejar filtros móviles
+  const toggleMobileFilter = () => {
+    setIsMobileFilterOpen(!isMobileFilterOpen);
+  };
+
+  const closeMobileFilter = () => {
+    setIsMobileFilterOpen(false);
+  };
+
+  const handleMarcaChange = (marca) => {
+    setSelectedMarcas(prev => 
+      prev.includes(marca) 
+        ? prev.filter(m => m !== marca)
+        : [...prev, marca]
+    );
+  };
+
+  const clearAllFilters = () => {
+    setSelectedMarcas([]);
+    setSelectedOrden('A-Z');
   };
 
   return (
@@ -144,11 +211,108 @@ export default function ProductosPage() {
         {/* Números de contacto */}
         <ContactNumbers pageContext="productos" />
 
+        {/* Botón Filtrar móvil - NUEVO */}
+        <div className="mobileFilterToggle">
+          <button 
+            className="mobileFilterButton"
+            onClick={toggleMobileFilter}
+          >
+            <FaFilter />
+            Filtrar por
+          </button>
+        </div>
+
+        {/* Overlay para filtro móvil */}
+        <div 
+          className={`mobileFilterOverlay ${isMobileFilterOpen ? 'overlayOpen' : ''}`}
+          onClick={closeMobileFilter}
+        ></div>
+
+        {/* Menú de filtros móvil - NUEVO */}
+        <div className={`mobileFilterMenu ${isMobileFilterOpen ? 'menuOpen' : ''}`}>
+          <div className="mobileFilterHeader">
+            <h3>Filtros</h3>
+            <button 
+              className="closeMobileFilter"
+              onClick={closeMobileFilter}
+            >
+              <FaTimes />
+            </button>
+          </div>
+
+          <div className="mobileFilterContent">
+            {/* Marcas */}
+            <div className="mobileFilterGroup">
+              <h4>Marcas</h4>
+              <div className="mobileMarcasList">
+                {marcasDisponibles.map((marca) => (
+                  <label key={marca} className="mobileMarcaCheckbox">
+                    <input 
+                      type="checkbox" 
+                      checked={selectedMarcas.includes(marca)}
+                      onChange={() => handleMarcaChange(marca)}
+                    />
+                    <span className="mobileCheckmark"></span>
+                    {marca}
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            {/* Ordenamiento */}
+            <div className="mobileFilterGroup">
+              <h4>Ordenar Por</h4>
+              <div className="mobileOrdenamientoList">
+                <label className="mobileOrdenamientoRadio">
+                  <input 
+                    type="radio" 
+                    name="orden" 
+                    value="A-Z" 
+                    checked={selectedOrden === 'A-Z'}
+                    onChange={(e) => setSelectedOrden(e.target.value)}
+                  />
+                  <span className="mobileRadiomark"></span>
+                  <FaSortAlphaDown className="sortIcon" />
+                  Alfabéticamente, A-Z
+                </label>
+                <label className="mobileOrdenamientoRadio">
+                  <input 
+                    type="radio" 
+                    name="orden" 
+                    value="Z-A" 
+                    checked={selectedOrden === 'Z-A'}
+                    onChange={(e) => setSelectedOrden(e.target.value)}
+                  />
+                  <span className="mobileRadiomark"></span>
+                  <FaSortAlphaUp className="sortIcon" />
+                  Alfabéticamente, Z-A
+                </label>
+              </div>
+            </div>
+
+            {/* Botón limpiar filtros */}
+            <div className="mobileFilterActions">
+              <button 
+                className="clearMobileFilters"
+                onClick={clearAllFilters}
+              >
+                Borrar filtros
+              </button>
+              <button 
+                className="applyMobileFilters"
+                onClick={closeMobileFilter}
+              >
+                Aplicar
+              </button>
+            </div>
+          </div>
+        </div>
+
         {/* Sección principal de productos */}
         <section className="productosMainSection">
           <div className="productosContainer">
             
-            {/* Sidebar - Filtros (Solo diseño) */}
+            {/* Sidebar - Filtros (Solo diseño DESKTOP) */}
             <aside className="filtrosSidebar">
               <div className="filtrosHeader">
                 <h2>Filtros</h2>
