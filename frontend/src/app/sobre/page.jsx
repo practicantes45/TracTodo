@@ -32,7 +32,7 @@ export default function SobrePage() {
                 <div className="heroSection">
                     <div className="heroOverlay">
                         <div className="heroContent">
-                            <h1>Conoce nuestra historia</h1>
+                            <h1>Conoce Nuestra Historia</h1>
                         </div>
                     </div>
                 </div>

@@ -274,6 +274,7 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+  margin-bottom: 15px;
 }
 
 .scheduleItem {
@@ -303,6 +304,27 @@
 
 .scheduleItem.closed .time {
   color: #dc3545;
+}
+
+/* ===== NUEVA NOTA DE HORARIOS ===== */
+.scheduleNote {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: rgba(255, 193, 7, 0.1);
+  border-left: 4px solid #ffc107;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #856404;
+  margin-top: 10px;
+}
+
+.scheduleNote .noteIcon {
+  color: #ffc107;
+  font-size: 1rem;
+  flex-shrink: 0;
 }
 
 /* ===== CONTENEDOR DEL MAPA RESPONSIVE ===== */
@@ -488,6 +510,30 @@
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
+/* ===== NUEVOS ESTILOS PARA IMÁGENES DE REFERENCIAS ===== */
+.referenceImageContainer {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 25px rgba(0, 42, 92, 0.15);
+}
+
+.referenceImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.3s ease;
+  border-radius: 10px;
+}
+
+.referenceCard:hover .referenceImage {
+  transform: scale(1.05);
+}
+
+/* Fallback icon cuando no hay imagen */
 .referenceIcon {
   width: 60px;
   height: 60px;
@@ -544,6 +590,10 @@
   .mapSection h2 {
     font-size: 2.3rem;
   }
+
+  .referenceImageContainer {
+    height: 180px;
+  }
 }
 
 /* Tablet (1024px) */
@@ -582,6 +632,10 @@
   .youtubeVideo {
     border-radius: 15px;
   }
+
+  .referenceImageContainer {
+    height: 160px;
+  }
 }
 
 /* Tablet (992px) - AJUSTES CRÍTICOS PARA UBICACIÓN */
@@ -607,6 +661,10 @@
 
   .locationMainSection {
     margin-top: -60px; /* AJUSTE RESPONSIVE */
+  }
+
+  .referenceImageContainer {
+    height: 150px;
   }
 }
 
@@ -692,6 +750,11 @@
     padding: 20px 15px;
   }
 
+  .scheduleNote {
+    padding: 8px 10px;
+    font-size: 0.85rem;
+  }
+
   .mapContainer {
     padding-bottom: 70%;
     margin-bottom: 20px;
@@ -722,6 +785,10 @@
   .referenceCard {
     padding: 25px 20px;
   }
+
+  .referenceImageContainer {
+    height: 140px;
+  }
 }
 
 /* Móvil pequeño (480px) - MANTENER TÍTULO OCULTO */
@@ -742,8 +809,8 @@
   }
 
   .locationMainSection {
-    margin-top: -50px; /* AJUSTE RESPONSIVE */
-    padding: 15px 5px 50px 5px;
+    margin-top: -60px; /* AJUSTE RESPONSIVE */
+    padding: 20px 5px 50px 5px;
   }
 
   .videoSection {
@@ -775,6 +842,15 @@
     font-size: 1.2rem;
   }
 
+  .scheduleNote {
+    padding: 6px 8px;
+    font-size: 0.8rem;
+  }
+
+  .scheduleNote .noteIcon {
+    font-size: 0.9rem;
+  }
+
   .mapContainer {
     padding-bottom: 80%;
     border-radius: 10px;
@@ -791,6 +867,10 @@
 
   .referenceCard {
     padding: 20px 15px;
+  }
+
+  .referenceImageContainer {
+    height: 120px;
   }
 
   .referenceIcon {
@@ -878,6 +958,15 @@
     font-size: 0.85rem;
   }
 
+  .scheduleNote {
+    padding: 5px 6px;
+    font-size: 0.75rem;
+  }
+
+  .scheduleNote .noteIcon {
+    font-size: 0.8rem;
+  }
+
   .mapContainer {
     padding-bottom: 85%;
     border-radius: 8px;
@@ -905,6 +994,11 @@
 
   .referenceCard {
     padding: 15px 10px;
+  }
+
+  .referenceImageContainer {
+    height: 100px;
+    margin-bottom: 15px;
   }
 
   .referenceIcon {
@@ -954,7 +1048,20 @@
   }
 }
 
+/* ===== OPTIMIZACIONES PARA IMÁGENES DE REFERENCIAS ===== */
 
+/* Efecto de carga para imágenes */
+.referenceImageContainer::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  z-index: -1;
+  border-radius: 10px;
+}
 
 /* Modo de alto contraste */
 @media (prefers-contrast: high) {
@@ -975,8 +1082,15 @@
     border: 2px solid #000000;
   }
 
-  .youtubeVideoContainer {
+  .youtubeVideoContainer,
+  .referenceImageContainer {
     border: 2px solid #000000;
+  }
+
+  .scheduleNote {
+    background: #ffffff;
+    border: 2px solid #ffc107;
+    color: #000000;
   }
 }
 
@@ -988,7 +1102,9 @@
   .scheduleCard,
   .referenceCard,
   .actionButton,
-  .youtubeVideoContainer {
+  .youtubeVideoContainer,
+  .referenceImage,
+  .referenceIcon {
     transition: none;
   }
 
@@ -1019,6 +1135,10 @@
 
   .clickableAddress:active {
     background: rgba(0, 180, 216, 0.2);
+  }
+
+  .referenceCard:active {
+    transform: translateY(-5px);
   }
 }
 

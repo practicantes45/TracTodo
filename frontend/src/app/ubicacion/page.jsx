@@ -1,7 +1,7 @@
 'use client';
 import './ubicacion.css';
 import { useState } from 'react';
-import { FaCalendarCheck, FaMapMarkedAlt, FaCar, FaBuilding, FaShoppingCart, FaClock, FaPlay } from "react-icons/fa";
+import { FaCalendarCheck, FaMapMarkedAlt, FaCar, FaBuilding, FaShoppingCart, FaClock, FaPlay, FaInfoCircle } from "react-icons/fa";
 import Navbar from '../components/Navbar/Navbar';
 import ContactNumbers from '../components/ContactNumbers/ContactNumbers';
 import Footer from '../components/Footer/Footer';
@@ -53,19 +53,20 @@ export default function UbicacionPage() {
                     <div className="locationContainer">
                         {/* Video section con YouTube */}
                         <div className="videoSection">
-                            <h2>¿CÓMO LLEGAR?</h2>
+                            <h2>¿CÓMO ENCONTRARNOS?</h2>
                             <p className="videoDescription">
-                                Mira este video donde te explicamos paso a paso cómo llegar a nuestras instalaciones
+                                Mira este video donde te explicamos paso a paso la ruta para llegar a nuestras instalaciones
                             </p>
                             
                             <div className="youtubeVideoContainer">
                                 <iframe
                                     width="100%"
                                     height="315"
-                                    src="https://www.youtube.com/embed/TU_VIDEO_ID_AQUI"
-                                    title="Cómo llegar a TRACTODO"
+                                    src="https://www.youtube.com/embed/xlIeCDPO9Es"
+                                    title="Ruta para llegar a TRACTODO"
                                     frameBorder="0"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                    referrerPolicy="strict-origin-when-cross-origin"
                                     allowFullScreen
                                     className="youtubeVideo"
                                 ></iframe>
@@ -103,6 +104,10 @@ export default function UbicacionPage() {
                                             <span className="time">CERRADO</span>
                                         </div>
                                     </div>
+                                    <div className="scheduleNote">
+                                        <FaInfoCircle className="noteIcon" />
+                                        <span>Sábado solo entrega programada</span>
+                                    </div>
                                 </div>
                             </div>
 
@@ -128,7 +133,7 @@ export default function UbicacionPage() {
                                     className="actionButton directions"
                                 >
                                     <FaMapMarkedAlt />
-                                    Cómo llegar
+                                    Ver ruta en Maps
                                 </a>
                             </div>
                         </div>
@@ -138,25 +143,58 @@ export default function UbicacionPage() {
                 {/* Sección de referencias */}
                 <section className="referencesSection">
                     <div className="referencesContainer">
-                        <h2>REFERENCIAS PARA LLEGAR</h2>
+                        <h2>REFERENCIAS PARA UBICARNOS</h2>
                         <div className="referencesGrid">
                             <div className="referenceCard">
-                                <div className="referenceIcon">
-                                    <FaCar />
+                                <div className="referenceImageContainer">
+                                    <img 
+                                        src="/imgs/referencias/nissan.png" 
+                                        alt="Agencia Nissan" 
+                                        className="referenceImage"
+                                        onError={(e) => {
+                                            e.target.style.display = 'none';
+                                            e.target.nextElementSibling.style.display = 'flex';
+                                        }}
+                                    />
+                                    <div className="referenceIcon" style={{display: 'none'}}>
+                                        <FaCar />
+                                    </div>
                                 </div>
                                 <h4>Agencia Nissan</h4>
                                 <p>Sobre la Carretera San Juan del Río-Tequisquiapan (Paseo Central), busca la agencia Nissan como punto de referencia principal.</p>
                             </div>
                             <div className="referenceCard">
-                                <div className="referenceIcon">
-                                    <FaBuilding />
+                                <div className="referenceImageContainer">
+                                    <img 
+                                        src="/imgs/referencias/tienda.jpg" 
+                                        alt="Tienda de Azulejos y Bomberos" 
+                                        className="referenceImage"
+                                        onError={(e) => {
+                                            e.target.style.display = 'none';
+                                            e.target.nextElementSibling.style.display = 'flex';
+                                        }}
+                                    />
+                                    <div className="referenceIcon" style={{display: 'none'}}>
+                                        <FaBuilding />
+                                    </div>
                                 </div>
                                 <h4>Tienda de Azulejos y Bomberos</h4>
                                 <p>Junto a la agencia Nissan encontrarás la tienda de azulejos y la estación de bomberos. Estos son puntos clave para ubicarnos.</p>
                             </div>
                             <div className="referenceCard">
-                                <div className="referenceIcon">
-                                    <FaShoppingCart />
+                                <div className="referenceImageContainer">
+                                    <img 
+                                        src="/imgs/referencias/plaza.jpg" 
+                                        alt="Plaza Central" 
+                                        className="referenceImage"
+                                        onError={(e) => {
+                                            e.target.style.display = 'none';
+                                            e.target.nextElementSibling.style.display = 'flex';
+                                        }}
+                                    />
+                                    <div className="referenceIcon" style={{display: 'none'}}>
+                                        <FaShoppingCart />
+                                    </div>
                                 </div>
                                 <h4>Plaza Central</h4>
                                 <p>Antes de llegar a Plaza Central, da vuelta a la derecha en la calle Río Extoras. Sigue avanzando y ¡listo! Ahí estamos.</p>

@@ -651,7 +651,7 @@
 
   .aboutSection {
     margin-top: -60px; /* AJUSTE RESPONSIVE */
-    padding: 50px 10px;
+    padding: 20px 10px;
   }
 
   .missionVisionSection,
@@ -711,5 +711,6 @@
 
   .aboutSection {
     margin-top: -40px; /* AJUSTE RESPONSIVE */
+    padding: 10px 3px;
   }
 }
