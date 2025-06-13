@@ -104,9 +104,9 @@ const Footer = () => {
               <div className={styles.contactContent}>
                 <span
                   className={styles.clickableContact}
-                  onClick={() => copyToClipboard('San Cayetano, Río Extoras 56, Querétaro, San Juan del Río', 'location')}
+                  onClick={() => copyToClipboard('Río Extoras 56, San Cayetano, 76806 San Juan del Río, Qro.', 'location')}
                 >
-                  San Cayetano, Río Extoras 56<br />Querétaro, San Juan del Río
+                Río Extoras 56, San Cayetano<br />San Juan del Río, Querétaro
                 </span>
                 {copiedItem === 'location' && (
                   <div className={styles.copyTooltip}>
