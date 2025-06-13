@@ -1,13 +1,14 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { IoClose } from 'react-icons/io5';
 import styles from './MobileMenu.module.css';
 
 const MobileMenu = () => {
     const [isOpen, setIsOpen] = useState(false);
     const pathname = usePathname();
+    const router = useRouter();
 
     const navItems = [
         { href: '/', label: 'Inicio' },
@@ -20,19 +21,38 @@ const MobileMenu = () => {
     // Cerrar menú cuando cambie la ruta
     useEffect(() => {
         setIsOpen(false);
+        // Asegurar que el body vuelva a su estado normal
+        document.body.style.overflow = 'unset';
     }, [pathname]);
 
     // Prevenir scroll del body cuando el menú está abierto
     useEffect(() => {
         if (isOpen) {
+            // Guardar la posición actual del scroll
+            const scrollY = window.scrollY;
             document.body.style.overflow = 'hidden';
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${scrollY}px`;
+            document.body.style.width = '100%';
         } else {
+            // Restaurar scroll
+            const scrollY = document.body.style.top;
             document.body.style.overflow = 'unset';
+            document.body.style.position = 'static';
+            document.body.style.top = 'auto';
+            document.body.style.width = 'auto';
+            
+            if (scrollY) {
+                window.scrollTo(0, parseInt(scrollY || '0') * -1);
+            }
         }
 
         // Cleanup al desmontar el componente
         return () => {
             document.body.style.overflow = 'unset';
+            document.body.style.position = 'static';
+            document.body.style.top = 'auto';
+            document.body.style.width = 'auto';
         };
     }, [isOpen]);
 
@@ -40,8 +60,15 @@ const MobileMenu = () => {
         setIsOpen(!isOpen);
     };
 
-    const handleLinkClick = () => {
+    const handleLinkClick = (href) => {
         setIsOpen(false);
+        
+        // Forzar navegación programática
+        setTimeout(() => {
+            if (pathname !== href) {
+                router.push(href);
+            }
+        }, 100);
     };
 
     const closeMenu = () => {
@@ -93,13 +120,13 @@ const MobileMenu = () => {
                 <ul className={styles.menuList}>
                     {navItems.map((item) => (
                         <li key={item.href} className={styles.menuItem}>
-                            <Link 
-                                href={item.href}
+                            <button
                                 className={`${styles.menuLink} ${pathname === item.href ? styles.activeLink : ''}`}
-                                onClick={handleLinkClick}
+                                onClick={() => handleLinkClick(item.href)}
+                                type="button"
                             >
                                 {item.label}
-                            </Link>
+                            </button>
                         </li>
                     ))}
                 </ul>

@@ -1,13 +1,14 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import SearchBar from '../SearchBar/SearchBar';
 import MobileMenu from '../MobileMenu/MobileMenu';
 import styles from './Navbar.module.css';
 
 const Navbar = () => {
     const pathname = usePathname();
+    const router = useRouter();
 
     const navItems = [
         { href: '/', label: 'Inicio' },
@@ -16,6 +17,14 @@ const Navbar = () => {
         { href: '/sobre', label: 'Sobre Nosotros' },
         { href: '/entretenimiento', label: 'Entretenimiento' }
     ];
+
+    const handleNavClick = (href, e) => {
+        e.preventDefault();
+        
+        if (pathname !== href) {
+            router.push(href);
+        }
+    };
 
     return (
         <>
@@ -45,6 +54,8 @@ const Navbar = () => {
                             <Link 
                                 href={item.href}
                                 className={`${styles.navLink} ${pathname === item.href ? styles.active : ''}`}
+                                onClick={(e) => handleNavClick(item.href, e)}
+                                prefetch={true}
                             >
                                 {item.label}
                             </Link>

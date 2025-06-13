@@ -31,29 +31,48 @@ const mina = Mina({
 });
 
 export const metadata = {
-  title: 'Frontend',
-  description: 'Sitio del Frontend',
-  // Meta tags para controlar el caché del navegador
-  other: {
-    'Cache-Control': 'no-cache, no-store, must-revalidate, max-age=0',
-    'Pragma': 'no-cache',
-    'Expires': '0',
-  }
+  title: 'TRACTODO - Refacciones para Motores Diésel',
+  description: 'Refacciones de calidad para motores diésel. Amplio inventario, precios competitivos y garantía confiable.',
+  keywords: 'refacciones, motores diesel, tractocamión, Querétaro, San Juan del Río',
+  robots: 'index, follow',
+  viewport: 'width=device-width, initial-scale=1, maximum-scale=5',
+  // Eliminamos los meta tags de cache que pueden causar problemas
 }
 
 export default function RootLayout({ children }) {
   return (
     <html lang="es" className={`${montserrat.variable} ${ubuntu.variable} ${prompt.variable} ${mina.variable}`}>
       <head>
-        {/* Meta tags adicionales para evitar caché */}
-        <meta httpEquiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-        <meta httpEquiv="Pragma" content="no-cache" />
-        <meta httpEquiv="Expires" content="0" />
-        {/* Versioning para forzar actualización */}
-        <meta name="version" content={Date.now().toString()} />
+        {/* Meta tags optimizados para navegación */}
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+        
+        {/* Preload crítico para rendimiento */}
+        <link rel="preload" href="/imgs/fondocamion4.png" as="image" />
+        <link rel="preload" href="/imgs/logopeke.png" as="image" />
+        
+        {/* DNS prefetch para optimización */}
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="//www.google.com" />
+        
+        {/* Eliminar cache forzado que puede causar problemas de navegación */}
       </head>
       <body>
         {children}
+        
+        {/* Script para debugging en desarrollo */}
+        {process.env.NODE_ENV === 'development' && (
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+                console.log('Page loaded:', window.location.pathname);
+                window.addEventListener('beforeunload', () => {
+                  console.log('Page unloading:', window.location.pathname);
+                });
+              `,
+            }}
+          />
+        )}
       </body>
     </html>
   )

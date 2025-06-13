@@ -232,8 +232,10 @@
   margin: 0;
 }
 
+/* CAMBIADO: Ahora es un botón en lugar de enlace */
 .menuLink {
   display: block;
+  width: 100%;
   color: #e0e0e0;
   text-decoration: none;
   padding: 22px 25px; /* AUMENTADO de 18px 20px a 22px 25px */
@@ -244,6 +246,11 @@
   border-left: 4px solid transparent;
   position: relative;
   overflow: hidden;
+  background: transparent;
+  border: none;
+  border-left: 4px solid transparent;
+  text-align: left;
+  cursor: pointer;
 }
 
 /* Efecto hover en enlaces */
