@@ -17,18 +17,7 @@ export default function HomePage() {
 
     return (
         <div className="layout">
-            {/* Header con información de contacto y ubicación */}
-            <header className="infoHeader">
-                <div className="locationInfo">
-                    <span className="locationIcon"><FaMapMarkedAlt /></span>
-                    <span>Queretaro, San Juan del Río, San Cayetano, Río Extoras 56.</span>
-                </div>
-                <div className="line"></div>
-                <div className="scheduleInfo">
-                    <span className="calendarIcon"><FaCalendarCheck /></span>
-                    <span>Lun - Vier. 9:00 am - 6:00 pm</span>
-                </div>
-            </header>
+            
 
             {/* Navbar principal con estado activo */}
             <Navbar />

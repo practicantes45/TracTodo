@@ -22,19 +22,7 @@ export default function UbicacionPage() {
 
     return (
         <div className="layout ubicacion-page">
-            {/* Headers y Navbar */}
-            <header className="infoHeader">
-                <div className="locationInfo">
-                    <span className="locationIcon"><FaMapMarkedAlt /></span>
-                    <span>Queretaro, San Juan del Río, San Cayetano, Río Extoras 56.</span>
-                </div>
-                <div className="line"></div>
-                <div className="scheduleInfo">
-                    <span className="calendarIcon"><FaCalendarCheck /></span>
-                    <span>Lun - Vier. 9:00 am - 6:00 pm</span>
-                </div>
-            </header>
-
+            
             <Navbar />
 
             <main className="mainContent">
@@ -57,7 +45,7 @@ export default function UbicacionPage() {
                             <p className="videoDescription">
                                 Mira este video donde te explicamos paso a paso la ruta para llegar a nuestras instalaciones
                             </p>
-                            
+
                             <div className="youtubeVideoContainer">
                                 <iframe
                                     width="100%"
@@ -76,11 +64,11 @@ export default function UbicacionPage() {
                         {/* Map section */}
                         <div className="mapSection">
                             <h2>NUESTRA UBICACIÓN</h2>
-                            
+
                             <div className="addressInfo">
                                 <div className="addressCard">
                                     <h3><FaMapMarkedAlt /> Dirección</h3>
-                                    <p 
+                                    <p
                                         className="clickableAddress"
                                         onClick={() => copyToClipboard('San Cayetano, Río Extoras 56, Querétaro, San Juan del Río', 'address')}
                                     >
@@ -126,7 +114,7 @@ export default function UbicacionPage() {
                             </div>
 
                             <div className="actionButtons">
-                                <a 
+                                <a
                                     href="https://www.google.com/maps/dir//Río+Extoras+56,+San+Cayetano,+76800+San+Juan+del+Río,+Qro./"
                                     target="_blank"
                                     rel="noopener noreferrer"
@@ -147,16 +135,16 @@ export default function UbicacionPage() {
                         <div className="referencesGrid">
                             <div className="referenceCard">
                                 <div className="referenceImageContainer">
-                                    <img 
-                                        src="/imgs/referencias/nissan.png" 
-                                        alt="Agencia Nissan" 
+                                    <img
+                                        src="/imgs/referencias/nissan.png"
+                                        alt="Agencia Nissan"
                                         className="referenceImage"
                                         onError={(e) => {
                                             e.target.style.display = 'none';
                                             e.target.nextElementSibling.style.display = 'flex';
                                         }}
                                     />
-                                    <div className="referenceIcon" style={{display: 'none'}}>
+                                    <div className="referenceIcon" style={{ display: 'none' }}>
                                         <FaCar />
                                     </div>
                                 </div>
@@ -165,16 +153,16 @@ export default function UbicacionPage() {
                             </div>
                             <div className="referenceCard">
                                 <div className="referenceImageContainer">
-                                    <img 
-                                        src="/imgs/referencias/tienda.jpg" 
-                                        alt="Tienda de Azulejos y Bomberos" 
+                                    <img
+                                        src="/imgs/referencias/tienda.jpg"
+                                        alt="Tienda de Azulejos y Bomberos"
                                         className="referenceImage"
                                         onError={(e) => {
                                             e.target.style.display = 'none';
                                             e.target.nextElementSibling.style.display = 'flex';
                                         }}
                                     />
-                                    <div className="referenceIcon" style={{display: 'none'}}>
+                                    <div className="referenceIcon" style={{ display: 'none' }}>
                                         <FaBuilding />
                                     </div>
                                 </div>
@@ -183,16 +171,16 @@ export default function UbicacionPage() {
                             </div>
                             <div className="referenceCard">
                                 <div className="referenceImageContainer">
-                                    <img 
-                                        src="/imgs/referencias/plaza.jpg" 
-                                        alt="Plaza Central" 
+                                    <img
+                                        src="/imgs/referencias/plaza.jpg"
+                                        alt="Plaza Central"
                                         className="referenceImage"
                                         onError={(e) => {
                                             e.target.style.display = 'none';
                                             e.target.nextElementSibling.style.display = 'flex';
                                         }}
                                     />
-                                    <div className="referenceIcon" style={{display: 'none'}}>
+                                    <div className="referenceIcon" style={{ display: 'none' }}>
                                         <FaShoppingCart />
                                     </div>
                                 </div>

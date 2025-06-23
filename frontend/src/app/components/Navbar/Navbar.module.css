@@ -1,4 +1,4 @@
-/* Navbar.module.css - Navegación con estado activo y menú móvil */
+/* Navbar.module.css - Navegación con animación de fondo mejorada */
 
 /* ===== BARRA DE BÚSQUEDA MÓVIL SUPERIOR ===== */
 .mobileSearchWrapper {
@@ -29,14 +29,16 @@
   width: 100%;
 }
 
-/* ===== NAVIGATION BAR CON EFECTOS MEJORADOS ===== */
+/* ===== NAVIGATION BAR CON ANIMACIÓN DE FONDO COMPLETA ===== */
 .appBar {
-  background: linear-gradient(135deg, rgba(10, 16, 135, 0.8) 0%, rgba(0, 42, 92, 0.9) 50%, rgba(15, 20, 25, 0.85) 100%);
-  background-size: 300% 300%;
-  animation: navGradientFlow 10s ease infinite;
+  /* NUEVO: Gradiente animado igual al header */
+  background: linear-gradient(135deg, #0a0a1e 0%, #1a1a2e 25%, var(--primary-color) 50%, #16213e 75%, #0f1419 100%);
+  background-size: 400% 400%;
+  animation: headerGradientFlow 12s ease infinite;
+  color: white;
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  padding: 12px 20px;
+  padding: 18px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -45,28 +47,28 @@
   position: relative;
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(0, 180, 216, 0.2);
+  /* AGREGADO: altura mínima para evitar cortes */
+  min-height: 70px;
+  /* AGREGADO: asegurar que el contenido esté centrado */
+  align-items: center;
+  /* AGREGADO: evitar que se deforme */
+  flex-shrink: 0;
 }
 
-/* Contenedor del menú móvil - oculto por defecto */
-.mobileMenuContainer {
-  display: none;
-}
-
-@keyframes navGradientFlow {
+/* NUEVO: Animación del gradiente del navbar (igual al header) */
+@keyframes headerGradientFlow {
   0% {
     background-position: 0% 50%;
   }
-
   50% {
     background-position: 100% 50%;
   }
-
   100% {
     background-position: 0% 50%;
   }
 }
 
-/* Efecto de ondas más sutil para la navbar */
+/* NUEVO: Partículas sutiles para el navbar (igual al header) */
 .appBar::before {
   content: '';
   position: absolute;
@@ -75,52 +77,58 @@
   width: 100%;
   height: 100%;
   background-image:
-    radial-gradient(1px 1px at 30px 25px, rgba(0, 180, 216, 0.2), transparent),
-    radial-gradient(1px 1px at 80px 35px, rgba(255, 255, 255, 0.1), transparent),
-    radial-gradient(1px 1px at 150px 20px, rgba(0, 180, 216, 0.15), transparent);
+    radial-gradient(1px 1px at 20px 20px, rgba(0, 180, 216, 0.3), transparent),
+    radial-gradient(1px 1px at 60px 15px, rgba(255, 255, 255, 0.15), transparent),
+    radial-gradient(1px 1px at 120px 25px, rgba(0, 180, 216, 0.4), transparent),
+    radial-gradient(1px 1px at 180px 10px, rgba(255, 255, 255, 0.1), transparent);
   background-repeat: repeat;
-  background-size: 180px 60px;
-  animation: navSparkle 20s linear infinite;
+  background-size: 200px 70px; /* Ajustado para altura del navbar */
+  animation: headerSparkle 15s linear infinite;
   pointer-events: none;
 }
 
-@keyframes navSparkle {
+/* NUEVO: Animación de partículas */
+@keyframes headerSparkle {
   0% {
     transform: translateX(0);
   }
-
   100% {
-    transform: translateX(-180px);
+    transform: translateX(-200px);
   }
 }
 
-/* Línea brillante en la parte superior de la navbar */
+/* NUEVO: Efecto de brillo sutil en el navbar */
 .appBar::after {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 2px;
+  width: 120%;
+  height: 100%;
   background: linear-gradient(90deg,
       transparent 0%,
-      var(--accent-color, #00b4d8) 20%,
-      #00d4ff 50%,
-      var(--accent-color, #00b4d8) 80%,
+      rgba(0, 180, 216, 0.03) 25%,
+      rgba(0, 180, 216, 0.06) 50%,
+      rgba(0, 180, 216, 0.03) 75%,
       transparent 100%);
-  animation: navTopGlow 4s ease-in-out infinite;
+  transform: translateX(-100%);
+  animation: headerWave 6s ease-in-out infinite;
+  pointer-events: none;
 }
 
-@keyframes navTopGlow {
-
-  0%,
-  100% {
-    opacity: 0.3;
+/* NUEVO: Animación de onda de brillo */
+@keyframes headerWave {
+  0%, 100% {
+    transform: translateX(-100%);
   }
-
   50% {
-    opacity: 1;
+    transform: translateX(100%);
   }
+}
+
+/* Contenedor del menú móvil - oculto por defecto */
+.mobileMenuContainer {
+  display: none;
 }
 
 .navList {
@@ -128,14 +136,16 @@
   margin: 0;
   padding: 0;
   display: flex;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
   position: relative;
-  z-index: 2;
+  z-index: 2; /* Por encima de las animaciones de fondo */
 }
 
 .navItem {
   display: inline;
   margin: 0 10px;
+  position: relative;
+  z-index: 2; /* Por encima de las animaciones de fondo */
 }
 
 .navLink {
@@ -150,9 +160,11 @@
   border-radius: 8px;
   overflow: hidden;
   display: block;
+  /* AGREGADO: evitar que se encojan */
+  flex-shrink: 0;
 }
 
-/* Efecto base para todos los enlaces */
+/* Efecto hover mejorado con transiciones suaves */
 .navLink::before {
   content: '';
   position: absolute;
@@ -176,12 +188,14 @@
   transition: all 0.25s ease;
   transform: translateX(-50%);
   border-radius: 1px;
+  filter: drop-shadow(0 0 3px rgba(0, 180, 216, 0.3));
 }
 
 /* Estado hover para enlaces normales */
 .navLink:hover {
   color: var(--accent-color, #00b4d8);
   text-shadow: 0 0 5px rgba(0, 180, 216, 0.3);
+  transform: translateY(-1px);
 }
 
 .navLink:hover::before {
@@ -225,13 +239,10 @@
 
 /* Animación del subrayado activo */
 @keyframes activeGlow {
-
-  0%,
-  100% {
+  0%, 100% {
     opacity: 0.7;
     box-shadow: 0 0 6px rgba(0, 180, 216, 0.4);
   }
-
   50% {
     opacity: 1;
     box-shadow: 0 0 12px rgba(0, 180, 216, 0.6);
@@ -270,7 +281,7 @@
   display: flex;
   align-items: center;
   position: relative;
-  z-index: 2;
+  z-index: 2; /* Por encima de las animaciones de fondo */
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
@@ -302,7 +313,6 @@
     font-size: 19px; /* Ajustar el tamaño de fuente en pantallas más pequeñas */
   }
 }
-
 
 @media(max-width:1044px){
   .appBar {
@@ -388,7 +398,6 @@
   }
 }
 
-
 @media (max-width: 768px) {
   /* Mostrar la barra de búsqueda móvil encima de todo */
   .mobileSearchWrapper {
@@ -443,7 +452,6 @@
     opacity: 0;
     transform: scale(0.95);
   }
-
   100% {
     opacity: 1;
     transform: scale(1.02);
@@ -465,7 +473,6 @@
 
 /* Respeto por la preferencia de movimiento reducido */
 @media (prefers-reduced-motion: reduce) {
-
   .appBar,
   .appBar::before,
   .appBar::after,
@@ -475,5 +482,13 @@
 
   .navLink {
     transition: color 0.2s ease, background-color 0.2s ease;
+  }
+
+  /* Detener animaciones de fondo si el usuario prefiere movimiento reducido */
+  .headerGradientFlow,
+  .headerSparkle,
+  .headerWave,
+  .activeGlow {
+    animation: none;
   }
 }

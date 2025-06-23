@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { IoClose } from 'react-icons/io5';
+import VisitCounter from '../VisitCounter/VisitCounter';
 import styles from './MobileMenu.module.css';
 
 const MobileMenu = () => {
@@ -114,6 +115,11 @@ const MobileMenu = () => {
                     >
                         <IoClose />
                     </button>
+                </div>
+
+                {/* Contador de visitas móvil */}
+                <div className={styles.mobileCounterSection}>
+                    <VisitCounter isMobile={true} />
                 </div>
 
                 {/* Lista de navegación */}
