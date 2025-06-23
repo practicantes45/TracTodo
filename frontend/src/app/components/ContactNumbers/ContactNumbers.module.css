@@ -792,27 +792,3 @@
 }
 
 /* ===== AJUSTES PARA PANTALLAS ULTRA ANCHAS ===== */
-@media (min-width: 1600px) {
-  .contactNumbers {
-    gap: 80px;
-    max-width: 1400px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .contactItem {
-    padding: 18px 32px;
-    font-size: 1.25rem;
-  }
-
-  .phoneIcon {
-    font-size: 1.6rem;
-  }
-}
-
-/* ===== PRINT STYLES ===== */
-@media print {
-  .contactNumbers {
-    display: none;
-  }
-}

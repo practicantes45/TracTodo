@@ -126,27 +126,27 @@ export default function ProductosPage() {
   const handleWhatsAppClick = (producto, e) => {
     // Prevenir que se abra la página del producto cuando se hace click en WhatsApp
     e.stopPropagation();
-    
+
     // Seleccionar un contacto aleatorio
     const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
-    
+
     // Personalizar el mensaje con los datos del producto
     const personalizedMessage = randomContact.message
       .replace('{producto}', producto.nombre)
       .replace('{precio}', producto.precio.toLocaleString());
-    
+
     // Limpiar el número de teléfono
     const cleanPhoneNumber = randomContact.phoneNumber.replace(/\D/g, '');
-    const formattedNumber = cleanPhoneNumber.startsWith('52') 
-      ? cleanPhoneNumber 
+    const formattedNumber = cleanPhoneNumber.startsWith('52')
+      ? cleanPhoneNumber
       : `52${cleanPhoneNumber}`;
-    
+
     // Codificar el mensaje
     const encodedMessage = encodeURIComponent(personalizedMessage);
-    
+
     // Crear la URL de WhatsApp
     const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodedMessage}`;
-    
+
     // Abrir WhatsApp
     window.open(whatsappUrl, '_blank');
   };
@@ -167,8 +167,8 @@ export default function ProductosPage() {
   };
 
   const handleMarcaChange = (marca) => {
-    setSelectedMarcas(prev => 
-      prev.includes(marca) 
+    setSelectedMarcas(prev =>
+      prev.includes(marca)
         ? prev.filter(m => m !== marca)
         : [...prev, marca]
     );
@@ -181,18 +181,6 @@ export default function ProductosPage() {
 
   return (
     <div className="layout productos-page">
-      {/* Header con información de contacto y ubicación */}
-      <header className="infoHeader">
-        <div className="locationInfo">
-          <span className="locationIcon"><FaMapMarkedAlt /></span>
-          <span>Queretaro, San Juan del Río, San Cayetano, Río Extoras 56.</span>
-        </div>
-        <div className="line"></div>
-        <div className="scheduleInfo">
-          <span className="calendarIcon"><FaCalendarCheck /></span>
-          <span>Lun - Vier. 9:00 am - 6:00 pm</span>
-        </div>
-      </header>
 
       {/* Navbar principal */}
       <Navbar />
@@ -213,7 +201,7 @@ export default function ProductosPage() {
 
         {/* Botón Filtrar móvil - NUEVO */}
         <div className="mobileFilterToggle">
-          <button 
+          <button
             className="mobileFilterButton"
             onClick={toggleMobileFilter}
           >
@@ -223,7 +211,7 @@ export default function ProductosPage() {
         </div>
 
         {/* Overlay para filtro móvil */}
-        <div 
+        <div
           className={`mobileFilterOverlay ${isMobileFilterOpen ? 'overlayOpen' : ''}`}
           onClick={closeMobileFilter}
         ></div>
@@ -232,7 +220,7 @@ export default function ProductosPage() {
         <div className={`mobileFilterMenu ${isMobileFilterOpen ? 'menuOpen' : ''}`}>
           <div className="mobileFilterHeader">
             <h3>Filtros</h3>
-            <button 
+            <button
               className="closeMobileFilter"
               onClick={closeMobileFilter}
             >
@@ -247,8 +235,8 @@ export default function ProductosPage() {
               <div className="mobileMarcasList">
                 {marcasDisponibles.map((marca) => (
                   <label key={marca} className="mobileMarcaCheckbox">
-                    <input 
-                      type="checkbox" 
+                    <input
+                      type="checkbox"
                       checked={selectedMarcas.includes(marca)}
                       onChange={() => handleMarcaChange(marca)}
                     />
@@ -264,10 +252,10 @@ export default function ProductosPage() {
               <h4>Ordenar Por</h4>
               <div className="mobileOrdenamientoList">
                 <label className="mobileOrdenamientoRadio">
-                  <input 
-                    type="radio" 
-                    name="orden" 
-                    value="A-Z" 
+                  <input
+                    type="radio"
+                    name="orden"
+                    value="A-Z"
                     checked={selectedOrden === 'A-Z'}
                     onChange={(e) => setSelectedOrden(e.target.value)}
                   />
@@ -276,10 +264,10 @@ export default function ProductosPage() {
                   Alfabéticamente, A-Z
                 </label>
                 <label className="mobileOrdenamientoRadio">
-                  <input 
-                    type="radio" 
-                    name="orden" 
-                    value="Z-A" 
+                  <input
+                    type="radio"
+                    name="orden"
+                    value="Z-A"
                     checked={selectedOrden === 'Z-A'}
                     onChange={(e) => setSelectedOrden(e.target.value)}
                   />
@@ -292,13 +280,13 @@ export default function ProductosPage() {
 
             {/* Botón limpiar filtros */}
             <div className="mobileFilterActions">
-              <button 
+              <button
                 className="clearMobileFilters"
                 onClick={clearAllFilters}
               >
                 Borrar filtros
               </button>
-              <button 
+              <button
                 className="applyMobileFilters"
                 onClick={closeMobileFilter}
               >
@@ -311,7 +299,7 @@ export default function ProductosPage() {
         {/* Sección principal de productos */}
         <section className="productosMainSection">
           <div className="productosContainer">
-            
+
             {/* Sidebar - Filtros (Solo diseño DESKTOP) */}
             <aside className="filtrosSidebar">
               <div className="filtrosHeader">
@@ -358,17 +346,17 @@ export default function ProductosPage() {
             {/* Grid de productos */}
             <div className="productosGrid">
               {productosData.map((producto) => (
-                <div 
-                  key={producto.id} 
+                <div
+                  key={producto.id}
                   className="productoCard"
                   onClick={() => handleProductoClick(producto)}
                   style={{ cursor: 'pointer' }}
                 >
-                  
+
                   {/* Imagen del producto */}
                   <div className="productoImageContainer">
-                    <img 
-                      src={producto.imagen} 
+                    <img
+                      src={producto.imagen}
                       alt={producto.nombre}
                       className="productoImage"
                     />

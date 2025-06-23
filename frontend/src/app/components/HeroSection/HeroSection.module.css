@@ -6,12 +6,12 @@
   height: 580px; /* ALTURA UNIFICADA */
   width: 100%;
   left: 0;
-  background-image: url('/imgs/fondocamion4.png');
+  background-image: url('/imgs/fondoazul.png');
   background-size: cover;
   background-position: center center; /* CORREGIDO: posición idéntica */
   background-repeat: no-repeat;
   color: white;
-  top: 120px;
+  top: 90px;
   display: flex;
   align-items: center;
   justify-content: center;

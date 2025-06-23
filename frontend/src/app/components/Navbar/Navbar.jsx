@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import SearchBar from '../SearchBar/SearchBar';
 import MobileMenu from '../MobileMenu/MobileMenu';
+import VisitCounter from '../VisitCounter/VisitCounter';
 import styles from './Navbar.module.css';
 
 const Navbar = () => {
@@ -62,6 +63,11 @@ const Navbar = () => {
                         </li>
                     ))}
                 </ul>
+
+                {/* Sección central con contador de visitas */}
+                <div className={styles.centerSection}>
+                    <VisitCounter />
+                </div>
 
                 {/* SearchBar desktop - visible solo en desktop */}
                 <div className={styles.searchSection}>
