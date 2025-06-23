@@ -672,7 +672,7 @@
 @media (max-width: 768px) {
   .ubicacion-page .heroSection {
     height: 420px; /* ALTURA CONSISTENTE */
-    top: 130px;
+    top: 60px;
     background-position: center center; /* CORREGIDO: posición idéntica */
   }
 
@@ -795,7 +795,7 @@
 @media (max-width: 480px) {
   .ubicacion-page .heroSection {
     height: 380px; /* ALTURA CONSISTENTE */
-    top: 125px;
+    top: 60px;
     background-position: center center; /* CORREGIDO: posición idéntica */
   }
 
@@ -891,7 +891,7 @@
 @media (max-width: 360px) {
   .ubicacion-page .heroSection {
     height: 350px; /* ALTURA CONSISTENTE */
-    top: 120px;
+    top: 60px;
     background-position: center center; /* CORREGIDO: posición idéntica */
   }
 

@@ -407,6 +407,7 @@
   /* Ocultar la navbar desktop completamente en móvil */
   .appBar {
     display: none;
+    margin-bottom: 0px;
   }
 }
 
