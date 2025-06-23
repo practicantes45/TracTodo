@@ -109,7 +109,7 @@
 /* Móvil (768px) - IGUAL A OTRAS PÁGINAS */
 @media (max-width: 768px) {
   .heroSection {
-    height: 420px; /* ALTURA CONSISTENTE */
+    height: 20px; /* ALTURA CONSISTENTE */
     top: 130px;
     background-position: center center; /* CORREGIDO: posición idéntica */
   }
