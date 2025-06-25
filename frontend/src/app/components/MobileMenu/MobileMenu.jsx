@@ -16,7 +16,7 @@ const MobileMenu = () => {
         { href: '/productos', label: 'Productos' },
         { href: '/ubicacion', label: 'Ubicación' },
         { href: '/sobre', label: 'Sobre Nosotros' },
-        { href: '/entretenimiento', label: 'Extras' }
+        { href: '/entretenimiento', label: 'Entretenimiento' }
     ];
 
     // Cerrar menú cuando cambie la ruta

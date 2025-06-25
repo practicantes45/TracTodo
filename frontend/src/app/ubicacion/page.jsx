@@ -88,7 +88,7 @@ export default function UbicacionPage() {
                                             <span className="time">9:00 AM - 6:00 PM</span>
                                         </div>
                                         <div className="scheduleItem closed">
-                                            <span className="day">Sábados y Domingos:</span>
+                                            <span className="day">Domingos:</span>
                                             <span className="time">CERRADO</span>
                                         </div>
                                     </div>
