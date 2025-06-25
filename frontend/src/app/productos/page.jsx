@@ -3,7 +3,6 @@ import './productos.css';
 import { FaCalendarCheck, FaMapMarkedAlt, FaFilter, FaWhatsapp, FaSortAlphaDown, FaSortAlphaUp, FaTimes } from "react-icons/fa";
 import { useState } from 'react';
 import Navbar from '../components/Navbar/Navbar';
-import ContactNumbers from '../components/ContactNumbers/ContactNumbers';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
 
@@ -195,9 +194,6 @@ export default function ProductosPage() {
             </div>
           </div>
         </div>
-
-        {/* Números de contacto */}
-        <ContactNumbers pageContext="productos" />
 
         {/* Botón Filtrar móvil - NUEVO */}
         <div className="mobileFilterToggle">
