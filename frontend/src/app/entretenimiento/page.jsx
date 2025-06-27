@@ -1,9 +1,8 @@
 'use client';
 import './entretenimiento.css';
-import { useState } from 'react';
-import { FaPlay, FaCalendarAlt, FaClock, FaEye, FaShare } from "react-icons/fa";
+import { useState, useEffect } from 'react';
+import { FaPlay, FaCalendarAlt, FaClock, FaEye, FaShare, FaBook, FaArrowDown } from "react-icons/fa";
 import Navbar from '../components/Navbar/Navbar';
-import ContactNumbers from '../components/ContactNumbers/ContactNumbers';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
 
@@ -11,66 +10,95 @@ export default function EntretenimientoPage() {
     const [selectedCategory, setSelectedCategory] = useState('todos');
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+    const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
+    const [isSubscribed, setIsSubscribed] = useState(false);
+    const [showStickyButton, setShowStickyButton] = useState(true);
 
-    // Datos de ejemplo para videos - En producción vendrían de YouTube API
-    const videosData = [
+    // Datos de ejemplo para shorts de YouTube
+    const shortsData = [
         {
             id: 1,
-            title: "Mantenimiento de Motor Diésel",
-            thumbnail: "/imgs/video-thumb-1.jpg",
-            duration: "03:45",
-            views: "2.1K",
+            title: "Cambio de Filtro en 60 Segundos",
+            thumbnail: "/imgs/short-thumb-1.jpg",
+            duration: "0:58",
+            views: "12.5K",
             uploadDate: "2024-01-15",
             category: "tutorials",
-            youtubeId: "dQw4w9WgXcQ" // ID real de YouTube
+            youtubeId: "dQw4w9WgXcQ",
+            isShort: true
         },
         {
             id: 2,
-            title: "Instalación de Sistema de Inyección",
-            thumbnail: "/imgs/video-thumb-2.jpg",
-            duration: "05:22",
-            views: "1.8K",
+            title: "Tips Rápidos Motor Diésel",
+            thumbnail: "/imgs/short-thumb-2.jpg",
+            duration: "0:45",
+            views: "8.3K",
             uploadDate: "2024-01-10",
             category: "tutorials",
-            youtubeId: "dQw4w9WgXcQ"
+            youtubeId: "dQw4w9WgXcQ",
+            isShort: true
         },
         {
             id: 3,
-            title: "Promoción Especial - Febrero 2024",
-            thumbnail: "/imgs/video-thumb-3.jpg",
-            duration: "01:30",
-            views: "3.2K",
-            uploadDate: "2024-02-01",
+            title: "¡OFERTA FLASH! 50% OFF",
+            thumbnail: "/imgs/short-thumb-3.jpg",
+            duration: "0:30",
+            views: "25.1K",
+            uploadDate: "2024-01-08",
             category: "promociones",
-            youtubeId: "dQw4w9WgXcQ"
+            youtubeId: "dQw4w9WgXcQ",
+            isShort: true
         },
         {
             id: 4,
-            title: "Día de las Madres - Felicitación",
-            thumbnail: "/imgs/video-thumb-4.jpg",
-            duration: "02:15",
-            views: "950",
-            uploadDate: "2024-05-10",
+            title: "Feliz Año Nuevo TRACTODO",
+            thumbnail: "/imgs/short-thumb-4.jpg",
+            duration: "0:40",
+            views: "18.7K",
+            uploadDate: "2024-01-01",
             category: "festividades",
-            youtubeId: "dQw4w9WgXcQ"
+            youtubeId: "dQw4w9WgXcQ",
+            isShort: true
+        },
+        {
+            id: 5,
+            title: "Reparación Express Turbo",
+            thumbnail: "/imgs/short-thumb-5.jpg",
+            duration: "0:55",
+            views: "15.2K",
+            uploadDate: "2023-12-28",
+            category: "tutorials",
+            youtubeId: "dQw4w9WgXcQ",
+            isShort: true
+        },
+        {
+            id: 6,
+            title: "Black Friday Deals",
+            thumbnail: "/imgs/short-thumb-6.jpg",
+            duration: "0:35",
+            views: "32.8K",
+            uploadDate: "2023-11-24",
+            category: "promociones",
+            youtubeId: "dQw4w9WgXcQ",
+            isShort: true
         }
     ];
 
-    // Datos de ejemplo para blog posts
-    const blogPosts = [
+    // Datos del blog
+    const blogData = [
         {
             id: 1,
-            title: "Cuando considerar una media reparación",
-            excerpt: "La inversión en un tractocamión es considerable, y maximizar su vida útil es fundamental para el negocio del transporte.",
+            title: "Guía completa de mantenimiento preventivo",
+            excerpt: "Aprende los fundamentos del mantenimiento preventivo para vehículos pesados y cómo implementar un programa efectivo.",
             image: "/imgs/blog-1.jpg",
-            publishDate: "2024-01-18",
+            publishDate: "2024-01-20",
             readTime: "5 min",
             category: "Mantenimiento"
         },
         {
             id: 2,
-            title: "La importancia de una cabeza de motor en buen estado",
-            excerpt: "Una cabeza de motor en mal estado puede ser un enemigo silencioso, afectando el consumo de combustible, la potencia y, en última instancia, elevando los costos operativos.",
+            title: "Las 10 fallas más comunes en motores diésel",
+            excerpt: "Identifica y soluciona los problemas más frecuentes en motores diésel para evitar costosas reparaciones.",
             image: "/imgs/blog-2.jpg",
             publishDate: "2024-01-15",
             readTime: "3 min",
@@ -79,7 +107,7 @@ export default function EntretenimientoPage() {
         {
             id: 3,
             title: "Cómo elegir las refacciones correctas para tu motor",
-            excerpt: "Elegir las refacciones adecuadas es crucial para mantener el rendimiento óptimo de tu vehículo pesado y evitar costosas reparaciones futuras.",
+            excerpt: "Elegir las refacciones adecuadas es crucial para mantener el rendimiento óptimo de tu vehículo pesado.",
             image: "/imgs/blog-3.jpg",
             publishDate: "2024-01-12",
             readTime: "4 min",
@@ -94,10 +122,31 @@ export default function EntretenimientoPage() {
         { id: 'festividades', label: 'Festividades' }
     ];
 
-    // Filtrar videos según categoría seleccionada
-    const filteredVideos = selectedCategory === 'todos' 
-        ? videosData 
-        : videosData.filter(video => video.category === selectedCategory);
+    // Detectar scroll para ocultar/mostrar botón sticky
+    useEffect(() => {
+        const handleScroll = () => {
+            const blogSection = document.querySelector('.blogSection');
+            if (blogSection) {
+                const blogSectionTop = blogSection.offsetTop;
+                const scrollPosition = window.scrollY + window.innerHeight;
+                
+                // Ocultar botón cuando el usuario está cerca o en la sección del blog
+                if (scrollPosition >= blogSectionTop + 100) {
+                    setShowStickyButton(false);
+                } else {
+                    setShowStickyButton(true);
+                }
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // Filtrar shorts según categoría seleccionada
+    const filteredShorts = selectedCategory === 'todos'
+        ? shortsData
+        : shortsData.filter(short => short.category === selectedCategory);
 
     const handleVideoClick = (video) => {
         setSelectedVideo(video);
@@ -110,24 +159,35 @@ export default function EntretenimientoPage() {
     };
 
     const handleBlogClick = (post) => {
-        // Redirigir a la página individual del artículo
         window.location.href = `/blog/${post.id}`;
     };
 
     const handleShareVideo = (video, e) => {
         e.stopPropagation();
-        const youtubeUrl = `https://www.youtube.com/watch?v=${video.youtubeId}`;
-        
+        const youtubeUrl = video.isShort
+            ? `https://www.youtube.com/shorts/${video.youtubeId}`
+            : `https://www.youtube.com/watch?v=${video.youtubeId}`;
+
         if (navigator.share) {
             navigator.share({
                 title: video.title,
-                text: `Mira este video de TRACTODO: ${video.title}`,
+                text: `Mira este short de TRACTODO: ${video.title}`,
                 url: youtubeUrl
             });
         } else {
-            // Fallback: copiar al portapapeles
             navigator.clipboard.writeText(youtubeUrl).then(() => {
                 alert('Enlace copiado al portapapeles');
+            });
+        }
+    };
+
+    // Función para hacer scroll al blog
+    const scrollToBlog = () => {
+        const blogSection = document.querySelector('.blogSection');
+        if (blogSection) {
+            blogSection.scrollIntoView({ 
+                behavior: 'smooth', 
+                block: 'start' 
             });
         }
     };
@@ -141,9 +201,23 @@ export default function EntretenimientoPage() {
         });
     };
 
+    const handleSubscribe = async (email) => {
+        try {
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            setIsSubscribed(true);
+            setIsSubscriptionModalOpen(false);
+            alert('¡Gracias por suscribirte! Te notificaremos sobre nuevos shorts y artículos.');
+        } catch (error) {
+            alert('Error al suscribirse. Inténtalo de nuevo.');
+        }
+    };
+
+    const closeSubscriptionModal = () => {
+        setIsSubscriptionModalOpen(false);
+    };
+
     return (
         <div className="layout entretenimiento-page">
-            
             <Navbar />
 
             <main className="mainContent">
@@ -155,16 +229,17 @@ export default function EntretenimientoPage() {
                         </div>
                     </div>
                 </div>
+
                 {/* Sección principal de contenido */}
                 <section className="entertainmentMainSection">
                     <div className="entertainmentContainer">
-                        
-                        {/* Sección de Videos */}
+
+                        {/* Sección de Shorts */}
                         <div className="videosSection">
                             <div className="sectionHeader">
-                                <h2>VIDEOS</h2>
+                                <h2>SHORTS</h2>
                                 <p className="sectionDescription">
-                                    Contenido educativo y promocional de nuestro canal de YouTube
+                                    Contenido rápido y educativo de nuestro canal de YouTube
                                 </p>
                             </div>
 
@@ -181,52 +256,56 @@ export default function EntretenimientoPage() {
                                 ))}
                             </div>
 
-                            {/* Grid de videos */}
-                            <div className="videosGrid">
-                                {filteredVideos.map((video) => (
-                                    <div
-                                        key={video.id}
-                                        className="videoCard"
-                                        onClick={() => handleVideoClick(video)}
-                                    >
-                                        <div className="videoThumbnail">
-                                            {/* Placeholder para thumbnail - en producción vendría de YouTube */}
-                                            <div className="thumbnailPlaceholder">
-                                                <div className="playOverlay">
-                                                    <FaPlay className="playIcon" />
+                            {/* Grid de shorts */}
+                            <div className="shortsGrid">
+                                {filteredShorts.length > 0 ? (
+                                    filteredShorts.map((short) => (
+                                        <div
+                                            key={short.id}
+                                            className="shortCard"
+                                            onClick={() => handleVideoClick(short)}
+                                        >
+                                            <div className="shortThumbnail">
+                                                <div className="thumbnailPlaceholder">
+                                                    <div className="playOverlay">
+                                                        <FaPlay className="playIcon" />
+                                                    </div>
+                                                    <div className="shortDuration">{short.duration}</div>
+                                                    <div className="shortBadge">SHORT</div>
+                                                    <button
+                                                        className="shareButton"
+                                                        onClick={(e) => handleShareVideo(short, e)}
+                                                        aria-label="Compartir short"
+                                                    >
+                                                        <FaShare />
+                                                    </button>
                                                 </div>
-                                                <div className="videoDuration">{video.duration}</div>
                                             </div>
-                                            <button 
-                                                className="shareButton"
-                                                onClick={(e) => handleShareVideo(video, e)}
-                                                aria-label="Compartir video"
-                                            >
-                                                <FaShare />
-                                            </button>
-                                        </div>
-                                        <div className="videoInfo">
-                                            <h3 className="videoTitle">{video.title}</h3>
-                                            <div className="videoMeta">
-                                                <span className="videoViews">
-                                                    <FaEye /> {video.views} visualizaciones
-                                                </span>
-                                                <span className="videoDate">
-                                                    {formatDate(video.uploadDate)}
-                                                </span>
+                                            <div className="shortInfo">
+                                                <h3 className="shortTitle">{short.title}</h3>
+                                                <div className="shortMeta">
+                                                    <span className="shortViews">
+                                                        <FaEye /> {short.views} vistas
+                                                    </span>
+                                                    <span className="shortDate">
+                                                        {formatDate(short.uploadDate)}
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
+                                    ))
+                                ) : (
+                                    <div className="noResults">
+                                        <h3>No hay shorts disponibles</h3>
+                                        <p>Intenta con otra categoría o vuelve más tarde.</p>
                                     </div>
-                                ))}
+                                )}
                             </div>
 
-                            {/* Botón para ver más videos */}
+                            {/* Botón para ver más shorts */}
                             <div className="sectionFooter">
-                                <a 
-                                    href="/videos" 
-                                    className="viewMoreButton"
-                                >
-                                    Ver más videos
+                                <a href="/videos" className="viewMoreButton shorts">
+                                    Ver más shorts
                                 </a>
                             </div>
                         </div>
@@ -236,23 +315,21 @@ export default function EntretenimientoPage() {
                             <div className="sectionHeader">
                                 <h2>BLOG</h2>
                                 <p className="sectionDescription">
-                                    Artículos y noticias sobre el mundo del transporte pesado
+                                    Artículos detallados sobre mantenimiento, reparaciones y más
                                 </p>
                             </div>
 
-                            {/* Grid de posts del blog */}
+                            {/* Grid de blog */}
                             <div className="blogGrid">
-                                {blogPosts.map((post) => (
+                                {blogData.map((post) => (
                                     <article
                                         key={post.id}
                                         className="blogCard"
                                         onClick={() => handleBlogClick(post)}
                                     >
                                         <div className="blogImageContainer">
-                                            {/* Placeholder para imagen - en producción tendrían imágenes reales */}
-                                            <div className="blogImagePlaceholder">
-                                                <div className="blogCategory">{post.category}</div>
-                                            </div>
+                                            <img src={post.image} alt={post.title} className="blogImage" />
+                                            <div className="blogCategory">{post.category}</div>
                                         </div>
                                         <div className="blogContent">
                                             <h3 className="blogTitle">{post.title}</h3>
@@ -262,18 +339,18 @@ export default function EntretenimientoPage() {
                                                     <FaCalendarAlt /> {formatDate(post.publishDate)}
                                                 </span>
                                                 <span className="blogReadTime">
-                                                    <FaClock /> {post.readTime} de lectura
+                                                    <FaClock /> {post.readTime}
                                                 </span>
                                             </div>
-                                            <div className="readMoreButton">
-                                                Leer más
-                                            </div>
+                                            <button className="readMoreButton">
+                                                <span>Leer más</span>
+                                            </button>
                                         </div>
                                     </article>
                                 ))}
                             </div>
 
-                            {/* Botón para ver más posts */}
+                            {/* Botón para ver más artículos */}
                             <div className="sectionFooter">
                                 <a href="/blog" className="viewMoreButton">
                                     Ver más artículos
@@ -284,34 +361,46 @@ export default function EntretenimientoPage() {
                     </div>
                 </section>
 
-                {/* Modal de video */}
+                {/* Botón Sticky para Ver Blog - Solo móvil */}
+                {showStickyButton && (
+                    <button 
+                        className="more-content-sticky"
+                        onClick={scrollToBlog}
+                        aria-label="Ver blog de TRACTODO"
+                    >
+                        <FaBook className="sticky-button-icon" />
+                        Ver Blog
+                        <FaArrowDown className="sticky-button-icon" />
+                    </button>
+                )}
+
+                {/* Modal de video/short */}
                 {isVideoModalOpen && selectedVideo && (
                     <div className="videoModal" onClick={closeVideoModal}>
                         <div className="videoModalContent" onClick={(e) => e.stopPropagation()}>
-                            <button className="videoModalClose" onClick={closeVideoModal}>
+                            <button
+                                className="videoModalClose"
+                                onClick={closeVideoModal}
+                                aria-label="Cerrar modal"
+                            >
                                 ×
                             </button>
                             <div className="videoContainer">
                                 <iframe
-                                    width="100%"
-                                    height="100%"
-                                    src={`https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1`}
+                                    src={selectedVideo.isShort
+                                        ? `https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1&mute=1`
+                                        : `https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1`
+                                    }
                                     title={selectedVideo.title}
                                     frameBorder="0"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                     allowFullScreen
                                 ></iframe>
                             </div>
-                            <div className="videoModalInfo">
-                                <h3>{selectedVideo.title}</h3>
-                                <div className="videoModalMeta">
-                                    <span><FaEye /> {selectedVideo.views} visualizaciones</span>
-                                    <span>{formatDate(selectedVideo.uploadDate)}</span>
-                                </div>
-                            </div>
                         </div>
                     </div>
                 )}
+
             </main>
 
             <Footer />
