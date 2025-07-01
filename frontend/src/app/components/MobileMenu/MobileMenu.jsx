@@ -1,10 +1,10 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import styles from './MobileMenu.module.css';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { IoClose } from 'react-icons/io5';
 import VisitCounter from '../VisitCounter/VisitCounter';
-import styles from './MobileMenu.module.css';
 
 const MobileMenu = () => {
     const [isOpen, setIsOpen] = useState(false);
