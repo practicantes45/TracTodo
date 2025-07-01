@@ -2,7 +2,6 @@
 import './videos.css';
 import { useState } from 'react';
 import { FaArrowLeft, FaSearch, FaPlay, FaEye, FaShare, FaYoutube, FaTiktok } from "react-icons/fa";
-import SearchBar from '../components/SearchBar/SearchBar';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
@@ -13,126 +12,112 @@ export default function VideosPage() {
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
-    // Datos expandidos de shorts - En producción vendrían de YouTube API
+    // Datos expandidos de shorts con links de YouTube - Estructura simplificada
     const allShorts = [
         {
             id: 1,
             title: "Cambio de Filtro en 60 Segundos",
-            thumbnail: "/imgs/short-thumb-1.jpg",
-            duration: "0:58",
-            views: "12.5K",
-            uploadDate: "2024-01-15",
-            category: "tutorials",
-            youtubeId: "dQw4w9WgXcQ",
-            isShort: true
+            youtubeLink: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
+            category: "tutoriales"
         },
         {
             id: 2,
             title: "Tips Rápidos Motor Diésel",
-            thumbnail: "/imgs/short-thumb-2.jpg",
-            duration: "0:45",
-            views: "8.3K",
-            uploadDate: "2024-01-10",
-            category: "tutorials",
-            youtubeId: "dQw4w9WgXcQ",
-            isShort: true
+            youtubeLink: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
+            category: "tutoriales"
         },
         {
             id: 3,
             title: "¡OFERTA FLASH! 50% OFF",
-            thumbnail: "/imgs/short-thumb-3.jpg",
-            duration: "0:30",
-            views: "25.1K",
-            uploadDate: "2024-01-08",
-            category: "promociones",
-            youtubeId: "dQw4w9WgXcQ",
-            isShort: true
+            youtubeLink: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
+            category: "promociones"
         },
         {
             id: 4,
             title: "Feliz Año Nuevo TRACTODO",
-            thumbnail: "/imgs/short-thumb-4.jpg",
-            duration: "0:40",
-            views: "18.7K",
-            uploadDate: "2024-01-01",
-            category: "festividades",
-            youtubeId: "dQw4w9WgXcQ",
-            isShort: true
+            youtubeLink: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
+            category: "festividades"
         },
         {
             id: 5,
             title: "Reparación Express Turbo",
-            thumbnail: "/imgs/short-thumb-5.jpg",
-            duration: "0:55",
-            views: "15.2K",
-            uploadDate: "2023-12-28",
-            category: "tutorials",
-            youtubeId: "dQw4w9WgXcQ",
-            isShort: true
+            youtubeLink: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
+            category: "tutoriales"
         },
         {
             id: 6,
             title: "Black Friday Deals",
-            thumbnail: "/imgs/short-thumb-6.jpg",
-            duration: "0:35",
-            views: "32.8K",
-            uploadDate: "2023-11-24",
-            category: "promociones",
-            youtubeId: "dQw4w9WgXcQ",
-            isShort: true
+            youtubeLink: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
+            category: "promociones"
         },
         {
             id: 7,
             title: "Mantenimiento Preventivo Básico",
-            thumbnail: "/imgs/short-thumb-7.jpg",
-            duration: "1:00",
-            views: "9.8K",
-            uploadDate: "2023-12-20",
-            category: "tutorials",
-            youtubeId: "dQw4w9WgXcQ",
-            isShort: true
+            youtubeLink: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
+            category: "tutoriales"
         },
         {
             id: 8,
             title: "Navidad en TRACTODO",
-            thumbnail: "/imgs/short-thumb-8.jpg",
-            duration: "0:38",
-            views: "22.3K",
-            uploadDate: "2023-12-25",
-            category: "festividades",
-            youtubeId: "dQw4w9WgXcQ",
-            isShort: true
+            youtubeLink: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
+            category: "festividades"
         },
         {
             id: 9,
             title: "Cyber Monday Especial",
-            thumbnail: "/imgs/short-thumb-9.jpg",
-            duration: "0:42",
-            views: "28.5K",
-            uploadDate: "2023-11-27",
-            category: "promociones",
-            youtubeId: "dQw4w9WgXcQ",
-            isShort: true
+            youtubeLink: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
+            category: "promociones"
         },
         {
             id: 10,
             title: "Diagnóstico Rápido de Motor",
-            thumbnail: "/imgs/short-thumb-10.jpg",
-            duration: "0:52",
-            views: "14.7K",
-            uploadDate: "2023-12-15",
-            category: "tutorials",
-            youtubeId: "dQw4w9WgXcQ",
-            isShort: true
+            youtubeLink: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
+            category: "tutoriales"
+        },
+        {
+            id: 11,
+            title: "Cambio de Aceite Express",
+            youtubeLink: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
+            category: "tutoriales"
+        },
+        {
+            id: 12,
+            title: "Promoción Fin de Año",
+            youtubeLink: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
+            category: "promociones"
         }
     ];
 
     const categories = [
         { id: 'todos', label: 'Todos' },
-        { id: 'tutorials', label: 'Tutoriales' },
+        { id: 'tutoriales', label: 'Tutoriales' },
         { id: 'promociones', label: 'Promociones' },
         { id: 'festividades', label: 'Festividades' }
     ];
+
+    // Función para extraer ID de YouTube del link
+    const extractYouTubeId = (url) => {
+        if (!url) return null;
+
+        // Para YouTube Shorts
+        const shortsMatch = url.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/);
+        if (shortsMatch) return shortsMatch[1];
+
+        // Para videos normales de YouTube
+        const normalMatch = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]+)/);
+        if (normalMatch) return normalMatch[1];
+
+        return null;
+    };
+
+    // Función para generar thumbnail de YouTube
+    const getYouTubeThumbnail = (youtubeLink) => {
+        const videoId = extractYouTubeId(youtubeLink);
+        if (videoId) {
+            return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+        }
+        return '/imgs/default-video-thumb.jpg'; // imagen por defecto
+    };
 
     // Filtrar shorts por categoría y búsqueda
     const filteredShorts = allShorts.filter(short => {
@@ -142,8 +127,18 @@ export default function VideosPage() {
     });
 
     const handleVideoClick = (video) => {
-        setSelectedVideo(video);
-        setIsVideoModalOpen(true);
+        const videoId = extractYouTubeId(video.youtubeLink);
+        if (videoId) {
+            setSelectedVideo({
+                ...video,
+                youtubeId: videoId,
+                isShort: video.youtubeLink.includes('/shorts/')
+            });
+            setIsVideoModalOpen(true);
+        } else {
+            // Si no se puede extraer el ID, abrir directamente en YouTube
+            window.open(video.youtubeLink, '_blank');
+        }
     };
 
     const closeVideoModal = () => {
@@ -153,30 +148,18 @@ export default function VideosPage() {
 
     const handleShareVideo = (video, e) => {
         e.stopPropagation();
-        const youtubeUrl = video.isShort
-            ? `https://www.youtube.com/shorts/${video.youtubeId}`
-            : `https://www.youtube.com/watch?v=${video.youtubeId}`;
 
         if (navigator.share) {
             navigator.share({
                 title: video.title,
                 text: `Mira este short de TRACTODO: ${video.title}`,
-                url: youtubeUrl
+                url: video.youtubeLink
             });
         } else {
-            navigator.clipboard.writeText(youtubeUrl).then(() => {
+            navigator.clipboard.writeText(video.youtubeLink).then(() => {
                 alert('Enlace copiado al portapapeles');
             });
         }
-    };
-
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('es-MX', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-        });
     };
 
     const getCategoryCount = (categoryId) => {
@@ -215,11 +198,11 @@ export default function VideosPage() {
                 {/* Sección principal de shorts */}
                 <section className="videosMainSection">
                     <div className="videosContainer">
-                        
+
                         {/* Botón de regreso */}
                         <div className="backButtonContainer">
-                            <button 
-                                className="backButton" 
+                            <button
+                                className="backButton"
                                 onClick={handleBackToEntertainment}
                                 aria-label="Regresar a entretenimiento"
                             >
@@ -231,21 +214,10 @@ export default function VideosPage() {
                         {/* Header con estadísticas y búsqueda */}
                         <div className="videosHeader">
                             <div className="videosStats">
-                                <h2>Shorts de TRACTODO</h2>
+                                <h2>¡Arranca el motor y vamos a ver!</h2>
                                 <p>{filteredShorts.length} shorts encontrados</p>
                             </div>
-                            
-                            {/* Barra de búsqueda */}
-                            <div className="searchContainer">
-                                <FaSearch className="searchIcon" />
-                                <input
-                                    type="text"
-                                    placeholder="Buscar shorts..."
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="searchInput"
-                                />
-                            </div>
+
                         </div>
 
                         {/* Filtros de categorías con contadores */}
@@ -274,11 +246,17 @@ export default function VideosPage() {
                                         onClick={() => handleVideoClick(short)}
                                     >
                                         <div className="shortThumbnail">
-                                            <div className="thumbnailPlaceholder">
+                                            <div
+                                                className="thumbnailPlaceholder"
+                                                style={{
+                                                    backgroundImage: `url(${getYouTubeThumbnail(short.youtubeLink)})`,
+                                                    backgroundSize: 'cover',
+                                                    backgroundPosition: 'center'
+                                                }}
+                                            >
                                                 <div className="playOverlay">
                                                     <FaPlay className="playIcon" />
                                                 </div>
-                                                <div className="shortDuration">{short.duration}</div>
                                                 <div className="shortBadge">SHORT</div>
                                                 <button
                                                     className="shareButton"
@@ -292,11 +270,8 @@ export default function VideosPage() {
                                         <div className="shortInfo">
                                             <h3 className="shortTitle">{short.title}</h3>
                                             <div className="shortMeta">
-                                                <span className="shortViews">
-                                                    <FaEye /> {short.views} vistas
-                                                </span>
-                                                <span className="shortDate">
-                                                    {formatDate(short.uploadDate)}
+                                                <span className="shortCategory">
+                                                    {short.category}
                                                 </span>
                                             </div>
                                         </div>
@@ -315,13 +290,13 @@ export default function VideosPage() {
                             <div className="channelInfo">
                                 <h3>¡Síguenos en nuestras redes!</h3>
                                 <p>
-                                    Descubre más contenido educativo sobre refacciones, mantenimiento y 
+                                    Descubre más contenido educativo sobre refacciones, mantenimiento y
                                     reparaciones de vehículos pesados en nuestros canales oficiales.
                                 </p>
                             </div>
-                            
+
                             <div className="socialButtonsContainer">
-                                <button 
+                                <button
                                     className="youtubeButton"
                                     onClick={goToYouTubeChannel}
                                     aria-label="Visitar canal de YouTube"
@@ -329,8 +304,8 @@ export default function VideosPage() {
                                     <FaYoutube className="youtubeIcon" />
                                     <span className="buttonText">Ir al Canal</span>
                                 </button>
-                                
-                                <button 
+
+                                <button
                                     className="tiktokButton"
                                     onClick={goToTikTokProfile}
                                     aria-label="Visitar perfil de TikTok"

@@ -10,7 +10,7 @@ export default function BlogPage() {
     const [selectedCategory, setSelectedCategory] = useState('todos');
     const [searchTerm, setSearchTerm] = useState('');
 
-    // Datos expandidos de posts del blog
+    // Datos de posts del blog - Solo 5 artículos
     const allPosts = [
         {
             id: 1,
@@ -76,71 +76,6 @@ export default function BlogPage() {
             author: "TRACTODO",
             views: "2.7K",
             tags: ["inyección", "síntomas", "diagnóstico", "problemas"]
-        },
-        {
-            id: 6,
-            title: "Ventajas de los motores reconstruidos vs. nuevos",
-            excerpt: "La decisión entre un motor reconstruido y uno nuevo puede impactar significativamente en la rentabilidad de tu operación de transporte.",
-            content: "La decisión entre un motor reconstruido y uno nuevo puede impactar significativamente en la rentabilidad de tu operación de transporte. Analizamos las ventajas y desventajas de cada opción para ayudarte a tomar la mejor decisión...",
-            image: "/imgs/blog-6.jpg",
-            publishDate: "2024-01-02",
-            readTime: "8 min",
-            category: "Comparativas",
-            author: "TRACTODO",
-            views: "3.8K",
-            tags: ["reconstruido", "nuevo", "comparación", "inversión"]
-        },
-        {
-            id: 7,
-            title: "Optimización del consumo de combustible en flotas",
-            excerpt: "Estrategias comprobadas para reducir el consumo de combustible hasta en un 15%, maximizando la rentabilidad de tu operación.",
-            content: "Estrategias comprobadas para reducir el consumo de combustible hasta en un 15%, maximizando la rentabilidad de tu operación. El combustible representa uno de los mayores gastos operativos en el transporte de carga...",
-            image: "/imgs/blog-7.jpg",
-            publishDate: "2023-12-28",
-            readTime: "9 min",
-            category: "Eficiencia",
-            author: "TRACTODO",
-            views: "5.1K",
-            tags: ["combustible", "eficiencia", "ahorro", "optimización"]
-        },
-        {
-            id: 8,
-            title: "Tendencias tecnológicas en motores diésel 2024",
-            excerpt: "Las últimas innovaciones en tecnología de motores diésel que están revolucionando la industria del transporte pesado.",
-            content: "Las últimas innovaciones en tecnología de motores diésel que están revolucionando la industria del transporte pesado. Desde sistemas de post-tratamiento avanzados hasta tecnologías de combustión más eficientes...",
-            image: "/imgs/blog-8.jpg",
-            publishDate: "2023-12-25",
-            readTime: "6 min",
-            category: "Tecnología",
-            author: "TRACTODO",
-            views: "2.9K",
-            tags: ["tecnología", "innovación", "tendencias", "2024"]
-        },
-        {
-            id: 9,
-            title: "Gestión de inventario de refacciones: Mejores prácticas",
-            excerpt: "Cómo optimizar tu inventario de refacciones para reducir costos y asegurar la disponibilidad cuando más lo necesites.",
-            content: "Cómo optimizar tu inventario de refacciones para reducir costos y asegurar la disponibilidad cuando más lo necesites. Una gestión eficiente del inventario puede marcar la diferencia entre el éxito y el fracaso de tu taller...",
-            image: "/imgs/blog-9.jpg",
-            publishDate: "2023-12-20",
-            readTime: "7 min",
-            category: "Gestión",
-            author: "TRACTODO",
-            views: "1.9K",
-            tags: ["inventario", "gestión", "refacciones", "optimización"]
-        },
-        {
-            id: 10,
-            title: "Historia de TRACTODO: 15 años de experiencia",
-            excerpt: "Conoce la historia de nuestra empresa, desde sus inicios hasta convertirse en referente en refacciones para motores diésel.",
-            content: "Conoce la historia de nuestra empresa, desde sus inicios hasta convertirse en referente en refacciones para motores diésel. Un recorrido por 15 años de crecimiento, innovación y compromiso con nuestros clientes...",
-            image: "/imgs/blog-10.jpg",
-            publishDate: "2023-12-15",
-            readTime: "10 min",
-            category: "Empresa",
-            author: "TRACTODO",
-            views: "4.7K",
-            tags: ["historia", "empresa", "experiencia", "trayectoria"]
         }
     ];
 
@@ -149,12 +84,7 @@ export default function BlogPage() {
         { id: 'Mantenimiento', label: 'Mantenimiento' },
         { id: 'Reparaciones', label: 'Reparaciones' },
         { id: 'Guías', label: 'Guías' },
-        { id: 'Diagnóstico', label: 'Diagnóstico' },
-        { id: 'Comparativas', label: 'Comparativas' },
-        { id: 'Eficiencia', label: 'Eficiencia' },
-        { id: 'Tecnología', label: 'Tecnología' },
-        { id: 'Gestión', label: 'Gestión' },
-        { id: 'Empresa', label: 'Empresa' }
+        { id: 'Diagnóstico', label: 'Diagnóstico' }
     ];
 
     // Filtrar posts según categoría y búsqueda
@@ -193,7 +123,7 @@ export default function BlogPage() {
     const featuredPost = allPosts[0];
 
     // Posts relacionados (excluyendo el destacado)
-    const relatedPosts = filteredPosts.slice(1, 7);
+    const relatedPosts = filteredPosts.slice(1);
 
     return (
         <div className="layout blog-page">
@@ -226,25 +156,6 @@ export default function BlogPage() {
                             </button>
                         </div>
 
-                        {/* Header con estadísticas y búsqueda */}
-                        <div className="blogHeader">
-                            <div className="blogStats">
-                                <h2>Artículos del Blog</h2>
-                                <p>{filteredPosts.length} artículos encontrados</p>
-                            </div>
-                            
-                            {/* Barra de búsqueda */}
-                            <div className="searchContainer">
-                                <FaSearch className="searchIcon" />
-                                <input
-                                    type="text"
-                                    placeholder="Buscar artículos..."
-                                    value={searchTerm}
-                                    onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="searchInput"
-                                />
-                            </div>
-                        </div>
 
                         {/* Post destacado */}
                         <div className="featuredSection">
@@ -285,6 +196,16 @@ export default function BlogPage() {
                                 </div>
                                 
                             </article>
+                        </div>
+
+                        
+                        {/* Header con estadísticas y búsqueda */}
+                        <div className="blogHeader">
+                            <div className="blogStats">
+                                <h2>Artículos del Blog</h2>
+                                <p>{filteredPosts.length} artículos encontrados</p>
+                            </div>
+                        
                         </div>
 
                         {/* Filtros de categorías con contadores */}
@@ -354,24 +275,6 @@ export default function BlogPage() {
                                 <p>Intenta cambiar los filtros o términos de búsqueda</p>
                             </div>
                         )}
-
-                        {/* Newsletter y información adicional */}
-                        <div className="blogFooter">
-                            <div className="newsletterSection">
-                                <h3>Suscríbete a nuestro blog</h3>
-                                <p>Recibe los últimos artículos y consejos directamente en tu correo</p>
-                                <div className="newsletterForm">
-                                    <input 
-                                        type="email" 
-                                        placeholder="Tu correo electrónico"
-                                        className="newsletterInput"
-                                    />
-                                    <button className="newsletterButton">
-                                        Suscribirse
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
 
                     </div>
                 </section>
