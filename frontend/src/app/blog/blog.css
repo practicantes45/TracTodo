@@ -10,7 +10,7 @@
   height: 580px;
   width: 100%;
   left: 0;
-  background-image: url('/imgs/blog-hero.jpg');
+  background-image: url('/imgs/blog.jpg');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -31,7 +31,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .heroContent {
@@ -91,7 +91,7 @@
 
 /* ===== BOTÓN DE REGRESO ===== */
 .backButtonContainer {
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 .backButton {
@@ -126,7 +126,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 40px;
+  margin-bottom: 4px;
   gap: 20px;
   flex-wrap: wrap;
 }
@@ -143,38 +143,6 @@
   font-size: 1.1rem;
   color: #666;
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
-}
-
-/* ===== BARRA DE BÚSQUEDA ===== */
-.searchContainer {
-  position: relative;
-  min-width: 300px;
-}
-
-.searchIcon {
-  position: absolute;
-  left: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #888;
-  font-size: 1rem;
-}
-
-.searchInput {
-  width: 100%;
-  padding: 12px 20px 12px 45px;
-  border: 2px solid rgba(0, 180, 216, 0.2);
-  border-radius: 25px;
-  font-size: 1rem;
-  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
-  background: white;
-  transition: all 0.3s ease;
-}
-
-.searchInput:focus {
-  outline: none;
-  border-color: var(--accent-color);
-  box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.1);
 }
 
 /* ===== POST DESTACADO ===== */
@@ -648,99 +616,6 @@
 
 .viewMoreButton:hover::after {
   transform: translateX(5px);
-}
-
-/* ===== FOOTER DEL BLOG ===== */
-.blogFooter {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-  border-radius: 25px;
-  padding: 60px;
-  margin-top: 80px;
-  color: white;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-
-.blogFooter::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.05)"/><circle cx="50" cy="10" r="0.5" fill="rgba(255,255,255,0.03)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-  pointer-events: none;
-}
-
-.newsletterSection {
-  position: relative;
-  z-index: 2;
-}
-
-.newsletterSection h3 {
-  font-size: 2.2rem;
-  margin-bottom: 15px;
-  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
-  font-weight: 700;
-}
-
-.newsletterSection p {
-  font-size: 1.2rem;
-  margin-bottom: 30px;
-  opacity: 0.9;
-  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
-}
-
-.newsletterForm {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-.newsletterInput {
-  flex: 1;
-  padding: 15px 20px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 25px;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  font-size: 1rem;
-  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-}
-
-.newsletterInput::placeholder {
-  color: rgba(255, 255, 255, 0.7);
-}
-
-.newsletterInput:focus {
-  outline: none;
-  border-color: rgba(255, 255, 255, 0.6);
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.newsletterButton {
-  padding: 15px 30px;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  border-radius: 25px;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
-  font-size: 1rem;
-  font-weight: 600;
-  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-}
-
-.newsletterButton:hover {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.5);
-  transform: translateY(-2px);
 }
 
 /* ===== ANIMACIONES ===== */

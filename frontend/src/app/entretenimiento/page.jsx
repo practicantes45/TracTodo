@@ -7,84 +7,45 @@ import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
 
 export default function EntretenimientoPage() {
-    const [selectedCategory, setSelectedCategory] = useState('todos');
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-    const [isSubscriptionModalOpen, setIsSubscriptionModalOpen] = useState(false);
-    const [isSubscribed, setIsSubscribed] = useState(false);
     const [showStickyButton, setShowStickyButton] = useState(true);
 
-    // Datos de ejemplo para shorts de YouTube
+    // Datos simplificados para shorts de YouTube - Solo 5 videos
     const shortsData = [
         {
             id: 1,
-            title: "Cambio de Filtro en 60 Segundos",
-            thumbnail: "/imgs/short-thumb-1.jpg",
-            duration: "0:58",
-            views: "12.5K",
-            uploadDate: "2024-01-15",
-            category: "tutorials",
-            youtubeId: "dQw4w9WgXcQ",
-            isShort: true
+            title: "Media Reparación ISM",
+            youtubeLink: "https://youtube.com/shorts/uBFnf3OnzSc?si=7tFbTRzaaoV987gm",
+            category: "promociones"
         },
         {
             id: 2,
-            title: "Tips Rápidos Motor Diésel",
-            thumbnail: "/imgs/short-thumb-2.jpg",
-            duration: "0:45",
-            views: "8.3K",
-            uploadDate: "2024-01-10",
-            category: "tutorials",
-            youtubeId: "dQw4w9WgXcQ",
-            isShort: true
+            title: "Confianza al cliente",
+            youtubeLink: "https://youtube.com/shorts/u2DCUuzE9eo?si=PvtVB77U6PvsU6fQ",
+            category: "contenido"
         },
         {
             id: 3,
-            title: "¡OFERTA FLASH! 50% OFF",
-            thumbnail: "/imgs/short-thumb-3.jpg",
-            duration: "0:30",
-            views: "25.1K",
-            uploadDate: "2024-01-08",
-            category: "promociones",
-            youtubeId: "dQw4w9WgXcQ",
-            isShort: true
+            title: "Dale a tu motor lo mejor",
+            youtubeLink: "https://youtube.com/shorts/bA2qhK3NzLI?si=EVMAjptREbIn6U9H",
+            category: "promociones"
         },
         {
             id: 4,
-            title: "Feliz Año Nuevo TRACTODO",
-            thumbnail: "/imgs/short-thumb-4.jpg",
-            duration: "0:40",
-            views: "18.7K",
-            uploadDate: "2024-01-01",
-            category: "festividades",
-            youtubeId: "dQw4w9WgXcQ",
-            isShort: true
+            title: "Tractodo Te Da Lo Mejor",
+            youtubeLink: "https://youtube.com/shorts/WMXAFSCP00o?si=vtD1HVKhnPEf96Zc",
+            category: "contenido"
         },
         {
             id: 5,
-            title: "Reparación Express Turbo",
-            thumbnail: "/imgs/short-thumb-5.jpg",
-            duration: "0:55",
-            views: "15.2K",
-            uploadDate: "2023-12-28",
-            category: "tutorials",
-            youtubeId: "dQw4w9WgXcQ",
-            isShort: true
-        },
-        {
-            id: 6,
-            title: "Black Friday Deals",
-            thumbnail: "/imgs/short-thumb-6.jpg",
-            duration: "0:35",
-            views: "32.8K",
-            uploadDate: "2023-11-24",
-            category: "promociones",
-            youtubeId: "dQw4w9WgXcQ",
-            isShort: true
+            title: "Cabeza Para Motor Volvo D13 Nueva",
+            youtubeLink: "https://youtube.com/shorts/n0V3eG2A38Y?si=-mjo1g1NiZ5PKZAf",
+            category: "tutoriales"
         }
     ];
 
-    // Datos del blog
+    // Datos del blog - Solo 5 artículos
     const blogData = [
         {
             id: 1,
@@ -112,14 +73,25 @@ export default function EntretenimientoPage() {
             publishDate: "2024-01-12",
             readTime: "4 min",
             category: "Guías"
+        },
+        {
+            id: 4,
+            title: "Mantenimiento preventivo: Calendario anual para tu flota",
+            excerpt: "Un programa de mantenimiento preventivo bien estructurado puede reducir hasta un 40% los costos de reparación.",
+            image: "/imgs/blog-4.jpg",
+            publishDate: "2024-01-08",
+            readTime: "7 min",
+            category: "Mantenimiento"
+        },
+        {
+            id: 5,
+            title: "Síntomas de problemas en el sistema de inyección",
+            excerpt: "Identificar tempranamente los problemas en el sistema de inyección puede ahorrarte miles de pesos en reparaciones.",
+            image: "/imgs/blog-5.jpg",
+            publishDate: "2024-01-05",
+            readTime: "6 min",
+            category: "Diagnóstico"
         }
-    ];
-
-    const categories = [
-        { id: 'todos', label: 'Todos' },
-        { id: 'tutorials', label: 'Tutoriales' },
-        { id: 'promociones', label: 'Promociones' },
-        { id: 'festividades', label: 'Festividades' }
     ];
 
     // Detectar scroll para ocultar/mostrar botón sticky
@@ -143,17 +115,92 @@ export default function EntretenimientoPage() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Filtrar shorts según categoría seleccionada
-    const filteredShorts = selectedCategory === 'todos'
-        ? shortsData
-        : shortsData.filter(short => short.category === selectedCategory);
+    // Función para extraer ID de YouTube del link
+    const extractYouTubeId = (url) => {
+        if (!url) {
+            console.log('❌ No URL provided');
+            return null;
+        }
+        
+        console.log('🔗 Extracting ID from URL:', url); // Debug
+        
+        try {
+            // Para YouTube Shorts
+            const shortsMatch = url.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/);
+            if (shortsMatch) {
+                console.log('📹 Found shorts ID:', shortsMatch[1]); // Debug
+                return shortsMatch[1];
+            }
+            
+            // Para videos normales de YouTube con watch?v=
+            const watchMatch = url.match(/youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/);
+            if (watchMatch) {
+                console.log('🎥 Found watch video ID:', watchMatch[1]); // Debug
+                return watchMatch[1];
+            }
+            
+            // Para URLs cortas youtu.be
+            const shortUrlMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
+            if (shortUrlMatch) {
+                console.log('🔗 Found short URL video ID:', shortUrlMatch[1]); // Debug
+                return shortUrlMatch[1];
+            }
+            
+            // Para URLs que ya contienen solo el ID
+            const directIdMatch = url.match(/^[a-zA-Z0-9_-]{11}$/);
+            if (directIdMatch) {
+                console.log('🎯 Direct video ID:', url); // Debug
+                return url;
+            }
+            
+        } catch (error) {
+            console.error('💥 Error extracting YouTube ID:', error);
+        }
+        
+        console.log('❌ No ID found for URL:', url); // Debug
+        return null;
+    };
 
     const handleVideoClick = (video) => {
-        setSelectedVideo(video);
-        setIsVideoModalOpen(true);
+        console.log('🎥 Video clicked:', video); // Debug
+        
+        try {
+            const videoId = extractYouTubeId(video.youtubeLink);
+            console.log('🔍 Extracted video ID:', videoId); // Debug
+            
+            if (videoId) {
+                const videoData = {
+                    ...video,
+                    youtubeId: videoId,
+                    isShort: video.youtubeLink.includes('/shorts/')
+                };
+                console.log('✅ Setting video data:', videoData); // Debug
+                console.log('🎬 Opening modal...'); // Debug
+                
+                setSelectedVideo(videoData);
+                setIsVideoModalOpen(true);
+                
+                // Verificar que el estado se actualizó
+                setTimeout(() => {
+                    console.log('📊 Modal state:', {
+                        isOpen: isVideoModalOpen,
+                        selectedVideo: selectedVideo
+                    });
+                }, 100);
+                
+            } else {
+                console.log('❌ No video ID found, opening in new tab:', video.youtubeLink); // Debug
+                window.open(video.youtubeLink, '_blank');
+            }
+        } catch (error) {
+            console.error('💥 Error in handleVideoClick:', error);
+            // Fallback: abrir en YouTube
+            window.open(video.youtubeLink, '_blank');
+        }
     };
 
     const closeVideoModal = () => {
+        console.log('Closing video modal'); // Debug
         setIsVideoModalOpen(false);
         setSelectedVideo(null);
     };
@@ -164,18 +211,15 @@ export default function EntretenimientoPage() {
 
     const handleShareVideo = (video, e) => {
         e.stopPropagation();
-        const youtubeUrl = video.isShort
-            ? `https://www.youtube.com/shorts/${video.youtubeId}`
-            : `https://www.youtube.com/watch?v=${video.youtubeId}`;
-
+        
         if (navigator.share) {
             navigator.share({
                 title: video.title,
                 text: `Mira este short de TRACTODO: ${video.title}`,
-                url: youtubeUrl
+                url: video.youtubeLink
             });
         } else {
-            navigator.clipboard.writeText(youtubeUrl).then(() => {
+            navigator.clipboard.writeText(video.youtubeLink).then(() => {
                 alert('Enlace copiado al portapapeles');
             });
         }
@@ -201,19 +245,13 @@ export default function EntretenimientoPage() {
         });
     };
 
-    const handleSubscribe = async (email) => {
-        try {
-            await new Promise(resolve => setTimeout(resolve, 1500));
-            setIsSubscribed(true);
-            setIsSubscriptionModalOpen(false);
-            alert('¡Gracias por suscribirte! Te notificaremos sobre nuevos shorts y artículos.');
-        } catch (error) {
-            alert('Error al suscribirse. Inténtalo de nuevo.');
+    // Función para generar thumbnail de YouTube
+    const getYouTubeThumbnail = (youtubeLink) => {
+        const videoId = extractYouTubeId(youtubeLink);
+        if (videoId) {
+            return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
         }
-    };
-
-    const closeSubscriptionModal = () => {
-        setIsSubscriptionModalOpen(false);
+        return '/imgs/default-video-thumb.jpg'; // imagen por defecto si no se puede obtener
     };
 
     return (
@@ -237,69 +275,52 @@ export default function EntretenimientoPage() {
                         {/* Sección de Shorts */}
                         <div className="videosSection">
                             <div className="sectionHeader">
-                                <h2>SHORTS</h2>
+                                <h2>VIDEOS</h2>
                                 <p className="sectionDescription">
-                                    Contenido rápido y educativo de nuestro canal de YouTube
+                                     Tractovideos: ¡Vía hacia la emoción y la información!
                                 </p>
                             </div>
 
-                            {/* Filtros de categorías */}
-                            <div className="categoryFilters">
-                                {categories.map((category) => (
-                                    <button
-                                        key={category.id}
-                                        className={`categoryButton ${selectedCategory === category.id ? 'active' : ''}`}
-                                        onClick={() => setSelectedCategory(category.id)}
-                                    >
-                                        {category.label}
-                                    </button>
-                                ))}
-                            </div>
-
-                            {/* Grid de shorts */}
+                            {/* Grid de shorts - SIN FILTROS */}
                             <div className="shortsGrid">
-                                {filteredShorts.length > 0 ? (
-                                    filteredShorts.map((short) => (
-                                        <div
-                                            key={short.id}
-                                            className="shortCard"
-                                            onClick={() => handleVideoClick(short)}
-                                        >
-                                            <div className="shortThumbnail">
-                                                <div className="thumbnailPlaceholder">
-                                                    <div className="playOverlay">
-                                                        <FaPlay className="playIcon" />
-                                                    </div>
-                                                    <div className="shortDuration">{short.duration}</div>
-                                                    <div className="shortBadge">SHORT</div>
-                                                    <button
-                                                        className="shareButton"
-                                                        onClick={(e) => handleShareVideo(short, e)}
-                                                        aria-label="Compartir short"
-                                                    >
-                                                        <FaShare />
-                                                    </button>
+                                {shortsData.map((short) => (
+                                    <div
+                                        key={short.id}
+                                        className="shortCard"
+                                        onClick={() => handleVideoClick(short)}
+                                    >
+                                        <div className="shortThumbnail">
+                                            <div 
+                                                className="thumbnailPlaceholder"
+                                                style={{
+                                                    backgroundImage: `url(${getYouTubeThumbnail(short.youtubeLink)})`,
+                                                    backgroundSize: 'cover',
+                                                    backgroundPosition: 'center'
+                                                }}
+                                            >
+                                                <div className="playOverlay">
+                                                    <FaPlay className="playIcon" />
                                                 </div>
-                                            </div>
-                                            <div className="shortInfo">
-                                                <h3 className="shortTitle">{short.title}</h3>
-                                                <div className="shortMeta">
-                                                    <span className="shortViews">
-                                                        <FaEye /> {short.views} vistas
-                                                    </span>
-                                                    <span className="shortDate">
-                                                        {formatDate(short.uploadDate)}
-                                                    </span>
-                                                </div>
+                                                <div className="shortBadge">SHORT</div>
+                                                <button
+                                                    className="shareButton"
+                                                    onClick={(e) => handleShareVideo(short, e)}
+                                                    aria-label="Compartir short"
+                                                >
+                                                    <FaShare />
+                                                </button>
                                             </div>
                                         </div>
-                                    ))
-                                ) : (
-                                    <div className="noResults">
-                                        <h3>No hay shorts disponibles</h3>
-                                        <p>Intenta con otra categoría o vuelve más tarde.</p>
+                                        <div className="shortInfo">
+                                            <h3 className="shortTitle">{short.title}</h3>
+                                            <div className="shortMeta">
+                                                <span className="shortCategory">
+                                                    {short.category}
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
-                                )}
+                                ))}
                             </div>
 
                             {/* Botón para ver más shorts */}
@@ -315,7 +336,7 @@ export default function EntretenimientoPage() {
                             <div className="sectionHeader">
                                 <h2>BLOG</h2>
                                 <p className="sectionDescription">
-                                    Artículos detallados sobre mantenimiento, reparaciones y más
+                                    Tractoinformación: ¡Conocimiento en movimiento!
                                 </p>
                             </div>
 
@@ -386,16 +407,28 @@ export default function EntretenimientoPage() {
                                 ×
                             </button>
                             <div className="videoContainer">
-                                <iframe
-                                    src={selectedVideo.isShort
-                                        ? `https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1&mute=1`
-                                        : `https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1`
-                                    }
-                                    title={selectedVideo.title}
-                                    frameBorder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
-                                ></iframe>
+                                {selectedVideo.youtubeId ? (
+                                    <iframe
+                                        src={selectedVideo.isShort
+                                            ? `https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1&mute=1`
+                                            : `https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1`
+                                        }
+                                        title={selectedVideo.title}
+                                        frameBorder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowFullScreen
+                                    ></iframe>
+                                ) : (
+                                    <div className="videoErrorContainer">
+                                        <div>Error al cargar el video</div>
+                                        <button 
+                                            className="youtubeButton"
+                                            onClick={() => window.open(selectedVideo.youtubeLink, '_blank')}
+                                        >
+                                            Ver en YouTube
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>

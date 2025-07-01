@@ -3,12 +3,14 @@
 /* Hero Section - EXACTAMENTE IGUAL A UBICACIÓN Y SOBRE */
 .heroSection {
   position: absolute;
-  height: 580px; /* ALTURA UNIFICADA */
+  height: 580px;
+  /* ALTURA UNIFICADA */
   width: 100%;
   left: 0;
   background-image: url('/imgs/fondoazul.png');
   background-size: cover;
-  background-position: center center; /* CORREGIDO: posición idéntica */
+  background-position: center center;
+  /* CORREGIDO: posición idéntica */
   background-repeat: no-repeat;
   color: white;
   top: 90px;
@@ -27,8 +29,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  /* Overlay sutil uniforme */
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .heroContent {
@@ -63,7 +64,7 @@
   font-weight: 400;
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
   color: white;
-  text-shadow: 
+  text-shadow:
     1px 1px 3px rgba(0, 0, 0, 0.8),
     0 0 8px rgba(0, 0, 0, 0.5),
     0 0 15px rgba(0, 42, 92, 0.3);
@@ -78,6 +79,7 @@
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -89,8 +91,10 @@
 /* Tablet (992px) - IGUAL A OTRAS PÁGINAS */
 @media (max-width: 992px) {
   .heroSection {
-    height: 540px; /* ALTURA CONSISTENTE */
-    background-position: center center; /* CORREGIDO: posición idéntica */
+    height: 540px;
+    /* ALTURA CONSISTENTE */
+    background-position: center center;
+    /* CORREGIDO: posición idéntica */
   }
 
   .logoImage {
@@ -109,9 +113,11 @@
 /* Móvil (768px) - IGUAL A OTRAS PÁGINAS */
 @media (max-width: 768px) {
   .heroSection {
-    height: 20px; /* ALTURA CONSISTENTE */
+    height: 20px;
+    /* ALTURA CONSISTENTE */
     top: 130px;
-    background-position: center center; /* CORREGIDO: posición idéntica */
+    background-position: center center;
+    /* CORREGIDO: posición idéntica */
   }
 
   /* Logo oculto en dispositivos móviles */
@@ -127,9 +133,11 @@
 
 @media (max-width: 661px) {
   .heroSection {
-    height: 420px; /* ALTURA CONSISTENTE */
+    height: 420px;
+    /* ALTURA CONSISTENTE */
     top: 130px;
-    background-position: center center; /* CORREGIDO: posición idéntica */
+    background-position: center center;
+    /* CORREGIDO: posición idéntica */
   }
 
   /* Logo oculto en dispositivos móviles */
@@ -146,9 +154,11 @@
 /* Móvil pequeño (480px) - IGUAL A OTRAS PÁGINAS */
 @media (max-width: 481px) {
   .heroSection {
-    height: 380px; /* ALTURA CONSISTENTE */
+    height: 380px;
+    /* ALTURA CONSISTENTE */
     top: 125px;
-    background-position: center center; /* CORREGIDO: posición idéntica */
+    background-position: center center;
+    /* CORREGIDO: posición idéntica */
   }
 
   /* Logo confirmadamente oculto */
@@ -165,9 +175,11 @@
 /* Móviles muy pequeños (360px) - IGUAL A OTRAS PÁGINAS */
 @media (max-width: 375px) {
   .heroSection {
-    height: 350px; /* ALTURA CONSISTENTE */
+    height: 350px;
+    /* ALTURA CONSISTENTE */
     top: 120px;
-    background-position: center center; /* CORREGIDO: posición idéntica */
+    background-position: center center;
+    /* CORREGIDO: posición idéntica */
   }
 
   /* Logo confirmadamente oculto */
@@ -183,9 +195,11 @@
 
 @media (max-width: 360px) {
   .heroSection {
-    height: 350px; /* ALTURA CONSISTENTE */
+    height: 350px;
+    /* ALTURA CONSISTENTE */
     top: 120px;
-    background-position: center center; /* CORREGIDO: posición idéntica */
+    background-position: center center;
+    /* CORREGIDO: posición idéntica */
   }
 
   /* Logo confirmadamente oculto */

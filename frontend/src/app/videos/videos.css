@@ -10,7 +10,7 @@
   height: 580px;
   width: 100%;
   left: 0;
-  background-image: url('/imgs/videos-hero.jpg');
+  background-image: url('/imgs/videos.jpg');
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -31,7 +31,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .heroContent {
@@ -145,37 +145,6 @@
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
 }
 
-/* ===== BARRA DE BÚSQUEDA ===== */
-.searchContainer {
-  position: relative;
-  min-width: 300px;
-}
-
-.searchIcon {
-  position: absolute;
-  left: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #888;
-  font-size: 1rem;
-}
-
-.searchInput {
-  width: 100%;
-  padding: 12px 20px 12px 45px;
-  border: 2px solid rgba(0, 180, 216, 0.2);
-  border-radius: 25px;
-  font-size: 1rem;
-  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
-  background: white;
-  transition: all 0.3s ease;
-}
-
-.searchInput:focus {
-  outline: none;
-  border-color: var(--accent-color);
-  box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.1);
-}
 
 /* ===== FILTROS DE CATEGORÍAS ===== */
 .categoryFilters {
