@@ -135,7 +135,7 @@
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
 }
 
-/* ===== CONTENEDOR DEL VIDEO YOUTUBE ===== */
+/* ===== CONTENEDOR DEL THUMBNAIL DE VIDEO ===== */
 .youtubeVideoContainer {
   position: relative;
   display: flex;
@@ -148,6 +148,7 @@
   aspect-ratio: 16/9;
   box-shadow: 0 15px 40px rgba(0, 42, 92, 0.15);
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .youtubeVideoContainer:hover {
@@ -155,12 +156,56 @@
   box-shadow: 0 25px 60px rgba(0, 42, 92, 0.2);
 }
 
-.youtubeVideo {
-  width: 100% !important;
-  height: 100% !important;
-  border-radius: 20px;
-  border: none;
+.videoThumbnail {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: #000;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.thumbnailImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.3s ease;
+}
+
+.youtubeVideoContainer:hover .thumbnailImage {
+  transform: scale(1.05);
+  filter: brightness(0.7);
+}
+
+.playButton {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff0000;
+  font-size: 2rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.youtubeVideoContainer:hover .playButton {
+  transform: translate(-50%, -50%) scale(1.1);
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+}
+
+.playButton svg {
+  margin-left: 5px;
 }
 
 /* ===== SECCIÓN DEL MAPA (LADO DERECHO) ===== */
@@ -519,6 +564,13 @@
   overflow: hidden;
   margin-bottom: 20px;
   box-shadow: 0 8px 25px rgba(0, 42, 92, 0.15);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.referenceImageContainer:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 35px rgba(0, 42, 92, 0.25);
 }
 
 .referenceImage {
@@ -573,6 +625,149 @@
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
 }
 
+/* ===== MODALES - ESTILOS PRINCIPALES ===== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ===== MODAL DE IMAGEN ===== */
+.image-modal {
+  position: relative;
+  max-width: 90vw;
+  max-height: 90vh;
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+  animation: modalSlideIn 0.4s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    transform: scale(0.8) translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.modal-content {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.modal-image {
+  width: 100%;
+  height: auto;
+  max-height: 80vh;
+  object-fit: contain;
+  display: block;
+}
+
+.modal-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  color: white;
+  padding: 20px 25px 15px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+}
+
+/* ===== MODAL DE VIDEO ===== */
+.video-modal-overlay {
+  background: rgba(0, 0, 0, 0.95);
+}
+
+.video-modal {
+  position: relative;
+  width: 90vw;
+  height: 90vh;
+  max-width: 1200px;
+  max-height: 675px;
+  background: #000;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.7);
+  animation: modalSlideIn 0.4s ease-out;
+}
+
+.video-modal-content {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.modal-video {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 15px;
+}
+
+/* ===== BOTÓN CERRAR MODAL ===== */
+.modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 45px;
+  height: 45px;
+  background: rgba(0, 0, 0, 0.7);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10001;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.modal-close:hover {
+  background: rgba(255, 0, 0, 0.8);
+  transform: scale(1.1);
+}
+
+.video-modal-close {
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+}
+
+.video-modal-close:hover {
+  background: rgba(255, 0, 0, 0.9);
+  color: white;
+}
+
 /* ===== RESPONSIVE DESIGN MEJORADO ===== */
 
 /* Tablet Grande (1200px+) */
@@ -593,6 +788,17 @@
 
   .referenceImageContainer {
     height: 180px;
+  }
+
+  /* Modal responsive */
+  .image-modal {
+    max-width: 95vw;
+    max-height: 95vh;
+  }
+
+  .video-modal {
+    width: 95vw;
+    height: 85vh;
   }
 }
 
@@ -629,12 +835,18 @@
     border-radius: 15px;
   }
 
-  .youtubeVideo {
-    border-radius: 15px;
-  }
-
   .referenceImageContainer {
     height: 160px;
+  }
+
+  /* Modal responsive */
+  .modal-overlay {
+    padding: 15px;
+  }
+
+  .video-modal {
+    width: 95vw;
+    height: 80vh;
   }
 }
 
@@ -665,6 +877,18 @@
 
   .referenceImageContainer {
     height: 150px;
+  }
+
+  /* Modal responsive */
+  .video-modal {
+    width: 95vw;
+    height: 75vh;
+  }
+
+  .modal-close {
+    width: 40px;
+    height: 40px;
+    font-size: 1.3rem;
   }
 }
 
@@ -719,14 +943,10 @@
     box-shadow: 0 10px 25px rgba(0, 42, 92, 0.15);
   }
 
-  .youtubeVideo {
-    border-radius: 12px;
-    height: 250px !important;
-  }
-
-  .youtubeVideoContainer:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 15px 35px rgba(0, 42, 92, 0.2);
+  .playButton {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
   }
 
   .mapSection h2 {
@@ -789,6 +1009,36 @@
   .referenceImageContainer {
     height: 140px;
   }
+
+  /* Modal responsive móvil */
+  .modal-overlay {
+    padding: 10px;
+  }
+
+  .image-modal {
+    max-width: 98vw;
+    max-height: 95vh;
+    border-radius: 10px;
+  }
+
+  .video-modal {
+    width: 98vw;
+    height: 70vh;
+    border-radius: 10px;
+  }
+
+  .modal-close {
+    width: 35px;
+    height: 35px;
+    font-size: 1.2rem;
+    top: 10px;
+    right: 10px;
+  }
+
+  .modal-title {
+    padding: 15px 20px 10px;
+    font-size: 1rem;
+  }
 }
 
 /* Móvil pequeño (480px) - MANTENER TÍTULO OCULTO */
@@ -827,9 +1077,10 @@
     margin: 0 auto;
   }
 
-  .youtubeVideo {
-    border-radius: 10px;
-    height: 220px !important;
+  .playButton {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
   }
 
   .addressCard,
@@ -885,6 +1136,23 @@
   .referenceCard h4 {
     font-size: 1.2rem;
   }
+
+  /* Modal responsive móvil pequeño */
+  .video-modal {
+    width: 98vw;
+    height: 60vh;
+  }
+
+  .modal-close {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+  }
+
+  .modal-title {
+    padding: 10px 15px 8px;
+    font-size: 0.9rem;
+  }
 }
 
 /* Ajustes para pantallas muy pequeñas (360px) - MANTENER TÍTULO OCULTO */
@@ -933,9 +1201,10 @@
     border-radius: 8px;
   }
 
-  .youtubeVideo {
-    border-radius: 8px;
-    height: 200px !important;
+  .playButton {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
   }
 
   .addressCard,
@@ -1020,16 +1289,39 @@
     font-size: 0.85rem;
     line-height: 1.4;
   }
+
+  /* Modal responsive pantallas muy pequeñas */
+  .modal-overlay {
+    padding: 5px;
+  }
+
+  .video-modal {
+    width: 98vw;
+    height: 55vh;
+  }
+
+  .modal-close {
+    width: 28px;
+    height: 28px;
+    font-size: 0.9rem;
+    top: 8px;
+    right: 8px;
+  }
+
+  .modal-title {
+    padding: 8px 12px 6px;
+    font-size: 0.8rem;
+  }
 }
 
 /* ===== OPTIMIZACIONES PARA YOUTUBE ===== */
-.youtubeVideo:focus {
+.youtubeVideoContainer:focus-within {
   outline: 3px solid var(--accent-color);
   outline-offset: 2px;
 }
 
-/* Placeholder mientras carga el video */
-.youtubeVideoContainer::before {
+/* Placeholder mientras carga el thumbnail */
+.videoThumbnail::before {
   content: '';
   position: absolute;
   top: 0;
@@ -1041,10 +1333,22 @@
   z-index: -1;
 }
 
-/* ===== MODO OSCURO PARA YOUTUBE ===== */
+/* ===== MODO OSCURO ===== */
 @media (prefers-color-scheme: dark) {
-  .youtubeVideoContainer::before {
+  .videoThumbnail::before {
     background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+  }
+
+  .modal-overlay {
+    background: rgba(0, 0, 0, 0.95);
+  }
+
+  .image-modal {
+    background: #1a1a1a;
+  }
+
+  .modal-title {
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
   }
 }
 
@@ -1092,6 +1396,16 @@
     border: 2px solid #ffc107;
     color: #000000;
   }
+
+  .modal-overlay {
+    background: rgba(0, 0, 0, 0.98);
+  }
+
+  .modal-close {
+    background: #ffffff;
+    color: #000000;
+    border: 2px solid #000000;
+  }
 }
 
 /* Respeto por preferencias de movimiento reducido */
@@ -1104,7 +1418,11 @@
   .actionButton,
   .youtubeVideoContainer,
   .referenceImage,
-  .referenceIcon {
+  .referenceIcon,
+  .playButton,
+  .modal-close,
+  .image-modal,
+  .video-modal {
     transition: none;
   }
 
@@ -1115,7 +1433,9 @@
   .expandUnderline,
   .fadeInUp,
   .tooltipSlideIn,
-  .floatingParticles {
+  .floatingParticles,
+  .modalFadeIn,
+  .modalSlideIn {
     animation: none;
   }
 }
@@ -1125,7 +1445,9 @@
   .actionButton,
   .addressCard,
   .scheduleCard,
-  .referenceCard {
+  .referenceCard,
+  .youtubeVideoContainer,
+  .referenceImageContainer {
     transform: none;
   }
 
@@ -1139,6 +1461,15 @@
 
   .referenceCard:active {
     transform: translateY(-5px);
+  }
+
+  .youtubeVideoContainer:active,
+  .referenceImageContainer:active {
+    transform: scale(0.98);
+  }
+
+  .modal-close:active {
+    transform: scale(0.9);
   }
 }
 
@@ -1155,5 +1486,12 @@
   .locationContainer,
   .referencesContainer {
     overflow-x: hidden;
+  }
+
+  /* Evitar que los modales causen scroll */
+  body.modal-open {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
   }
 }
