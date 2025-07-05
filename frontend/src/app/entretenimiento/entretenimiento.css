@@ -7,7 +7,8 @@
 /* ===== HERO SECTION PARA ENTRETENIMIENTO - UNIFICADO ===== */
 .entretenimiento-page .heroSection {
   position: absolute;
-  height: 580px; /* ALTURA UNIFICADA */
+  height: 580px;
+  /* ALTURA UNIFICADA */
   width: 100%;
   left: 0;
   background-image: url('/imgs/entretenimiento3.png');
@@ -57,6 +58,7 @@
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -67,23 +69,28 @@
 .entretenimiento-page .mainContent {
   flex: 1;
   width: 100%;
-  padding-top: 580px; /* IGUAL A LA ALTURA DEL HERO */
+  padding-top: 580px;
+  /* IGUAL A LA ALTURA DEL HERO */
 }
 
 /* ===== SECCIÓN PRINCIPAL DE ENTRETENIMIENTO ===== */
 .entertainmentMainSection {
   background: linear-gradient(145deg, #f0f8ff 0%, #e6f3ff 30%, #ffffff 70%, #f8f9fa 100%);
-  padding: 40px 20px 80px 20px; /* Igual que videos.css */
+  padding: 40px 20px 80px 20px;
+  /* Igual que videos.css */
   margin: 0;
-  margin-top: -100px; /* AJUSTE ESPECÍFICO UNIFICADO */
+  margin-top: -100px;
+  /* AJUSTE ESPECÍFICO UNIFICADO */
   position: relative;
   overflow: hidden;
 }
 
 .entertainmentContainer {
-  max-width: 1400px; /* Igual que videos.css */
+  max-width: 1400px;
+  /* Igual que videos.css */
   margin: 0 auto;
-  padding: 0 20px; /* Igual que videos.css */
+  padding: 0 20px;
+  /* Igual que videos.css */
   position: relative;
   z-index: 2;
 }
@@ -121,6 +128,7 @@
   from {
     width: 0;
   }
+
   to {
     width: 120px;
   }
@@ -132,6 +140,7 @@
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
+  font-weight: bold;
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
 }
 
@@ -143,16 +152,19 @@
 /* ===== GRID DE SHORTS - IGUAL QUE VIDEOS.CSS ===== */
 .shortsGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Igual que videos.css */
-  gap: 30px; /* Igual que videos.css */
-  margin-bottom: 60px; /* Igual que videos.css */
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  /* Igual que videos.css */
+  gap: 30px;
+  /* Igual que videos.css */
+  margin-bottom: 60px;
+  /* Igual que videos.css */
 }
 
 .shortCard {
   background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 50%, #f0f7ff 100%);
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 
+  box-shadow:
     0 8px 25px rgba(0, 42, 92, 0.1),
     0 4px 15px rgba(0, 180, 216, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
@@ -171,9 +183,9 @@
   width: 100%;
   height: 100%;
   background: linear-gradient(90deg,
-    transparent 0%,
-    rgba(0, 180, 216, 0.1) 50%,
-    transparent 100%);
+      transparent 0%,
+      rgba(0, 180, 216, 0.1) 50%,
+      transparent 100%);
   transition: left 1.5s ease;
   pointer-events: none;
   z-index: 1;
@@ -181,7 +193,7 @@
 
 .shortCard:hover {
   transform: translateY(-8px) scale(1.02);
-  box-shadow: 
+  box-shadow:
     0 20px 40px rgba(0, 42, 92, 0.15),
     0 8px 25px rgba(0, 180, 216, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
@@ -196,7 +208,8 @@
 .shortThumbnail {
   position: relative;
   width: 100%;
-  height: 320px; /* Altura mayor para formato de short */
+  height: 320px;
+  /* Altura mayor para formato de short */
   overflow: hidden;
 }
 
@@ -229,7 +242,8 @@
 .playIcon {
   color: var(--primary-color);
   font-size: 1.5rem;
-  margin-left: 3px; /* Para centrar visualmente el triángulo */
+  margin-left: 3px;
+  /* Para centrar visualmente el triángulo */
 }
 
 .shortCard:hover .playOverlay {
@@ -352,7 +366,8 @@
 .blogGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 30px; /* Igual que videos.css */
+  gap: 30px;
+  /* Igual que videos.css */
   margin-bottom: 50px;
 }
 
@@ -360,7 +375,7 @@
   background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 50%, #f0f7ff 100%);
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 
+  box-shadow:
     0 10px 30px rgba(0, 42, 92, 0.08),
     0 4px 15px rgba(0, 180, 216, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
@@ -379,9 +394,9 @@
   width: 100%;
   height: 100%;
   background: linear-gradient(90deg,
-    transparent 0%,
-    rgba(0, 180, 216, 0.1) 50%,
-    transparent 100%);
+      transparent 0%,
+      rgba(0, 180, 216, 0.1) 50%,
+      transparent 100%);
   transition: left 1.5s ease;
   pointer-events: none;
   z-index: 1;
@@ -389,7 +404,7 @@
 
 .blogCard:hover {
   transform: translateY(-10px) scale(1.02);
-  box-shadow: 
+  box-shadow:
     0 25px 50px rgba(0, 42, 92, 0.15),
     0 10px 30px rgba(0, 180, 216, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
@@ -580,7 +595,7 @@
   position: relative;
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
-  box-shadow: 
+  box-shadow:
     0 8px 25px rgba(0, 42, 92, 0.2),
     0 4px 15px rgba(0, 180, 216, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -606,7 +621,7 @@
 
 .viewMoreButton:hover {
   transform: translateY(-4px) scale(1.05);
-  box-shadow: 
+  box-shadow:
     0 15px 40px rgba(0, 42, 92, 0.3),
     0 8px 25px rgba(0, 180, 216, 0.2);
   border-color: rgba(255, 255, 255, 0.4);
@@ -711,12 +726,14 @@
 /* Tablet */
 @media (max-width: 768px) {
   .entertainmentMainSection {
-    padding: 30px 15px 60px 15px; /* Igual que videos.css */
+    padding: 30px 15px 60px 15px;
+    /* Igual que videos.css */
     margin-top: -80px;
   }
 
   .entertainmentContainer {
-    padding: 0 20px; /* Igual que videos.css */
+    padding: 0 20px;
+    /* Igual que videos.css */
   }
 
   .sectionHeader h2 {
@@ -725,7 +742,8 @@
 
   .shortsGrid {
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 20px; /* Igual que videos.css */
+    gap: 20px;
+    /* Igual que videos.css */
   }
 
   .shortThumbnail {
@@ -734,7 +752,8 @@
 
   .blogGrid {
     grid-template-columns: 1fr;
-    gap: 20px; /* Igual que videos.css */
+    gap: 20px;
+    /* Igual que videos.css */
   }
 
   .viewMoreButton {
@@ -759,12 +778,14 @@
 /* Móvil */
 @media (max-width: 480px) {
   .entertainmentMainSection {
-    padding: 20px 10px 50px 10px; /* Igual que videos.css */
+    padding: 20px 10px 50px 10px;
+    /* Igual que videos.css */
     margin-top: -60px;
   }
 
   .entertainmentContainer {
-    padding: 0 20px; /* Mantenemos padding consistente */
+    padding: 0 20px;
+    /* Mantenemos padding consistente */
   }
 
   .sectionHeader h2 {
@@ -772,16 +793,20 @@
   }
 
   .shortsGrid {
-    grid-template-columns: repeat(2, 1fr); /* Igual que videos.css */
-    gap: 15px; /* Igual que videos.css */
+    grid-template-columns: repeat(2, 1fr);
+    /* Igual que videos.css */
+    gap: 15px;
+    /* Igual que videos.css */
   }
 
   .shortThumbnail {
-    height: 240px; /* Igual que videos.css */
+    height: 240px;
+    /* Igual que videos.css */
   }
 
   .shortInfo {
-    padding: 15px; /* Igual que videos.css */
+    padding: 15px;
+    /* Igual que videos.css */
   }
 
   .blogContent {
@@ -797,7 +822,8 @@
   }
 
   .blogGrid {
-    gap: 15px; /* Igual que videos.css */
+    gap: 15px;
+    /* Igual que videos.css */
   }
 
   .viewMoreButton {
@@ -827,7 +853,8 @@
 /* Móvil muy pequeño */
 @media (max-width: 360px) {
   .entertainmentMainSection {
-    padding: 10px 5px 40px 5px; /* Igual que videos.css */
+    padding: 10px 5px 40px 5px;
+    /* Igual que videos.css */
   }
 
   .sectionHeader h2 {
@@ -835,16 +862,20 @@
   }
 
   .shortsGrid {
-    grid-template-columns: repeat(2, 1fr); /* Igual que videos.css */
-    gap: 10px; /* Igual que videos.css */
+    grid-template-columns: repeat(2, 1fr);
+    /* Igual que videos.css */
+    gap: 10px;
+    /* Igual que videos.css */
   }
 
   .shortThumbnail {
-    height: 200px; /* Igual que videos.css */
+    height: 200px;
+    /* Igual que videos.css */
   }
 
   .shortInfo {
-    padding: 10px; /* Igual que videos.css */
+    padding: 10px;
+    /* Igual que videos.css */
   }
 
   .blogContent {
@@ -856,7 +887,8 @@
   }
 
   .blogGrid {
-    gap: 10px; /* Igual que videos.css */
+    gap: 10px;
+    /* Igual que videos.css */
   }
 
   .viewMoreButton {
@@ -915,7 +947,8 @@
   position: relative;
   width: 100%;
   height: 0;
-  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  padding-bottom: 56.25%;
+  /* 16:9 aspect ratio */
 }
 
 .videoContainer iframe {
@@ -1024,6 +1057,7 @@
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -1031,149 +1065,194 @@
 }
 
 /* Delays progresivos */
-.shortCard:nth-child(1) { animation-delay: 0.1s; }
-.shortCard:nth-child(2) { animation-delay: 0.15s; }
-.shortCard:nth-child(3) { animation-delay: 0.2s; }
-.shortCard:nth-child(4) { animation-delay: 0.25s; }
-.shortCard:nth-child(5) { animation-delay: 0.3s; }
-.shortCard:nth-child(6) { animation-delay: 0.35s; }
+.shortCard:nth-child(1) {
+  animation-delay: 0.1s;
+}
 
-.blogCard:nth-child(1) { animation-delay: 0.1s; }
-.blogCard:nth-child(2) { animation-delay: 0.15s; }
-.blogCard:nth-child(3) { animation-delay: 0.2s; }
+.shortCard:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.shortCard:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.shortCard:nth-child(4) {
+  animation-delay: 0.25s;
+}
+
+.shortCard:nth-child(5) {
+  animation-delay: 0.3s;
+}
+
+.shortCard:nth-child(6) {
+  animation-delay: 0.35s;
+}
+
+.blogCard:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.blogCard:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.blogCard:nth-child(3) {
+  animation-delay: 0.2s;
+}
 
 .more-content-sticky {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
-    color: white;
-    padding: 15px 25px;
-    border-radius: 30px;
-    box-shadow: 0 4px 15px rgba(238, 90, 36, 0.4);
-    display: none; /* Oculto por defecto */
-    align-items: center;
-    gap: 12px;
-    font-weight: 700;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    animation: bounce 2s infinite;
-    border: none;
-    font-family: var(--font-montserrat), 'Montserrat', sans-serif;
-    text-decoration: none;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255, 255, 255, 0.2);
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  color: white;
+  padding: 15px 25px;
+  border-radius: 30px;
+  box-shadow: 0 4px 15px rgba(238, 90, 36, 0.4);
+  display: none;
+  /* Oculto por defecto */
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: bounce 2s infinite;
+  border: none;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .more-content-sticky:hover {
-    transform: translateX(-50%) translateY(-5px) scale(1.05);
-    box-shadow: 0 8px 25px rgba(238, 90, 36, 0.6);
-    animation-play-state: paused;
-    background: linear-gradient(135deg, #ee5a24 0%, #ff6b6b 100%);
+  transform: translateX(-50%) translateY(-5px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(238, 90, 36, 0.6);
+  animation-play-state: paused;
+  background: linear-gradient(135deg, #ee5a24 0%, #ff6b6b 100%);
 }
 
 .more-content-sticky:active {
-    transform: translateX(-50%) translateY(-2px) scale(1.02);
+  transform: translateX(-50%) translateY(-2px) scale(1.02);
 }
 
 .sticky-button-icon {
-    font-size: 1.2rem;
-    animation: iconBounce 1.5s infinite;
+  font-size: 1.2rem;
+  animation: iconBounce 1.5s infinite;
 }
 
 @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% { 
-        transform: translateX(-50%) translateY(0); 
-    }
-    40% { 
-        transform: translateX(-50%) translateY(-10px); 
-    }
-    60% { 
-        transform: translateX(-50%) translateY(-5px); 
-    }
+
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  40% {
+    transform: translateX(-50%) translateY(-10px);
+  }
+
+  60% {
+    transform: translateX(-50%) translateY(-5px);
+  }
 }
 
 @keyframes iconBounce {
-    0%, 20%, 50%, 80%, 100% { 
-        transform: translateY(0); 
-    }
-    40% { 
-        transform: translateY(-3px); 
-    }
-    60% { 
-        transform: translateY(-1px); 
-    }
+
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
+    transform: translateY(0);
+  }
+
+  40% {
+    transform: translateY(-3px);
+  }
+
+  60% {
+    transform: translateY(-1px);
+  }
 }
 
 /* Solo mostrar en móvil y cuando NO se ha llegado al blog */
 @media (max-width: 768px) {
-    .more-content-sticky {
-        display: flex;
-    }
-    
-    /* Ocultar cuando el blog está visible */
-    .more-content-sticky.hidden {
-        opacity: 0;
-        pointer-events: none;
-        transform: translateX(-50%) translateY(20px);
-    }
+  .more-content-sticky {
+    display: flex;
+  }
+
+  /* Ocultar cuando el blog está visible */
+  .more-content-sticky.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-50%) translateY(20px);
+  }
 }
 
 /* Variante con pulsación de brillo */
 .more-content-sticky::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
-    border-radius: inherit;
-    opacity: 0;
-    animation: shimmer 3s infinite;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
+  border-radius: inherit;
+  opacity: 0;
+  animation: shimmer 3s infinite;
 }
 
 @keyframes shimmer {
-    0% { 
-        opacity: 0;
-        transform: translateX(-100%) skewX(-25deg); 
-    }
-    50% { 
-        opacity: 1; 
-    }
-    100% { 
-        opacity: 0;
-        transform: translateX(200%) skewX(-25deg); 
-    }
+  0% {
+    opacity: 0;
+    transform: translateX(-100%) skewX(-25deg);
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(200%) skewX(-25deg);
+  }
 }
 
 /* Estilo responsive para pantallas muy pequeñas */
 @media (max-width: 480px) {
-    .more-content-sticky {
-        padding: 12px 20px;
-        font-size: 0.9rem;
-        bottom: 15px;
-    }
+  .more-content-sticky {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+    bottom: 15px;
+  }
 }
 
 /* Estilo para cuando se está scrolleando hacia el blog */
 .more-content-sticky.scrolling {
-    background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%);
-    animation: pulse 1s infinite;
+  background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%);
+  animation: pulse 1s infinite;
 }
 
 @keyframes pulse {
-    0%, 100% { 
-        box-shadow: 0 4px 15px rgba(0, 180, 216, 0.4); 
-    }
-    50% { 
-        box-shadow: 0 8px 25px rgba(0, 180, 216, 0.8); 
-    }
+
+  0%,
+  100% {
+    box-shadow: 0 4px 15px rgba(0, 180, 216, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 8px 25px rgba(0, 180, 216, 0.8);
+  }
 }
 
 /* ===== ARREGLO PARA INFORMACIÓN DE SHORT EN ENTRETENIMIENTO ===== */
@@ -1209,7 +1288,8 @@
   width: 100%;
   height: 100%;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  background-color: #000 !important; /* Fallback para cuando no carga el thumbnail */
+  background-color: #000 !important;
+  /* Fallback para cuando no carga el thumbnail */
   display: flex;
   align-items: center;
   justify-content: center;
