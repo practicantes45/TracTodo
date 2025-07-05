@@ -1,7 +1,7 @@
 'use client';
 import './ubicacion.css';
 import { useState } from 'react';
-import { FaCalendarCheck, FaMapMarkedAlt, FaCar, FaBuilding, FaShoppingCart, FaClock, FaPlay, FaInfoCircle } from "react-icons/fa";
+import { FaCalendarCheck, FaMapMarkedAlt, FaCar, FaBuilding, FaShoppingCart, FaClock, FaPlay, FaInfoCircle, FaTimes } from "react-icons/fa";
 import Navbar from '../components/Navbar/Navbar';
 import ContactNumbers from '../components/ContactNumbers/ContactNumbers';
 import Footer from '../components/Footer/Footer';
@@ -9,6 +9,9 @@ import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
 
 export default function UbicacionPage() {
     const [copiedItem, setCopiedItem] = useState('');
+    const [imageModalOpen, setImageModalOpen] = useState(false);
+    const [videoModalOpen, setVideoModalOpen] = useState(false);
+    const [currentImage, setCurrentImage] = useState({ src: '', alt: '', title: '' });
 
     const copyToClipboard = async (text, type) => {
         try {
@@ -18,6 +21,27 @@ export default function UbicacionPage() {
         } catch (err) {
             console.error('Error al copiar al portapapeles:', err);
         }
+    };
+
+    const openImageModal = (src, alt, title) => {
+        setCurrentImage({ src, alt, title });
+        setImageModalOpen(true);
+        document.body.style.overflow = 'hidden';
+    };
+
+    const closeImageModal = () => {
+        setImageModalOpen(false);
+        document.body.style.overflow = 'auto';
+    };
+
+    const openVideoModal = () => {
+        setVideoModalOpen(true);
+        document.body.style.overflow = 'hidden';
+    };
+
+    const closeVideoModal = () => {
+        setVideoModalOpen(false);
+        document.body.style.overflow = 'auto';
     };
 
     return (
@@ -46,18 +70,17 @@ export default function UbicacionPage() {
                                 Mira este video donde te explicamos paso a paso la ruta para llegar a nuestras instalaciones
                             </p>
 
-                            <div className="youtubeVideoContainer">
-                                <iframe
-                                    width="100%"
-                                    height="315"
-                                    src="https://www.youtube.com/embed/xlIeCDPO9Es"
-                                    title="Ruta para llegar a TRACTODO"
-                                    frameBorder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                    referrerPolicy="strict-origin-when-cross-origin"
-                                    allowFullScreen
-                                    className="youtubeVideo"
-                                ></iframe>
+                            <div className="youtubeVideoContainer" onClick={openVideoModal}>
+                                <div className="videoThumbnail">
+                                    <img 
+                                        src="https://img.youtube.com/vi/xlIeCDPO9Es/maxresdefault.jpg" 
+                                        alt="Ruta para llegar a TRACTODO"
+                                        className="thumbnailImage"
+                                    />
+                                    <div className="playButton">
+                                        <FaPlay />
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -134,7 +157,7 @@ export default function UbicacionPage() {
                         <h2>REFERENCIAS PARA UBICARNOS</h2>
                         <div className="referencesGrid">
                             <div className="referenceCard">
-                                <div className="referenceImageContainer">
+                                <div className="referenceImageContainer" onClick={() => openImageModal('/imgs/referencias/nissan.png', 'Agencia Nissan', 'Agencia Nissan')}>
                                     <img
                                         src="/imgs/referencias/nissan.png"
                                         alt="Agencia Nissan"
@@ -152,7 +175,7 @@ export default function UbicacionPage() {
                                 <p>Sobre la Carretera San Juan del Río-Tequisquiapan (Paseo Central), busca la agencia Nissan como punto de referencia principal.</p>
                             </div>
                             <div className="referenceCard">
-                                <div className="referenceImageContainer">
+                                <div className="referenceImageContainer" onClick={() => openImageModal('/imgs/referencias/tienda.jpg', 'Tienda de Azulejos y Bomberos', 'Tienda de Azulejos y Bomberos')}>
                                     <img
                                         src="/imgs/referencias/tienda.jpg"
                                         alt="Tienda de Azulejos y Bomberos"
@@ -170,7 +193,7 @@ export default function UbicacionPage() {
                                 <p>Junto a la agencia Nissan encontrarás la tienda de azulejos y la estación de bomberos. Estos son puntos clave para ubicarnos.</p>
                             </div>
                             <div className="referenceCard">
-                                <div className="referenceImageContainer">
+                                <div className="referenceImageContainer" onClick={() => openImageModal('/imgs/referencias/plaza.jpg', 'Plaza Central', 'Plaza Central')}>
                                     <img
                                         src="/imgs/referencias/plaza.jpg"
                                         alt="Plaza Central"
@@ -191,6 +214,51 @@ export default function UbicacionPage() {
                     </div>
                 </section>
             </main>
+
+            {/* Modal de Imagen */}
+            {imageModalOpen && (
+                <div className="modal-overlay" onClick={closeImageModal}>
+                    <div className="image-modal" onClick={e => e.stopPropagation()}>
+                        <button className="modal-close" onClick={closeImageModal}>
+                            <FaTimes />
+                        </button>
+                        <div className="modal-content">
+                            <img 
+                                src={currentImage.src} 
+                                alt={currentImage.alt}
+                                className="modal-image"
+                            />
+                            <div className="modal-title">
+                                {currentImage.title}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Modal de Video */}
+            {videoModalOpen && (
+                <div className="modal-overlay video-modal-overlay" onClick={closeVideoModal}>
+                    <div className="video-modal" onClick={e => e.stopPropagation()}>
+                        <button className="modal-close video-modal-close" onClick={closeVideoModal}>
+                            <FaTimes />
+                        </button>
+                        <div className="video-modal-content">
+                            <iframe
+                                width="100%"
+                                height="100%"
+                                src="https://www.youtube.com/embed/xlIeCDPO9Es?autoplay=1&rel=0"
+                                title="Ruta para llegar a TRACTODO"
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerPolicy="strict-origin-when-cross-origin"
+                                allowFullScreen
+                                className="modal-video"
+                            ></iframe>
+                        </div>
+                    </div>
+                </div>
+            )}
 
             <Footer />
             <ScrollToTop />

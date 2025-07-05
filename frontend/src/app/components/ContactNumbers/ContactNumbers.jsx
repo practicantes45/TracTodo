@@ -43,9 +43,6 @@ const ContactNumbers = ({ pageContext = 'home' }) => {
             typeof navigator !== 'undefined' ? navigator.userAgent : ''
         );
         
-        // Usar la URL universal que funciona en la mayoría de casos
-        // api.whatsapp.com funciona bien tanto en navegadores móviles como de escritorio
-        // y puede redirigir a la app nativa en ambos casos
         const universalUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodedMessage}`;
         
         // Abrir en nueva ventana/pestaña

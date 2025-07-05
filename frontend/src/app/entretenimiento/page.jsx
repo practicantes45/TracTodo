@@ -1,12 +1,14 @@
 'use client';
 import './entretenimiento.css';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { FaPlay, FaCalendarAlt, FaClock, FaEye, FaShare, FaBook, FaArrowDown } from "react-icons/fa";
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
 
 export default function EntretenimientoPage() {
+    const router = useRouter();
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
     const [showStickyButton, setShowStickyButton] = useState(true);
@@ -206,7 +208,7 @@ export default function EntretenimientoPage() {
     };
 
     const handleBlogClick = (post) => {
-        window.location.href = `/blog/${post.id}`;
+        router.push(`/blog/${post.id}`);
     };
 
     const handleShareVideo = (video, e) => {
@@ -234,6 +236,15 @@ export default function EntretenimientoPage() {
                 block: 'start' 
             });
         }
+    };
+
+    // Funciones de navegación usando router
+    const goToVideos = () => {
+        router.push('/videos');
+    };
+
+    const goToBlog = () => {
+        router.push('/blog');
     };
 
     const formatDate = (dateString) => {
@@ -323,11 +334,15 @@ export default function EntretenimientoPage() {
                                 ))}
                             </div>
 
-                            {/* Botón para ver más shorts */}
+                            {/* Botón para ver más shorts - CAMBIADO A BUTTON */}
                             <div className="sectionFooter">
-                                <a href="/videos" className="viewMoreButton shorts">
+                                <button 
+                                    onClick={goToVideos}
+                                    className="viewMoreButton shorts"
+                                    type="button"
+                                >
                                     Ver más shorts
-                                </a>
+                                </button>
                             </div>
                         </div>
 
@@ -371,11 +386,15 @@ export default function EntretenimientoPage() {
                                 ))}
                             </div>
 
-                            {/* Botón para ver más artículos */}
+                            {/* Botón para ver más artículos - CAMBIADO A BUTTON */}
                             <div className="sectionFooter">
-                                <a href="/blog" className="viewMoreButton">
+                                <button 
+                                    onClick={goToBlog}
+                                    className="viewMoreButton"
+                                    type="button"
+                                >
                                     Ver más artículos
-                                </a>
+                                </button>
                             </div>
                         </div>
 

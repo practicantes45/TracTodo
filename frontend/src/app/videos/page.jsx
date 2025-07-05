@@ -1,12 +1,14 @@
 'use client';
 import './videos.css';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { FaArrowLeft, FaSearch, FaPlay, FaEye, FaShare, FaYoutube, FaTiktok } from "react-icons/fa";
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
 
 export default function VideosPage() {
+    const router = useRouter();
     const [selectedCategory, setSelectedCategory] = useState('todos');
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedVideo, setSelectedVideo] = useState(null);
@@ -168,7 +170,7 @@ export default function VideosPage() {
     };
 
     const handleBackToEntertainment = () => {
-        window.location.href = '/entretenimiento';
+        router.push('/entretenimiento');
     };
 
     // Función para ir al canal de YouTube

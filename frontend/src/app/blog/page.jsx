@@ -1,12 +1,14 @@
 'use client';
 import './blog.css';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { FaSearch, FaCalendarAlt, FaClock, FaEye, FaUser, FaTag, FaArrowLeft } from "react-icons/fa";
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
 
 export default function BlogPage() {
+    const router = useRouter();
     const [selectedCategory, setSelectedCategory] = useState('todos');
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -97,8 +99,8 @@ export default function BlogPage() {
     });
 
     const handlePostClick = (post) => {
-        // Redirigir a la página individual del artículo
-        window.location.href = `/blog/${post.id}`;
+        // Redirigir a la página individual del artículo usando router
+        router.push(`/blog/${post.id}`);
     };
 
     const formatDate = (dateString) => {
@@ -116,7 +118,7 @@ export default function BlogPage() {
     };
 
     const handleBackToEntertainment = () => {
-        window.location.href = '/entretenimiento';
+        router.push('/entretenimiento');
     };
 
     // Obtener el post destacado (más reciente)
