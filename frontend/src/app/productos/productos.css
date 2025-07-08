@@ -42,6 +42,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
 }
 
 .heroContent h1 {
@@ -1228,7 +1229,7 @@
     padding: 15px 20px;
     background: linear-gradient(145deg, #f0f8ff 0%, #e6f3ff 30%, #ffffff 70%, #f8f9fa 100%);
     border-bottom: 1px solid rgba(0, 180, 216, 0.1);
-    margin-top: -80px;
+    margin-top: -220px;
   }
 
   .productosGrid {
@@ -1248,7 +1249,7 @@
 @media (max-width: 768px) {
   .productos-page .heroSection {
     height: 420px;
-    top: 130px;
+    top: 60px;
     background-position: center center;
   }
 
@@ -1276,7 +1277,7 @@
     margin: 0 0 15px 0;
     /* AGREGADO: margen inferior para móvil */
     padding: 15px 20px;
-    margin-top: -50px;
+    margin-top: -250px;
   }
 
   .productosGrid {
@@ -1319,7 +1320,7 @@
 @media (max-width: 480px) {
   .productos-page .heroSection {
     height: 380px;
-    top: 125px;
+    top: 60px;
     background-position: center center;
   }
 
@@ -1342,7 +1343,7 @@
     margin: 0 0 12px 0;
     /* AGREGADO: margen inferior */
     padding: 12px 15px;
-    margin-top: -80px;
+    margin-top: -300px;
   }
 
   .mobileFilterButton {
