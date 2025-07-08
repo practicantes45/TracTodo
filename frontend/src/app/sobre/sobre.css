@@ -31,12 +31,17 @@
   align-items: center;
   justify-content: center;
   text-align: center;
+    background: rgba(0, 0, 0, 0.3);
+
 }
 
 .heroContent {
   max-width: 800px;
   padding: 0 20px;
   z-index: 2;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .heroContent h1 {
@@ -546,7 +551,7 @@
 @media (max-width: 768px) {
   .sobre-page .heroSection {
     height: 420px; /* ALTURA CONSISTENTE */
-    top: 130px;
+    top: 60px;
     background-position: center center; /* CORREGIDO: posición idéntica */
   }
 
@@ -636,7 +641,7 @@
 @media (max-width: 480px) {
   .sobre-page .heroSection {
     height: 380px; /* ALTURA CONSISTENTE */
-    top: 125px;
+    top: 60px;
     background-position: center center; /* CORREGIDO: posición idéntica */
   }
 
@@ -696,7 +701,7 @@
 @media (max-width: 360px) {
   .sobre-page .heroSection {
     height: 350px; /* ALTURA CONSISTENTE */
-    top: 120px;
+    top: 60px;
     background-position: center center; /* CORREGIDO: posición idéntica */
   }
 

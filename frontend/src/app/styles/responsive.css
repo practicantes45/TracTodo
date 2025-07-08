@@ -59,8 +59,6 @@
 /* Móvil - Smartphones en orientación vertical y tablets pequeñas */
 @media (max-width: 768px) {
 
-  /* ===== HEADER INFO RESPONSIVE ===== */
-  /* Header superior con información de contacto */
   .infoHeader {
     flex-direction: column;
     /* Cambia de horizontal a vertical */
@@ -95,36 +93,10 @@
     /* Padding reducido para móvil */
   }
 
-  /* ===== HERO SECTION RESPONSIVE ===== */
-  /* Sección hero ajustada para móvil */
-  .heroSection {
-    top: 132px;
-    /* Posición ajustada para móvil */
-    height: 400px;
-    /* Altura reducida de 500px a 400px */
-    background-size: cover;
-    /* Imagen cubre toda el área */
-    background-position: center 30%;
-    /* Posición del fondo más centrada */
-  }
-
-  /* Logo oculto en dispositivos móviles */
-  .logoImage {
-    display: none !important;
-    /* Oculta completamente el logo */
-  }
-
-  /* ===== MAIN CONTENT RESPONSIVE ===== */
-  /* Contenido principal ajustado */
   .mainContent {
     padding-top: 480px;
     /* Padding superior reducido de 550px a 480px */
   }
-
-  /* ===== CONTACT NUMBERS RESPONSIVE ===== */
-  /* Números de contacto subidos más arriba */
-
-
   /* ===== BENEFITS SECTION RESPONSIVE ===== */
   /* Sección de ventajas para móvil */
   .benefitsSection {
@@ -213,30 +185,6 @@
     /* Padding aún más reducido */
   }
 
-  /* ===== HERO SECTION OPTIMIZADO ===== */
-  .heroSection {
-    top: 125px;
-    /* Posición ajustada */
-    height: 350px;
-    /* Altura reducida de 450px a 350px */
-    background-size: cover;
-    /* Mantiene cobertura completa */
-    background-position: center 25%;
-    /* Mejor encuadre para móviles pequeños */
-  }
-
-  /* Logo confirmadamente oculto */
-  .logoImage {
-    display: none !important;
-    /* Oculto en móviles pequeños también */
-  }
-
-  /* ===== MAIN CONTENT AJUSTADO ===== */
-  .mainContent {
-    padding-top: 420px;
-    /* Padding superior reducido de 500px a 420px */
-  }
-
 
 
   /* ===== BENEFITS SECTION PARA MÓVIL PEQUEÑO ===== */
@@ -322,20 +270,6 @@
 /* Dispositivos muy pequeños como iPhone SE, Android compactos */
 @media (max-width: 360px) {
 
-  /* Hero section aún más pequeño */
-  .heroSection {
-    height: 320px;
-    /* Altura mínima para móviles muy pequeños */
-    background-position: center 20%;
-    /* Posición optimizada */
-  }
-
-  .mainContent {
-    padding-top: 390px;
-    /* Padding ajustado */
-  }
-
-
   /* ===== BENEFITS PARA MÓVILES MUY PEQUEÑOS ===== */
   .benefitsSection {
     padding: 40px 8px;
@@ -370,28 +304,6 @@
    ============================================= */
 /* Landscape móvil - Orientación horizontal en smartphones */
 @media (max-width: 768px) and (orientation: landscape) {
-  .heroSection {
-    height: 300px;
-    /* Altura reducida en landscape */
-    top: 110px;
-    /* Posición ajustada */
-    background-position: center 35%;
-    /* Mejor posición en landscape */
-  }
-
-  /* Logo oculto también en landscape móvil */
-  .logoImage {
-    display: none !important;
-    /* Confirmado: oculto en landscape */
-  }
-
-  .mainContent {
-    padding-top: 360px;
-    /* Padding ajustado para landscape */
-  }
-
-
-
   /* ===== BENEFITS EN LANDSCAPE ===== */
   .benefitsContainer {
     grid-template-columns: repeat(2, 1fr);
@@ -405,38 +317,6 @@
     /* Altura reducida para landscape */
     max-width: 300px;
     /* Ancho controlado */
-  }
-}
-
-/* =============================================
-   PARTE 6: OPTIMIZACIONES ADICIONALES
-   ============================================= */
-
-/* Mejor rendimiento en dispositivos móviles */
-@media (max-width: 1024px) {
-  .heroSection {
-    background-attachment: scroll;
-    /* Mejor rendimiento que fixed */
-  }
-}
-
-/* Dispositivos con pantallas anchas pero cortas (landscape tablets) */
-@media (max-width: 1024px) and (orientation: landscape) and (max-height: 600px) {
-  .heroSection {
-    background-size: cover;
-    /* Mantiene cobertura */
-    background-position: center 40%;
-    /* Posición optimizada */
-  }
-}
-
-/* Optimización para pantallas de alta densidad */
-@media (max-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
-  .heroSection {
-    background-size: cover;
-    /* Cobertura optimizada */
-    background-position: center 30%;
-    /* Posición para alta densidad */
   }
 }
 

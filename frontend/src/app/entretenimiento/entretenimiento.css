@@ -8,7 +8,6 @@
 .entretenimiento-page .heroSection {
   position: absolute;
   height: 580px;
-  /* ALTURA UNIFICADA */
   width: 100%;
   left: 0;
   background-image: url('/imgs/entretenimiento3.png');
@@ -38,6 +37,9 @@
   max-width: 800px;
   padding: 0 20px;
   z-index: 2;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .heroContent h1 {
@@ -327,7 +329,6 @@
   line-height: 1.3;
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   transition: color 0.3s ease;
@@ -722,13 +723,41 @@
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 992px) {
+  .entretenimiento-page .heroSection {
+    height: 540px;
+    background-position: center center;
+  }
+
+  .entretenimiento-page .mainContent {
+    padding-top: 540px;
+  }
+  .heroContent h1 {
+    margin-top: -150px;
+    font-size: 2.8rem;
+    text-shadow:
+      2px 2px 4px rgba(0, 0, 0, 0.9),
+      0 0 8px rgba(0, 0, 0, 0.7),
+      0 0 16px rgba(0, 42, 92, 0.5);
+  }
+  .entertainmentMainSection{
+    padding: 40px 20px 80px 20px;
+    margin-top: -250px;
+    /* Ajuste específico para tablets */
+  }
+}
 
 /* Tablet */
 @media (max-width: 768px) {
+  .entretenimiento-page .heroSection {
+    height: 420px;
+    margin-top: -30px;
+    background-position: center center;
+  }
   .entertainmentMainSection {
     padding: 30px 15px 60px 15px;
     /* Igual que videos.css */
-    margin-top: -80px;
+    margin-top: -230px;
   }
 
   .entertainmentContainer {
@@ -777,10 +806,14 @@
 
 /* Móvil */
 @media (max-width: 480px) {
+  .entretenimiento-page .heroSection {
+    height: 360px;
+    background-position: center center;
+  }
   .entertainmentMainSection {
     padding: 20px 10px 50px 10px;
     /* Igual que videos.css */
-    margin-top: -60px;
+    margin-top: -230px;
   }
 
   .entertainmentContainer {

@@ -44,7 +44,7 @@ export default function SobrePage() {
 
                             {/* Imagen del camión - MOVIDA AQUÍ */}
                             <div className="aboutImageContent">
-                                <img src="/imgs/empresa.jpg" alt="Camión en carretera" className="aboutTruckImage" />
+                                <img src="/imgs/empresa3.jpg" alt="Camión en carretera" className="aboutTruckImage" />
                             </div>
                         </div>
                     </div>
