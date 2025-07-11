@@ -1,162 +1,156 @@
 'use client';
 import './productos.css';
 import { FaCalendarCheck, FaMapMarkedAlt, FaFilter, FaWhatsapp, FaSortAlphaDown, FaSortAlphaUp, FaTimes } from "react-icons/fa";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
-
-// Datos de muestra solo para diseño
-const productosData = [
-  {
-    id: 1,
-    nombre: "Camisa Reforsada T-800",
-    descripcion: "Camisa con aleación premium para modelo",
-    precio: 2499.00,
-    imagen: "/imgs/productos/camisa-t800.jpg",
-    marca: "Cummins",
-    categoria: "Camisas",
-    numeroParte: "56859"
-  },
-  {
-    id: 2,
-    nombre: "Camisa de Motor XR-5",
-    descripcion: "Camisa de alta resistencia, compatible, de tornillo esgado con modelo xx",
-    precio: 1299.00,
-    imagen: "/imgs/productos/camisa-xr5.jpg",
-    marca: "Navistar",
-    categoria: "Camisas",
-    numeroParte: "XR500"
-  },
-  {
-    id: 3,
-    nombre: "Pistón Heavy Duty P-450",
-    descripcion: "Pistón reforzado para trabajo pesado",
-    precio: 3299.00,
-    imagen: "/imgs/productos/camisa-t800.jpg",
-    marca: "Volvo",
-    categoria: "Pistones",
-    numeroParte: "P450"
-  },
-  {
-    id: 4,
-    nombre: "Biela Forjada BF-200",
-    descripcion: "Biela de acero forjado de alta resistencia",
-    precio: 1899.00,
-    imagen: "/imgs/productos/camisa-xr5.jpg",
-    marca: "Mercedes Benz",
-    categoria: "Bielas",
-    numeroParte: "BF200"
-  },
-  {
-    id: 5,
-    nombre: "Camisa Reforsada T-900",
-    descripcion: "Camisa premium con tecnología avanzada",
-    precio: 2799.00,
-    imagen: "/imgs/productos/camisa-t800.jpg",
-    marca: "Deutz",
-    categoria: "Camisas",
-    numeroParte: "T900"
-  },
-  {
-    id: 6,
-    nombre: "Kit de Anillos AR-350",
-    descripcion: "Set completo de anillos para motor",
-    precio: 899.00,
-    imagen: "/imgs/productos/camisa-xr5.jpg",
-    marca: "Cummins",
-    categoria: "Anillos",
-    numeroParte: "AR350"
-  },
-  {
-    id: 7,
-    nombre: "Válvula de Escape VE-125",
-    descripcion: "Válvula de escape de alta temperatura",
-    precio: 1599.00,
-    imagen: "/imgs/productos/camisa-t800.jpg",
-    marca: "Navistar",
-    categoria: "Válvulas",
-    numeroParte: "VE125"
-  },
-  {
-    id: 8,
-    nombre: "Culata Completa CC-800",
-    descripcion: "Culata completa para motor diésel",
-    precio: 8999.00,
-    imagen: "/imgs/productos/camisa-xr5.jpg",
-    marca: "Volvo",
-    categoria: "Culatas",
-    numeroParte: "CC800"
-  }
-];
-
-const marcasDisponibles = ["Cummins", "Navistar", "Volvo", "Mercedes Benz", "Deutz", "Otros"];
-
-// Lista de contactos (misma que en ContactNumbers)
-const contactList = [
-  {
-    name: "Alan",
-    phoneNumber: "+524272245923",
-    message: "Hola Alan, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
-  },
-  {
-    name: "Laura",
-    phoneNumber: "+524272033515",
-    message: "Hola Laura, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
-  },
-  {
-    name: "Oscar",
-    phoneNumber: "+524272032672",
-    message: "Hola Oscar, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
-  },
-  {
-    name: "Hugo",
-    phoneNumber: "+524424128926",
-    message: "Hola Hugo, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
-  }
-];
+import ContactNumbers from '../components/ContactNumbers/ContactNumbers';
+import { obtenerProductos, buscarProductos } from '../../services/productoService';
+import { registrarVista } from '../../services/trackingService';
+import { useSearchParams } from 'next/navigation';
 
 export default function ProductosPage() {
-  // Estados para el filtro móvil
+  // Estados
+  const [productos, setProductos] = useState([]);
+  const [productosFiltrados, setProductosFiltrados] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  
+  // Estados para filtros
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [selectedMarcas, setSelectedMarcas] = useState([]);
   const [selectedOrden, setSelectedOrden] = useState('A-Z');
+  const [marcasDisponibles, setMarcasDisponibles] = useState([]);
+
+  const searchParams = useSearchParams();
+  const busquedaParam = searchParams.get('busqueda');
+
+  console.log('🔍 Parámetro de búsqueda:', busquedaParam);
+
+  // Lista de marcas predefinidas
+  const marcasPredefinidas = ["Cummins", "Navistar", "Volvo", "Mercedes Benz", "Deutz", "Otros"];
+
+  // Lista de contactos
+  const contactList = [
+    {
+      name: "Alan",
+      phoneNumber: "+524272245923",
+      message: "Hola Alan, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
+    },
+    {
+      name: "Laura", 
+      phoneNumber: "+524272033515",
+      message: "Hola Laura, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
+    },
+    {
+      name: "Oscar",
+      phoneNumber: "+524272032672", 
+      message: "Hola Oscar, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
+    },
+    {
+      name: "Hugo",
+      phoneNumber: "+524424128926",
+      message: "Hola Hugo, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
+    }
+  ];
+
+  // Cargar productos del backend
+  useEffect(() => {
+    if (busquedaParam) {
+      buscarProductosConTermino(busquedaParam);
+    } else {
+      cargarProductos();
+    }
+  }, [busquedaParam]);
+
+  const buscarProductosConTermino = async (termino) => {
+    try {
+      setLoading(true);
+      const resultados = await buscarProductos({ q: termino });
+      setProductos(resultados);
+      
+      const marcasUnicas = [...new Set(resultados.map(p => p.marca).filter(Boolean))];
+      setMarcasDisponibles(marcasUnicas);
+    } catch (error) {
+      console.error("Error al buscar productos:", error);
+      setError('No se pudieron buscar los productos');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Aplicar filtros cuando cambien
+  useEffect(() => {
+    aplicarFiltros();
+  }, [productos, selectedMarcas, selectedOrden]);
+
+  const cargarProductos = async () => {
+    try {
+      setLoading(true);
+      const data = await obtenerProductos();
+      setProductos(data);
+      
+      // Extraer marcas únicas de los productos  
+      const marcasUnicas = [...new Set(data.map(p => p.marca).filter(Boolean))];
+      setMarcasDisponibles(marcasUnicas);
+    } catch (error) {
+      console.error("Error al cargar productos:", error);
+      setError('No se pudieron cargar los productos');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const aplicarFiltros = () => {
+    let filtrados = [...productos];
+
+    // Filtrar por marcas
+    if (selectedMarcas.length > 0) {
+      filtrados = filtrados.filter(p => selectedMarcas.includes(p.marca));
+    }
+
+    // Ordenar
+    if (selectedOrden === 'A-Z') {
+      filtrados.sort((a, b) => a.nombre.localeCompare(b.nombre));
+    } else if (selectedOrden === 'Z-A') {
+      filtrados.sort((a, b) => b.nombre.localeCompare(a.nombre));
+    }
+
+    setProductosFiltrados(filtrados);
+  };
 
   const handleWhatsAppClick = (producto, e) => {
-    // Prevenir que se abra la página del producto cuando se hace click en WhatsApp
+    e.preventDefault();
     e.stopPropagation();
 
-    // Seleccionar un contacto aleatorio
     const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
-
-    // Personalizar el mensaje con los datos del producto
+    const precio = producto.precioVentaSugerido || producto.precio || 0;
     const personalizedMessage = randomContact.message
       .replace('{producto}', producto.nombre)
-      .replace('{precio}', producto.precio.toLocaleString());
+      .replace('{precio}', precio.toLocaleString());
 
-    // Limpiar el número de teléfono
     const cleanPhoneNumber = randomContact.phoneNumber.replace(/\D/g, '');
     const formattedNumber = cleanPhoneNumber.startsWith('52')
       ? cleanPhoneNumber
       : `52${cleanPhoneNumber}`;
 
-    // Codificar el mensaje
     const encodedMessage = encodeURIComponent(personalizedMessage);
-
-    // Crear la URL de WhatsApp
     const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodedMessage}`;
 
-    // Abrir WhatsApp
     window.open(whatsappUrl, '_blank');
   };
 
-  const handleProductoClick = (producto) => {
-    // Por ahora solo un console.log, después conectaremos con el backend
+  const handleProductoClick = async (producto) => {
+    // Registrar vista
+    await registrarVista(producto.id);
+    
+    // Navegar al detalle (cuando lo implementes)
     console.log('Producto seleccionado:', producto);
-    // En el futuro: router.push(`/productos/${producto.id}`);
+    // router.push(`/productos/${producto.id}`);
   };
 
-  // Funciones para manejar filtros móviles
+  // Funciones para filtros móviles
   const toggleMobileFilter = () => {
     setIsMobileFilterOpen(!isMobileFilterOpen);
   };
@@ -178,15 +172,27 @@ export default function ProductosPage() {
     setSelectedOrden('A-Z');
   };
 
+  if (loading) {
+    return (
+      <div className="layout productos-page">
+        <Navbar />
+        <main className="mainContent">
+          <div className="loadingContainer">
+            <div className="spinner"></div>
+            <p>Cargando productos...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
   return (
     <div className="layout productos-page">
-
-      {/* Navbar principal */}
       <Navbar />
 
-      {/* Contenido principal */}
       <main className="mainContent">
-        {/* Hero Section para productos */}
+        {/* Hero Section */}
         <div className="heroSection">
           <div className="heroOverlay">
             <div className="heroContent">
@@ -195,7 +201,7 @@ export default function ProductosPage() {
           </div>
         </div>
 
-        {/* Botón Filtrar móvil - NUEVO */}
+        {/* Botón Filtrar móvil */}
         <div className="mobileFilterToggle">
           <button
             className="mobileFilterButton"
@@ -212,7 +218,7 @@ export default function ProductosPage() {
           onClick={closeMobileFilter}
         ></div>
 
-        {/* Menú de filtros móvil - NUEVO */}
+        {/* Menú de filtros móvil */}
         <div className={`mobileFilterMenu ${isMobileFilterOpen ? 'menuOpen' : ''}`}>
           <div className="mobileFilterHeader">
             <h3>Filtros</h3>
@@ -229,7 +235,7 @@ export default function ProductosPage() {
             <div className="mobileFilterGroup">
               <h4>Marcas</h4>
               <div className="mobileMarcasList">
-                {marcasDisponibles.map((marca) => (
+                {marcasPredefinidas.map((marca) => (
                   <label key={marca} className="mobileMarcaCheckbox">
                     <input
                       type="checkbox"
@@ -296,11 +302,14 @@ export default function ProductosPage() {
         <section className="productosMainSection">
           <div className="productosContainer">
 
-            {/* Sidebar - Filtros (Solo diseño DESKTOP) */}
+            {/* Sidebar - Filtros DESKTOP */}
             <aside className="filtrosSidebar">
               <div className="filtrosHeader">
                 <h2>Filtros</h2>
-                <button className="limpiarFiltrosBtn">
+                <button 
+                  className="limpiarFiltrosBtn"
+                  onClick={clearAllFilters}
+                >
                   Borrar filtros
                 </button>
               </div>
@@ -309,9 +318,13 @@ export default function ProductosPage() {
               <div className="filtroGroup">
                 <h3>Marcas</h3>
                 <div className="marcasList">
-                  {marcasDisponibles.map((marca) => (
+                  {marcasPredefinidas.map((marca) => (
                     <label key={marca} className="marcaCheckbox">
-                      <input type="checkbox" />
+                      <input 
+                        type="checkbox"
+                        checked={selectedMarcas.includes(marca)}
+                        onChange={() => handleMarcaChange(marca)}
+                      />
                       <span className="checkmark"></span>
                       {marca}
                     </label>
@@ -324,13 +337,25 @@ export default function ProductosPage() {
                 <h3>Ordenar Por</h3>
                 <div className="ordenamientoList">
                   <label className="ordenamientoRadio">
-                    <input type="radio" name="ordenamiento" value="A-Z" defaultChecked />
+                    <input 
+                      type="radio" 
+                      name="ordenamiento" 
+                      value="A-Z"
+                      checked={selectedOrden === 'A-Z'}
+                      onChange={(e) => setSelectedOrden(e.target.value)}
+                    />
                     <span className="radiomark"></span>
                     <FaSortAlphaDown className="sortIcon" />
                     Alfabéticamente, A-Z
                   </label>
                   <label className="ordenamientoRadio">
-                    <input type="radio" name="ordenamiento" value="Z-A" />
+                    <input 
+                      type="radio" 
+                      name="ordenamiento" 
+                      value="Z-A"
+                      checked={selectedOrden === 'Z-A'}
+                      onChange={(e) => setSelectedOrden(e.target.value)}
+                    />
                     <span className="radiomark"></span>
                     <FaSortAlphaUp className="sortIcon" />
                     Alfabéticamente, Z-A
@@ -341,49 +366,52 @@ export default function ProductosPage() {
 
             {/* Grid de productos */}
             <div className="productosGrid">
-              {productosData.map((producto) => (
-                <div
-                  key={producto.id}
-                  className="productoCard"
-                  onClick={() => handleProductoClick(producto)}
-                  style={{ cursor: 'pointer' }}
-                >
-
-                  {/* Imagen del producto */}
-                  <div className="productoImageContainer">
-                    <img
-                      src={producto.imagen}
-                      alt={producto.nombre}
-                      className="productoImage"
-                    />
-                  </div>
-
-                  {/* Información del producto */}
-                  <div className="productoInfo">
-                    <h3 className="productoNombre">{producto.nombre}</h3>
-                    <p className="productoDescripcion">{producto.descripcion}</p>
-                    <div className="productoPrecio">
-                      ${producto.precio.toLocaleString()}
+              {error ? (
+                <div className="errorMessage">{error}</div>
+              ) : productosFiltrados.length === 0 ? (
+                <div className="noProducts">No se encontraron productos</div>
+              ) : (
+                productosFiltrados.map((producto) => (
+                  <div
+                    key={producto.id}
+                    className="productoCard"
+                    onClick={() => handleProductoClick(producto)}
+                    style={{ cursor: 'pointer' }}
+                  >
+                    <div className="productoImageContainer">
+                      <img
+                        src={producto.imagen || '/imgs/productos/placeholder.jpg'}
+                        alt={producto.nombre}
+                        className="productoImage"
+                        onError={(e) => {
+                          e.target.src = '/imgs/productos/placeholder.jpg';
+                        }}
+                      />
                     </div>
-                    <button
-                      className="whatsappBtn"
-                      onClick={(e) => handleWhatsAppClick(producto, e)}
-                    >
-                      <FaWhatsapp />
-                      Compra por WhatsApp
-                    </button>
+
+                    <div className="productoInfo">
+                      <h3 className="productoNombre">{producto.nombre}</h3>
+                      <p className="productoDescripcion">{producto.descripcion}</p>
+                      <div className="productoPrecio">
+                        ${(producto.precioVentaSugerido || producto.precio || 0).toLocaleString()}
+                      </div>
+                      <button
+                        className="whatsappBtn"
+                        onClick={(e) => handleWhatsAppClick(producto, e)}
+                      >
+                        <FaWhatsapp />
+                        Compra por WhatsApp
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </div>
         </section>
       </main>
 
-      {/* Footer */}
       <Footer />
-
-      {/* Botón ScrollToTop */}
       <ScrollToTop />
     </div>
   );

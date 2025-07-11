@@ -1811,3 +1811,50 @@
   transform: scale(0.98);
   transition: transform 0.1s ease;
 }
+
+/* ===== ESTADOS DE CARGA Y ERROR ===== */
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: 4rem 2rem;
+}
+
+.spinner {
+  width: 60px;
+  height: 60px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1.5rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loadingContainer p {
+  font-size: 1.2rem;
+  color: #666;
+  font-family: var(--font-montserrat);
+}
+
+.errorMessage {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem;
+  color: #d32f2f;
+  font-size: 1.2rem;
+}
+
+.noProducts {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem;
+  color: #666;
+  font-size: 1.2rem;
+}

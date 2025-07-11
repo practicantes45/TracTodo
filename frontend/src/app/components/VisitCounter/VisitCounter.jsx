@@ -1,70 +1,160 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FaEye, FaUsers } from 'react-icons/fa';
 import styles from './VisitCounter.module.css';
+import { registrarVista, obtenerContadorVistas } from '../../../services/visitService';
 
-/**
- * DEMO: Contador de Visitas Visual
- * 
- * Este es un componente de demostración que simula un contador de visitas.
- * 
- * IMPORTANTE: 
- * - Actualmente usa localStorage para demo visual únicamente
- * - El número base (15,847) es simulado para mostrar el diseño
- * - Para producción, debe conectarse a un backend real con:
- *   • Base de datos para almacenar visitas reales
- *   • API endpoint para obtener/actualizar contador
- *   • Lógica para visitantes únicos (IP, cookies, etc.)
- *   • Validación y límites de rate limiting
- * 
- * @param {boolean} isMobile - Si true, usa estilos para versión móvil
- */
 const VisitCounter = ({ isMobile = false }) => {
     const [visitCount, setVisitCount] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
+    const [isLargeScreen, setIsLargeScreen] = useState(false);
+    const [isVisible, setIsVisible] = useState(true);
+    const [error, setError] = useState(null);
+    
+    // Refs para control estricto
+    const isInitialized = useRef(false);
+    const isMounted = useRef(false);
+    const initPromise = useRef(null);
 
+    // Detectar tamaño de pantalla
     useEffect(() => {
-        // DEMO: Contador visual simulado hasta implementar backend
-        const getDemoCount = () => {
-            // Número base simulado para demo
-            const baseCount = 15847;
-            
-            // Obtener contador local solo para demo visual
-            const localDemo = localStorage.getItem('tractodo_demo_count');
-            const localIncrement = localDemo ? parseInt(localDemo) : 0;
-            
-            return baseCount + localIncrement;
+        if (typeof window === 'undefined') return;
+        
+        const checkScreenSize = () => {
+            setIsLargeScreen(window.innerWidth >= 769);
         };
 
-        // DEMO: Simular incremento local para demo
-        const updateDemoCount = () => {
-            const currentLocal = localStorage.getItem('tractodo_demo_count');
-            const localCount = currentLocal ? parseInt(currentLocal) : 0;
-            const newLocalCount = localCount + 1;
-            
-            // Guardar solo el incremento local
-            localStorage.setItem('tractodo_demo_count', newLocalCount.toString());
-            
-            return getDemoCount();
-        };
-
-        // Simular carga y mostrar contador demo
-        const timer = setTimeout(() => {
-            const count = updateDemoCount();
-            setVisitCount(count);
-            setIsLoading(false);
-        }, 800); // Tiempo de carga más realista
-
-        return () => clearTimeout(timer);
+        checkScreenSize();
+        window.addEventListener('resize', checkScreenSize);
+        return () => window.removeEventListener('resize', checkScreenSize);
     }, []);
 
-    // Formatear número con separadores de miles
+    // Control de scroll para visibilidad
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        
+        const handleScroll = () => {
+            const scrollY = window.scrollY;
+            setIsVisible(scrollY < 100);
+        };
+
+        if (isLargeScreen && !isMobile) {
+            window.addEventListener('scroll', handleScroll);
+            return () => window.removeEventListener('scroll', handleScroll);
+        }
+    }, [isLargeScreen, isMobile]);
+
+    // Inicialización única del contador
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        
+        isMounted.current = true;
+        
+        // Si ya se inicializó o hay una inicialización en curso, no hacer nada
+        if (isInitialized.current || initPromise.current) {
+            return;
+        }
+
+        isInitialized.current = true;
+
+        const initializeCounter = async () => {
+            try {
+                if (!isMounted.current) return;
+                
+                setIsLoading(true);
+                setError(null);
+                
+                // Clave para controlar vistas por sesión de navegación
+                const sessionKey = 'tractodo_visit_session';
+                const currentSession = sessionStorage.getItem(sessionKey);
+                const newSessionId = Date.now().toString();
+                
+                console.log('🔄 Inicializando contador...', { currentSession, newSessionId });
+                
+                if (!currentSession) {
+                    // Primera visita en esta sesión - registrar vista
+                    console.log('✅ Primera visita - registrando vista');
+                    const response = await registrarVista();
+                    
+                    if (!isMounted.current) return;
+                    
+                    setVisitCount(response.vistasTotales);
+                    sessionStorage.setItem(sessionKey, newSessionId);
+                } else {
+                    // Ya existe sesión - solo obtener contador
+                    console.log('📊 Sesión existente - obteniendo contador');
+                    const response = await obtenerContadorVistas();
+                    
+                    if (!isMounted.current) return;
+                    
+                    setVisitCount(response.vistasTotales);
+                }
+                
+            } catch (error) {
+                console.error('❌ Error al inicializar contador:', error);
+                
+                if (!isMounted.current) return;
+                
+                setError('Error de conexión');
+                
+                // Fallback: usar contador local
+                const fallbackCount = getFallbackCount();
+                setVisitCount(fallbackCount);
+            } finally {
+                if (isMounted.current) {
+                    setIsLoading(false);
+                }
+            }
+        };
+
+        // Crear promesa de inicialización
+        initPromise.current = initializeCounter();
+
+        return () => {
+            isMounted.current = false;
+        };
+    }, []); // Solo ejecutar una vez al montar
+
+    const getFallbackCount = () => {
+        if (typeof window === 'undefined') return 15847;
+        
+        const baseCount = 15847;
+        const sessionKey = 'tractodo_visit_session';
+        const localCountKey = 'tractodo_local_count';
+        
+        // Verificar si ya registramos en esta sesión
+        const hasSession = sessionStorage.getItem(sessionKey);
+        
+        if (!hasSession) {
+            // Primera vez en esta sesión
+            const currentLocalCount = parseInt(localStorage.getItem(localCountKey) || '0');
+            const newCount = currentLocalCount + 1;
+            
+            localStorage.setItem(localCountKey, newCount.toString());
+            sessionStorage.setItem(sessionKey, Date.now().toString());
+            
+            return baseCount + newCount;
+        } else {
+            // Sesión existente
+            const localCount = parseInt(localStorage.getItem(localCountKey) || '0');
+            return baseCount + localCount;
+        }
+    };
+
     const formatNumber = (num) => {
+        if (!num || isNaN(num)) return '0';
         return num.toLocaleString('es-MX');
     };
 
+    // Determinar clases CSS
+    const shouldFloat = isLargeScreen && !isMobile;
+    const counterClasses = `${styles.visitCounter} ${
+        isMobile ? styles.mobileVersion : 
+        shouldFloat ? `${styles.floatingCounter} ${!isVisible ? styles.hidden : ''}` : ''
+    }`;
+
     return (
-        <div className={`${styles.visitCounter} ${isMobile ? styles.mobileVersion : ''}`}>
+        <div className={counterClasses}>
             <div className={styles.counterContainer}>
                 <div className={styles.iconContainer}>
                     <FaEye className={styles.eyeIcon} />
@@ -73,7 +163,11 @@ const VisitCounter = ({ isMobile = false }) => {
                 <div className={styles.counterContent}>
                     <div className={styles.counterLabel}>
                         {isMobile ? 'Visitas Totales' : 'Visitas'}
-                        <span className={styles.demoIndicator}>DEMO</span>
+                        {error ? (
+                            <span className={styles.errorIndicator}>ERROR</span>
+                        ) : (
+                            <span className={styles.liveIndicator}>LIVE</span>
+                        )}
                     </div>
                     <div className={styles.counterNumber}>
                         {isLoading ? (
@@ -95,7 +189,6 @@ const VisitCounter = ({ isMobile = false }) => {
                 </div>
             </div>
 
-            {/* Efectos decorativos */}
             <div className={styles.glowEffect}></div>
             <div className={styles.pulse}></div>
         </div>

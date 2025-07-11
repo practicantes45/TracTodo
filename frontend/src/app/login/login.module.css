@@ -1,0 +1,239 @@
+.container {
+  display: flex;
+  height: 100vh;
+  position: relative;
+  font-family: var(--font-ubuntu);
+}
+
+.leftSection {
+  flex: 1;
+  background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.welcomeContent {
+  text-align: center;
+  color: white;
+  z-index: 2;
+  max-width: 400px;
+  padding: 2rem;
+}
+
+.welcomeContent h1 {
+  font-family: var(--font-montserrat);
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.welcomeContent p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.switchBtn {
+  display: inline-block;
+  padding: 12px 40px;
+  border: 2px solid white;
+  border-radius: 25px;
+  color: white;
+  background: transparent;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+.switchBtn:hover {
+  background-color: white;
+  color: #10b981;
+  transform: translateY(-2px);
+}
+
+.decorativeCircle {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  right: -200px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.rightSection {
+  flex: 1;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.formContainer {
+  width: 100%;
+  max-width: 400px;
+}
+
+.formContainer h2 {
+  font-family: var(--font-montserrat);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.socialButtons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.socialBtn {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #e5e7eb;
+  background: white;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #6b7280;
+}
+
+.socialBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.formSubtitle {
+  text-align: center;
+  color: #6b7280;
+  margin-bottom: 2rem;
+  font-size: 1rem;
+}
+
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.inputGroup {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 0 1rem;
+  border: 2px solid #e5e7eb;
+  transition: all 0.3s ease;
+}
+
+.inputGroup:focus-within {
+  border-color: #10b981;
+  box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.inputGroup i {
+  color: #6b7280;
+  margin-right: 0.75rem;
+  font-size: 1.1rem;
+}
+
+.inputGroup input {
+  flex: 1;
+  padding: 1rem 0;
+  border: none;
+  background: transparent;
+  font-size: 1rem;
+  color: #1f2937;
+}
+
+.inputGroup input:focus {
+  outline: none;
+}
+
+.inputGroup input::placeholder {
+  color: #9ca3af;
+}
+
+.forgotPassword {
+  color: #6b7280;
+  text-decoration: underline;
+  font-size: 0.9rem;
+  text-align: center;
+  transition: color 0.3s ease;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.forgotPassword:hover {
+  color: #10b981;
+}
+
+.submitBtn {
+  background: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 1rem;
+}
+
+.submitBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+  }
+  
+  .leftSection {
+    flex: 0 0 40%;
+  }
+  
+  .welcomeContent h1 {
+    font-size: 2rem;
+  }
+  
+  .welcomeContent p {
+    font-size: 1rem;
+  }
+  
+  .rightSection {
+    flex: 1;
+    padding: 1rem;
+  }
+  
+  .formContainer h2 {
+    font-size: 2rem;
+  }
+  
+  .decorativeCircle {
+    width: 400px;
+    height: 400px;
+    right: -150px;
+  }
+}

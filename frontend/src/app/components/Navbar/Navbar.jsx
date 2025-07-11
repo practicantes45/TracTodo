@@ -74,6 +74,9 @@ const Navbar = () => {
                     <SearchBar />
                 </div>
             </nav>
+
+            {/* NUEVO: Contador independiente para modo flotante */}
+            <VisitCounter />
         </>
     );
 };

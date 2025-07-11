@@ -1,147 +1,299 @@
-/* VisitCounter.module.css - Contador de visitas con diseño futurista */
+/* VisitCounter.module.css - Versión con visibilidad controlada por scroll */
 
 .visitCounter {
   position: relative;
   display: flex;
   align-items: center;
   background: linear-gradient(135deg, 
-    rgba(0, 180, 216, 0.15) 0%, 
-    rgba(0, 42, 92, 0.2) 30%, 
-    rgba(26, 26, 46, 0.25) 70%, 
-    rgba(0, 180, 216, 0.1) 100%
+    rgba(0, 180, 216, 0.2) 0%, 
+    rgba(0, 42, 92, 0.25) 30%, 
+    rgba(26, 26, 46, 0.3) 70%, 
+    rgba(0, 180, 216, 0.15) 100%
   );
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(0, 180, 216, 0.3);
-  border-radius: 25px;
-  padding: 8px 16px;
-  min-width: 140px;
-  height: 45px;
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(0, 180, 216, 0.4);
+  border-radius: 30px;
+  padding: 12px 20px;
+  min-width: 160px;
+  height: 55px;
   overflow: hidden;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
   box-shadow: 
-    0 4px 15px rgba(0, 180, 216, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 8px 25px rgba(0, 180, 216, 0.3),
+    0 4px 15px rgba(0, 0, 0, 0.1),
+    inset 0 2px 0 rgba(255, 255, 255, 0.2);
   z-index: 2;
 }
 
+.visitCounter::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%);
+  background-size: 200% 200%;
+  opacity: 0;
+  transition: all 0.6s ease;
+  animation: shimmer 3s infinite;
+  border-radius: inherit;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% -200%;
+    opacity: 0;
+  }
+  50% {
+    background-position: 200% 200%;
+    opacity: 0.3;
+  }
+  100% {
+    background-position: -200% -200%;
+    opacity: 0;
+  }
+}
+
 .visitCounter:hover {
-  transform: translateY(-2px) scale(1.02);
+  transform: translateY(-3px) scale(1.05);
+  background: linear-gradient(135deg, 
+    rgba(0, 180, 216, 0.3) 0%, 
+    rgba(0, 42, 92, 0.35) 30%, 
+    rgba(26, 26, 46, 0.4) 70%, 
+    rgba(0, 180, 216, 0.25) 100%
+  );
+  border-color: rgba(0, 180, 216, 0.6);
+  box-shadow: 
+    0 15px 40px rgba(0, 180, 216, 0.4),
+    0 8px 25px rgba(0, 0, 0, 0.15),
+    inset 0 2px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* ===== VERSIÓN FLOTANTE - VISIBLE POR DEFECTO ===== */
+.floatingCounter {
+  position: fixed !important;
+  top: 180px;
+  left: 25px;
+  z-index: 9998 !important;
+  min-width: 180px;
+  height: 65px;
+  padding: 15px 25px;
   background: linear-gradient(135deg, 
     rgba(0, 180, 216, 0.25) 0%, 
     rgba(0, 42, 92, 0.3) 30%, 
     rgba(26, 26, 46, 0.35) 70%, 
     rgba(0, 180, 216, 0.2) 100%
   );
-  border-color: rgba(0, 180, 216, 0.5);
+  backdrop-filter: blur(20px);
+  border: 3px solid rgba(0, 180, 216, 0.6);
   box-shadow: 
-    0 8px 25px rgba(0, 180, 216, 0.3),
-    0 4px 15px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    0 15px 45px rgba(0, 180, 216, 0.4),
+    0 8px 30px rgba(0, 0, 0, 0.2),
+    inset 0 3px 0 rgba(255, 255, 255, 0.25);
+  border-radius: 35px;
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
 }
 
+/* ===== ESTADO OCULTO ===== */
+.floatingCounter.hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-100px);
+  pointer-events: none;
+}
+
+.floatingCounter:hover {
+  background: linear-gradient(135deg, 
+    rgba(0, 180, 216, 0.4) 0%, 
+    rgba(0, 42, 92, 0.45) 30%, 
+    rgba(26, 26, 46, 0.5) 70%, 
+    rgba(0, 180, 216, 0.35) 100%
+  );
+  border-color: rgba(0, 180, 216, 0.8);
+  box-shadow: 
+    0 20px 50px rgba(0, 180, 216, 0.5),
+    0 12px 35px rgba(0, 0, 0, 0.25),
+    inset 0 3px 0 rgba(255, 255, 255, 0.35);
+  transform: translateX(5px) scale(1.02);
+}
+
+/* No aplicar hover cuando está oculto */
+.floatingCounter.hidden:hover {
+  transform: translateX(-100px);
+  background: linear-gradient(135deg, 
+    rgba(0, 180, 216, 0.25) 0%, 
+    rgba(0, 42, 92, 0.3) 30%, 
+    rgba(26, 26, 46, 0.35) 70%, 
+    rgba(0, 180, 216, 0.2) 100%
+  );
+  border-color: rgba(0, 180, 216, 0.6);
+  box-shadow: 
+    0 15px 45px rgba(0, 180, 216, 0.4),
+    0 8px 30px rgba(0, 0, 0, 0.2),
+    inset 0 3px 0 rgba(255, 255, 255, 0.25);
+}
+
+/* Ocultar contador del navbar cuando hay versión flotante */
+@media (min-width: 769px) {
+  .visitCounter:not(.floatingCounter):not(.mobileVersion) {
+    display: none !important;
+  }
+}
+
+/* Ajustes para la versión flotante */
+.floatingCounter .counterContainer {
+  gap: 12px;
+}
+
+.floatingCounter .iconContainer {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, 
+    var(--accent-color, #00b4d8) 0%, 
+    #00d4ff 50%,
+    #ffffff 100%
+  );
+  box-shadow: 
+    0 0 20px rgba(0, 180, 216, 0.6),
+    inset 0 3px 6px rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+}
+
+.floatingCounter .eyeIcon {
+  font-size: 1.1rem;
+  color: white;
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.5));
+}
+
+.floatingCounter .counterLabel {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.floatingCounter .counterNumber {
+  font-size: 1.3rem;
+  font-weight: 800;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.floatingCounter .usersIcon {
+  width: 28px;
+  height: 28px;
+  font-size: 0.9rem;
+  color: rgba(0, 180, 216, 0.9);
+  filter: drop-shadow(0 0 5px rgba(0, 180, 216, 0.4));
+}
+
+/* Resto del CSS permanece igual... */
 .counterContainer {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   width: 100%;
   position: relative;
   z-index: 3;
 }
 
-/* ===== ICONO PRINCIPAL (OJO) ===== */
 .iconContainer {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: linear-gradient(135deg, 
     var(--accent-color, #00b4d8) 0%, 
     #00d4ff 100%
   );
   box-shadow: 
-    0 0 10px rgba(0, 180, 216, 0.4),
-    inset 0 1px 2px rgba(255, 255, 255, 0.3);
+    0 0 15px rgba(0, 180, 216, 0.5),
+    inset 0 2px 4px rgba(255, 255, 255, 0.3);
   position: relative;
   overflow: hidden;
 }
 
 .eyeIcon {
   color: white;
-  font-size: 0.8rem;
-  animation: eyeBlink 3s ease-in-out infinite;
-  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
+  font-size: 0.9rem;
+  animation: eyeBlink 4s ease-in-out infinite;
+  filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.4));
 }
 
 @keyframes eyeBlink {
-  0%, 90%, 100% { 
+  0%, 92%, 100% { 
     transform: scaleY(1); 
   }
-  95% { 
+  96% { 
     transform: scaleY(0.1); 
   }
 }
 
-/* ===== CONTENIDO DEL CONTADOR ===== */
 .counterContent {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1px;
+  gap: 2px;
 }
 
 .counterLabel {
-  font-size: 0.65rem;
-  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.9);
   font-weight: 600;
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
   line-height: 1;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   justify-content: center;
 }
 
-/* ===== INDICADOR DEMO ===== */
 .demoIndicator {
-  font-size: 0.5rem;
+  font-size: 0.55rem;
   background: linear-gradient(135deg, #ff6b6b 0%, #ffa500 100%);
   color: white;
-  padding: 1px 4px;
-  border-radius: 3px;
+  padding: 2px 6px;
+  border-radius: 4px;
   font-weight: 700;
-  letter-spacing: 0.3px;
-  box-shadow: 0 1px 3px rgba(255, 107, 107, 0.3);
-  animation: demoGlow 2s ease-in-out infinite alternate;
+  letter-spacing: 0.4px;
+  box-shadow: 0 2px 6px rgba(255, 107, 107, 0.4);
+  animation: demoGlow 3s ease-in-out infinite alternate;
 }
 
 @keyframes demoGlow {
   0% { 
-    box-shadow: 0 1px 3px rgba(255, 107, 107, 0.3);
+    box-shadow: 0 2px 6px rgba(255, 107, 107, 0.4);
     transform: scale(1);
   }
   100% { 
-    box-shadow: 0 2px 6px rgba(255, 107, 107, 0.5);
+    box-shadow: 0 3px 8px rgba(255, 107, 107, 0.6);
     transform: scale(1.05);
   }
 }
 
 .counterNumber {
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 700;
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
   color: white;
   line-height: 1;
   text-shadow: 
-    0 1px 3px rgba(0, 0, 0, 0.5),
-    0 0 8px rgba(0, 180, 216, 0.3);
-  min-height: 16px;
+    0 2px 4px rgba(0, 0, 0, 0.6),
+    0 0 10px rgba(0, 180, 216, 0.4);
+  min-height: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -150,35 +302,37 @@
 .number {
   background: linear-gradient(135deg, 
     #ffffff 0%, 
-    var(--accent-color, #00b4d8) 50%, 
-    #00d4ff 100%
+    var(--accent-color, #00b4d8) 40%, 
+    #00d4ff 70%,
+    #ffffff 100%
   );
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: numberGlow 2s ease-in-out infinite alternate;
+  animation: numberGlow 3s ease-in-out infinite alternate;
+  font-weight: 800;
 }
 
 @keyframes numberGlow {
   0% { 
-    filter: brightness(1) drop-shadow(0 0 3px rgba(0, 180, 216, 0.3)); 
+    filter: brightness(1) drop-shadow(0 0 4px rgba(0, 180, 216, 0.4)); 
   }
   100% { 
-    filter: brightness(1.2) drop-shadow(0 0 6px rgba(0, 180, 216, 0.6)); 
+    filter: brightness(1.3) drop-shadow(0 0 8px rgba(0, 180, 216, 0.7)); 
   }
 }
 
-/* ===== ICONO SECUNDARIO (USUARIOS) ===== */
 .usersIcon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
-  color: rgba(0, 180, 216, 0.7);
-  font-size: 0.7rem;
-  animation: usersFloat 4s ease-in-out infinite;
-  transition: all 0.3s ease;
+  width: 24px;
+  height: 24px;
+  color: rgba(0, 180, 216, 0.8);
+  font-size: 0.8rem;
+  animation: usersFloat 5s ease-in-out infinite;
+  transition: all 0.4s ease;
+  filter: drop-shadow(0 0 3px rgba(0, 180, 216, 0.3));
 }
 
 @keyframes usersFloat {
@@ -186,28 +340,29 @@
     transform: translateY(0) rotate(0deg); 
   }
   50% { 
-    transform: translateY(-2px) rotate(2deg); 
+    transform: translateY(-2px) rotate(3deg); 
   }
 }
 
 .visitCounter:hover .usersIcon {
   color: var(--accent-color, #00b4d8);
-  transform: scale(1.2);
+  transform: scale(1.15) rotate(5deg);
+  filter: drop-shadow(0 0 8px rgba(0, 180, 216, 0.6));
 }
 
-/* ===== ESTADO DE CARGA ===== */
 .loading {
   display: flex;
-  gap: 2px;
+  gap: 3px;
   align-items: center;
 }
 
 .loadingDot {
-  width: 3px;
-  height: 3px;
+  width: 4px;
+  height: 4px;
   background: var(--accent-color, #00b4d8);
   border-radius: 50%;
-  animation: loadingPulse 1.4s ease-in-out infinite both;
+  animation: loadingPulse 1.6s ease-in-out infinite both;
+  box-shadow: 0 0 6px rgba(0, 180, 216, 0.5);
 }
 
 .loadingDot:nth-child(1) { animation-delay: -0.32s; }
@@ -220,33 +375,33 @@
     opacity: 0.5;
   }
   40% { 
-    transform: scale(1.2);
+    transform: scale(1.3);
     opacity: 1;
+    box-shadow: 0 0 10px rgba(0, 180, 216, 0.8);
   }
 }
 
-/* ===== EFECTOS DECORATIVOS ===== */
 .glowEffect {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  border-radius: 25px;
+  border-radius: inherit;
   background: linear-gradient(45deg, 
     transparent 30%, 
-    rgba(0, 180, 216, 0.1) 50%, 
+    rgba(0, 180, 216, 0.15) 50%, 
     transparent 70%
   );
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.4s ease;
   pointer-events: none;
   z-index: 1;
 }
 
 .visitCounter:hover .glowEffect {
   opacity: 1;
-  animation: glowSweep 2s ease-in-out infinite;
+  animation: glowSweep 2.5s ease-in-out infinite;
 }
 
 @keyframes glowSweep {
@@ -264,11 +419,11 @@
   left: 50%;
   width: 100%;
   height: 100%;
-  border: 2px solid rgba(0, 180, 216, 0.3);
-  border-radius: 25px;
+  border: 3px solid rgba(0, 180, 216, 0.4);
+  border-radius: inherit;
   transform: translate(-50%, -50%);
   opacity: 0;
-  animation: counterPulse 3s ease-in-out infinite;
+  animation: counterPulse 4s ease-in-out infinite;
   pointer-events: none;
   z-index: 0;
 }
@@ -280,174 +435,144 @@
   }
   50% { 
     transform: translate(-50%, -50%) scale(1.2);
-    opacity: 0.3;
+    opacity: 0.4;
   }
 }
 
-/* ===== RESPONSIVE DESIGN ===== */
-@media (max-width: 1200px) {
-  .visitCounter {
-    min-width: 130px;
-    height: 42px;
-    padding: 6px 14px;
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  /* Desactivar completamente la versión flotante */
+  .floatingCounter {
+    display: none !important;
   }
   
-  .counterNumber {
-    font-size: 0.95rem;
-  }
-  
-  .counterLabel {
-    font-size: 0.6rem;
+  /* Mostrar contador normal solo en versión móvil del menú */
+  .visitCounter:not(.mobileVersion) {
+    display: none;
   }
 }
 
-@media (max-width: 992px) {
-  .visitCounter {
-    min-width: 120px;
-    height: 40px;
-    padding: 6px 12px;
-  }
-  
-  .counterNumber {
-    font-size: 0.9rem;
-  }
-  
-  .iconContainer {
-    width: 22px;
-    height: 22px;
-  }
-  
-  .eyeIcon {
-    font-size: 0.75rem;
-  }
-  
-  .usersIcon {
-    width: 18px;
-    height: 18px;
-    font-size: 0.65rem;
-  }
-}
-
-/* ===== VERSIÓN MÓVIL DEL CONTADOR ===== */
+/* ===== VERSIÓN MÓVIL ===== */
 .mobileVersion {
   background: linear-gradient(135deg, 
-    rgba(0, 180, 216, 0.2) 0%, 
-    rgba(0, 42, 92, 0.25) 30%, 
-    rgba(26, 26, 46, 0.3) 70%, 
-    rgba(0, 180, 216, 0.15) 100%
+    rgba(0, 180, 216, 0.25) 0%, 
+    rgba(0, 42, 92, 0.3) 30%, 
+    rgba(26, 26, 46, 0.35) 70%, 
+    rgba(0, 180, 216, 0.2) 100%
   );
-  border: 1px solid rgba(0, 180, 216, 0.4);
-  border-radius: 15px;
-  padding: 15px 20px;
-  min-width: 200px;
+  border: 2px solid rgba(0, 180, 216, 0.5);
+  border-radius: 20px;
+  padding: 18px 25px;
+  min-width: 220px;
   height: auto;
-  margin: 15px 0;
-  backdrop-filter: blur(15px);
+  margin: 20px 0;
+  backdrop-filter: blur(20px);
   box-shadow: 
-    0 8px 25px rgba(0, 180, 216, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    0 12px 35px rgba(0, 180, 216, 0.4),
+    inset 0 2px 0 rgba(255, 255, 255, 0.2);
 }
 
 .mobileVersion:hover {
-  transform: translateY(-3px) scale(1.02);
+  transform: translateY(-4px) scale(1.03);
   background: linear-gradient(135deg, 
-    rgba(0, 180, 216, 0.3) 0%, 
-    rgba(0, 42, 92, 0.35) 30%, 
-    rgba(26, 26, 46, 0.4) 70%, 
-    rgba(0, 180, 216, 0.25) 100%
+    rgba(0, 180, 216, 0.35) 0%, 
+    rgba(0, 42, 92, 0.4) 30%, 
+    rgba(26, 26, 46, 0.45) 70%, 
+    rgba(0, 180, 216, 0.3) 100%
   );
-  border-color: rgba(0, 180, 216, 0.6);
+  border-color: rgba(0, 180, 216, 0.7);
   box-shadow: 
-    0 12px 35px rgba(0, 180, 216, 0.4),
-    0 6px 20px rgba(0, 0, 0, 0.15),
-    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    0 18px 45px rgba(0, 180, 216, 0.5),
+    0 8px 25px rgba(0, 0, 0, 0.2),
+    inset 0 2px 0 rgba(255, 255, 255, 0.3);
 }
 
 .mobileVersion .counterContainer {
-  gap: 12px;
+  gap: 15px;
 }
 
 .mobileVersion .iconContainer {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   background: linear-gradient(135deg, 
     var(--accent-color, #00b4d8) 0%, 
     #00d4ff 50%,
     #ffffff 100%
   );
   box-shadow: 
-    0 0 15px rgba(0, 180, 216, 0.5),
-    inset 0 2px 4px rgba(255, 255, 255, 0.3);
+    0 0 20px rgba(0, 180, 216, 0.6),
+    inset 0 3px 6px rgba(255, 255, 255, 0.4);
 }
 
 .mobileVersion .eyeIcon {
-  font-size: 1.1rem;
-  animation: eyeBlinkMobile 2.5s ease-in-out infinite;
+  font-size: 1.2rem;
+  animation: eyeBlinkMobile 3s ease-in-out infinite;
 }
 
 @keyframes eyeBlinkMobile {
-  0%, 88%, 100% { 
+  0%, 90%, 100% { 
     transform: scaleY(1); 
   }
-  94% { 
+  95% { 
     transform: scaleY(0.1); 
   }
 }
 
 .mobileVersion .counterLabel {
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.95);
   font-weight: 700;
-  letter-spacing: 0.8px;
+  letter-spacing: 1px;
   text-transform: uppercase;
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   justify-content: center;
 }
 
 .mobileVersion .demoIndicator {
-  font-size: 0.6rem;
-  padding: 2px 6px;
-  border-radius: 4px;
+  font-size: 0.65rem;
+  padding: 3px 8px;
+  border-radius: 5px;
 }
 
 .mobileVersion .counterNumber {
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 800;
   text-shadow: 
-    0 2px 4px rgba(0, 0, 0, 0.6),
-    0 0 12px rgba(0, 180, 216, 0.4);
+    0 3px 6px rgba(0, 0, 0, 0.7),
+    0 0 15px rgba(0, 180, 216, 0.5);
 }
 
 .mobileVersion .number {
   background: linear-gradient(135deg, 
     #ffffff 0%, 
-    var(--accent-color, #00b4d8) 30%,
-    #00d4ff 60%,
-    #ffffff 100%
+    var(--accent-color, #00b4d8) 25%,
+    #00d4ff 50%,
+    #ffffff 75%,
+    var(--accent-color, #00b4d8) 100%
   );
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: numberGlowMobile 2s ease-in-out infinite alternate;
+  animation: numberGlowMobile 2.5s ease-in-out infinite alternate;
 }
 
 @keyframes numberGlowMobile {
   0% { 
-    filter: brightness(1) drop-shadow(0 0 4px rgba(0, 180, 216, 0.4)); 
+    filter: brightness(1) drop-shadow(0 0 5px rgba(0, 180, 216, 0.5)); 
   }
   100% { 
-    filter: brightness(1.3) drop-shadow(0 0 8px rgba(0, 180, 216, 0.7)); 
+    filter: brightness(1.4) drop-shadow(0 0 12px rgba(0, 180, 216, 0.8)); 
   }
 }
 
 .mobileVersion .usersIcon {
-  width: 28px;
-  height: 28px;
-  color: rgba(0, 180, 216, 0.8);
-  font-size: 0.9rem;
-  animation: usersFloatMobile 3.5s ease-in-out infinite;
+  width: 32px;
+  height: 32px;
+  color: rgba(0, 180, 216, 0.9);
+  font-size: 1rem;
+  animation: usersFloatMobile 4s ease-in-out infinite;
 }
 
 @keyframes usersFloatMobile {
@@ -455,19 +580,19 @@
     transform: translateY(0) rotate(0deg) scale(1); 
   }
   50% { 
-    transform: translateY(-3px) rotate(3deg) scale(1.1); 
+    transform: translateY(-4px) rotate(4deg) scale(1.1); 
   }
 }
 
 .mobileVersion:hover .usersIcon {
   color: var(--accent-color, #00b4d8);
-  transform: scale(1.3) rotate(5deg);
+  transform: scale(1.4) rotate(8deg);
 }
 
 .mobileVersion .pulse {
-  border: 2px solid rgba(0, 180, 216, 0.4);
-  border-radius: 15px;
-  animation: counterPulseMobile 2.5s ease-in-out infinite;
+  border: 3px solid rgba(0, 180, 216, 0.5);
+  border-radius: 20px;
+  animation: counterPulseMobile 3s ease-in-out infinite;
 }
 
 @keyframes counterPulseMobile {
@@ -476,93 +601,112 @@
     opacity: 0;
   }
   50% { 
-    transform: translate(-50%, -50%) scale(1.15);
-    opacity: 0.4;
+    transform: translate(-50%, -50%) scale(1.18);
+    opacity: 0.5;
   }
 }
 
 .mobileVersion .glowEffect {
-  border-radius: 15px;
+  border-radius: 20px;
   background: linear-gradient(45deg, 
     transparent 25%, 
-    rgba(0, 180, 216, 0.15) 50%, 
+    rgba(0, 180, 216, 0.2) 50%, 
     transparent 75%
   );
 }
 
 .mobileVersion:hover .glowEffect {
   opacity: 1;
-  animation: glowSweepMobile 1.8s ease-in-out infinite;
+  animation: glowSweepMobile 2s ease-in-out infinite;
 }
 
 @keyframes glowSweepMobile {
   0% { 
-    transform: translateX(-120%) rotate(45deg); 
+    transform: translateX(-150%) rotate(45deg); 
   }
   100% { 
-    transform: translateX(220%) rotate(45deg); 
+    transform: translateX(250%) rotate(45deg); 
   }
 }
 
-/* ===== OCULTAR EN MÓVIL (solo la versión desktop) ===== */
-@media (max-width: 768px) {
-  .visitCounter:not(.mobileVersion) {
-    display: none;
+/* Accesibilidad y optimizaciones */
+@media (prefers-reduced-motion: reduce) {
+  .visitCounter, .eyeIcon, .usersIcon, .number, .loadingDot, .glowEffect, .pulse, .floatingCounter {
+    animation: none !important;
+    transition: none !important;
   }
-}
-
-/* ===== ACCESIBILIDAD ===== */
-.visitCounter:focus {
-  outline: 2px solid var(--accent-color, #00b4d8);
-  outline-offset: 2px;
+  
+  .visitCounter:hover, .floatingCounter:hover, .mobileVersion:hover {
+    transform: none !important;
+  }
 }
 
 /* Modo de alto contraste */
 @media (prefers-contrast: high) {
-  .visitCounter {
+  .visitCounter, .floatingCounter, .mobileVersion {
     background: #000000;
-    border: 2px solid #ffffff;
-  }
-  
-  .counterLabel,
-  .counterNumber {
+    border: 3px solid #ffffff;
     color: #ffffff;
   }
   
   .iconContainer {
     background: #ffffff;
+    border: 2px solid #000000;
   }
   
-  .eyeIcon {
+  .eyeIcon, .usersIcon {
     color: #000000;
   }
-}
-
-/* Respeto por preferencias de movimiento reducido */
-@media (prefers-reduced-motion: reduce) {
-  .visitCounter,
-  .eyeIcon,
-  .usersIcon,
-  .number,
-  .loadingDot,
-  .glowEffect,
-  .pulse {
-    animation: none;
-    transition: none;
-  }
   
-  .visitCounter:hover {
-    transform: none;
+  .number {
+    background: #ffffff;
+    background-clip: initial;
+    -webkit-background-clip: initial;
+    -webkit-text-fill-color: initial;
+    color: #ffffff;
   }
 }
 
-/* Optimización para dispositivos táctiles */
-@media (hover: none) and (pointer: coarse) {
-  .visitCounter:hover {
-    transform: none;
+.liveIndicator {
+  font-size: 0.55rem;
+  background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  box-shadow: 0 2px 6px rgba(76, 175, 80, 0.4);
+  animation: liveGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes liveGlow {
+  0% { 
+    box-shadow: 0 2px 6px rgba(76, 175, 80, 0.4);
+    transform: scale(1);
   }
-  
-  .visitCounter:active {
-    transform: scale(0.98);
+  100% { 
+    box-shadow: 0 3px 8px rgba(76, 175, 80, 0.6);
+    transform: scale(1.05);
+  }
+}
+
+.errorIndicator {
+  font-size: 0.55rem;
+  background: linear-gradient(135deg, #f44336 0%, #ff5722 100%);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  box-shadow: 0 2px 6px rgba(244, 67, 54, 0.4);
+  animation: errorPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes errorPulse {
+  0%, 100% { 
+    opacity: 1;
+  }
+  50% { 
+    opacity: 0.7;
   }
 }
