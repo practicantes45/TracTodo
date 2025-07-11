@@ -159,7 +159,7 @@ export default function UbicacionPage() {
                             <div className="referenceCard">
                                 <div className="referenceImageContainer" onClick={() => openImageModal('/imgs/referencias/nissan.png', 'Agencia Nissan', 'Agencia Nissan')}>
                                     <img
-                                        src="/imgs/referencias/nissan.png"
+                                        src="https://i.postimg.cc/B6SVX8mK/nissan.png"
                                         alt="Agencia Nissan"
                                         className="referenceImage"
                                         onError={(e) => {
@@ -177,7 +177,7 @@ export default function UbicacionPage() {
                             <div className="referenceCard">
                                 <div className="referenceImageContainer" onClick={() => openImageModal('/imgs/referencias/tienda.jpg', 'Tienda de Azulejos y Bomberos', 'Tienda de Azulejos y Bomberos')}>
                                     <img
-                                        src="/imgs/referencias/tienda.jpg"
+                                        src="https://i.postimg.cc/5yjKShd9/tienda.jpg"
                                         alt="Tienda de Azulejos y Bomberos"
                                         className="referenceImage"
                                         onError={(e) => {
@@ -195,7 +195,7 @@ export default function UbicacionPage() {
                             <div className="referenceCard">
                                 <div className="referenceImageContainer" onClick={() => openImageModal('/imgs/referencias/plaza.jpg', 'Plaza Central', 'Plaza Central')}>
                                     <img
-                                        src="/imgs/referencias/plaza.jpg"
+                                        src="https://i.postimg.cc/vB0S9QKS/plaza.jpg"
                                         alt="Plaza Central"
                                         className="referenceImage"
                                         onError={(e) => {
