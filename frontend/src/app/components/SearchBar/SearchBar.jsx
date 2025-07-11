@@ -1,12 +1,13 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import styles from './SearchBar.module.css';
+import { useRouter } from 'next/navigation';
 
 const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobile, setIsMobile] = useState(false);
+  const router = useRouter();
 
-  // Detectar si es móvil para ajustar el placeholder
   useEffect(() => {
     const checkIsMobile = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -14,7 +15,6 @@ const SearchBar = () => {
 
     checkIsMobile();
     window.addEventListener('resize', checkIsMobile);
-
     return () => window.removeEventListener('resize', checkIsMobile);
   }, []);
 
@@ -25,14 +25,11 @@ const SearchBar = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // Aquí puedes agregar la lógica de búsqueda
-      console.log('Buscando:', searchQuery);
-      // Por ejemplo, redirigir a una página de resultados
-      // router.push(`/buscar?q=${encodeURIComponent(searchQuery)}`);
+      // Redirigir a productos con el término de búsqueda
+      router.push(`/productos?busqueda=${encodeURIComponent(searchQuery)}`);
     }
   };
 
-  // Placeholders diferentes para móvil y desktop
   const placeholder = isMobile 
     ? "Nombre / Número de parte / Palabras Clave" 
     : "Nombre / Número de parte / Palabras Clave";

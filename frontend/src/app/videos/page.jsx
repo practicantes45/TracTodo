@@ -18,75 +18,183 @@ export default function VideosPage() {
     const allShorts = [
         {
             id: 1,
-            title: "Cambio de Filtro en 60 Segundos",
-            youtubeLink: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
-            category: "tutoriales"
+            title: "Bomba De Inyección Isc/Px8 Nueva",
+            youtubeLink: "https://youtube.com/shorts/ivOuYS8fVtY?si=Yown8ilwQMhSORMm",
+            category: "Cargas Promocionales"
         },
         {
             id: 2,
-            title: "Tips Rápidos Motor Diésel",
-            youtubeLink: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
-            category: "tutoriales"
+            title: "Cabeza Para Motor C15 Nueva",
+            youtubeLink: "https://youtube.com/shorts/upsF85WA0_s?si=p4k49MYv0x9hRGUQ",
+            category: "Cargas Promocionales"
         },
         {
             id: 3,
-            title: "¡OFERTA FLASH! 50% OFF",
-            youtubeLink: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
-            category: "promociones"
+            title: "Cabeza Para Motor C12 Nueva",
+            youtubeLink: "https://youtube.com/shorts/xZxtuULfzS4?si=VjSYJyV-ODhRA4JL",
+            category: "Cargas Promocionales"
         },
         {
             id: 4,
-            title: "Feliz Año Nuevo TRACTODO",
-            youtubeLink: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
-            category: "festividades"
+            title: "Cabeza Para Motor Isx Nueva",
+            youtubeLink: "https://youtube.com/shorts/eRFUkeXfA5E?si=cN_kQN88X5IjmX8H",
+            category: "Cargas Promocionales"
         },
         {
             id: 5,
-            title: "Reparación Express Turbo",
-            youtubeLink: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
-            category: "tutoriales"
+            title: "Cabeza Para Motor Ism/M11 Nueva",
+            youtubeLink: "https://youtube.com/shorts/Q8RcvoZFqEE?si=AZukiFUsBip_yoiD",
+            category: "Cargas Promocionales"
         },
         {
             id: 6,
-            title: "Black Friday Deals",
-            youtubeLink: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
-            category: "promociones"
+            title: "Cabeza Detroit Diesel Serie 60 Nueva",
+            youtubeLink: "https://youtube.com/shorts/-7QCAyUXPhE?si=cr3Of0PRKf68jSrF",
+            category: "Cargas Promocionales"
         },
         {
             id: 7,
-            title: "Mantenimiento Preventivo Básico",
-            youtubeLink: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
-            category: "tutoriales"
+            title: "Cabeza Para Motor Px8 Nueva",
+            youtubeLink: "https://youtube.com/shorts/sO1Qc6HSSeE?si=AugK95ngX3VsLL1e",
+            category: "Cargas Promocionales"
         },
         {
             id: 8,
-            title: "Navidad en TRACTODO",
-            youtubeLink: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
-            category: "festividades"
+            title: "Cabeza Para Motor Cummins Serie C Nueva",
+            youtubeLink: "https://youtube.com/shorts/KQjZuSpgpJs?si=pAtonSpBEMmd6c8I",
+            category: "Cargas Promocionales"
         },
         {
             id: 9,
-            title: "Cyber Monday Especial",
-            youtubeLink: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
-            category: "promociones"
+            title: "Cabeza Para Motor Volvo X15 Nueva",
+            youtubeLink: "https://youtube.com/shorts/7s4dGkCF0M4?si=SlbE8rg0GYZeRRW_",
+            category: "Cargas Promocionales"
         },
         {
             id: 10,
-            title: "Diagnóstico Rápido de Motor",
-            youtubeLink: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
-            category: "tutoriales"
+            title: "Turbo Isx Marca Holset Sin Egr Nuevo",
+            youtubeLink: "https://youtube.com/shorts/7S0auDBtIVw?si=FBIIJmKuZx6opukP",
+            category: "Cargas Promocionales"
         },
         {
             id: 11,
-            title: "Cambio de Aceite Express",
-            youtubeLink: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
-            category: "tutoriales"
+            title: "Cabeza Para Motor Detroit Diesel Dd5 Nueva",
+            youtubeLink: "https://youtube.com/shorts/kkoSpwsRMhY?si=2ZC18mQId0Z9xono",
+            category: "Cargas Promocionales"
         },
         {
             id: 12,
-            title: "Promoción Fin de Año",
-            youtubeLink: "https://www.youtube.com/shorts/dQw4w9WgXcQ",
-            category: "promociones"
+            title: "Ciüeñal Bigcam 350/400 Nuevo",
+            youtubeLink: "https://youtube.com/shorts/r6YwOxHHFSU?si=ParROIIqCDIVhWCb",
+            category: "Cargas Promocionales"
+        },
+        {
+            id: 13,
+            title: "Cabeza Para Motor Volvo D13 Nueva",
+            youtubeLink: "https://youtube.com/shorts/n0V3eG2A38Y?si=0KpTcNWEY8BdBrHk",
+            category: "Cargas Promocionales"
+        },
+        {
+            id: 14,
+            title: "Cabeza Para Motor Volvo D13 Nueva",
+            youtubeLink: "https://youtube.com/shorts/eZN1vRqyfCw?si=RWveWuuO9fswprwK",
+            category: "Descargas de Risa"
+        },
+        {
+            id: 15,
+            title: "Vamos De Compras A Tractodo",
+            youtubeLink: "https://youtube.com/shorts/t90nv-TVdQo?si=8mTTMwIHt2R5LLCw",
+            category: "Cargas Promocionales"
+        },
+        {
+            id: 16,
+            title: "¿Y Las Llaves?",
+            youtubeLink: "https://youtube.com/shorts/O2LGoQAV8Z8?si=mbKH47VxJjUlmoR6",
+            category: "Descargas de Risa"
+        },
+        {
+            id: 17,
+            title: "Vamos De Compras A TracTodo",
+            youtubeLink: "https://youtube.com/shorts/t90nv-TVdQo?si=8mTTMwIHt2R5LLCw",
+            category: "Cargas Promocionales"
+        },
+        {
+            id: 18,
+            title: "Oscar En Promocionando Cigüeñales",
+            youtubeLink: "https://youtube.com/shorts/N6HLP0t1SIE?si=ZzWDKJQ7OuncezSe",
+            category: "Cargas Promocionales"
+        },
+        {
+            id: 19,
+            title: "TracTodo Lo Tiene Todo",
+            youtubeLink: "https://youtube.com/shorts/qjuNH5pQ-aY?si=GzNC8I8Rq9tEbp4u",
+            category: "Descargas de Risa"
+        },
+        {
+            id: 20,
+            title: "Feliz Día De Las Madres",
+            youtubeLink: "https://youtube.com/shorts/vQyUakKFbZA?si=h4b7avWbCOundqnB",
+            category: "Entregas Festivas"
+        },
+        {
+            id: 21,
+            title: "El Problema",
+            youtubeLink: "https://youtube.com/shorts/ftJYh2elhxY?si=2LBVX5n4EN2aSGO7",
+            category: "Descargas de Risa"
+        },
+        {
+            id: 22,
+            title: "Feliz Día Del Maestro",
+            youtubeLink: "https://youtube.com/shorts/tJq3DtfwvQk?si=mzdKsYUaZIMclVeN",
+            category: "Entregas Festivas"
+        },
+        {
+            id: 23,
+            title: "Llega Nueva Mercancia",
+            youtubeLink: "https://youtube.com/shorts/wL4U8hBPqJE?si=-o3wr5T2bjDp7Pf9",
+            category: "Cargas Promocionales"
+        },
+        {
+            id: 24,
+            title: "Conoce TracTodo",
+            youtubeLink: "https://youtube.com/shorts/kIjeiX2zKyk?si=yW_3SdcR-i7of5RB",
+            category: "Cargas Promocionales"
+        },
+        {
+            id: 25,
+            title: "Confía En Nosotros",
+            youtubeLink: "https://youtube.com/shorts/pn7BgWt1bag?si=ZyMc_kQePGrN__Kl",
+            category: "Descargas de Risa"
+        },
+        {
+            id: 26,
+            title: "No Tengas Dudas",
+            youtubeLink: "https://youtube.com/shorts/WMXAFSCP00o?si=m6A8LEKcCWDk4J6o",
+            category: "Descargas de Risa"
+        },
+        {
+            id: 27,
+            title: "Confía En Nosotros",
+            youtubeLink: "https://youtube.com/shorts/pn7BgWt1bag?si=ZyMc_kQePGrN__Kl",
+            category: "Descargas de Risa"
+        },
+        {
+            id: 28,
+            title: "¿Disculpa?",
+            youtubeLink: "https://youtube.com/shorts/bA2qhK3NzLI?si=uEY_DbfESheeKLx-",
+            category: "Descargas de Risa"
+        },
+        {
+            id: 29,
+            title: "Medias Reparaciones",
+            youtubeLink: "https://youtube.com/shorts/Xiq3nmecwZo?si=N2y5RaZJNbn3TR9o",
+            category: "Cargas Promocionales"
+        },
+        {
+            id: 30,
+            title: "Media Reparación ISM",
+            youtubeLink: "https://youtube.com/shorts/uBFnf3OnzSc?si=vLE25Cqa0RezbO7C",
+            category: "Cargas Promocionales"
         }
     ];
 

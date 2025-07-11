@@ -1,7 +1,10 @@
+'use client';
+
 import { Montserrat, Ubuntu, Prompt, Mina } from 'next/font/google';
 import './styles/global.css';
+import { AuthProvider } from '../hooks/useAuth';
 
-// Configura las fuentes
+// Configuración de fuentes (igual que antes)
 const montserrat = Montserrat({
   subsets: ['latin'],
   display: 'swap',
@@ -30,50 +33,38 @@ const mina = Mina({
   weight: ['400','700'],
 });
 
-export const metadata = {
-  title: 'TRACTODO - Refacciones para Motores Diésel',
-  description: 'Refacciones de calidad para motores diésel. Amplio inventario, precios competitivos y garantía confiable.',
-  keywords: 'refacciones, motores diesel, tractocamión, Querétaro, San Juan del Río',
-  robots: 'index, follow',
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=5',
-  // Eliminamos los meta tags de cache que pueden causar problemas
-}
-
 export default function RootLayout({ children }) {
   return (
-    <html lang="es" className={`${montserrat.variable} ${ubuntu.variable} ${prompt.variable} ${mina.variable}`}>
+      <html lang="es" className={`${montserrat.variable} ${ubuntu.variable} ${prompt.variable} ${mina.variable}`}>
       <head>
-        {/* Meta tags optimizados para navegación */}
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        
-        {/* Preload crítico para rendimiento */}
+        <title>TRACTODO - Refacciones para Motores Diésel</title>
+        <meta name="description" content="Refacciones de calidad para motores diésel. Amplio inventario, precios competitivos y garantía confiable." />
+        <meta name="keywords" content="refacciones, motores diesel, tractocamión, Querétaro, San Juan del Río" />
+        <meta name="robots" content="index, follow" />
         <link rel="preload" href="/imgs/fondocamion4.png" as="image" />
         <link rel="preload" href="/imgs/logopeke.png" as="image" />
-        
-        {/* DNS prefetch para optimización */}
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//www.google.com" />
-        
-        {/* Eliminar cache forzado que puede causar problemas de navegación */}
       </head>
       <body>
-        {children}
+          <AuthProvider>
+          {children}
+        </AuthProvider>
         
-        {/* Script para debugging en desarrollo */}
         {process.env.NODE_ENV === 'development' && (
           <script
             dangerouslySetInnerHTML={{
               __html: `
-                console.log('Page loaded:', window.location.pathname);
-                window.addEventListener('beforeunload', () => {
-                  console.log('Page unloading:', window.location.pathname);
-                });
+                console.log('🚀 Frontend iniciado en puerto 3001');
+                console.log('🔗 Conectando con Backend en puerto 3000');
+                console.log('📍 Página actual:', window.location.pathname);
               `,
             }}
           />
         )}
       </body>
     </html>
-  )
+  );
 }

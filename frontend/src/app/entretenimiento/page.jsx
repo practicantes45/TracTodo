@@ -19,31 +19,31 @@ export default function EntretenimientoPage() {
             id: 1,
             title: "Media Reparación ISM",
             youtubeLink: "https://youtube.com/shorts/uBFnf3OnzSc?si=7tFbTRzaaoV987gm",
-            category: "promociones"
+            category: "Cargas Promocionales"
         },
         {
             id: 2,
             title: "Confianza al cliente",
             youtubeLink: "https://youtube.com/shorts/u2DCUuzE9eo?si=PvtVB77U6PvsU6fQ",
-            category: "contenido"
+            category: "Descargas de Risa"
         },
         {
             id: 3,
             title: "Dale a tu motor lo mejor",
             youtubeLink: "https://youtube.com/shorts/bA2qhK3NzLI?si=EVMAjptREbIn6U9H",
-            category: "promociones"
+            category: "Cargas Promocionales"
         },
         {
             id: 4,
             title: "Tractodo Te Da Lo Mejor",
             youtubeLink: "https://youtube.com/shorts/WMXAFSCP00o?si=vtD1HVKhnPEf96Zc",
-            category: "contenido"
+            category: "Descargas de Risa"
         },
         {
             id: 5,
             title: "Cabeza Para Motor Volvo D13 Nueva",
             youtubeLink: "https://youtube.com/shorts/n0V3eG2A38Y?si=-mjo1g1NiZ5PKZAf",
-            category: "tutoriales"
+            category: "Cargas Promocionales"
         }
     ];
 
