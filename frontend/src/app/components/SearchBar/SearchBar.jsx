@@ -1,12 +1,13 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import styles from './SearchBar.module.css';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 const SearchBar = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isMobile, setIsMobile] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     const checkIsMobile = () => {
@@ -18,21 +19,39 @@ const SearchBar = () => {
     return () => window.removeEventListener('resize', checkIsMobile);
   }, []);
 
+  // Limpiar el campo de búsqueda cuando se navega a /productos sin parámetros
+  useEffect(() => {
+    const busquedaParam = searchParams.get('busqueda');
+    if (!busquedaParam) {
+      setSearchQuery('');
+    } else {
+      setSearchQuery(busquedaParam);
+    }
+  }, [searchParams]);
+
   const handleReset = () => {
     setSearchQuery('');
+    // Si estamos en la página de productos, resetear completamente
+    if (window.location.pathname === '/productos') {
+      router.push('/productos');
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
+      console.log('🔍 Realizando búsqueda con prioridades:', searchQuery.trim());
       // Redirigir a productos con el término de búsqueda
-      router.push(`/productos?busqueda=${encodeURIComponent(searchQuery)}`);
+      router.push(`/productos?busqueda=${encodeURIComponent(searchQuery.trim())}`);
+    } else {
+      // Si está vacío, ir a productos sin búsqueda
+      router.push('/productos');
     }
   };
 
   const placeholder = isMobile 
-    ? "Nombre / Número de parte / Palabras Clave" 
-    : "Nombre / Número de parte / Palabras Clave";
+    ? "Número de parte / Nombre / Palabras Clave" 
+    : "Número de parte / Nombre / Palabras Clave";
 
   return (
     <div className={styles.formWrapper}>

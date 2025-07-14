@@ -22,7 +22,11 @@ const Navbar = () => {
     const handleNavClick = (href, e) => {
         e.preventDefault();
         
-        if (pathname !== href) {
+        // NUEVO: Si hacemos clic en "Productos", resetear cualquier búsqueda
+        if (href === '/productos') {
+            console.log('🔄 Navegando a productos - reseteando búsqueda');
+            router.push('/productos'); // Esto eliminará cualquier parámetro de búsqueda
+        } else if (pathname !== href) {
             router.push(href);
         }
     };

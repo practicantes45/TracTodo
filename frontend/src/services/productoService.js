@@ -14,12 +14,19 @@ export const buscarProductos = async (params = {}) => {
 };
 
 // Obtener todos los productos
+// Obtener todos los productos
 export const obtenerProductos = async () => {
   try {
+    console.log('🔄 Obteniendo productos desde API...');
     const respuesta = await api.get('/productos');
+    console.log(`✅ Productos obtenidos: ${respuesta.data.length}`);
     return respuesta.data;
   } catch (error) {
-    console.error("Error al obtener productos:", error);
+    console.error("❌ Error al obtener productos:", error);
+    // En lugar de hacer throw, retornar array vacío para generateStaticParams
+    if (process.env.NODE_ENV === 'production') {
+      return [];
+    }
     throw error;
   }
 };

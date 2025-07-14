@@ -174,8 +174,8 @@ export default function VideosPage() {
         },
         {
             id: 27,
-            title: "Confía En Nosotros",
-            youtubeLink: "https://youtube.com/shorts/pn7BgWt1bag?si=ZyMc_kQePGrN__Kl",
+            title: "Gracias Por Tu Compra",
+            youtubeLink: "https://youtube.com/shorts/Yudh0cVcKVY?si=IVoDI9CBN97MsenG",
             category: "Descargas de Risa"
         },
         {
@@ -195,14 +195,56 @@ export default function VideosPage() {
             title: "Media Reparación ISM",
             youtubeLink: "https://youtube.com/shorts/uBFnf3OnzSc?si=vLE25Cqa0RezbO7C",
             category: "Cargas Promocionales"
+        },
+        {
+            id: 31,
+            title: "Confianza Al Cliente",
+            youtubeLink: "https://youtube.com/shorts/u2DCUuzE9eo?si=ln2mcq4KZakh_Q2Q",
+            category: "Descargas de Risa"
+        },
+        {
+            id: 32,
+            title: "No Solo Incluye Eso",
+            youtubeLink: "https://youtube.com/shorts/JhX48L1xocc?si=0uW0sRkWjO8mLXbI",
+            category: "Descargas de Risa"
+        },
+        {
+            id: 33,
+            title: "Chanfle",
+            youtubeLink: "https://youtube.com/shorts/pH6pkCSy7MM?si=EtUqBDV52r5OBFbk",
+            category: "Descargas de Risa"
+        },
+        {
+            id: 34,
+            title: "Gracias Por Tu Compra",
+            youtubeLink: "https://youtube.com/shorts/Yudh0cVcKVY?si=IVoDI9CBN97MsenG",
+            category: "Descargas de Risa"
+        },
+        {
+            id: 35,
+            title: "La Mejor Atención",
+            youtubeLink: "https://youtube.com/shorts/cSgcbzvpJjQ?si=H0wuRWe2KK5ihLde",
+            category: "Descargas de Risa"
+        },
+        {
+            id: 36,
+            title: "TracTo Refacciones",
+            youtubeLink: "https://youtube.com/shorts/xc8Ujk-_t9U?si=kYLod0TU2QkM10Jn",
+            category: "Cargas Promocionales"
+        },
+        {
+            id: 37,
+            title: "Caterpillar",
+            youtubeLink: "https://youtube.com/shorts/5PiVMpn4WZ8?si=fB3Llw-IHZ-fL8Q1",
+            category: "Cargas Promocionales"
         }
     ];
 
     const categories = [
         { id: 'todos', label: 'Todos' },
-        { id: 'tutoriales', label: 'Tutoriales' },
-        { id: 'promociones', label: 'Promociones' },
-        { id: 'festividades', label: 'Festividades' }
+        { id: 'Descargas de Risa', label: 'Descargas de Risa' },
+        { id: 'Cargas Promocionales', label: 'Cargas Promocionales' },
+        { id: 'Entregas Festivas', label: 'Entregas Festivas' }
     ];
 
     // Función para extraer ID de YouTube del link
