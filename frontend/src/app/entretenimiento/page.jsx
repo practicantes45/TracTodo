@@ -23,19 +23,19 @@ export default function EntretenimientoPage() {
         },
         {
             id: 2,
-            title: "Confianza al cliente",
+            title: "Confianza Al  Cliente",
             youtubeLink: "https://youtube.com/shorts/u2DCUuzE9eo?si=PvtVB77U6PvsU6fQ",
             category: "Descargas de Risa"
         },
         {
             id: 3,
-            title: "Dale a tu motor lo mejor",
+            title: "Dale A Tu Motor Lo Mejor",
             youtubeLink: "https://youtube.com/shorts/bA2qhK3NzLI?si=EVMAjptREbIn6U9H",
             category: "Cargas Promocionales"
         },
         {
             id: 4,
-            title: "Tractodo Te Da Lo Mejor",
+            title: "No Tengas Dudas",
             youtubeLink: "https://youtube.com/shorts/WMXAFSCP00o?si=vtD1HVKhnPEf96Zc",
             category: "Descargas de Risa"
         },

@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
 import { FaEye, FaUsers } from 'react-icons/fa';
+import { usePathname } from 'next/navigation';
 import styles from './VisitCounter.module.css';
 import { registrarVista, obtenerContadorVistas } from '../../../services/visitService';
 
@@ -10,16 +11,43 @@ const VisitCounter = ({ isMobile = false }) => {
     const [isLargeScreen, setIsLargeScreen] = useState(false);
     const [isVisible, setIsVisible] = useState(true);
     const [error, setError] = useState(null);
-    
+
+    // Obtener la ruta actual
+    const pathname = usePathname();
+
     // Refs para control estricto
     const isInitialized = useRef(false);
     const isMounted = useRef(false);
     const initPromise = useRef(null);
 
+    // Páginas donde debe aparecer el contador
+    const allowedPages = ['/', '/productos', '/sobre-nosotros', '/ubicacion', '/entretenimiento'];
+
+    // Verificar si la página actual está permitida
+    const isPageAllowed = () => {
+        // Si es página de producto individual, no mostrar
+        if (pathname.startsWith('/productos/') && pathname !== '/productos') {
+            return false;
+        }
+
+        // Verificar si está en la lista de páginas permitidas
+        return allowedPages.some(page => {
+            if (page === '/') {
+                return pathname === '/';
+            }
+            return pathname.startsWith(page);
+        });
+    };
+
+    // Si la página no está permitida, no renderizar el componente
+    if (!isPageAllowed()) {
+        return null;
+    }
+
     // Detectar tamaño de pantalla
     useEffect(() => {
         if (typeof window === 'undefined') return;
-        
+
         const checkScreenSize = () => {
             setIsLargeScreen(window.innerWidth >= 769);
         };
@@ -32,7 +60,7 @@ const VisitCounter = ({ isMobile = false }) => {
     // Control de scroll para visibilidad
     useEffect(() => {
         if (typeof window === 'undefined') return;
-        
+
         const handleScroll = () => {
             const scrollY = window.scrollY;
             setIsVisible(scrollY < 100);
@@ -47,9 +75,9 @@ const VisitCounter = ({ isMobile = false }) => {
     // Inicialización única del contador
     useEffect(() => {
         if (typeof window === 'undefined') return;
-        
+
         isMounted.current = true;
-        
+
         // Si ya se inicializó o hay una inicialización en curso, no hacer nada
         if (isInitialized.current || initPromise.current) {
             return;
@@ -60,43 +88,43 @@ const VisitCounter = ({ isMobile = false }) => {
         const initializeCounter = async () => {
             try {
                 if (!isMounted.current) return;
-                
+
                 setIsLoading(true);
                 setError(null);
-                
+
                 // Clave para controlar vistas por sesión de navegación
                 const sessionKey = 'tractodo_visit_session';
                 const currentSession = sessionStorage.getItem(sessionKey);
                 const newSessionId = Date.now().toString();
-                
+
                 console.log('🔄 Inicializando contador...', { currentSession, newSessionId });
-                
+
                 if (!currentSession) {
                     // Primera visita en esta sesión - registrar vista
                     console.log('✅ Primera visita - registrando vista');
                     const response = await registrarVista();
-                    
+
                     if (!isMounted.current) return;
-                    
+
                     setVisitCount(response.vistasTotales);
                     sessionStorage.setItem(sessionKey, newSessionId);
                 } else {
                     // Ya existe sesión - solo obtener contador
                     console.log('📊 Sesión existente - obteniendo contador');
                     const response = await obtenerContadorVistas();
-                    
+
                     if (!isMounted.current) return;
-                    
+
                     setVisitCount(response.vistasTotales);
                 }
-                
+
             } catch (error) {
                 console.error('❌ Error al inicializar contador:', error);
-                
+
                 if (!isMounted.current) return;
-                
+
                 setError('Error de conexión');
-                
+
                 // Fallback: usar contador local
                 const fallbackCount = getFallbackCount();
                 setVisitCount(fallbackCount);
@@ -113,26 +141,26 @@ const VisitCounter = ({ isMobile = false }) => {
         return () => {
             isMounted.current = false;
         };
-    }, []); // Solo ejecutar una vez al montar
+    }, [pathname]); // Agregar pathname como dependencia
 
     const getFallbackCount = () => {
         if (typeof window === 'undefined') return 15847;
-        
+
         const baseCount = 15847;
         const sessionKey = 'tractodo_visit_session';
         const localCountKey = 'tractodo_local_count';
-        
+
         // Verificar si ya registramos en esta sesión
         const hasSession = sessionStorage.getItem(sessionKey);
-        
+
         if (!hasSession) {
             // Primera vez en esta sesión
             const currentLocalCount = parseInt(localStorage.getItem(localCountKey) || '0');
             const newCount = currentLocalCount + 1;
-            
+
             localStorage.setItem(localCountKey, newCount.toString());
             sessionStorage.setItem(sessionKey, Date.now().toString());
-            
+
             return baseCount + newCount;
         } else {
             // Sesión existente
@@ -148,10 +176,9 @@ const VisitCounter = ({ isMobile = false }) => {
 
     // Determinar clases CSS
     const shouldFloat = isLargeScreen && !isMobile;
-    const counterClasses = `${styles.visitCounter} ${
-        isMobile ? styles.mobileVersion : 
-        shouldFloat ? `${styles.floatingCounter} ${!isVisible ? styles.hidden : ''}` : ''
-    }`;
+    const counterClasses = `${styles.visitCounter} ${isMobile ? styles.mobileVersion :
+            shouldFloat ? `${styles.floatingCounter} ${!isVisible ? styles.hidden : ''}` : ''
+        }`;
 
     return (
         <div className={counterClasses}>
@@ -159,7 +186,7 @@ const VisitCounter = ({ isMobile = false }) => {
                 <div className={styles.iconContainer}>
                     <FaEye className={styles.eyeIcon} />
                 </div>
-                
+
                 <div className={styles.counterContent}>
                     <div className={styles.counterLabel}>
                         {isMobile ? 'Visitas Totales' : 'Visitas'}

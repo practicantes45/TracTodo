@@ -64,12 +64,20 @@ const MobileMenu = () => {
     const handleLinkClick = (href) => {
         setIsOpen(false);
         
-        // Forzar navegación programática
-        setTimeout(() => {
-            if (pathname !== href) {
-                router.push(href);
-            }
-        }, 100);
+        // NUEVO: Si hacemos clic en "Productos", resetear cualquier búsqueda
+        if (href === '/productos') {
+            console.log('🔄 Navegando a productos desde menú móvil - reseteando búsqueda');
+            setTimeout(() => {
+                router.push('/productos'); // Esto eliminará cualquier parámetro de búsqueda
+            }, 100);
+        } else {
+            // Forzar navegación programática
+            setTimeout(() => {
+                if (pathname !== href) {
+                    router.push(href);
+                }
+            }, 100);
+        }
     };
 
     const closeMenu = () => {
