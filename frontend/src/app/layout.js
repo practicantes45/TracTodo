@@ -3,6 +3,7 @@
 import { Montserrat, Ubuntu, Prompt, Mina } from 'next/font/google';
 import './styles/global.css';
 import { AuthProvider } from '../hooks/useAuth';
+import CookieConsent from './components/CookieConsent/CookieConsent'; // <--- Agrega esta línea
 
 // Configuración de fuentes (igual que antes)
 const montserrat = Montserrat({
@@ -49,10 +50,10 @@ export default function RootLayout({ children }) {
         <link rel="dns-prefetch" href="//www.google.com" />
       </head>
       <body>
-          <AuthProvider>
+        <AuthProvider>
           {children}
         </AuthProvider>
-        
+        <CookieConsent /> {/* <--- Agrega esto justo antes del cierre de body */}
         {process.env.NODE_ENV === 'development' && (
           <script
             dangerouslySetInnerHTML={{

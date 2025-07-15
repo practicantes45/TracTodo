@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import AdminLoginButton from '../AdminLoginButton/AdminLoginButton';
 import {
   FaLinkedin,
   FaYoutube,
@@ -106,7 +107,7 @@ const Footer = () => {
                   className={styles.clickableContact}
                   onClick={() => copyToClipboard('Río Extoras 56, San Cayetano, 76806 San Juan del Río, Qro.', 'location')}
                 >
-                Río Extoras 56, San Cayetano<br />San Juan del Río, Querétaro
+                  Río Extoras 56, San Cayetano<br />San Juan del Río, Querétaro
                 </span>
                 {copiedItem === 'location' && (
                   <div className={styles.copyTooltip}>
@@ -160,7 +161,6 @@ const Footer = () => {
           </div>
         </div>
       </div>
-
       {/* Sección inferior con slogan y copyright */}
       <div className={styles.footerBottom}>
         <div className={styles.slogan}>
@@ -170,6 +170,8 @@ const Footer = () => {
           <p>&copy; {currentYear} TRACTODO - Todos los derechos reservados</p>
         </div>
       </div>
+      {pathname === '/' && <AdminLoginButton />}
+
     </footer>
   );
 };

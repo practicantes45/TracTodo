@@ -1,0 +1,318 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(10, 10, 30, 0.95), rgba(26, 26, 46, 0.98));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  backdrop-filter: blur(10px);
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.container {
+  position: relative;
+  width: 500px;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  overflow: visible;
+  animation: containerAppear 0.6s ease-out;
+}
+
+@keyframes containerAppear {
+  from {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.container span {
+  position: absolute;
+  left: 0;
+  width: 32px;
+  height: 6px;
+  background: #16213e;
+  border-radius: 80px;
+  transform-origin: 250px;
+  transform: rotate(calc(var(--i) * (360deg / 50)));
+  animation: blink 3s linear infinite;
+  animation-delay: calc(var(--i) * (3s / 50));
+}
+
+@keyframes blink {
+  0% {
+    background: linear-gradient(90deg, #00b4d8, #10b981);
+    box-shadow: 0 0 10px rgba(0, 180, 216, 0.6);
+  }
+  25% {
+    background: #16213e;
+    box-shadow: none;
+  }
+}
+
+.loginBox {
+  position: absolute;
+  width: 75%;
+  max-width: 320px;
+  z-index: 1;
+  padding: 25px;
+  border-radius: 20px;
+  background: linear-gradient(145deg, rgba(26, 26, 46, 0.98), rgba(15, 20, 25, 0.95));
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(0, 180, 216, 0.3);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  animation: boxSlideUp 0.5s ease-out;
+}
+
+@keyframes boxSlideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.header {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.backButton {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: 2px solid #00b4d8;
+  color: #00b4d8;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 0 rgba(0, 180, 216, 0);
+}
+
+.backButton:hover {
+  background: linear-gradient(135deg, #00b4d8, #10b981);
+  color: #1a1a2e;
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 0 20px rgba(0, 180, 216, 0.5);
+}
+
+.title {
+  font-size: 1.8em;
+  color: #00b4d8;
+  text-align: center;
+  margin: 0;
+  font-family: var(--font-montserrat);
+  text-shadow: 0 0 15px rgba(0, 180, 216, 0.5);
+  animation: titleGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes titleGlow {
+  from {
+    text-shadow: 0 0 15px rgba(0, 180, 216, 0.5);
+  }
+  to {
+    text-shadow: 0 0 25px rgba(0, 180, 216, 0.8);
+  }
+}
+
+.form {
+  width: 100%;
+}
+
+.inputBox {
+  position: relative;
+  margin: 20px 0;
+  animation: inputSlide 0.4s ease-out;
+  animation-fill-mode: both;
+}
+
+.inputBox:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.inputBox:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+@keyframes inputSlide {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.input {
+  width: 100%;
+  height: 45px;
+  background: transparent;
+  border: 2px solid #16213e;
+  outline: none;
+  border-radius: 40px;
+  font-size: 1em;
+  color: #fff;
+  padding: 0 20px;
+  transition: all 0.5s ease;
+  box-sizing: border-box;
+}
+
+.input:focus {
+  border-color: #00b4d8;
+  box-shadow: 
+    0 0 0 3px rgba(0, 180, 216, 0.2),
+    0 0 20px rgba(0, 180, 216, 0.1);
+  transform: scale(1.02);
+}
+
+.input:valid + .label,
+.input:focus + .label {
+  top: -12px;
+  font-size: 0.8em;
+  background: linear-gradient(90deg, #1a1a2e, #16213e);
+  padding: 0 8px;
+  color: #00b4d8;
+  border-radius: 4px;
+  transform: translateY(0) scale(1);
+}
+
+.label {
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  font-size: 1em;
+  pointer-events: none;
+  transition: all 0.5s ease;
+  color: #b8b8b8;
+}
+
+.togglePassword {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: transparent;
+  border: none;
+  color: #00b4d8;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  padding: 5px;
+  border-radius: 50%;
+}
+
+.togglePassword:hover {
+  transform: translateY(-50%) scale(1.2);
+  color: #10b981;
+  background: rgba(0, 180, 216, 0.1);
+}
+
+.errorMessage {
+  background: linear-gradient(135deg, rgba(220, 38, 38, 0.15), rgba(239, 68, 68, 0.1));
+  border: 1px solid #dc2626;
+  color: #dc2626;
+  padding: 12px;
+  border-radius: 12px;
+  margin: 15px 0;
+  font-size: 0.9em;
+  text-align: center;
+  animation: errorShake 0.5s ease-out;
+}
+
+@keyframes errorShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.btn {
+  width: 100%;
+  height: 45px;
+  background: linear-gradient(135deg, #00b4d8, #10b981);
+  border: none;
+  outline: none;
+  border-radius: 40px;
+  cursor: pointer;
+  font-size: 1em;
+  color: #1a1a2e;
+  font-weight: 600;
+  margin-top: 15px;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #0095b3, #059669);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 20px rgba(0, 180, 216, 0.4),
+    0 0 30px rgba(16, 185, 129, 0.3);
+}
+
+.btn:hover:not(:disabled)::before {
+  left: 100%;
+}
+
+.btn:disabled {
+  background: #6b7280;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+@media (max-width: 480px) {
+  .container {
+    width: 400px;
+    height: 400px;
+  }
+  
+  .loginBox {
+    width: 80%;
+    padding: 20px;
+  }
+}
