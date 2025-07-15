@@ -42,25 +42,22 @@ export const obtenerProductoPorId = async (id) => {
   }
 };
 
-// Crear producto (solo admin)
+
 export const crearProducto = async (datosProducto) => {
   try {
     const respuesta = await api.post('/productos', datosProducto);
     return respuesta.data;
   } catch (error) {
-    console.error("Error al crear producto:", error);
-    throw error;
+    throw new Error(error.response?.data?.error || 'Error al crear producto');
   }
 };
 
-// Actualizar producto (solo admin)
 export const actualizarProducto = async (id, datosProducto) => {
   try {
     const respuesta = await api.put(`/productos/${id}`, datosProducto);
     return respuesta.data;
   } catch (error) {
-    console.error("Error al actualizar producto:", error);
-    throw error;
+    throw new Error(error.response?.data?.error || 'Error al actualizar producto');
   }
 };
 
@@ -85,3 +82,4 @@ export const obtenerProductosDelMes = async () => {
     throw error;
   }
 };
+

@@ -24,12 +24,19 @@ export const iniciarSesion = async (credenciales) => {
   }
 };
 
-// Verificar si es administrador
+// Verificar si es administrador - CORREGIDO
 export const verificarAdmin = async () => {
   try {
     const respuesta = await api.get('/user/administradores');
-    return respuesta.data;
+    
+    // CORREGIDO: El backend devuelve el mensaje directo, no un objeto con isAdmin
+    if (respuesta.data === "Admin autorizado") {
+      return { isAdmin: true };
+    } else {
+      return { isAdmin: false };
+    }
   } catch (error) {
+    console.error("Error al verificar admin:", error);
     return { isAdmin: false };
   }
 };

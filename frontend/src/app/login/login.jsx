@@ -1,88 +1,146 @@
 'use client';
 import { useState } from 'react';
-import styles from './Login.module.css';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '../../hooks/useAuth';
+import { iniciarSesion, verificarAdmin } from '../../services/userService';
+import './login.css'; // Importa el CSS de la página
 
 export default function Login() {
   const [formData, setFormData] = useState({
-    email: '',
+    username: '', // CORREGIDO: cambiado de email a username
     password: ''
   });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  
+  const { guardarSesion } = useAuth();
+  const router = useRouter();
 
   const handleChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
+    if (error) setError('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Login:', formData);
+    setLoading(true);
+    setError('');
+
+    try {
+      const respuestaLogin = await iniciarSesion({
+        username: formData.username,
+        password: formData.password
+      });
+      
+      if (respuestaLogin.mensaje === "Login exitoso") {
+        const respuestaAdmin = await verificarAdmin();
+        
+        if (respuestaAdmin.isAdmin) {
+          guardarSesion({
+            username: formData.username,
+            isAdmin: true,
+            loginTime: new Date().toISOString()
+          });
+          
+          console.log('✅ Login exitoso - Admin autenticado');
+          router.push('/');
+        } else {
+          setError('No tienes permisos de administrador');
+        }
+      } else {
+        setError('Credenciales incorrectas');
+      }
+    } catch (error) {
+      console.error('Error en login:', error);
+      setError(error.message || 'Error al iniciar sesión');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className={styles.container}>
-      <div className={styles.leftSection}>
-        <div className={styles.welcomeContent}>
+    <div className="container">
+      <div className="leftSection">
+        <div className="welcomeContent">
           <h1>¡Bienvenido!</h1>
-          <p>Ingrese sus datos personales para usar todas las funciones del sitio</p>
-          <button className={styles.switchBtn}>Registrarse</button>
+          <p>Ingrese sus datos personales para acceder al panel de administración</p>
+          <button 
+            className="switchBtn"
+            onClick={() => router.push('/')}
+          >
+            Volver al sitio
+          </button>
         </div>
-        <div className={styles.decorativeCircle}></div>
+        <div className="decorativeCircle"></div>
       </div>
       
-      <div className={styles.rightSection}>
-        <div className={styles.formContainer}>
-          <h2>Iniciar Sesión</h2>
+      <div className="rightSection">
+        <div className="formContainer">
+          <h2>Panel de Administración</h2>
           
-          <div className={styles.socialButtons}>
-            <button className={styles.socialBtn}>
-              <i className="fab fa-twitch"></i>
+          <div className="socialButtons">
+            <button className="socialBtn" type="button">
+              <i className="fas fa-user-shield"></i>
             </button>
-            <button className={styles.socialBtn}>
-              <i className="fab fa-twitter"></i>
+            <button className="socialBtn" type="button">
+              <i className="fas fa-cog"></i>
             </button>
-            <button className={styles.socialBtn}>
-              <i className="fab fa-instagram"></i>
+            <button className="socialBtn" type="button">
+              <i className="fas fa-lock"></i>
             </button>
-            <button className={styles.socialBtn}>
-              <i className="fab fa-tiktok"></i>
+            <button className="socialBtn" type="button">
+              <i className="fas fa-key"></i>
             </button>
           </div>
           
-          <p className={styles.formSubtitle}>Use su correo y contraseña</p>
+          <p className="formSubtitle">Use su usuario y contraseña de administrador</p>
           
-          <form className={styles.loginForm} onSubmit={handleSubmit}>
-            <div className={styles.inputGroup}>
-              <i className="fas fa-envelope"></i>
+          {error && (
+            <div className="errorMessage">
+              {error}
+            </div>
+          )}
+          
+          <form className="loginForm" onSubmit={handleSubmit}>
+            <div className="inputGroup">
+              <i className="fas fa-user"></i>
               <input 
-                type="email" 
-                name="email"
-                placeholder="Email" 
-                value={formData.email}
+                type="text" 
+                name="username"
+                placeholder="Usuario" 
+                value={formData.username}
                 onChange={handleChange}
                 required 
+                disabled={loading}
               />
             </div>
             
-            <div className={styles.inputGroup}>
+            <div className="inputGroup">
               <i className="fas fa-lock"></i>
               <input 
                 type="password" 
                 name="password"
-                placeholder="Password" 
+                placeholder="Contraseña" 
                 value={formData.password}
                 onChange={handleChange}
                 required 
+                disabled={loading}
               />
             </div>
             
-            <button type="button" className={styles.forgotPassword}>
+            <button type="button" className="forgotPassword">
               ¿Olvidaste tu contraseña?
             </button>
             
-            <button type="submit" className={styles.submitBtn}>
-              INICIAR SESIÓN
+            <button 
+              type="submit" 
+              className="submitBtn"
+              disabled={loading}
+            >
+              {loading ? 'INICIANDO SESIÓN...' : 'INICIAR SESIÓN'}
             </button>
           </form>
         </div>

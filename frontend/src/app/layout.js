@@ -3,9 +3,9 @@
 import { Montserrat, Ubuntu, Prompt, Mina } from 'next/font/google';
 import './styles/global.css';
 import { AuthProvider } from '../hooks/useAuth';
-import CookieConsent from './components/CookieConsent/CookieConsent'; // <--- Agrega esta línea
+import CookieConsent from './components/CookieConsent/CookieConsent';
 
-// Configuración de fuentes (igual que antes)
+// Configuración de fuentes
 const montserrat = Montserrat({
   subsets: ['latin'],
   display: 'swap',
@@ -36,7 +36,7 @@ const mina = Mina({
 
 export default function RootLayout({ children }) {
   return (
-      <html lang="es" className={`${montserrat.variable} ${ubuntu.variable} ${prompt.variable} ${mina.variable}`}>
+    <html lang="es" className={`${montserrat.variable} ${ubuntu.variable} ${prompt.variable} ${mina.variable}`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
@@ -53,7 +53,7 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           {children}
         </AuthProvider>
-        <CookieConsent /> {/* <--- Agrega esto justo antes del cierre de body */}
+        <CookieConsent />
         {process.env.NODE_ENV === 'development' && (
           <script
             dangerouslySetInnerHTML={{
