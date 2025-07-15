@@ -1,0 +1,37 @@
+.adminButton {
+  position: absolute;
+  top: 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editButton {
+  right: 10px;
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.addButton {
+  right: 10px;
+  background: linear-gradient(135deg, #ec4899, #db2777);
+  font-size: 24px;
+}
+
+.adminButton:hover {
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.adminButton:active {
+  transform: scale(0.95);
+}

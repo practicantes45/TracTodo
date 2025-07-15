@@ -64,7 +64,7 @@
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(2px);
-  z-index: 999;
+  z-index: 60;
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s ease;
@@ -85,7 +85,7 @@
   background: linear-gradient(135deg, #0a0a1e 0%, #1a1a2e 25%, var(--primary-color, #002a5c) 50%, #16213e 75%, #0f1419 100%);
   background-size: 400% 400%;
   animation: menuGradientFlow 12s ease infinite;
-  z-index: 1000;
+  z-index: 61;
   transition: left 0.4s cubic-bezier(0.23, 1, 0.320, 1);
   display: flex;
   flex-direction: column;

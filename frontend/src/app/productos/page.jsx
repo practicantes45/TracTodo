@@ -9,6 +9,7 @@ import ContactNumbers from '../components/ContactNumbers/ContactNumbers';
 import { obtenerProductos, buscarProductos } from '../../services/productoService';
 import { registrarVista } from '../../services/trackingService';
 import { useSearchParams, useRouter } from 'next/navigation';
+import AdminButtons from '../components/AdminButtons/AdminButtons';
 
 export default function ProductosPage() {
   // Estados
@@ -17,7 +18,7 @@ export default function ProductosPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const router = useRouter();
-  
+
   // Estados para filtros
   const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
   const [selectedMarcas, setSelectedMarcas] = useState([]);
@@ -84,7 +85,7 @@ export default function ProductosPage() {
 
       const marcasUnicas = [...new Set(resultados.map(p => p.marca).filter(Boolean))];
       setMarcasDisponibles(marcasUnicas);
-      
+
       console.log(`✅ Encontrados ${resultados.length} productos con búsqueda priorizada`);
     } catch (error) {
       console.error("Error al buscar productos:", error);
@@ -109,13 +110,21 @@ export default function ProductosPage() {
       // Extraer marcas únicas de los productos  
       const marcasUnicas = [...new Set(data.map(p => p.marca).filter(Boolean))];
       setMarcasDisponibles(marcasUnicas);
-      
+
       console.log(`✅ Cargados ${data.length} productos totales`);
     } catch (error) {
       console.error("Error al cargar productos:", error);
       setError('No se pudieron cargar los productos');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const refetchProducts = () => {
+    if (busquedaParam) {
+      buscarProductosConTermino(busquedaParam);
+    } else {
+      cargarProductos();
     }
   };
 
@@ -246,6 +255,7 @@ export default function ProductosPage() {
 
       <main className="mainContent">
         {/* Hero Section */}
+
         <div className="heroSection">
           <div className="heroOverlay">
             <div className="heroContent">
@@ -353,7 +363,7 @@ export default function ProductosPage() {
               </div>
             )}
 
-             {/* Mensaje explicativo cuando hay búsqueda */}
+            {/* Mensaje explicativo cuando hay búsqueda */}
             {busquedaParam && (
               <div className="searchPriorityInfo">
                 <h3>Orden de Relevancia</h3>
@@ -365,7 +375,7 @@ export default function ProductosPage() {
                 </ol>
               </div>
             )}
-            
+
             {/* Botón limpiar filtros */}
             <div className="mobileFilterActions">
               <button
@@ -483,26 +493,33 @@ export default function ProductosPage() {
 
             {/* Grid de productos */}
             <div className="productosGrid">
+              <AdminButtons onProductUpdate={refetchProducts} />
+
               {error ? (
                 <div className="errorMessage">{error}</div>
               ) : productosFiltrados.length === 0 ? (
                 <div className="noProducts">
-                  {busquedaParam ? 
-                    `No se encontraron productos para "${busquedaParam}"` : 
+                  {busquedaParam ?
+                    `No se encontraron productos para "${busquedaParam}"` :
                     'No se encontraron productos'
                   }
                 </div>
               ) : (
                 productosFiltrados.map((producto) => {
                   const imagenUrl = obtenerPrimeraImagen(producto);
-                  
+
                   return (
                     <div
                       key={producto.id}
                       className="productoCard"
                       onClick={() => handleProductoClick(producto)}
-                      style={{ cursor: 'pointer' }}
+                      style={{ cursor: 'pointer', position: 'relative' }}
                     >
+                      {/* SOLO botón de editar - NO botón de agregar aquí */}
+                      <AdminButtons
+                        producto={producto}
+                        onProductUpdate={refetchProducts}
+                      />
                       <div className="productoImageContainer">
                         {imagenUrl ? (
                           <img
@@ -515,7 +532,7 @@ export default function ProductosPage() {
                             }}
                           />
                         ) : null}
-                        <div 
+                        <div
                           className="imageNotFound"
                           style={{ display: imagenUrl ? 'none' : 'flex' }}
                         >
