@@ -1775,26 +1775,6 @@
   }
 }
 
-/* ===== AJUSTES FINALES PARA CONSISTENCIA ===== */
-/* Asegurar que el botón de filtro móvil no interfiera con el menú hamburguesa */
-@media (max-width: 992px) {
-  .mobileFilterToggle {
-    position: relative;
-    z-index: 5;
-    /* Menor que el menú hamburguesa (z-index: 999-1001) */
-  }
-
-  .mobileFilterMenu {
-    z-index: 999;
-    /* Igual que el overlay del menú hamburguesa */
-  }
-
-  .mobileFilterOverlay {
-    z-index: 998;
-    /* Menor que el menú móvil */
-  }
-}
-
 /* Mejoras para navegación por teclado */
 .mobileFilterButton:focus,
 .clearMobileFilters:focus,

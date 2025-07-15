@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { crearProducto, actualizarProducto } from '../../../services/productoService';
 import styles from './ProductModal.module.css';
 
@@ -19,12 +20,18 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
       arriba: '',
       atras: '',
       frente: '',
-      ladoIzquierdo: '', // NUEVO
-      ladoDerecho: ''   // NUEVO
+      ladoIzquierdo: '',
+      ladoDerecho: ''
     }
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Verificar que estamos en el cliente
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   useEffect(() => {
     if (mode === 'edit' && producto) {
@@ -43,8 +50,8 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
           arriba: producto.imagenesUrl?.arriba || '',
           atras: producto.imagenesUrl?.atras || '',
           frente: producto.imagenesUrl?.frente || '',
-          ladoIzquierdo: producto.imagenesUrl?.ladoIzquierdo || '', // NUEVO
-          ladoDerecho: producto.imagenesUrl?.ladoDerecho || ''     // NUEVO
+          ladoIzquierdo: producto.imagenesUrl?.ladoIzquierdo || '',
+          ladoDerecho: producto.imagenesUrl?.ladoDerecho || ''
         }
       });
     }
@@ -89,9 +96,11 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
     }
   };
 
-  if (!isOpen) return null;
+  // Si no está montado o no está abierto, no renderizar nada
+  if (!isMounted || !isOpen) return null;
 
-  return (
+  // RENDERIZAR CON PORTAL - igual que CookieConsent
+  return createPortal(
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.header}>
@@ -197,7 +206,8 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
               name="descripcion"
               value={formData.descripcion}
               onChange={handleChange}
-              rows="3"
+              rows="4"
+              placeholder="Descripción del producto..."
             />
           </div>
 
@@ -214,7 +224,7 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
           </div>
 
           <div className={styles.imagesSection}>
-            <h3>Imágenes</h3>
+            <h3>Imágenes del Producto</h3>
             <div className={styles.grid}>
               <div className={styles.field}>
                 <label>Imagen Frontal</label>
@@ -249,7 +259,6 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
                 />
               </div>
 
-              {/* NUEVOS CAMPOS */}
               <div className={styles.field}>
                 <label>Imagen Lateral Izquierda</label>
                 <input
@@ -286,6 +295,7 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
           </div>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body // RENDERIZAR DIRECTAMENTE EN EL BODY - igual que CookieConsent
   );
 }
