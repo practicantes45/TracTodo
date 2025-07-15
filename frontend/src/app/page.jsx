@@ -11,13 +11,14 @@ import VerMarcas from './components/VerMarcas/VerMarcas';
 import BenefitsSection from './components/BenefitsSection/BenefitsSection';
 import Footer from './components/Footer/Footer';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
+import AdminPanel from './components/AdminPanel/AdminPanel';
 
 export default function HomePage() {
     const [searchQuery, setSearchQuery] = useState('');
 
     return (
         <div className="layout">
-            
+
 
             {/* Navbar principal con estado activo */}
             <Navbar />
@@ -76,7 +77,7 @@ export default function HomePage() {
 
             {/* Footer con estado activo */}
             <Footer />
-
+            <AdminPanel />
             {/* Botón ScrollToTop */}
             <ScrollToTop />
         </div>

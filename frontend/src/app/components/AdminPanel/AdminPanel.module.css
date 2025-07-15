@@ -1,0 +1,34 @@
+.panel {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+  min-width: 200px;
+}
+
+.content h3 {
+  margin: 0 0 12px 0;
+  font-size: 1.1rem;
+  color: #10b981;
+  font-family: var(--font-montserrat);
+}
+
+.logoutButton {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.logoutButton:hover {
+  background: #b91c1c;
+}
