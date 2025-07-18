@@ -6,7 +6,7 @@
   height: 580px; /* ALTURA UNIFICADA */
   width: 100%;
   left: 0;
-  background-image: url('/imgs/fondoazul.png');
+  background-image: url('https://i.postimg.cc/hj0RYW59/fondoazul.png');
   background-size: cover;
   background-position: center center; /* CORREGIDO: posición idéntica */
   background-repeat: no-repeat;
@@ -27,8 +27,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  /* Overlay sutil uniforme */
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .heroContent {

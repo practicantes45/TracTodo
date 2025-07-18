@@ -58,6 +58,7 @@
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -441,8 +442,13 @@
 }
 
 @keyframes footerSparkle {
-  0% { transform: translateX(0) translateY(0); }
-  100% { transform: translateX(-120px) translateY(-80px); }
+  0% {
+    transform: translateX(0) translateY(0);
+  }
+
+  100% {
+    transform: translateX(-120px) translateY(-80px);
+  }
 }
 
 .channelInfo {
@@ -498,7 +504,7 @@
   position: relative;
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
-  box-shadow: 
+  box-shadow:
     0 8px 25px rgba(255, 0, 0, 0.3),
     0 4px 15px rgba(255, 0, 0, 0.2);
   text-transform: uppercase;
@@ -522,7 +528,7 @@
 
 .youtubeButton:hover {
   transform: translateY(-5px) scale(1.05);
-  box-shadow: 
+  box-shadow:
     0 15px 40px rgba(255, 0, 0, 0.4),
     0 8px 25px rgba(255, 0, 0, 0.3),
     0 0 30px rgba(255, 0, 0, 0.2);
@@ -539,11 +545,14 @@
 }
 
 @keyframes youtubeIconPulse {
-  0%, 100% { 
+
+  0%,
+  100% {
     transform: scale(1);
     filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.3));
   }
-  50% { 
+
+  50% {
     transform: scale(1.1);
     filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
   }
@@ -567,7 +576,7 @@
   position: relative;
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
-  box-shadow: 
+  box-shadow:
     0 8px 25px rgba(255, 0, 80, 0.3),
     0 4px 15px rgba(0, 242, 234, 0.2);
   text-transform: uppercase;
@@ -581,11 +590,11 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(45deg, 
-    transparent 20%, 
-    rgba(255, 0, 80, 0.3) 40%, 
-    rgba(0, 242, 234, 0.3) 60%, 
-    transparent 80%);
+  background: linear-gradient(45deg,
+      transparent 20%,
+      rgba(255, 0, 80, 0.3) 40%,
+      rgba(0, 242, 234, 0.3) 60%,
+      transparent 80%);
   transition: left 1s ease;
 }
 
@@ -595,7 +604,7 @@
 
 .tiktokButton:hover {
   transform: translateY(-5px) scale(1.05);
-  box-shadow: 
+  box-shadow:
     0 15px 40px rgba(255, 0, 80, 0.4),
     0 8px 25px rgba(0, 242, 234, 0.3),
     0 0 30px rgba(255, 0, 80, 0.2);
@@ -612,19 +621,24 @@
 }
 
 @keyframes tiktokIconDance {
-  0%, 100% { 
+
+  0%,
+  100% {
     transform: rotate(-5deg) scale(1);
     filter: drop-shadow(2px 2px 4px rgba(255, 0, 80, 0.4));
   }
-  25% { 
+
+  25% {
     transform: rotate(5deg) scale(1.05);
     filter: drop-shadow(-2px 2px 4px rgba(0, 242, 234, 0.4));
   }
-  50% { 
+
+  50% {
     transform: rotate(-3deg) scale(1.1);
     filter: drop-shadow(2px -2px 4px rgba(255, 0, 80, 0.4));
   }
-  75% { 
+
+  75% {
     transform: rotate(3deg) scale(1.05);
     filter: drop-shadow(-2px -2px 4px rgba(0, 242, 234, 0.4));
   }
@@ -646,11 +660,14 @@
 }
 
 @keyframes socialGlow {
-  0%, 100% { 
+
+  0%,
+  100% {
     transform: translate(-50%, -50%) scale(1);
     opacity: 0.3;
   }
-  50% { 
+
+  50% {
     transform: translate(-50%, -50%) scale(1.2);
     opacity: 0.1;
   }
@@ -668,10 +685,11 @@
 }
 
 .tiktokButton:hover .buttonText {
-  text-shadow: 
+  text-shadow:
     0 0 10px rgba(255, 0, 80, 0.8),
     0 0 20px rgba(0, 242, 234, 0.6);
 }
+
 /* ===== BOTONES DE SUSCRIPCIÓN ===== */
 .subscribeButtonContainer {
   display: flex;
@@ -876,6 +894,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -898,6 +917,7 @@
     opacity: 0;
     transform: scale(0.8) translateY(50px);
   }
+
   to {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -988,6 +1008,7 @@
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -995,14 +1016,37 @@
 }
 
 /* Delays progresivos */
-.shortCard:nth-child(1) { animation-delay: 0.1s; }
-.shortCard:nth-child(2) { animation-delay: 0.15s; }
-.shortCard:nth-child(3) { animation-delay: 0.2s; }
-.shortCard:nth-child(4) { animation-delay: 0.25s; }
-.shortCard:nth-child(5) { animation-delay: 0.3s; }
-.shortCard:nth-child(6) { animation-delay: 0.35s; }
-.shortCard:nth-child(7) { animation-delay: 0.4s; }
-.shortCard:nth-child(8) { animation-delay: 0.45s; }
+.shortCard:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.shortCard:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.shortCard:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.shortCard:nth-child(4) {
+  animation-delay: 0.25s;
+}
+
+.shortCard:nth-child(5) {
+  animation-delay: 0.3s;
+}
+
+.shortCard:nth-child(6) {
+  animation-delay: 0.35s;
+}
+
+.shortCard:nth-child(7) {
+  animation-delay: 0.4s;
+}
+
+.shortCard:nth-child(8) {
+  animation-delay: 0.45s;
+}
 
 /* ===== RESPONSIVE DESIGN ===== */
 
@@ -1281,7 +1325,7 @@
     padding-top: 360px;
   }
 
-  .heroContent h1{
+  .heroContent h1 {
     display: none !important;
   }
 

@@ -30,7 +30,6 @@
   box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
 }
 
-/* NUEVO: Botón de eliminar - lado izquierdo */
 .deleteButton {
   position: absolute;
   top: 10px;
@@ -47,30 +46,30 @@
 
 .addButton {
   position: fixed;
-  bottom: 100px;
+  bottom: 160px;
   right: 30px;
   width: 55px;
   height: 55px;
-  background: linear-gradient(135deg, #f59e0b, #d97706);
-  border: 2px solid rgba(245, 158, 11, 0.3);
+  background: linear-gradient(135deg, #7c3aed, #5b21b6);
+  border: 2px solid rgba(124, 58, 237, 0.3);
   font-size: 20px;
   z-index: 999;
 }
 
 .addButton:hover {
-  background: linear-gradient(135deg, #e59e0b, #c2710c);
+  background: linear-gradient(135deg, #6d28d9, #4c1d95);
   transform: scale(1.1);
-  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
 }
 
 .adminButton:active {
   transform: scale(0.95);
 }
 
-/* Responsive para el botón de agregar - alineado con ScrollToTop */
+/* Responsive para el botón de agregar */
 @media (max-width: 768px) {
   .addButton {
-    bottom: 90px;
+    bottom: 150px;
     right: 25px;
     width: 50px;
     height: 50px;
@@ -80,7 +79,7 @@
 
 @media (max-width: 480px) {
   .addButton {
-    bottom: 80px;
+    bottom: 140px;
     right: 20px;
     width: 45px;
     height: 45px;
@@ -96,26 +95,16 @@
 @keyframes subtlePulse {
   0%, 100% {
     transform: scale(1);
-    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
   }
   50% {
     transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.3);
+    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.3);
   }
 }
 
 .addButton:hover {
   animation: none;
-}
-
-/* Evitar interferencia con las cards */
-.addButton {
-  pointer-events: auto;
-}
-
-/* Asegurar que no afecte el layout de las cards */
-.editButton, .deleteButton {
-  pointer-events: auto;
 }
 
 /* Efecto de entrada cuando aparece */
@@ -139,12 +128,12 @@
 
 /* Estilo similar al ScrollToTop para consistencia visual */
 .addButton {
-  filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.3));
+  filter: drop-shadow(0 0 10px rgba(124, 58, 237, 0.3));
   backdrop-filter: blur(10px);
 }
 
 .addButton:hover {
-  filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.6));
+  filter: drop-shadow(0 0 20px rgba(124, 58, 237, 0.6));
   transform: translateY(-3px) scale(1.05);
 }
 

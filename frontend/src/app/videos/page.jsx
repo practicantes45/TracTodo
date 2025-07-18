@@ -6,16 +6,19 @@ import { FaArrowLeft, FaSearch, FaPlay, FaEye, FaShare, FaYoutube, FaTiktok } fr
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
+import AdminVideoButtons from '../components/AdminVideoButtons/AdminVideoButtons';
+import { useAuth } from '../../hooks/useAuth';
 
 export default function VideosPage() {
     const router = useRouter();
+    const { isAdmin } = useAuth();
     const [selectedCategory, setSelectedCategory] = useState('todos');
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
-    // Datos expandidos de shorts con links de YouTube - Estructura simplificada
-    const allShorts = [
+    // Estado para los videos - AHORA EDITABLE POR ADMIN
+    const [allShorts, setAllShorts] = useState([
         {
             id: 1,
             title: "Bomba De Inyección Isc/Px8 Nueva",
@@ -238,7 +241,7 @@ export default function VideosPage() {
             youtubeLink: "https://youtube.com/shorts/5PiVMpn4WZ8?si=fB3Llw-IHZ-fL8Q1",
             category: "Cargas Promocionales"
         }
-    ];
+    ]);
 
     const categories = [
         { id: 'todos', label: 'Todos' },
@@ -246,6 +249,43 @@ export default function VideosPage() {
         { id: 'Cargas Promocionales', label: 'Cargas Promocionales' },
         { id: 'Entregas Festivas', label: 'Entregas Festivas' }
     ];
+
+    // NUEVA FUNCIÓN: Manejar actualizaciones de videos por admin
+    const handleVideoUpdate = async (action, videoData) => {
+        console.log('🎬 Admin video action:', action, videoData);
+
+        try {
+            if (action === 'create') {
+                // Agregar nuevo video
+                const newVideo = {
+                    ...videoData,
+                    id: Date.now() // ID único basado en timestamp
+                };
+                setAllShorts(prevShorts => [...prevShorts, newVideo]);
+                console.log('✅ Video agregado:', newVideo);
+
+            } else if (action === 'edit') {
+                // Editar video existente
+                setAllShorts(prevShorts =>
+                    prevShorts.map(short =>
+                        short.id === videoData.id ? videoData : short
+                    )
+                );
+                console.log('✅ Video editado:', videoData);
+
+            } else if (action === 'delete') {
+                // Eliminar video
+                setAllShorts(prevShorts =>
+                    prevShorts.filter(short => short.id !== videoData)
+                );
+                console.log('✅ Video eliminado:', videoData);
+            }
+
+        } catch (error) {
+            console.error('❌ Error en handleVideoUpdate:', error);
+            throw error;
+        }
+    };
 
     // Función para extraer ID de YouTube del link
     const extractYouTubeId = (url) => {
@@ -268,7 +308,7 @@ export default function VideosPage() {
         if (videoId) {
             return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
         }
-        return '/imgs/default-video-thumb.jpg'; // imagen por defecto
+        return '/imgs/default-video-thumb.jpg';
     };
 
     // Filtrar shorts por categoría y búsqueda
@@ -288,7 +328,6 @@ export default function VideosPage() {
             });
             setIsVideoModalOpen(true);
         } else {
-            // Si no se puede extraer el ID, abrir directamente en YouTube
             window.open(video.youtubeLink, '_blank');
         }
     };
@@ -323,12 +362,10 @@ export default function VideosPage() {
         router.push('/entretenimiento');
     };
 
-    // Función para ir al canal de YouTube
     const goToYouTubeChannel = () => {
         window.open('https://www.youtube.com/@TRACTODO', '_blank');
     };
 
-    // Función para ir al perfil de TikTok
     const goToTikTokProfile = () => {
         window.open('https://www.tiktok.com/@tractodo4', '_blank');
     };
@@ -363,13 +400,12 @@ export default function VideosPage() {
                             </button>
                         </div>
 
-                        {/* Header con estadísticas y búsqueda */}
+                        {/* Header con estadísticas */}
                         <div className="videosHeader">
                             <div className="videosStats">
                                 <h2>¡Arranca el motor y vamos a ver!</h2>
                                 <p>{filteredShorts.length} shorts encontrados</p>
                             </div>
-
                         </div>
 
                         {/* Filtros de categorías con contadores */}
@@ -397,6 +433,14 @@ export default function VideosPage() {
                                         className="shortCard"
                                         onClick={() => handleVideoClick(short)}
                                     >
+                                        {/* BOTONES DE ADMIN - SOLO SI ES ADMIN */}
+                                        {isAdmin && (
+                                            <AdminVideoButtons
+                                                video={short}
+                                                onVideoUpdate={handleVideoUpdate}
+                                            />
+                                        )}
+
                                         <div className="shortThumbnail">
                                             <div
                                                 className="thumbnailPlaceholder"
@@ -470,6 +514,14 @@ export default function VideosPage() {
 
                     </div>
                 </section>
+
+                {/* BOTÓN DE AGREGAR VIDEO - SOLO SI ES ADMIN */}
+                {isAdmin && (
+                    <AdminVideoButtons
+                        isAddButton={true}
+                        onVideoUpdate={handleVideoUpdate}
+                    />
+                )}
 
                 {/* Modal de video/short */}
                 {isVideoModalOpen && selectedVideo && (

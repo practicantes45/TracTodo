@@ -7,12 +7,14 @@
 /* ===== HERO SECTION PARA SOBRE NOSOTROS - UNIFICADO ===== */
 .sobre-page .heroSection {
   position: absolute;
-  height: 580px; /* ALTURA UNIFICADA */
+  height: 580px;
+  /* ALTURA UNIFICADA */
   width: 100%;
   left: 0;
   background-image: url('https://i.postimg.cc/yxYC4QM2/fondoamarillo.png');
   background-size: cover;
-  background-position: center center; /* CORREGIDO: posición idéntica */
+  background-position: center center;
+  /* CORREGIDO: posición idéntica */
   background-repeat: no-repeat;
   color: white;
   top: 90px;
@@ -31,7 +33,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-    background: rgba(0, 0, 0, 0.3);
+  background: rgba(0, 0, 0, 0.3);
 
 }
 
@@ -73,7 +75,8 @@
 .sobre-page .mainContent {
   flex: 1;
   width: 100%;
-  padding-top: 580px; /* IGUAL A LA ALTURA DEL HERO */
+  padding-top: 580px;
+  /* IGUAL A LA ALTURA DEL HERO */
 }
 
 /* ===== SECCIÓN ¿QUIÉNES SOMOS? - DISEÑO DINÁMICO Y ATRACTIVO ===== */
@@ -81,7 +84,8 @@
   background: linear-gradient(145deg, #f0f8ff 0%, #e6f3ff 30%, #ffffff 70%, #f8f9fa 100%);
   padding: 20px 20px 80px 20px;
   margin: 0;
-  margin-top: -100px; /* AJUSTE ESPECÍFICO UNIFICADO */
+  margin-top: -100px;
+  /* AJUSTE ESPECÍFICO UNIFICADO */
   position: relative;
   overflow: hidden;
 }
@@ -464,7 +468,8 @@
 @media (max-width: 1023px) {
   .aboutSection {
     padding: 15px 15px 70px 15px;
-    margin-top: -60px; /* AJUSTE RESPONSIVE */
+    margin-top: -60px;
+    /* AJUSTE RESPONSIVE */
   }
 
   .aboutContentWithImage {
@@ -475,12 +480,14 @@
   }
 
   .aboutTextContent {
-    order: 1; /* TEXTO PRIMERO */
+    order: 1;
+    /* TEXTO PRIMERO */
   }
 
   .aboutImageContent {
     flex: none;
-    order: 2; /* IMAGEN DESPUÉS */
+    order: 2;
+    /* IMAGEN DESPUÉS */
   }
 
   .aboutTextContent h2 {
@@ -499,7 +506,8 @@
 
   .aboutTextContent p {
     padding-left: 0;
-    text-align: justify; /* MANTENER TEXTO JUSTIFICADO */
+    text-align: justify;
+    /* MANTENER TEXTO JUSTIFICADO */
   }
 
   .aboutTextContent p::before {
@@ -510,12 +518,15 @@
 /* Tablet (992px) */
 @media (max-width: 992px) {
   .sobre-page .heroSection {
-    height: 540px; /* ALTURA CONSISTENTE */
-    background-position: center center; /* CORREGIDO: posición idéntica */
+    height: 540px;
+    /* ALTURA CONSISTENTE */
+    background-position: center center;
+    /* CORREGIDO: posición idéntica */
   }
 
   .sobre-page .mainContent {
-    padding-top: 540px; /* AJUSTADO UNIFICADO */
+    padding-top: 540px;
+    /* AJUSTADO UNIFICADO */
   }
 
   .heroContent h1 {
@@ -528,7 +539,8 @@
   }
 
   .aboutSection {
-    margin-top: -60px; /* AJUSTE RESPONSIVE */
+    margin-top: -60px;
+    /* AJUSTE RESPONSIVE */
   }
 
   .missionVisionContainer {
@@ -550,9 +562,11 @@
 /* Móvil (768px) - OCULTAR TÍTULO */
 @media (max-width: 768px) {
   .sobre-page .heroSection {
-    height: 420px; /* ALTURA CONSISTENTE */
+    height: 420px;
+    /* ALTURA CONSISTENTE */
     top: 60px;
-    background-position: center center; /* CORREGIDO: posición idéntica */
+    background-position: center center;
+    /* CORREGIDO: posición idéntica */
   }
 
   /* OCULTAR TÍTULO EN MÓVIL */
@@ -561,13 +575,15 @@
   }
 
   .sobre-page .mainContent {
-    padding-top: 480px; /* CONSISTENTE */
+    padding-top: 480px;
+    /* CONSISTENTE */
   }
 
   .aboutSection {
-    margin-top: -20px; /* AJUSTE RESPONSIVE */
+    margin-top: -20px;
+    /* AJUSTE RESPONSIVE */
   }
-  
+
   /* Layout móvil: TEXTO PRIMERO, imagen después */
   .aboutContentWithImage {
     flex-direction: column;
@@ -578,11 +594,13 @@
   }
 
   .aboutTextContent {
-    order: 1; /* TEXTO PRIMERO */
+    order: 1;
+    /* TEXTO PRIMERO */
   }
 
   .aboutImageContent {
-    order: 2; /* IMAGEN DESPUÉS */
+    order: 2;
+    /* IMAGEN DESPUÉS */
     flex: none;
   }
 
@@ -599,7 +617,8 @@
 
   .aboutTextContent p {
     padding-left: 0;
-    text-align: justify; /* TEXTO JUSTIFICADO EN MÓVIL */
+    text-align: justify;
+    /* TEXTO JUSTIFICADO EN MÓVIL */
     font-size: 1.1rem;
   }
 
@@ -640,9 +659,11 @@
 /* Móvil pequeño (480px) - MANTENER TÍTULO OCULTO */
 @media (max-width: 480px) {
   .sobre-page .heroSection {
-    height: 380px; /* ALTURA CONSISTENTE */
+    height: 380px;
+    /* ALTURA CONSISTENTE */
     top: 60px;
-    background-position: center center; /* CORREGIDO: posición idéntica */
+    background-position: center center;
+    /* CORREGIDO: posición idéntica */
   }
 
   /* CONFIRMAR QUE EL TÍTULO SIGUE OCULTO */
@@ -651,11 +672,13 @@
   }
 
   .sobre-page .mainContent {
-    padding-top: 430px; /* CONSISTENTE */
+    padding-top: 430px;
+    /* CONSISTENTE */
   }
 
   .aboutSection {
-    margin-top: -60px; /* AJUSTE RESPONSIVE */
+    margin-top: -60px;
+    /* AJUSTE RESPONSIVE */
     padding: 20px 10px;
   }
 
@@ -700,13 +723,16 @@
 /* Ajustes para pantallas muy pequeñas (360px) - MANTENER TÍTULO OCULTO */
 @media (max-width: 360px) {
   .sobre-page .heroSection {
-    height: 350px; /* ALTURA CONSISTENTE */
+    height: 350px;
+    /* ALTURA CONSISTENTE */
     top: 60px;
-    background-position: center center; /* CORREGIDO: posición idéntica */
+    background-position: center center;
+    /* CORREGIDO: posición idéntica */
   }
 
   .sobre-page .mainContent {
-    padding-top: 400px; /* CONSISTENTE */
+    padding-top: 400px;
+    /* CONSISTENTE */
   }
 
   /* CONFIRMAR QUE EL TÍTULO SIGUE OCULTO */
@@ -715,7 +741,8 @@
   }
 
   .aboutSection {
-    margin-top: -40px; /* AJUSTE RESPONSIVE */
+    margin-top: -40px;
+    /* AJUSTE RESPONSIVE */
     padding: 10px 3px;
   }
 }

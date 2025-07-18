@@ -9,69 +9,81 @@ export function AuthProvider({ children }) {
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Verificar sesión al cargar la aplicación
   useEffect(() => {
     verificarSesionInicial();
   }, []);
 
-  const verificarSesionInicial = async () => {
-    try {
-      console.log('🔍 Verificando sesión inicial...');
+ const verificarSesionInicial = async () => {
+  try {
+    console.log('🔍 === VERIFICACIÓN DE SESIÓN INICIAL ===');
+    
+    // PRIMERO: Verificar si hay una sesión de admin guardada en localStorage
+    const sesionGuardada = localStorage.getItem('adminSession');
+    const tiempoSesion = localStorage.getItem('adminSessionTime');
+    
+    console.log('📱 Datos en localStorage:', {
+      tieneSession: !!sesionGuardada,
+      tiempoSesion: tiempoSesion
+    });
+    
+    if (sesionGuardada && tiempoSesion) {
+      const ahora = Date.now();
+      const tiempoGuardado = parseInt(tiempoSesion);
+      const DURACION_SESION = 24 * 60 * 60 * 1000; // 24 horas
+      const tiempoTranscurrido = ahora - tiempoGuardado;
       
-      // PRIMERA PRIORIDAD: Verificar si hay token válido en cookies del backend
-      const respuestaAdmin = await verificarAdmin();
+      console.log('⏰ Verificación de tiempo:', {
+        tiempoTranscurrido: Math.round(tiempoTranscurrido / (1000 * 60)), // minutos
+        limiteTiempo: DURACION_SESION / (1000 * 60 * 60), // horas
+        sesionValida: tiempoTranscurrido < DURACION_SESION
+      });
       
-      if (respuestaAdmin.isAdmin) {
-        // Hay token válido en el backend, restaurar sesión
-        const datosUsuario = {
-          isAdmin: true,
-          loginTime: new Date().toISOString()
-        };
+      // Verificar si la sesión no ha expirado
+      if (tiempoTranscurrido < DURACION_SESION) {
+        console.log('📱 Sesión encontrada y no expirada, verificando con backend...');
         
-        setUsuario(datosUsuario);
-        setIsAdmin(true);
-        
-        // Guardar en localStorage para coherencia
-        localStorage.setItem('adminSession', JSON.stringify(datosUsuario));
-        localStorage.setItem('adminSessionTime', Date.now().toString());
-        
-        console.log('✅ Sesión de administrador verificada con backend');
-        return;
-      }
-      
-      // SEGUNDA OPCIÓN: Verificar localStorage (por si falló la verificación)
-      const sesionGuardada = localStorage.getItem('adminSession');
-      const tiempoSesion = localStorage.getItem('adminSessionTime');
-      
-      if (sesionGuardada && tiempoSesion) {
-        const ahora = Date.now();
-        const tiempoGuardado = parseInt(tiempoSesion);
-        const DURACION_SESION = 24 * 60 * 60 * 1000; // 24 horas
-        
-        if (ahora - tiempoGuardado < DURACION_SESION) {
-          const datosUsuario = JSON.parse(sesionGuardada);
-          setUsuario(datosUsuario);
-          setIsAdmin(true);
-          console.log('✅ Sesión restaurada desde localStorage');
-          return;
-        } else {
-          // Sesión expirada
-          localStorage.removeItem('adminSession');
-          localStorage.removeItem('adminSessionTime');
-          console.log('⏰ Sesión expirada, requiere nuevo login');
+        try {
+          // VERIFICAR CON EL BACKEND si realmente es admin
+          const respuestaAdmin = await verificarAdmin();
+          console.log('📡 Resultado de verificación backend:', respuestaAdmin);
+          
+          if (respuestaAdmin.isAdmin) {
+            const datosUsuario = JSON.parse(sesionGuardada);
+            console.log('👤 Datos de usuario a restaurar:', datosUsuario);
+            
+            setUsuario(datosUsuario);
+            setIsAdmin(true);
+            console.log('✅ SESIÓN DE ADMINISTRADOR RESTAURADA EXITOSAMENTE');
+          } else {
+            console.log('❌ Backend rechazó la sesión de admin');
+            limpiarSesion();
+          }
+        } catch (backendError) {
+          console.log('🔌 Error verificando admin con backend:', backendError.message);
+          limpiarSesion();
         }
+      } else {
+        console.log('⏰ Sesión de admin expirada por tiempo');
+        limpiarSesion();
       }
-      
-      console.log('❌ No hay sesión válida');
-      
-    } catch (error) {
-      console.error('Error al verificar sesión:', error);
-      // Limpiar localStorage si hay error
-      localStorage.removeItem('adminSession');
-      localStorage.removeItem('adminSessionTime');
-    } finally {
-      setLoading(false);
+    } else {
+      console.log('👤 No hay sesión de admin guardada - iniciando como usuario normal');
     }
+  } catch (error) {
+    console.error('💥 Error en verificación de sesión:', error);
+    limpiarSesion();
+  } finally {
+    setLoading(false);
+    console.log('🏁 Verificación de sesión completada');
+  }
+};
+
+  const limpiarSesion = () => {
+    localStorage.removeItem('adminSession');
+    localStorage.removeItem('adminSessionTime');
+    setUsuario(null);
+    setIsAdmin(false);
+    console.log('🧹 Sesión limpiada');
   };
 
   const verificarUsuario = async () => {
@@ -85,26 +97,41 @@ export function AuthProvider({ children }) {
   };
 
   const guardarSesion = (datosUsuario) => {
-    try {
-      localStorage.setItem('adminSession', JSON.stringify(datosUsuario));
-      localStorage.setItem('adminSessionTime', Date.now().toString());
-      setUsuario(datosUsuario);
-      setIsAdmin(true);
-      console.log('💾 Sesión de administrador guardada');
-    } catch (error) {
-      console.error('Error al guardar sesión:', error);
-    }
-  };
+  try {
+    console.log('💾 === GUARDANDO SESIÓN DE ADMIN ===');
+    console.log('📝 Datos a guardar:', datosUsuario);
+    
+    const jsonData = JSON.stringify(datosUsuario);
+    const timestamp = Date.now().toString();
+    
+    console.log('📱 Guardando en localStorage...');
+    localStorage.setItem('adminSession', jsonData);
+    localStorage.setItem('adminSessionTime', timestamp);
+    
+    // Verificar que se guardó
+    const verificacion = localStorage.getItem('adminSession');
+    console.log('✅ Verificación guardado:', !!verificacion);
+    
+    setUsuario(datosUsuario);
+    setIsAdmin(true);
+    console.log('🎯 Estado actualizado - isAdmin:', true);
+    console.log('💾 === SESIÓN GUARDADA EXITOSAMENTE ===');
+  } catch (error) {
+    console.error('❌ ERROR al guardar sesión:', error);
+  }
+};
 
-  const cerrarSesion = () => {
+  const cerrarSesion = async () => {
     try {
-      localStorage.removeItem('adminSession');
-      localStorage.removeItem('adminSessionTime');
-      setUsuario(null);
-      setIsAdmin(false);
-      console.log('👋 Sesión cerrada');
+      console.log('👋 Cerrando sesión de admin...');
+      const { cerrarSesion: cerrarSesionBackend } = require('../services/userService');
+      await cerrarSesionBackend();
+      console.log('🔌 Sesión cerrada en backend');
     } catch (error) {
-      console.error('Error al cerrar sesión:', error);
+      console.error('⚠️ Error al cerrar sesión en backend:', error);
+    } finally {
+      limpiarSesion();
+      console.log('✅ Sesión de admin cerrada completamente');
     }
   };
 

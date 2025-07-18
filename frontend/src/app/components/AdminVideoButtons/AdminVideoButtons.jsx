@@ -2,12 +2,11 @@
 import { useState } from 'react';
 import { FaEdit, FaPlus, FaTrash } from 'react-icons/fa';
 import { useAuth } from '../../../hooks/useAuth';
-import ProductModal from '../ProductModal/ProductModal';
+import VideoModal from '../VideoModal/VideoModal';
 import ConfirmDeleteModal from '../ConfirmDeleteModal/ConfirmDeleteModal';
-import { eliminarProducto } from '../../../services/productoService';
-import styles from './AdminButtons.module.css';
+import styles from './AdminVideoButtons.module.css';
 
-export default function AdminButtons({ producto, onProductUpdate }) {
+export default function AdminVideoButtons({ video, onVideoUpdate, isAddButton = false }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalMode, setModalMode] = useState('create');
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -45,43 +44,66 @@ export default function AdminButtons({ producto, onProductUpdate }) {
   };
 
   const handleConfirmDelete = async () => {
-    if (!producto || !producto.id) return;
+    if (!video || !video.id) return;
 
     setIsDeleting(true);
     try {
-      await eliminarProducto(producto.id);
-      console.log('✅ Producto eliminado correctamente');
+      // Llamar función para eliminar del archivo
+      if (onVideoUpdate) {
+        await onVideoUpdate('delete', video.id);
+      }
       
+      console.log('✅ Video eliminado correctamente');
       setIsDeleteModalOpen(false);
       
-      // Actualizar la lista de productos
-      if (onProductUpdate) {
-        onProductUpdate();
-      }
     } catch (error) {
-      console.error('❌ Error al eliminar producto:', error);
-      alert('Error al eliminar el producto. Inténtalo de nuevo.');
+      console.error('❌ Error al eliminar video:', error);
+      alert('Error al eliminar el video. Inténtalo de nuevo.');
     } finally {
       setIsDeleting(false);
     }
   };
 
-  const handleProductSaved = () => {
+  const handleVideoSaved = (action, videoData) => {
     setIsModalOpen(false);
-    if (onProductUpdate) {
-      onProductUpdate();
+    if (onVideoUpdate) {
+      onVideoUpdate(action, videoData);
     }
   };
 
+  if (isAddButton) {
+    return (
+      <>
+        <button 
+          className={`${styles.adminButton} ${styles.addButton}`}
+          onClick={handleAdd}
+          title="Agregar video"
+        >
+          <FaPlus />
+        </button>
+
+        {isModalOpen && (
+          <VideoModal
+            isOpen={isModalOpen}
+            mode={modalMode}
+            video={null}
+            onClose={handleCloseModal}
+            onSaved={handleVideoSaved}
+          />
+        )}
+      </>
+    );
+  }
+
   return (
     <>
-      {producto && (
+      {video && (
         <>
           {/* Botón de eliminar - lado izquierdo */}
           <button 
             className={`${styles.adminButton} ${styles.deleteButton}`}
             onClick={handleDelete}
-            title="Eliminar producto"
+            title="Eliminar video"
           >
             <FaTrash />
           </button>
@@ -90,30 +112,20 @@ export default function AdminButtons({ producto, onProductUpdate }) {
           <button 
             className={`${styles.adminButton} ${styles.editButton}`}
             onClick={handleEdit}
-            title="Editar producto"
+            title="Editar video"
           >
             <FaEdit />
           </button>
         </>
       )}
 
-      {!producto && (
-        <button 
-          className={`${styles.adminButton} ${styles.addButton}`}
-          onClick={handleAdd}
-          title="Agregar producto"
-        >
-          <FaPlus />
-        </button>
-      )}
-
       {isModalOpen && (
-        <ProductModal
+        <VideoModal
           isOpen={isModalOpen}
           mode={modalMode}
-          producto={modalMode === 'edit' ? producto : null}
+          video={modalMode === 'edit' ? video : null}
           onClose={handleCloseModal}
-          onSaved={handleProductSaved}
+          onSaved={handleVideoSaved}
         />
       )}
 
@@ -123,7 +135,7 @@ export default function AdminButtons({ producto, onProductUpdate }) {
           onClose={handleCloseDeleteModal}
           onConfirm={handleConfirmDelete}
           isDeleting={isDeleting}
-          productName={producto?.nombre || 'este producto'}
+          productName={video?.title || 'este video'}
         />
       )}
     </>

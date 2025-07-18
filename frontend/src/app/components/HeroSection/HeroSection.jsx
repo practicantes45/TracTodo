@@ -7,7 +7,7 @@ const HeroSection = () => {
       <div className={styles.heroOverlay}>
         <div className={styles.heroContent}>
           <img
-            src="/imgs/logopeke.png"
+            src="https://i.postimg.cc/GtqNfHdW/logopeke.png"
             className={styles.logoImage}
             alt="Logo TRACTODO"
           />

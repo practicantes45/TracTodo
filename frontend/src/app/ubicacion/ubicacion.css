@@ -7,12 +7,14 @@
 /* ===== HERO SECTION PARA UBICACIÓN - UNIFICADO ===== */
 .ubicacion-page .heroSection {
   position: absolute;
-  height: 580px; /* ALTURA UNIFICADA */
+  height: 580px;
+  /* ALTURA UNIFICADA */
   width: 100%;
   left: 0;
   background-image: url('https://i.postimg.cc/x1gH9cN7/fondoverde.png');
   background-size: cover;
-  background-position: center center; /* CORREGIDO: posición idéntica */
+  background-position: center center;
+  /* CORREGIDO: posición idéntica */
   background-repeat: no-repeat;
   color: white;
   top: 90px;
@@ -31,6 +33,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .heroContent {
@@ -68,7 +71,8 @@
 .ubicacion-page .mainContent {
   flex: 1;
   width: 100%;
-  padding-top: 580px; /* IGUAL A LA ALTURA DEL HERO */
+  padding-top: 580px;
+  /* IGUAL A LA ALTURA DEL HERO */
 }
 
 /* ===== SECCIÓN PRINCIPAL CON VIDEO Y MAPA ===== */
@@ -76,7 +80,8 @@
   background: linear-gradient(145deg, #f0f8ff 0%, #e6f3ff 30%, #ffffff 70%, #f8f9fa 100%);
   padding: 20px 20px 80px 20px;
   margin: 0;
-  margin-top: -100px; /* AJUSTE ESPECÍFICO UNIFICADO */
+  margin-top: -100px;
+  /* AJUSTE ESPECÍFICO UNIFICADO */
   position: relative;
   overflow: hidden;
 }
@@ -645,6 +650,7 @@
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -667,6 +673,7 @@
     transform: scale(0.8) translateY(30px);
     opacity: 0;
   }
+
   to {
     transform: scale(1) translateY(0);
     opacity: 1;
@@ -853,12 +860,15 @@
 /* Tablet (992px) - AJUSTES CRÍTICOS PARA UBICACIÓN */
 @media (max-width: 992px) {
   .ubicacion-page .heroSection {
-    height: 540px; /* ALTURA CONSISTENTE */
-    background-position: center center; /* CORREGIDO: posición idéntica */
+    height: 540px;
+    /* ALTURA CONSISTENTE */
+    background-position: center center;
+    /* CORREGIDO: posición idéntica */
   }
 
   .ubicacion-page .mainContent {
-    padding-top: 540px; /* AJUSTADO UNIFICADO */
+    padding-top: 540px;
+    /* AJUSTADO UNIFICADO */
   }
 
   .heroContent h1 {
@@ -872,7 +882,8 @@
   }
 
   .locationMainSection {
-    margin-top: -60px; /* AJUSTE RESPONSIVE */
+    margin-top: -60px;
+    /* AJUSTE RESPONSIVE */
   }
 
   .referenceImageContainer {
@@ -895,9 +906,11 @@
 /* Móvil (768px) - OCULTAR TÍTULO */
 @media (max-width: 768px) {
   .ubicacion-page .heroSection {
-    height: 420px; /* ALTURA CONSISTENTE */
+    height: 420px;
+    /* ALTURA CONSISTENTE */
     top: 60px;
-    background-position: center center; /* CORREGIDO: posición idéntica */
+    background-position: center center;
+    /* CORREGIDO: posición idéntica */
   }
 
   /* OCULTAR TÍTULO EN MÓVIL */
@@ -906,7 +919,8 @@
   }
 
   .ubicacion-page .mainContent {
-    padding-top: 480px; /* CONSISTENTE */
+    padding-top: 480px;
+    /* CONSISTENTE */
   }
 
   .locationMainSection {
@@ -1044,13 +1058,16 @@
 /* Móvil pequeño (480px) - MANTENER TÍTULO OCULTO */
 @media (max-width: 480px) {
   .ubicacion-page .heroSection {
-    height: 380px; /* ALTURA CONSISTENTE */
+    height: 380px;
+    /* ALTURA CONSISTENTE */
     top: 60px;
-    background-position: center center; /* CORREGIDO: posición idéntica */
+    background-position: center center;
+    /* CORREGIDO: posición idéntica */
   }
 
   .ubicacion-page .mainContent {
-    padding-top: 430px; /* CONSISTENTE */
+    padding-top: 430px;
+    /* CONSISTENTE */
   }
 
   /* CONFIRMAR QUE EL TÍTULO SIGUE OCULTO */
@@ -1059,7 +1076,8 @@
   }
 
   .locationMainSection {
-    margin-top: -60px; /* AJUSTE RESPONSIVE */
+    margin-top: -60px;
+    /* AJUSTE RESPONSIVE */
     padding: 20px 5px 50px 5px;
   }
 
@@ -1158,13 +1176,16 @@
 /* Ajustes para pantallas muy pequeñas (360px) - MANTENER TÍTULO OCULTO */
 @media (max-width: 360px) {
   .ubicacion-page .heroSection {
-    height: 350px; /* ALTURA CONSISTENTE */
+    height: 350px;
+    /* ALTURA CONSISTENTE */
     top: 60px;
-    background-position: center center; /* CORREGIDO: posición idéntica */
+    background-position: center center;
+    /* CORREGIDO: posición idéntica */
   }
 
   .ubicacion-page .mainContent {
-    padding-top: 400px; /* CONSISTENTE */
+    padding-top: 400px;
+    /* CONSISTENTE */
   }
 
   /* CONFIRMAR QUE EL TÍTULO SIGUE OCULTO */
@@ -1173,7 +1194,8 @@
   }
 
   .locationMainSection {
-    margin-top: -40px; /* AJUSTE RESPONSIVE */
+    margin-top: -40px;
+    /* AJUSTE RESPONSIVE */
     padding: 10px 3px 40px 3px;
   }
 
@@ -1369,6 +1391,7 @@
 
 /* Modo de alto contraste */
 @media (prefers-contrast: high) {
+
   .videoSection,
   .addressCard,
   .scheduleCard {
@@ -1410,6 +1433,7 @@
 
 /* Respeto por preferencias de movimiento reducido */
 @media (prefers-reduced-motion: reduce) {
+
   .videoSection,
   .mapContainer,
   .addressCard,
@@ -1442,6 +1466,7 @@
 
 /* Optimización para dispositivos táctiles */
 @media (hover: none) and (pointer: coarse) {
+
   .actionButton,
   .addressCard,
   .scheduleCard,
