@@ -14,7 +14,6 @@ import AdminButtons from '../components/AdminButtons/AdminButtons';
 export default function ProductosPage() {
   // Estados
   const [productos, setProductos] = useState([]);
-  const [productosFiltrados, setProductosFiltrados] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const router = useRouter();
@@ -27,8 +26,10 @@ export default function ProductosPage() {
 
   const searchParams = useSearchParams();
   const busquedaParam = searchParams.get('busqueda');
+  const marcaParam = searchParams.get('marca');
 
   console.log('🔍 Parámetro de búsqueda:', busquedaParam);
+  console.log('🏷️ Parámetro de marca:', marcaParam);
 
   // Lista de marcas predefinidas
   const marcasPredefinidas = ["Cummins", "Navistar", "Volvo", "Mercedes Benz", "Detroit", "Otros"];
@@ -57,100 +58,73 @@ export default function ProductosPage() {
     }
   ];
 
-  // Efecto para resetear búsqueda cuando se navega directamente a /productos
-  useEffect(() => {
-    // Si no hay parámetro de búsqueda en la URL, resetear y cargar todos los productos
-    if (!busquedaParam) {
-      console.log('🔄 Reseteando búsqueda - cargando todos los productos');
-      cargarProductos();
-    }
-  }, []);
+  // Efecto para cargar productos cuando cambian los filtros
+// Efecto para pre-seleccionar marca desde URL
+useEffect(() => {
+  // Si hay un parámetro de marca en la URL, pre-seleccionarlo
+  if (marcaParam && marcasPredefinidas.includes(marcaParam)) {
+    console.log('🔄 Inicializando con marca desde URL:', marcaParam);
+    setSelectedMarcas([marcaParam]);
+  }
+}, [marcaParam]);
 
-  // Cargar productos del backend
-  useEffect(() => {
-    if (busquedaParam) {
-      buscarProductosConTermino(busquedaParam);
-    } else {
-      // Si no hay búsqueda, cargar todos los productos
-      cargarProductos();
-    }
-  }, [busquedaParam]);
+// AGREGAR ESTE useEffect que faltaba:
+useEffect(() => {
+  cargarProductosConFiltros();
+}, [selectedMarcas, selectedOrden, busquedaParam]);
 
-  const buscarProductosConTermino = async (termino) => {
+  // Función principal para cargar productos con filtros
+  const cargarProductosConFiltros = async () => {
     try {
       setLoading(true);
-      console.log('🔍 Buscando productos con término (prioridades):', termino);
-      const resultados = await buscarProductos({ q: termino });
+      setError('');
+
+      let resultados;
+
+      if (busquedaParam) {
+        // Si hay búsqueda, usar buscarProductos con filtros
+        console.log('🔍 Buscando con término y filtros:', {
+          q: busquedaParam,
+          marcas: selectedMarcas,
+          orden: selectedOrden
+        });
+
+        resultados = await buscarProductos({
+          q: busquedaParam,
+          marcas: selectedMarcas,
+          orden: selectedOrden
+        });
+      } else {
+        // Si no hay búsqueda, usar obtenerProductos con filtros
+        console.log('📦 Cargando productos con filtros:', {
+          marcas: selectedMarcas,
+          orden: selectedOrden
+        });
+
+        resultados = await obtenerProductos({
+          marcas: selectedMarcas,
+          orden: selectedOrden
+        });
+      }
+
       setProductos(resultados);
 
+      // Extraer marcas únicas de los resultados para el filtro
       const marcasUnicas = [...new Set(resultados.map(p => p.marca).filter(Boolean))];
       setMarcasDisponibles(marcasUnicas);
 
-      console.log(`✅ Encontrados ${resultados.length} productos con búsqueda priorizada`);
+      console.log(`✅ Cargados ${resultados.length} productos con filtros del backend`);
     } catch (error) {
-      console.error("Error al buscar productos:", error);
-      setError('No se pudieron buscar los productos');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // MODIFICADO: Aplicar filtros manteniendo prioridad de búsqueda
-  useEffect(() => {
-    aplicarFiltros();
-  }, [productos, selectedMarcas, selectedOrden, busquedaParam]); // Agregado busquedaParam como dependencia
-
-  const cargarProductos = async () => {
-    try {
-      setLoading(true);
-      console.log('🔄 Cargando todos los productos...');
-      const data = await obtenerProductos();
-      setProductos(data);
-
-      // Extraer marcas únicas de los productos  
-      const marcasUnicas = [...new Set(data.map(p => p.marca).filter(Boolean))];
-      setMarcasDisponibles(marcasUnicas);
-
-      console.log(`✅ Cargados ${data.length} productos totales`);
-    } catch (error) {
-      console.error("Error al cargar productos:", error);
+      console.error("❌ Error al cargar productos:", error);
       setError('No se pudieron cargar los productos');
     } finally {
       setLoading(false);
     }
   };
 
+  // Función para refrescar productos (llamada desde AdminButtons)
   const refetchProducts = () => {
-    if (busquedaParam) {
-      buscarProductosConTermino(busquedaParam);
-    } else {
-      cargarProductos();
-    }
-  };
-
-  // MODIFICADO: Nueva lógica de filtros que respeta la priorización de búsqueda
-  const aplicarFiltros = () => {
-    let filtrados = [...productos];
-
-    // 1. PRIMERO: Filtrar por marcas
-    if (selectedMarcas.length > 0) {
-      filtrados = filtrados.filter(p => selectedMarcas.includes(p.marca));
-    }
-
-    // 2. SEGUNDO: Aplicar ordenamiento SOLO si NO hay búsqueda activa
-    // Si hay búsqueda, mantener el orden de prioridad del backend
-    if (!busquedaParam) {
-      console.log('📋 Aplicando ordenamiento alfabético (sin búsqueda activa)');
-      if (selectedOrden === 'A-Z') {
-        filtrados.sort((a, b) => a.nombre.localeCompare(b.nombre));
-      } else if (selectedOrden === 'Z-A') {
-        filtrados.sort((a, b) => b.nombre.localeCompare(a.nombre));
-      }
-    } else {
-      console.log('🔍 Manteniendo orden de prioridad de búsqueda - NO aplicando ordenamiento alfabético');
-    }
-
-    setProductosFiltrados(filtrados);
+    cargarProductosConFiltros();
   };
 
   const handleWhatsAppClick = (producto, e) => {
@@ -216,14 +190,21 @@ export default function ProductosPage() {
   };
 
   const handleMarcaChange = (marca) => {
-    setSelectedMarcas(prev =>
-      prev.includes(marca)
-        ? prev.filter(m => m !== marca)
-        : [...prev, marca]
-    );
+    const nuevasMarcas = selectedMarcas.includes(marca)
+      ? selectedMarcas.filter(m => m !== marca)
+      : [...selectedMarcas, marca];
+
+    console.log('🔄 Cambiando filtro de marca:', { marca, nuevasMarcas });
+    setSelectedMarcas(nuevasMarcas);
+  };
+
+  const handleOrdenChange = (nuevoOrden) => {
+    console.log('🔄 Cambiando orden:', nuevoOrden);
+    setSelectedOrden(nuevoOrden);
   };
 
   const clearAllFilters = () => {
+    console.log('🧹 Limpiando todos los filtros');
     setSelectedMarcas([]);
     setSelectedOrden('A-Z');
   };
@@ -255,14 +236,13 @@ export default function ProductosPage() {
 
       <main className="mainContent">
         {/* Hero Section */}
-
         <div className="heroSection">
           <div className="heroOverlay">
             <div className="heroContent">
               <h1>Nuestros Productos</h1>
               {busquedaParam && (
                 <p className="searchIndicator">
-                  Resultados para: "{busquedaParam}" ({productosFiltrados.length} productos encontrados)
+                  Resultados para: "{busquedaParam}" ({productos.length} productos encontrados)
                 </p>
               )}
             </div>
@@ -330,7 +310,7 @@ export default function ProductosPage() {
               </div>
             </div>
 
-            {/* MODIFICADO: Ordenamiento solo visible cuando NO hay búsqueda */}
+            {/* Ordenamiento solo visible cuando NO hay búsqueda */}
             {!busquedaParam && (
               <div className="mobileFilterGroup">
                 <h4>Ordenar Por</h4>
@@ -341,7 +321,7 @@ export default function ProductosPage() {
                       name="orden"
                       value="A-Z"
                       checked={selectedOrden === 'A-Z'}
-                      onChange={(e) => setSelectedOrden(e.target.value)}
+                      onChange={(e) => handleOrdenChange(e.target.value)}
                     />
                     <span className="mobileRadiomark"></span>
                     <FaSortAlphaDown className="sortIcon" />
@@ -353,7 +333,7 @@ export default function ProductosPage() {
                       name="orden"
                       value="Z-A"
                       checked={selectedOrden === 'Z-A'}
-                      onChange={(e) => setSelectedOrden(e.target.value)}
+                      onChange={(e) => handleOrdenChange(e.target.value)}
                     />
                     <span className="mobileRadiomark"></span>
                     <FaSortAlphaUp className="sortIcon" />
@@ -444,7 +424,7 @@ export default function ProductosPage() {
                 </div>
               </div>
 
-              {/* MODIFICADO: Ordenamiento solo visible cuando NO hay búsqueda */}
+              {/* Ordenamiento solo visible cuando NO hay búsqueda */}
               {!busquedaParam && (
                 <div className="filtroGroup">
                   <h3>Ordenar Por</h3>
@@ -455,7 +435,7 @@ export default function ProductosPage() {
                         name="ordenamiento"
                         value="A-Z"
                         checked={selectedOrden === 'A-Z'}
-                        onChange={(e) => setSelectedOrden(e.target.value)}
+                        onChange={(e) => handleOrdenChange(e.target.value)}
                       />
                       <span className="radiomark"></span>
                       <FaSortAlphaDown className="sortIcon" />
@@ -467,7 +447,7 @@ export default function ProductosPage() {
                         name="ordenamiento"
                         value="Z-A"
                         checked={selectedOrden === 'Z-A'}
-                        onChange={(e) => setSelectedOrden(e.target.value)}
+                        onChange={(e) => handleOrdenChange(e.target.value)}
                       />
                       <span className="radiomark"></span>
                       <FaSortAlphaUp className="sortIcon" />
@@ -477,7 +457,7 @@ export default function ProductosPage() {
                 </div>
               )}
 
-              {/* NUEVO: Información de prioridad de búsqueda */}
+              {/* Información de prioridad de búsqueda */}
               {busquedaParam && (
                 <div className="searchPriorityInfo">
                   <h3>Orden de Relevancia</h3>
@@ -497,7 +477,7 @@ export default function ProductosPage() {
 
               {error ? (
                 <div className="errorMessage">{error}</div>
-              ) : productosFiltrados.length === 0 ? (
+              ) : productos.length === 0 ? (
                 <div className="noProducts">
                   {busquedaParam ?
                     `No se encontraron productos para "${busquedaParam}"` :
@@ -505,7 +485,7 @@ export default function ProductosPage() {
                   }
                 </div>
               ) : (
-                productosFiltrados.map((producto) => {
+                productos.map((producto) => {
                   const imagenUrl = obtenerPrimeraImagen(producto);
 
                   return (
@@ -515,7 +495,6 @@ export default function ProductosPage() {
                       onClick={() => handleProductoClick(producto)}
                       style={{ cursor: 'pointer', position: 'relative' }}
                     >
-                      {/* SOLO botón de editar - NO botón de agregar aquí */}
                       <AdminButtons
                         producto={producto}
                         onProductUpdate={refetchProducts}

@@ -1,8 +1,8 @@
 'use client';
 import './videos.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { FaArrowLeft, FaSearch, FaPlay, FaEye, FaShare, FaYoutube, FaTiktok } from "react-icons/fa";
+import { FaCalendarCheck, FaMapMarkedAlt, FaFilter, FaWhatsapp, FaSortAlphaDown, FaSortAlphaUp, FaTimes, FaEraser, FaPlay, FaEye, FaShare, FaYoutube, FaTiktok, FaArrowLeft } from "react-icons/fa";
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
@@ -17,8 +17,8 @@ export default function VideosPage() {
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
 
-    // Estado para los videos - AHORA EDITABLE POR ADMIN
-    const [allShorts, setAllShorts] = useState([
+    // Datos iniciales por defecto
+    const videosIniciales = [
         {
             id: 1,
             title: "Bomba De Inyección Isc/Px8 Nueva",
@@ -241,7 +241,30 @@ export default function VideosPage() {
             youtubeLink: "https://youtube.com/shorts/5PiVMpn4WZ8?si=fB3Llw-IHZ-fL8Q1",
             category: "Cargas Promocionales"
         }
-    ]);
+    ];
+
+    // MODIFICACIÓN: Cargar desde localStorage o usar datos iniciales
+    const [allShorts, setAllShorts] = useState(() => {
+        if (typeof window !== 'undefined') {
+            const savedVideos = localStorage.getItem('tractodo_videos');
+            if (savedVideos) {
+                try {
+                    return JSON.parse(savedVideos);
+                } catch (error) {
+                    console.error('Error al parsear videos guardados:', error);
+                    return videosIniciales;
+                }
+            }
+        }
+        return videosIniciales;
+    });
+
+    // MODIFICACIÓN: Guardar en localStorage cuando cambie allShorts
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('tractodo_videos', JSON.stringify(allShorts));
+        }
+    }, [allShorts]);
 
     const categories = [
         { id: 'todos', label: 'Todos' },
