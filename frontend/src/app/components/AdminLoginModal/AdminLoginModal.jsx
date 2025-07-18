@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
-import { iniciarSesion } from '../../../services/userService';
+import { iniciarSesion, verificarAdmin } from '../../../services/userService';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import styles from './AdminLoginModal.module.css';
 
@@ -13,7 +13,7 @@ export default function AdminLoginModal({ isOpen, onClose }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const { setUsuario, setIsAdmin, verificarUsuario } = useAuth();
+  const { guardarSesion } = useAuth(); // USAR ESTO EN LUGAR DE setIsAdmin
 
   const handleChange = (e) => {
     setCredentials({
@@ -35,18 +35,44 @@ export default function AdminLoginModal({ isOpen, onClose }) {
     setError('');
 
     try {
-      const respuesta = await iniciarSesion(credentials);
-      console.log('Respuesta login:', respuesta);
+      console.log('🔐 === MODAL LOGIN - INICIANDO ===');
+      console.log('👤 Usuario:', credentials.username);
+
+      const respuestaLogin = await iniciarSesion(credentials);
+      console.log('📡 Respuesta login modal:', respuestaLogin);
       
-      // Actualizar estado y verificar admin
-      await verificarUsuario();
-      setIsAdmin(true);
-      onClose();
+      if (respuestaLogin.mensaje === "Login exitoso") {
+        console.log('✅ Login exitoso - verificando admin...');
+        
+        const respuestaAdmin = await verificarAdmin();
+        console.log('📡 Respuesta admin modal:', respuestaAdmin);
+        
+        if (respuestaAdmin.isAdmin) {
+          const datosUsuario = {
+            username: credentials.username,
+            isAdmin: true,
+            loginTime: new Date().toISOString()
+          };
+          
+          console.log('💾 MODAL - Guardando sesión admin:', datosUsuario);
+          guardarSesion(datosUsuario);
+          
+          console.log('✅ MODAL - Admin autenticado, cerrando modal');
+          onClose();
+        } else {
+          console.log('❌ MODAL - No es admin');
+          setError('No tienes permisos de administrador');
+        }
+      } else {
+        console.log('❌ MODAL - Login falló');
+        setError('Credenciales incorrectas');
+      }
     } catch (error) {
-      console.error('Error login:', error);
+      console.error('❌ MODAL - Error login:', error);
       setError(error.message || 'Error al iniciar sesión');
     } finally {
       setLoading(false);
+      console.log('🏁 MODAL - Proceso terminado');
     }
   };
 
@@ -64,7 +90,7 @@ export default function AdminLoginModal({ isOpen, onClose }) {
             >
               ←
             </button>
-            <h2 className={styles.title}>Login</h2>
+            <h2 className={styles.title}>Exclusivo</h2>
           </div>
           
           <form className={styles.form} onSubmit={handleSubmit}>

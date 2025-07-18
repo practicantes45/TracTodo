@@ -1,0 +1,312 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999 !important;
+  padding: 20px;
+}
+
+.modal {
+  width: 100%;
+  max-width: 600px;
+  max-height: 85vh;
+  background: linear-gradient(145deg, #ffffff 0%, #fafbff 30%, #f0f8ff 100%);
+  border-radius: 28px;
+  box-shadow: 
+    0 30px 80px rgba(0, 0, 0, 0.2),
+    0 15px 40px rgba(124, 58, 237, 0.15),
+    inset 0 2px 4px rgba(255, 255, 255, 0.9);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  z-index: 100000 !important;
+  overflow: hidden;
+  position: relative;
+}
+
+.modal::before {
+  content: '';
+  position: absolute;
+  inset: -3px;
+  background: linear-gradient(135deg, #7c3aed, #5b21b6, #4c1d95, #3730a3);
+  border-radius: 31px;
+  z-index: -1;
+}
+
+.header {
+  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 25%, #7c3aed 50%, #5b21b6 75%, #4c1d95 100%);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 32px;
+  position: relative;
+  overflow: hidden;
+  min-height: 80px;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.closeButton {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+  padding: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: scale(1.1);
+}
+
+.form {
+  padding: 32px;
+  overflow-y: auto;
+  max-height: calc(85vh - 140px);
+  background: inherit;
+}
+
+.form::-webkit-scrollbar {
+  width: 8px;
+}
+
+.form::-webkit-scrollbar-track {
+  background: #f0f8ff;
+  border-radius: 4px;
+}
+
+.form::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+  border-radius: 4px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.field label {
+  font-weight: 700;
+  color: #1e1b4b;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  position: relative;
+}
+
+.field label::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 30px;
+  height: 2px;
+  background: linear-gradient(90deg, #7c3aed 0%, #5b21b6 100%);
+  border-radius: 1px;
+}
+
+.field input,
+.field select {
+  padding: 16px 20px;
+  border: 2px solid #ddd6fe;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #ffffff 0%, #faf9ff 100%);
+  font-family: inherit;
+  outline: none;
+  color: #0f172a;
+}
+
+.field input:focus,
+.field select:focus {
+  border-color: #7c3aed;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
+  transform: translateY(-2px);
+}
+
+.fieldHint {
+  font-size: 12px;
+  color: #6b7280;
+  font-style: italic;
+  margin-top: 4px;
+}
+
+.error {
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 50%, #fef2f2 100%);
+  color: #dc2626;
+  padding: 20px 24px;
+  border-radius: 12px;
+  margin-bottom: 32px;
+  border: 2px solid #fecaca;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.error::before {
+  content: '⚠️';
+  font-size: 20px;
+}
+
+.buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: flex-end;
+  padding-top: 32px;
+  border-top: 3px solid #e0e7ff;
+  margin-top: 24px;
+  position: relative;
+}
+
+.buttons::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent 0%, #7c3aed 50%, transparent 100%);
+  border-radius: 2px;
+}
+
+.cancelButton,
+.saveButton {
+  padding: 16px 32px;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+  transition: all 0.3s ease;
+  min-width: 140px;
+}
+
+.cancelButton {
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #cbd5e1 100%);
+  color: #475569;
+  box-shadow: 0 6px 20px rgba(148, 163, 184, 0.3);
+}
+
+.cancelButton:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 35px rgba(148, 163, 184, 0.4);
+}
+
+.saveButton {
+  background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 50%, #4c1d95 100%);
+  color: white;
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.5);
+  position: relative;
+}
+
+.saveButton:hover:not(:disabled) {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 12px 35px rgba(124, 58, 237, 0.6);
+}
+
+.saveButton::after {
+  content: '🎥';
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+}
+
+.saveButton:disabled::after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid transparent;
+  border-top: 2px solid white;
+  border-right: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .modal {
+    margin: 20px;
+    max-height: 90vh;
+  }
+  
+  .header {
+    padding: 20px 24px;
+  }
+  
+  .form {
+    padding: 24px;
+  }
+  
+  .buttons {
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .cancelButton,
+  .saveButton {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal {
+    margin: 15px;
+    max-height: 95vh;
+  }
+  
+  .field input,
+  .field select {
+    font-size: 16px;
+  }
+}

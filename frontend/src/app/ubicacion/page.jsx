@@ -157,7 +157,7 @@ export default function UbicacionPage() {
                         <h2>REFERENCIAS PARA UBICARNOS</h2>
                         <div className="referencesGrid">
                             <div className="referenceCard">
-                                <div className="referenceImageContainer" onClick={() => openImageModal('/imgs/referencias/nissan.png', 'Agencia Nissan', 'Agencia Nissan')}>
+                                <div className="referenceImageContainer" onClick={() => openImageModal('https://i.postimg.cc/B6SVX8mK/nissan.png', 'Agencia Nissan', 'Agencia Nissan')}>
                                     <img
                                         src="https://i.postimg.cc/B6SVX8mK/nissan.png"
                                         alt="Agencia Nissan"
@@ -175,7 +175,7 @@ export default function UbicacionPage() {
                                 <p>Sobre la Carretera San Juan del Río-Tequisquiapan (Paseo Central), busca la agencia Nissan como punto de referencia principal.</p>
                             </div>
                             <div className="referenceCard">
-                                <div className="referenceImageContainer" onClick={() => openImageModal('/imgs/referencias/tienda.jpg', 'Tienda de Azulejos y Bomberos', 'Tienda de Azulejos y Bomberos')}>
+                                <div className="referenceImageContainer" onClick={() => openImageModal('https://i.postimg.cc/5yjKShd9/tienda.jpg', 'Tienda de Azulejos y Bomberos', 'Tienda de Azulejos y Bomberos')}>
                                     <img
                                         src="https://i.postimg.cc/5yjKShd9/tienda.jpg"
                                         alt="Tienda de Azulejos y Bomberos"
@@ -193,7 +193,7 @@ export default function UbicacionPage() {
                                 <p>Junto a la agencia Nissan encontrarás la tienda de azulejos y la estación de bomberos. Estos son puntos clave para ubicarnos.</p>
                             </div>
                             <div className="referenceCard">
-                                <div className="referenceImageContainer" onClick={() => openImageModal('/imgs/referencias/plaza.jpg', 'Plaza Central', 'Plaza Central')}>
+                                <div className="referenceImageContainer" onClick={() => openImageModal('https://i.postimg.cc/vB0S9QKS/plaza.jpg', 'Plaza Central', 'Plaza Central')}>
                                     <img
                                         src="https://i.postimg.cc/vB0S9QKS/plaza.jpg"
                                         alt="Plaza Central"

@@ -41,29 +41,29 @@ export default function HomePage() {
 
                     {/* Contenedor de fondo que abarca todo el ancho */}
                     <div className="brandBackgroundContainer">
-                        <img src="/imgs/croquis2.png" className="fondoCroquis" alt="Patrón de fondo" />
+                        <img src="https://i.postimg.cc/zfgsfzFh/croquis2.png" className="fondoCroquis" alt="Patrón de fondo" />
                     </div>
 
                     {/* Contenedor de tarjetas centrado y controlado */}
                     <div className="brandCardsContainer">
                         <div className="brandGrid">
                             <div className="brandCard">
-                                <img src="/imgs/marcas/volvo.png" alt="Volvo" className="brandLogo large" />
+                                <img src="https://i.postimg.cc/CdpYFRWz/volvo.png" alt="Volvo" className="brandLogo large" />
                             </div>
                             <div className="brandCard">
-                                <img src="/imgs/marcas/detroit.png" alt="Detroit" className="brandLogo large" />
+                                <img src="https://i.postimg.cc/q7JJhCgK/detroit.png" alt="Detroit" className="brandLogo large" />
                             </div>
                             <div className="brandCard">
-                                <img src="/imgs/marcas/caterpillar.png" alt="Caterpillar" className="brandLogo large" />
+                                <img src="https://i.postimg.cc/B6tJN9TQ/caterpillar.png" alt="Caterpillar" className="brandLogo large" />
                             </div>
                             <div className="brandCard">
-                                <img src="/imgs/marcas/mercedes.png" alt="Mercedes-Benz" className="brandLogo extraLarge" />
+                                <img src="https://i.postimg.cc/RhH457pk/mercedes.png" alt="Mercedes-Benz" className="brandLogo extraLarge" />
                             </div>
                             <div className="brandCard">
-                                <img src="/imgs/marcas/cummins.png" alt="Cummins" className="brandLogo large" />
+                                <img src="https://i.postimg.cc/SKgyWNzv/cummins.png" alt="Cummins" className="brandLogo large" />
                             </div>
                             <div className="brandCard">
-                                <img src="/imgs/marcas/navistar.png" alt="Navistar" className="brandLogo large" />
+                                <img src="https://i.postimg.cc/QtPhy4mg/navistar.png" alt="Navistar" className="brandLogo large" />
                             </div>
                         </div>
                     </div>

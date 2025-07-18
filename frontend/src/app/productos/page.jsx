@@ -31,7 +31,7 @@ export default function ProductosPage() {
   console.log('🔍 Parámetro de búsqueda:', busquedaParam);
 
   // Lista de marcas predefinidas
-  const marcasPredefinidas = ["Cummins", "Navistar", "Volvo", "Mercedes Benz", "Deutz", "Otros"];
+  const marcasPredefinidas = ["Cummins", "Navistar", "Volvo", "Mercedes Benz", "Detroit", "Otros"];
 
   // Lista de contactos
   const contactList = [

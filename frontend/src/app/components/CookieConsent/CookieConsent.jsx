@@ -16,15 +16,34 @@ const CookieConsent = () => {
   const handleAccept = async () => {
     localStorage.setItem('cookieConsent', 'accepted');
     localStorage.setItem('cookieConsentDate', new Date().toISOString());
-    await registrarEventoCookie('accepted');
+    
+    // Registrar evento de aceptación
+    const resultado = await registrarEventoCookie('accepted');
+    
+    if (resultado) {
+      console.log('✅ Cookies aceptadas y sistema de tracking activado');
+    } else {
+      console.error('❌ Error al activar sistema de tracking');
+    }
+    
     setIsVisible(false);
+    
+    // Disparar evento personalizado para notificar a otros componentes
+    window.dispatchEvent(new CustomEvent('cookiesAccepted'));
   };
 
   const handleReject = async () => {
     localStorage.setItem('cookieConsent', 'rejected');
     localStorage.setItem('cookieConsentDate', new Date().toISOString());
+    
+    // Registrar evento de rechazo
     await registrarEventoCookie('rejected');
+    console.log('❌ Cookies rechazadas - sistema de tracking desactivado');
+    
     setIsVisible(false);
+    
+    // Disparar evento personalizado
+    window.dispatchEvent(new CustomEvent('cookiesRejected'));
   };
 
   if (!isVisible) return null;
@@ -41,7 +60,8 @@ const CookieConsent = () => {
           </div>
 
           <p className={styles.cookieDescription}>
-            Usamos cookies para mejorar tu experiencia y recordar tus preferencias. 
+            Usamos cookies para mejorar tu experiencia, recordar tus preferencias y 
+            recomendarte productos que podrían interesarte basándose en tu navegación.
             ¿Nos das permiso para usarlas?
           </p>
 

@@ -110,7 +110,7 @@ const MobileMenu = () => {
                 <div className={styles.menuHeader}>
                     <div className={styles.logoContainer}>
                         <img 
-                            src="/imgs/logopeke2.png" 
+                            src="https://i.postimg.cc/GtqNfHdW/logopeke.png" 
                             alt="TRACTODO" 
                             className={styles.menuLogo}
                         />
