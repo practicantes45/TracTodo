@@ -5,20 +5,20 @@ export const obtenerProductos = async (filtros = {}) => {
   try {
     // Construir query params solo con valores que existen
     const queryParams = new URLSearchParams();
-    
+
     if (filtros.marcas && filtros.marcas.length > 0) {
       // El backend espera un solo parámetro 'marca', así que enviamos uno por uno
       // o modificamos para enviar el primero seleccionado
       queryParams.append('marca', filtros.marcas[0]);
     }
-    
+
     if (filtros.orden) {
       queryParams.append('orden', filtros.orden === 'A-Z' ? 'asc' : 'desc');
     }
-    
+
     const url = `${API_URL}/productos${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
     console.log('🔗 Solicitando productos con filtros:', url);
-    
+
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -41,24 +41,24 @@ export const obtenerProductos = async (filtros = {}) => {
 export const buscarProductos = async (params) => {
   try {
     const queryParams = new URLSearchParams();
-    
+
     // Agregar parámetros de búsqueda
     if (params.q) {
       queryParams.append('q', params.q);
     }
-    
+
     // Agregar filtros de marca y orden
     if (params.marcas && params.marcas.length > 0) {
       queryParams.append('marca', params.marcas[0]);
     }
-    
+
     if (params.orden) {
       queryParams.append('orden', params.orden === 'A-Z' ? 'asc' : 'desc');
     }
-    
+
     const url = `${API_URL}/productos?${queryParams.toString()}`;
     console.log('🔍 Buscando productos con filtros:', url);
-    
+
     const response = await fetch(url, {
       method: 'GET',
       headers: {
@@ -185,6 +185,101 @@ export const obtenerProductosDelMes = async () => {
     return data;
   } catch (error) {
     console.error('Error al obtener productos del mes:', error);
+    throw error;
+  }
+};
+
+// services/productoService.js - REEMPLAZAR las funciones anteriores con estas corregidas
+
+// Agregar productos al mes con precios específicos
+export const agregarProductosDelMes = async (productos) => {
+  try {
+    console.log('🔄 Enviando productos al backend:', productos);
+
+    const response = await fetch(`${API_URL}/productos/mes/agregar`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include', // Para enviar cookies de autenticación
+      body: JSON.stringify({ productos: productos }),
+    });
+
+    console.log('📡 Respuesta del servidor:', response.status);
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error('❌ Error del servidor:', errorData);
+      throw new Error(`Error al agregar productos del mes: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('✅ Productos agregados exitosamente:', data);
+    return data;
+  } catch (error) {
+    console.error('❌ Error al agregar productos del mes:', error);
+    throw error;
+  }
+};
+
+// Eliminar producto del mes
+export const eliminarProductoDelMes = async (id) => {
+  try {
+    console.log('🗑️ Eliminando producto del mes:', id);
+
+    const response = await fetch(`${API_URL}/productos/mes/eliminar`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({ id: id }),
+    });
+
+    console.log('📡 Respuesta del servidor:', response.status);
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error('❌ Error del servidor:', errorData);
+      throw new Error(`Error al eliminar producto del mes: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('✅ Producto eliminado exitosamente:', data);
+    return data;
+  } catch (error) {
+    console.error('❌ Error al eliminar producto del mes:', error);
+    throw error;
+  }
+};
+
+// Actualizar precio de producto del mes
+export const actualizarPrecioProductoDelMes = async (id, precioMes) => {
+  try {
+    console.log('💰 Actualizando precio del producto del mes:', { id, precioMes });
+
+    const response = await fetch(`${API_URL}/productos/mes/precio/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({ precioMes: parseFloat(precioMes) }),
+    });
+
+    console.log('📡 Respuesta del servidor:', response.status);
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error('❌ Error del servidor:', errorData);
+      throw new Error(`Error al actualizar precio: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('✅ Precio actualizado exitosamente:', data);
+    return data;
+  } catch (error) {
+    console.error('❌ Error al actualizar precio del producto del mes:', error);
     throw error;
   }
 };

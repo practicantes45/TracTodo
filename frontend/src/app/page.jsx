@@ -13,6 +13,7 @@ import BenefitsSection from './components/BenefitsSection/BenefitsSection';
 import Footer from './components/Footer/Footer';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import AdminPanel from './components/AdminPanel/AdminPanel';
+import ManageProductsButton from './components/ManageProductsButton/ManageProductsButton'; // AGREGADO
 
 export default function HomePage() {
     const [searchQuery, setSearchQuery] = useState('');
@@ -28,8 +29,8 @@ export default function HomePage() {
     const marcaMapping = {
         'Volvo': 'Volvo',
         'Detroit': 'Detroit',
-        'Caterpillar': 'Caterpillar', // Nota: en el backend tienes "Detroit" pero la imagen dice "Caterpillar"
-        'Mercedes-Benz': 'Mercedes Benz', // Ajustado para coincidir con el backend
+        'Caterpillar': 'Caterpillar',
+        'Mercedes-Benz': 'Mercedes Benz',
         'Cummins': 'Cummins',
         'Navistar': 'Navistar'
     };
@@ -49,6 +50,7 @@ export default function HomePage() {
 
                 <section className="carouselSection">
                     <ProductCarousel />
+                    <ManageProductsButton />
                 </section>
 
                 {/* Sección de marcas destacadas */}
@@ -63,8 +65,8 @@ export default function HomePage() {
                     {/* Contenedor de tarjetas centrado y controlado */}
                     <div className="brandCardsContainer">
                         <div className="brandGrid">
-                            <div 
-                                className="brandCard clickable" 
+                            <div
+                                className="brandCard clickable"
                                 onClick={() => handleMarcaClick(marcaMapping['Volvo'])}
                                 role="button"
                                 tabIndex={0}
@@ -77,8 +79,8 @@ export default function HomePage() {
                             >
                                 <img src="https://i.postimg.cc/CdpYFRWz/volvo.png" alt="Volvo" className="brandLogo large" />
                             </div>
-                            <div 
-                                className="brandCard clickable" 
+                            <div
+                                className="brandCard clickable"
                                 onClick={() => handleMarcaClick(marcaMapping['Detroit'])}
                                 role="button"
                                 tabIndex={0}
@@ -91,8 +93,8 @@ export default function HomePage() {
                             >
                                 <img src="https://i.postimg.cc/q7JJhCgK/detroit.png" alt="Detroit" className="brandLogo large" />
                             </div>
-                            <div 
-                                className="brandCard clickable" 
+                            <div
+                                className="brandCard clickable"
                                 onClick={() => handleMarcaClick('Otros')}
                                 role="button"
                                 tabIndex={0}
@@ -105,8 +107,8 @@ export default function HomePage() {
                             >
                                 <img src="https://i.postimg.cc/B6tJN9TQ/caterpillar.png" alt="Otras marcas" className="brandLogo large" />
                             </div>
-                            <div 
-                                className="brandCard clickable" 
+                            <div
+                                className="brandCard clickable"
                                 onClick={() => handleMarcaClick(marcaMapping['Mercedes-Benz'])}
                                 role="button"
                                 tabIndex={0}
@@ -119,8 +121,8 @@ export default function HomePage() {
                             >
                                 <img src="https://i.postimg.cc/RhH457pk/mercedes.png" alt="Mercedes-Benz" className="brandLogo extraLarge" />
                             </div>
-                            <div 
-                                className="brandCard clickable" 
+                            <div
+                                className="brandCard clickable"
                                 onClick={() => handleMarcaClick(marcaMapping['Cummins'])}
                                 role="button"
                                 tabIndex={0}
@@ -133,8 +135,8 @@ export default function HomePage() {
                             >
                                 <img src="https://i.postimg.cc/SKgyWNzv/cummins.png" alt="Cummins" className="brandLogo large" />
                             </div>
-                            <div 
-                                className="brandCard clickable" 
+                            <div
+                                className="brandCard clickable"
                                 onClick={() => handleMarcaClick(marcaMapping['Navistar'])}
                                 role="button"
                                 tabIndex={0}
@@ -153,13 +155,14 @@ export default function HomePage() {
                     <VerMarcas />
                 </section>
 
-                {/* Sección de beneficios/ventajas - NUEVO COMPONENTE */}
+                {/* Sección de beneficios/ventajas */}
                 <BenefitsSection />
             </main>
 
             {/* Footer con estado activo */}
             <Footer />
             <AdminPanel />
+            <ManageProductsButton /> {/* AGREGADO */}
             {/* Botón ScrollToTop */}
             <ScrollToTop />
         </div>
