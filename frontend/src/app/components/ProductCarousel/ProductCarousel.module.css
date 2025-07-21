@@ -7,7 +7,7 @@
   padding: 0;
 }
 
-/* ===== BANNER PRODUCTOS DEL MES INTEGRADO ===== */
+/* ===== BANNER PRODUCTOS DEL MES INTEGRADO (MANTENER SIN CAMBIOS) ===== */
 .offerBanner {
   background: linear-gradient(135deg, #8B0000 0%, #DC143C 25%, #d9252a 50%, #B22222 75%, #800000 100%);
   background-size: 400% 400%;
@@ -21,6 +21,8 @@
   overflow: hidden;
   box-shadow: 0 4px 20px rgba(217, 37, 42, 0.4);
   z-index: 5;
+  margin-bottom: 40px;
+  /* Espacio entre título y carrusel */
 }
 
 /* Animación del gradiente rojo */
@@ -159,17 +161,23 @@
   }
 }
 
-/* ===== CARRUSEL DE PRODUCTOS ===== */
+/* ===== CARRUSEL CON FONDO BLANCO HIELO Y PALETA ROJO-AZUL ===== */
 .carouselContainer {
   position: relative;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1400px;
   margin: 0 auto;
   overflow: hidden;
-  height: 400px;
-  background-color: #f5f5f5;
-  border-radius: 8px;
-  margin-bottom: 100px; /* ESPACIO PARA EL BOTÓN DE GESTIÓN */
+  height: 500px;
+  background: linear-gradient(145deg, #f0f8ff 0%, #f5f7fa 30%, #ffffff 70%, #f8fafe 100%);
+  border-radius: 25px;
+  margin-bottom: 100px;
+  box-shadow:
+    0 20px 60px rgba(0, 42, 92, 0.08),
+    0 8px 25px rgba(0, 180, 216, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 180, 216, 0.1);
+  backdrop-filter: blur(10px);
 }
 
 .carouselSlides {
@@ -184,92 +192,226 @@
   left: 0;
   width: 100%;
   height: 100%;
-  transition: transform 0.5s ease;
+  transition: transform 0.5s ease, opacity 0.5s ease;
   display: flex;
   align-items: center;
   justify-content: center;
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.slide.active {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 .slideContent {
   display: flex;
   width: 100%;
   height: 100%;
-  padding: 20px;
-  background-color: #fff;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 25px;
+  align-items: center;
+  gap: 40px;
+  position: relative;
 }
 
+/* ===== CONTENEDOR DE IMAGEN LIMPIO ===== */
 .imageContainer {
   flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 30px;
   position: relative;
+  height: 100%;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafe 100%);
+  box-shadow:
+    0 15px 35px rgba(0, 42, 92, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  overflow: hidden;
+  border: 1px solid rgba(0, 180, 216, 0.1);
 }
 
 .productImage {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
+  object-position: center;
+  transition: transform 0.3s ease;
+  filter: brightness(1) contrast(1.02);
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 42, 92, 0.1);
 }
 
+.slide:hover .productImage {
+  transform: scale(1.03);
+}
+
+/* ===== PLACEHOLDER DE IMAGEN LIMPIO ===== */
 .imagePlaceholder {
   width: 100%;
   height: 100%;
-  background-color: #ddd;
-  border-radius: 4px;
+  background: linear-gradient(135deg, #f8fafe 0%, #f0f8ff 100%);
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #4a5568;
+  border: 2px dashed #cbd5e0;
+  transition: all 0.3s ease;
 }
 
+.slide:hover .imagePlaceholder {
+  border-color: rgba(0, 180, 216, 0.4);
+  background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+}
+
+.noImageIcon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.6;
+  color: rgba(0, 180, 216, 0.7);
+  transition: all 0.3s ease;
+}
+
+.slide:hover .noImageIcon {
+  opacity: 0.8;
+  color: rgba(0, 180, 216, 0.9);
+}
+
+.imagePlaceholder p {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  color: #4a5568;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+}
+
+/* ===== INFORMACIÓN DEL PRODUCTO ===== */
 .productInfo {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 40px;
+  padding: 40px;
   text-align: center;
+  position: relative;
+  height: 100%;
 }
 
 .productName {
-  font-size: 2.5rem;
-  font-weight: bold;
-  margin-bottom: 20px;
-  color: #333;
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #002a5c;
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+  line-height: 1.2;
+  position: relative;
+  transition: all 0.3s ease;
+  text-shadow: 0 2px 4px rgba(0, 42, 92, 0.1);
+}
+
+.productName::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #002a5c, #00b4d8);
+  transition: width 0.4s ease;
+  transform: translateX(-50%);
+  border-radius: 2px;
+}
+
+.slide:hover .productName {
+  color: #00b4d8;
+  transform: translateY(-2px);
+}
+
+.slide:hover .productName::after {
+  width: 100%;
 }
 
 .productPrice {
-  font-size: 3.5rem;
-  font-weight: bold;
-  margin-bottom: 30px;
+  font-size: 4rem;
+  font-weight: 700;
+  margin-bottom: 35px;
   color: #d9252a;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  position: relative;
+  transition: all 0.3s ease;
+  text-shadow: 0 4px 8px rgba(217, 37, 42, 0.1);
 }
 
+.productPrice::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -15px;
+  width: 5px;
+  height: 0;
+  background: linear-gradient(180deg, #00b4d8, #d9252a);
+  border-radius: 3px;
+  transform: translateY(-50%);
+  transition: height 0.4s ease;
+}
+
+.slide:hover .productPrice {
+  transform: translateY(-3px);
+}
+
+.slide:hover .productPrice::before {
+  height: 80%;
+}
+
+/* ===== BOTÓN CTA ROJO-AZUL ===== */
 .ctaButton {
-  background-color: #d9252a;
+  background: linear-gradient(135deg, #d9252a 0%, #dc143c 50%, #b22222 100%);
   color: white;
   border: none;
-  padding: 15px 30px;
-  font-size: 1.2rem;
-  font-weight: bold;
-  border-radius: 5px;
+  padding: 18px 40px;
+  font-size: 1.3rem;
+  font-weight: 700;
+  border-radius: 15px;
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+  transition: all 0.3s ease;
   align-self: center;
-  max-width: 300px;
+  max-width: 350px;
+  width: 100%;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  box-shadow:
+    0 8px 25px rgba(217, 37, 42, 0.3),
+    0 4px 15px rgba(0, 180, 216, 0.1);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0, 180, 216, 0.2);
 }
 
 .ctaButton:hover {
-  background-color: #c01e22;
-  transform: scale(1.05);
+  transform: translateY(-2px);
+  box-shadow:
+    0 12px 35px rgba(217, 37, 42, 0.4),
+    0 6px 20px rgba(0, 180, 216, 0.2);
+  border-color: rgba(0, 180, 216, 0.4);
 }
 
+/* ===== BOTONES DE NAVEGACIÓN LIMPIOS ===== */
 .carouselButton {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 50px;
-  height: 50px;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #002a5c;
   border: none;
   border-radius: 50%;
   font-size: 1.5rem;
@@ -277,52 +419,117 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  z-index: 10;
-  transition: background-color 0.3s;
+  z-index: 15;
+  transition: all 0.3s ease;
+  box-shadow:
+    0 8px 25px rgba(0, 42, 92, 0.15),
+    0 4px 15px rgba(0, 180, 216, 0.1);
+  backdrop-filter: blur(15px);
+  border: 2px solid rgba(0, 180, 216, 0.2);
 }
 
 .carouselButton:hover {
-  background-color: rgba(0, 0, 0, 0.8);
+  background: #00b4d8;
+  color: white;
+  transform: translateY(-50%) scale(1.05);
+  box-shadow:
+    0 12px 30px rgba(0, 180, 216, 0.3),
+    0 6px 20px rgba(0, 42, 92, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
 }
 
 .prev {
-  left: 20px;
+  left: 25px;
 }
 
 .next {
-  right: 20px;
+  right: 25px;
 }
 
+/* ===== INDICADORES LIMPIOS ===== */
 .indicators {
   position: absolute;
-  bottom: 20px;
+  bottom: 25px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 10px;
+  gap: 15px;
+  z-index: 15;
 }
 
 .indicator {
-  width: 12px;
-  height: 12px;
+  width: 15px;
+  height: 15px;
   border-radius: 50%;
-  background-color: rgba(255, 255, 255, 0.6);
-  border: 1px solid rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.7);
+  border: 2px solid rgba(0, 180, 216, 0.3);
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.indicator:hover {
+  background: rgba(0, 180, 216, 0.3);
+  border-color: rgba(0, 180, 216, 0.5);
 }
 
 .indicator.active {
-  background-color: #002a5c;
-  border-color: #002a5c;
+  background: #00b4d8;
+  border-color: #00b4d8;
+  box-shadow: 0 0 15px rgba(0, 180, 216, 0.4);
+  transform: scale(1.2);
+}
+
+/* ===== ESTADOS DE CARGA Y ERROR ===== */
+.loadingContainer,
+.errorContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 60px 40px;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 25px;
+  backdrop-filter: blur(10px);
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(217, 37, 42, 0.2);
+  border-top: 4px solid #d9252a;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.loadingContainer p,
+.errorContainer p {
+  color: #4a5568;
+  font-size: 1.2rem;
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  font-weight: 500;
 }
 
 /* =============================================
-   RESPONSIVE DESIGN PARA BANNER Y CARRUSEL
+   RESPONSIVE DESIGN
    ============================================= */
 
 @media (max-width: 1234px) {
-  .offerBanner{
+  .offerBanner {
     margin-top: -85px;
   }
 }
@@ -332,27 +539,61 @@
   .offerBanner {
     padding: 20px 15px;
     font-size: 1.5rem;
+    margin-bottom: 30px;
   }
 
   .offerBanner h2 {
     font-size: 2.2rem;
   }
 
+  .carouselContainer {
+    height: 450px;
+    border-radius: 20px;
+    margin-bottom: 80px;
+  }
+
   .slideContent {
     flex-direction: column;
+    padding: 30px;
+    gap: 30px;
+  }
+
+  .imageContainer {
+    height: 200px;
+    padding: 20px;
   }
 
   .productInfo {
-    padding: 20px 0;
+    padding: 20px;
   }
 
   .productName {
-    font-size: 2rem;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
   }
 
   .productPrice {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
+    font-size: 3rem;
+    margin-bottom: 25px;
+  }
+
+  .ctaButton {
+    padding: 15px 30px;
+    font-size: 1.2rem;
+  }
+
+  .carouselButton {
+    width: 55px;
+    height: 55px;
+    font-size: 1.4rem;
+  }
+
+  .prev {
+    left: 20px;
+  }
+
+  .next {
+    right: 20px;
   }
 }
 
@@ -361,34 +602,66 @@
   .offerBanner {
     padding: 20px 15px;
     font-size: 1.5rem;
+    margin-bottom: 25px;
   }
 
   .offerBanner h2 {
     font-size: 2rem;
   }
 
-  .offerBanner::before {
-    background-size: 150px 40px;
+  .carouselContainer {
+    height: 520px;
+    border-radius: 18px;
+    margin-bottom: 60px;
   }
 
-  .carouselContainer {
-    height: 500px;
+  .slideContent {
+    padding: 25px 20px;
+    gap: 25px;
+  }
+
+  .imageContainer {
+    height: 180px;
+    padding: 15px;
   }
 
   .productName {
-    font-size: 1.8rem;
-    margin-bottom: 10px;
-  }
-
-  .productPrice {
     font-size: 2rem;
     margin-bottom: 15px;
   }
 
+  .productPrice {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+
+  .ctaButton {
+    padding: 14px 28px;
+    font-size: 1.1rem;
+  }
+
   .carouselButton {
-    width: 40px;
-    height: 40px;
-    font-size: 1.2rem;
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
+  }
+
+  .prev {
+    left: 15px;
+  }
+
+  .next {
+    right: 15px;
+  }
+
+  .indicator {
+    width: 12px;
+    height: 12px;
+  }
+
+  .indicators {
+    gap: 12px;
+    bottom: 20px;
   }
 }
 
@@ -397,15 +670,29 @@
   .offerBanner {
     padding: 15px 10px;
     font-size: 1.3rem;
+    margin-bottom: 20px;
   }
 
   .offerBanner h2 {
     font-size: 1.8rem;
   }
 
-  .offerBanner::before {
-    background-size: 120px 35px;
-    animation-duration: 25s;
+  .carouselContainer {
+    height: 480px;
+    border-radius: 15px;
+  }
+
+  .slideContent {
+    padding: 20px 15px;
+    gap: 20px;
+  }
+
+  .productName {
+    font-size: 1.8rem;
+  }
+
+  .productPrice {
+    font-size: 2.2rem;
   }
 }
 
@@ -414,31 +701,68 @@
   .offerBanner {
     padding: 15px 10px;
     font-size: 1.2rem;
+    margin-bottom: 18px;
   }
 
   .offerBanner h2 {
     font-size: 1.8rem;
   }
 
-  .offerBanner::before {
-    background-size: 100px 30px;
-    animation-duration: 20s;
-  }
-
   .carouselContainer {
     height: 450px;
+    border-radius: 15px;
+    margin-bottom: 50px;
+  }
+
+  .slideContent {
+    padding: 18px 12px;
+    gap: 18px;
+  }
+
+  .imageContainer {
+    height: 160px;
+    padding: 12px;
+  }
+
+  .productInfo {
+    padding: 15px 10px;
   }
 
   .productName {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
+    margin-bottom: 12px;
   }
 
   .productPrice {
-    font-size: 1.8rem;
+    font-size: 2rem;
+    margin-bottom: 18px;
   }
 
   .ctaButton {
-    padding: 10px 20px;
+    padding: 12px 24px;
+    font-size: 1rem;
+    max-width: 280px;
+  }
+
+  .carouselButton {
+    width: 45px;
+    height: 45px;
+    font-size: 1.2rem;
+  }
+
+  .prev {
+    left: 12px;
+  }
+
+  .next {
+    right: 12px;
+  }
+
+  .noImageIcon {
+    font-size: 3rem;
+  }
+
+  .imagePlaceholder p {
     font-size: 1rem;
   }
 }
@@ -448,6 +772,7 @@
   .offerBanner {
     padding: 12px 8px;
     font-size: 1.1rem;
+    margin-bottom: 15px;
   }
 
   .offerBanner h2 {
@@ -456,18 +781,65 @@
 
   .carouselContainer {
     height: 420px;
+    border-radius: 12px;
+  }
+
+  .slideContent {
+    padding: 15px 10px;
+    gap: 15px;
+  }
+
+  .imageContainer {
+    height: 140px;
+    padding: 10px;
   }
 
   .productName {
-    font-size: 1.3rem;
+    font-size: 1.4rem;
+    margin-bottom: 10px;
   }
 
   .productPrice {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
   }
 
   .ctaButton {
-    padding: 8px 16px;
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    max-width: 250px;
+  }
+
+  .carouselButton {
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
+  }
+
+  .prev {
+    left: 10px;
+  }
+
+  .next {
+    right: 10px;
+  }
+
+  .indicator {
+    width: 10px;
+    height: 10px;
+  }
+
+  .indicators {
+    gap: 10px;
+    bottom: 15px;
+  }
+
+  .noImageIcon {
+    font-size: 2.5rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .imagePlaceholder p {
     font-size: 0.9rem;
   }
 }
@@ -476,6 +848,8 @@
 @media (max-width: 768px) and (orientation: landscape) {
   .offerBanner {
     padding: 15px 10px;
+    margin-bottom: 20px;
+    margin-top: 150px;
   }
 
   .offerBanner h2 {
@@ -483,114 +857,105 @@
   }
 
   .carouselContainer {
-    height: 350px;
+    height: 380px;
+  }
+
+  .slideContent {
+    flex-direction: row;
+    padding: 20px;
+    gap: 20px;
+  }
+
+  .imageContainer {
+    height: 100%;
+    flex: 0 0 40%;
+  }
+
+  .productInfo {
+    flex: 1;
+    padding: 20px;
   }
 
   .productName {
-    font-size: 1.6rem;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
   }
 
   .productPrice {
-    font-size: 1.8rem;
+    font-size: 2.2rem;
+    margin-bottom: 20px;
   }
 }
 
-/* Estilos adicionales para estados de carga y error */
-.loadingContainer,
-.errorContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  padding: 40px 20px;
-}
+/* Respeto por preferencias de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
 
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #d9252a;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin-bottom: 16px;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-.loadingContainer p,
-.errorContainer p {
-  color: #666;
-  font-size: 1.1rem;
-  margin: 0;
-  text-align: center;
-}
-
-/* Estilos para placeholder de imagen mejorado */
-.imagePlaceholder {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: #666;
-  border: 2px dashed #ddd;
-  transition: all 0.3s ease;
-}
-
-.imagePlaceholder:hover {
-  border-color: #bbb;
-  background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
-}
-
-.noImageIcon {
-  font-size: 3rem;
-  margin-bottom: 0.8rem;
-  opacity: 0.6;
-}
-
-.imagePlaceholder p {
-  font-size: 1rem;
-  font-weight: 500;
-  margin: 0;
-  color: #777;
-}
-
-/* Responsive para nuevos elementos */
-@media (max-width: 768px) {
-  .noImageIcon {
-    font-size: 2.5rem;
-    margin-bottom: 0.6rem;
+  .carouselContainer,
+  .productImage,
+  .carouselButton,
+  .indicator,
+  .ctaButton,
+  .slide {
+    animation: none !important;
+    transition: opacity 0.2s ease, transform 0.2s ease !important;
   }
-  
-  .imagePlaceholder p {
-    font-size: 0.9rem;
-  }
-  
-  .spinner {
-    width: 35px;
-    height: 35px;
+
+  .slide:hover .productImage,
+  .carouselButton:hover,
+  .ctaButton:hover {
+    transform: none !important;
   }
 }
 
-@media (max-width: 480px) {
-  .noImageIcon {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
+/* Modo de alto contraste */
+@media (prefers-contrast: high) {
+  .carouselContainer {
+    background: #ffffff;
+    border: 2px solid #000000;
   }
-  
-  .imagePlaceholder p {
-    font-size: 0.8rem;
+
+  .productName {
+    color: #000000;
   }
-  
-  .loadingContainer,
-  .errorContainer {
-    padding: 30px 15px;
+
+  .ctaButton {
+    background: #000000;
+    border: 2px solid #ffffff;
+  }
+
+  .carouselButton {
+    background: #ffffff;
+    color: #000000;
+    border: 2px solid #000000;
+  }
+
+  .indicator {
+    background: #ffffff;
+    border: 2px solid #000000;
+  }
+
+  .indicator.active {
+    background: #000000;
+    border-color: #ffffff;
+  }
+}
+
+/* Optimización para dispositivos táctiles */
+@media (hover: none) and (pointer: coarse) {
+
+  .slide:hover .productImage,
+  .slide:hover .productName,
+  .slide:hover .productPrice,
+  .carouselButton:hover,
+  .ctaButton:hover {
+    transform: none;
+  }
+
+  .ctaButton:active {
+    transform: scale(0.98);
+  }
+
+  .carouselButton:active {
+    transform: translateY(-50%) scale(0.95);
   }
 }

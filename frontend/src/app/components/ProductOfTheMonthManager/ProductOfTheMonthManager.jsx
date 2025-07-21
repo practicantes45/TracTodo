@@ -9,6 +9,21 @@ import {
     eliminarProductoDelMes,
     actualizarPrecioProductoDelMes
 } from '../../../services/productoService';
+import { 
+    FaSearch, 
+    FaTimes, 
+    FaPlus, 
+    FaTrash, 
+    FaEdit,
+    FaDollarSign,
+    FaBox,
+    FaStar,
+    FaRegStar,
+    FaSpinner,
+    FaExclamationTriangle,
+    FaCheckCircle,
+    FaBroom
+} from 'react-icons/fa';
 import styles from './ProductOfTheMonthManager.module.css';
 
 export default function ProductOfTheMonthManager({ isOpen, onClose }) {
@@ -26,7 +41,7 @@ export default function ProductOfTheMonthManager({ isOpen, onClose }) {
     const [selectedProductId, setSelectedProductId] = useState('');
     const [precioTemporal, setPrecioTemporal] = useState('');
 
-    // Estado para verificar si estamos montados (evitar hidration mismatch)
+    // Estado para verificar si estamos montados (evitar hydration mismatch)
     const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
@@ -104,7 +119,6 @@ export default function ProductOfTheMonthManager({ isOpen, onClose }) {
         setSuccess('');
     };
 
-
     const handleAgregar = async () => {
         if (!selectedProductId || !precioTemporal) {
             setError('Selecciona un producto y especifica el precio');
@@ -155,6 +169,30 @@ export default function ProductOfTheMonthManager({ isOpen, onClose }) {
         }
     };
     
+    // NUEVA FUNCIÓN: Eliminar producto directamente desde la lista
+    const handleEliminarDirecto = async (productId, productName) => {
+        if (!confirm(`¿Estás seguro de que quieres eliminar "${productName}" del carrusel?`)) {
+            return;
+        }
+
+        try {
+            setLoading(true);
+            setError('');
+            setSuccess('');
+
+            await eliminarProductoDelMes(productId);
+
+            setSuccess(`"${productName}" eliminado del carrusel exitosamente`);
+            await cargarDatos(); // Recargar datos
+
+        } catch (error) {
+            console.error('❌ Error al eliminar producto:', error);
+            setError('Error al eliminar el producto del carrusel');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const handleEliminar = async () => {
         if (!selectedProductId) {
             setError('Selecciona un producto para eliminar');
@@ -208,22 +246,28 @@ export default function ProductOfTheMonthManager({ isOpen, onClose }) {
         <div className={styles.overlay} onClick={onClose}>
             <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
                 <div className={styles.header}>
-                    <h2>Gestión de Productos del Mes</h2>
-                    <button className={styles.closeButton} onClick={onClose}>×</button>
+                    <h2><FaBox className={styles.headerIcon} /> Gestión de Productos del Mes</h2>
+                    <button className={styles.closeButton} onClick={onClose}>
+                        <FaTimes />
+                    </button>
                 </div>
 
                 <div className={styles.content}>
                     {loading && (
                         <div className={styles.loading}>
-                            <div className={styles.spinner}></div>
+                            <FaSpinner className={styles.spinner} />
                             <p>Cargando...</p>
                         </div>
                     )}
 
                     {/* Barra de búsqueda */}
                     <div className={styles.searchSection}>
-                        <label className={styles.label}>Buscar Producto:</label>
+                        <label className={styles.label}>
+                            <FaSearch className={styles.labelIcon} />
+                            Buscar Producto:
+                        </label>
                         <div className={styles.searchContainer}>
+                            <FaSearch className={styles.searchIcon} />
                             <input
                                 type="text"
                                 value={searchQuery}
@@ -237,14 +281,17 @@ export default function ProductOfTheMonthManager({ isOpen, onClose }) {
                                 onClick={() => setSearchQuery('')}
                                 title="Limpiar búsqueda"
                             >
-                                ×
+                                <FaTimes />
                             </button>
                         </div>
                     </div>
 
                     {/* Lista desplegable de productos */}
                     <div className={styles.selectSection}>
-                        <label className={styles.label}>Seleccionar Producto:</label>
+                        <label className={styles.label}>
+                            <FaBox className={styles.labelIcon} />
+                            Seleccionar Producto:
+                        </label>
                         <select
                             value={selectedProductId}
                             onChange={handleProductSelect}
@@ -260,6 +307,7 @@ export default function ProductOfTheMonthManager({ isOpen, onClose }) {
                             ))}
                         </select>
                         <p className={styles.resultCount}>
+                            <FaBox className={styles.countIcon} />
                             {productosFiltrados.length} productos encontrados
                         </p>
                     </div>
@@ -267,14 +315,17 @@ export default function ProductOfTheMonthManager({ isOpen, onClose }) {
                     {/* Información del producto seleccionado */}
                     {productoSeleccionado && (
                         <div className={styles.productInfo}>
-                            <h3>Producto Seleccionado:</h3>
+                            <h3>
+                                <FaBox className={styles.sectionIcon} />
+                                Producto Seleccionado:
+                            </h3>
                             <div className={styles.productDetails}>
                                 <p><strong>Nombre:</strong> {productoSeleccionado.nombre}</p>
                                 <p><strong>Número de Parte:</strong> {productoSeleccionado.numeroParte || 'No disponible'}</p>
-                                <p><strong>Precio Original:</strong> ${(productoSeleccionado.precioVentaSugerido || 0).toLocaleString()}</p>
+                                <p><strong>Precio Original:</strong> <FaDollarSign className={styles.priceIcon} />${(productoSeleccionado.precioVentaSugerido || 0).toLocaleString()}</p>
                                 <p><strong>Estado:</strong>
                                     <span className={estaEnCarrusel ? styles.enCarrusel : styles.noEnCarrusel}>
-                                        {estaEnCarrusel ? ' ⭐ En carrusel' : ' No está en carrusel'}
+                                        {estaEnCarrusel ? <><FaStar className={styles.statusIcon} /> En carrusel</> : <><FaRegStar className={styles.statusIcon} /> No está en carrusel</>}
                                     </span>
                                 </p>
                             </div>
@@ -283,22 +334,38 @@ export default function ProductOfTheMonthManager({ isOpen, onClose }) {
 
                     {/* Campo de precio temporal */}
                     <div className={styles.priceSection}>
-                        <label className={styles.label}>Precio Temporal para el Carrusel:</label>
-                        <input
-                            type="number"
-                            value={precioTemporal}
-                            onChange={(e) => setPrecioTemporal(e.target.value)}
-                            placeholder="Precio en pesos mexicanos"
-                            className={styles.priceInput}
-                            min="0"
-                            step="0.01"
-                            disabled={loading}
-                        />
+                        <label className={styles.label}>
+                            <FaDollarSign className={styles.labelIcon} />
+                            Precio Temporal para el Carrusel:
+                        </label>
+                        <div className={styles.priceInputContainer}>
+                            <FaDollarSign className={styles.priceInputIcon} />
+                            <input
+                                type="number"
+                                value={precioTemporal}
+                                onChange={(e) => setPrecioTemporal(e.target.value)}
+                                placeholder="Precio en pesos mexicanos"
+                                className={styles.priceInput}
+                                min="0"
+                                step="0.01"
+                                disabled={loading}
+                            />
+                        </div>
                     </div>
 
                     {/* Mensajes de estado */}
-                    {error && <div className={styles.error}>{error}</div>}
-                    {success && <div className={styles.success}>{success}</div>}
+                    {error && (
+                        <div className={styles.error}>
+                            <FaExclamationTriangle />
+                            {error}
+                        </div>
+                    )}
+                    {success && (
+                        <div className={styles.success}>
+                            <FaCheckCircle />
+                            {success}
+                        </div>
+                    )}
 
                     {/* Botones de acción */}
                     <div className={styles.actions}>
@@ -307,6 +374,7 @@ export default function ProductOfTheMonthManager({ isOpen, onClose }) {
                             disabled={loading || !selectedProductId || !precioTemporal}
                             className={styles.addButton}
                         >
+                            <FaPlus className={styles.buttonIcon} />
                             {estaEnCarrusel ? 'Actualizar Precio' : 'Añadir al Carrusel'}
                         </button>
 
@@ -315,6 +383,7 @@ export default function ProductOfTheMonthManager({ isOpen, onClose }) {
                             disabled={loading || !selectedProductId || !estaEnCarrusel}
                             className={styles.removeButton}
                         >
+                            <FaTrash className={styles.buttonIcon} />
                             Eliminar del Carrusel
                         </button>
 
@@ -323,21 +392,44 @@ export default function ProductOfTheMonthManager({ isOpen, onClose }) {
                             disabled={loading}
                             className={styles.clearButton}
                         >
+                            <FaBroom className={styles.buttonIcon} />
                             Limpiar Formulario
                         </button>
                     </div>
 
-                    {/* Resumen de productos del mes */}
+                    {/* Resumen de productos del mes con botones de eliminación */}
                     <div className={styles.summary}>
-                        <h3>Productos Actuales en el Carrusel ({productosDelMes.length}):</h3>
+                        <h3>
+                            <FaStar className={styles.sectionIcon} />
+                            Productos Actuales en el Carrusel ({productosDelMes.length}):
+                        </h3>
                         {productosDelMes.length === 0 ? (
-                            <p className={styles.noProducts}>No hay productos en el carrusel actualmente</p>
+                            <p className={styles.noProducts}>
+                                <FaRegStar className={styles.emptyIcon} />
+                                No hay productos en el carrusel actualmente
+                            </p>
                         ) : (
                             <div className={styles.productList}>
                                 {productosDelMes.map(producto => (
                                     <div key={producto.id} className={styles.productItem}>
-                                        <span className={styles.productName}>{producto.nombre}</span>
-                                        <span className={styles.productPrice}>${producto.precioMes?.toLocaleString()}</span>
+                                        <div className={styles.productItemInfo}>
+                                            <span className={styles.productName}>
+                                                <FaBox className={styles.productItemIcon} />
+                                                {producto.nombre}
+                                            </span>
+                                            <span className={styles.productPrice}>
+                                                <FaDollarSign className={styles.priceIcon} />
+                                                ${producto.precioMes?.toLocaleString()}
+                                            </span>
+                                        </div>
+                                        <button
+                                            onClick={() => handleEliminarDirecto(producto.id, producto.nombre)}
+                                            className={styles.quickDeleteButton}
+                                            title={`Eliminar ${producto.nombre} del carrusel`}
+                                            disabled={loading}
+                                        >
+                                            <FaTrash />
+                                        </button>
                                     </div>
                                 ))}
                             </div>

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useAuth } from '../../../hooks/useAuth';
 import ProductOfTheMonthManager from '../ProductOfTheMonthManager/ProductOfTheMonthManager';
 import styles from './ManageProductsButton.module.css';
+import { IoSettingsSharp } from "react-icons/io5";
 
 export default function ManageProductsButton() {
   const { isAdmin } = useAuth();
@@ -17,7 +18,7 @@ export default function ManageProductsButton() {
         onClick={() => setIsManagerOpen(true)}
         title="Gestionar productos del mes"
       >
-        ⚙️ Gestionar Productos del Mes
+       <IoSettingsSharp /> Gestionar Productos del Mes
       </button>
 
       {isManagerOpen && (

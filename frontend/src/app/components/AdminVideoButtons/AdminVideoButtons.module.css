@@ -44,100 +44,11 @@
   box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
 }
 
-.addButton {
-  position: fixed;
-  bottom: 160px;
-  right: 30px;
-  width: 55px;
-  height: 55px;
-  background: linear-gradient(135deg, #7c3aed, #5b21b6);
-  border: 2px solid rgba(124, 58, 237, 0.3);
-  font-size: 20px;
-  z-index: 999;
-}
-
-.addButton:hover {
-  background: linear-gradient(135deg, #6d28d9, #4c1d95);
-  transform: scale(1.1);
-  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
-}
-
 .adminButton:active {
   transform: scale(0.95);
 }
 
-/* Responsive para el botón de agregar */
-@media (max-width: 768px) {
-  .addButton {
-    bottom: 150px;
-    right: 25px;
-    width: 50px;
-    height: 50px;
-    font-size: 18px;
-  }
-}
-
-@media (max-width: 480px) {
-  .addButton {
-    bottom: 140px;
-    right: 20px;
-    width: 45px;
-    height: 45px;
-    font-size: 16px;
-  }
-}
-
-/* Animación sutil para llamar la atención */
-.addButton {
-  animation: subtlePulse 3s ease-in-out infinite;
-}
-
-@keyframes subtlePulse {
-  0%, 100% {
-    transform: scale(1);
-    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.2);
-  }
-  50% {
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.3);
-  }
-}
-
-.addButton:hover {
-  animation: none;
-}
-
-/* Efecto de entrada cuando aparece */
-.addButton {
-  opacity: 0;
-  animation: 
-    subtlePulse 3s ease-in-out infinite,
-    fadeInButton 0.6s ease-out forwards;
-}
-
-@keyframes fadeInButton {
-  from {
-    opacity: 0;
-    transform: translateY(20px) scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-/* Estilo similar al ScrollToTop para consistencia visual */
-.addButton {
-  filter: drop-shadow(0 0 10px rgba(124, 58, 237, 0.3));
-  backdrop-filter: blur(10px);
-}
-
-.addButton:hover {
-  filter: drop-shadow(0 0 20px rgba(124, 58, 237, 0.6));
-  transform: translateY(-3px) scale(1.05);
-}
-
-.addButton:active {
-  transform: translateY(-1px) scale(0.95);
-  transition: transform 0.1s ease;
+/* Asegurar que no afecte el layout de las cards */
+.editButton, .deleteButton {
+  pointer-events: auto;
 }

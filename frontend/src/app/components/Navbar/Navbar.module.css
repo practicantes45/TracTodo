@@ -36,7 +36,7 @@
   background-size: 400% 400%;
   animation: headerGradientFlow 12s ease infinite;
   color: white;
-  overflow: hidden;
+  overflow: visible; /* CAMBIADO: De "hidden" a "visible" para permitir dropdown */
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
   padding: 18px 20px;
   display: flex;
@@ -47,11 +47,8 @@
   position: relative;
   backdrop-filter: blur(10px);
   border-bottom: 1px solid rgba(0, 180, 216, 0.2);
-  /* AGREGADO: altura mínima para evitar cortes */
   min-height: 70px;
-  /* AGREGADO: asegurar que el contenido esté centrado */
   align-items: center;
-  /* AGREGADO: evitar que se deforme */
   flex-shrink: 0;
 }
 
@@ -281,7 +278,7 @@
   display: flex;
   align-items: center;
   position: relative;
-  z-index: 2; /* Por encima de las animaciones de fondo */
+  z-index: 100; /* Por encima de las animaciones de fondo */
 }
 
 /* ===== RESPONSIVE DESIGN ===== */

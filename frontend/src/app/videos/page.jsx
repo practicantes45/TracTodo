@@ -2,12 +2,14 @@
 import './videos.css';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { FaCalendarCheck, FaMapMarkedAlt, FaFilter, FaWhatsapp, FaSortAlphaDown, FaSortAlphaUp, FaTimes, FaEraser, FaPlay, FaEye, FaShare, FaYoutube, FaTiktok, FaArrowLeft } from "react-icons/fa";
+import { FaCalendarCheck, FaMapMarkedAlt, FaFilter, FaWhatsapp, FaSortAlphaDown, FaSortAlphaUp, FaTimes, FaEraser, FaPlay, FaEye, FaShare, FaYoutube, FaTiktok, FaArrowLeft, FaPlus } from "react-icons/fa";
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
 import AdminVideoButtons from '../components/AdminVideoButtons/AdminVideoButtons';
+import VideoModal from '../components/VideoModal/VideoModal';
 import { useAuth } from '../../hooks/useAuth';
+import { obtenerVideos } from '../../services/videoService';
 
 export default function VideosPage() {
     const router = useRouter();
@@ -16,255 +18,12 @@ export default function VideosPage() {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-
-    // Datos iniciales por defecto
-    const videosIniciales = [
-        {
-            id: 1,
-            title: "Bomba De Inyección Isc/Px8 Nueva",
-            youtubeLink: "https://youtube.com/shorts/ivOuYS8fVtY?si=Yown8ilwQMhSORMm",
-            category: "Cargas Promocionales"
-        },
-        {
-            id: 2,
-            title: "Cabeza Para Motor C15 Nueva",
-            youtubeLink: "https://youtube.com/shorts/upsF85WA0_s?si=p4k49MYv0x9hRGUQ",
-            category: "Cargas Promocionales"
-        },
-        {
-            id: 3,
-            title: "Cabeza Para Motor C12 Nueva",
-            youtubeLink: "https://youtube.com/shorts/xZxtuULfzS4?si=VjSYJyV-ODhRA4JL",
-            category: "Cargas Promocionales"
-        },
-        {
-            id: 4,
-            title: "Cabeza Para Motor Isx Nueva",
-            youtubeLink: "https://youtube.com/shorts/eRFUkeXfA5E?si=cN_kQN88X5IjmX8H",
-            category: "Cargas Promocionales"
-        },
-        {
-            id: 5,
-            title: "Cabeza Para Motor Ism/M11 Nueva",
-            youtubeLink: "https://youtube.com/shorts/Q8RcvoZFqEE?si=AZukiFUsBip_yoiD",
-            category: "Cargas Promocionales"
-        },
-        {
-            id: 6,
-            title: "Cabeza Detroit Diesel Serie 60 Nueva",
-            youtubeLink: "https://youtube.com/shorts/-7QCAyUXPhE?si=cr3Of0PRKf68jSrF",
-            category: "Cargas Promocionales"
-        },
-        {
-            id: 7,
-            title: "Cabeza Para Motor Px8 Nueva",
-            youtubeLink: "https://youtube.com/shorts/sO1Qc6HSSeE?si=AugK95ngX3VsLL1e",
-            category: "Cargas Promocionales"
-        },
-        {
-            id: 8,
-            title: "Cabeza Para Motor Cummins Serie C Nueva",
-            youtubeLink: "https://youtube.com/shorts/KQjZuSpgpJs?si=pAtonSpBEMmd6c8I",
-            category: "Cargas Promocionales"
-        },
-        {
-            id: 9,
-            title: "Cabeza Para Motor Volvo X15 Nueva",
-            youtubeLink: "https://youtube.com/shorts/7s4dGkCF0M4?si=SlbE8rg0GYZeRRW_",
-            category: "Cargas Promocionales"
-        },
-        {
-            id: 10,
-            title: "Turbo Isx Marca Holset Sin Egr Nuevo",
-            youtubeLink: "https://youtube.com/shorts/7S0auDBtIVw?si=FBIIJmKuZx6opukP",
-            category: "Cargas Promocionales"
-        },
-        {
-            id: 11,
-            title: "Cabeza Para Motor Detroit Diesel Dd5 Nueva",
-            youtubeLink: "https://youtube.com/shorts/kkoSpwsRMhY?si=2ZC18mQId0Z9xono",
-            category: "Cargas Promocionales"
-        },
-        {
-            id: 12,
-            title: "Ciüeñal Bigcam 350/400 Nuevo",
-            youtubeLink: "https://youtube.com/shorts/r6YwOxHHFSU?si=ParROIIqCDIVhWCb",
-            category: "Cargas Promocionales"
-        },
-        {
-            id: 13,
-            title: "Cabeza Para Motor Volvo D13 Nueva",
-            youtubeLink: "https://youtube.com/shorts/n0V3eG2A38Y?si=0KpTcNWEY8BdBrHk",
-            category: "Cargas Promocionales"
-        },
-        {
-            id: 14,
-            title: "Cabeza Para Motor Volvo D13 Nueva",
-            youtubeLink: "https://youtube.com/shorts/eZN1vRqyfCw?si=RWveWuuO9fswprwK",
-            category: "Descargas de Risa"
-        },
-        {
-            id: 15,
-            title: "Vamos De Compras A Tractodo",
-            youtubeLink: "https://youtube.com/shorts/t90nv-TVdQo?si=8mTTMwIHt2R5LLCw",
-            category: "Cargas Promocionales"
-        },
-        {
-            id: 16,
-            title: "¿Y Las Llaves?",
-            youtubeLink: "https://youtube.com/shorts/O2LGoQAV8Z8?si=mbKH47VxJjUlmoR6",
-            category: "Descargas de Risa"
-        },
-        {
-            id: 17,
-            title: "Vamos De Compras A TracTodo",
-            youtubeLink: "https://youtube.com/shorts/t90nv-TVdQo?si=8mTTMwIHt2R5LLCw",
-            category: "Cargas Promocionales"
-        },
-        {
-            id: 18,
-            title: "Oscar En Promocionando Cigüeñales",
-            youtubeLink: "https://youtube.com/shorts/N6HLP0t1SIE?si=ZzWDKJQ7OuncezSe",
-            category: "Cargas Promocionales"
-        },
-        {
-            id: 19,
-            title: "TracTodo Lo Tiene Todo",
-            youtubeLink: "https://youtube.com/shorts/qjuNH5pQ-aY?si=GzNC8I8Rq9tEbp4u",
-            category: "Descargas de Risa"
-        },
-        {
-            id: 20,
-            title: "Feliz Día De Las Madres",
-            youtubeLink: "https://youtube.com/shorts/vQyUakKFbZA?si=h4b7avWbCOundqnB",
-            category: "Entregas Festivas"
-        },
-        {
-            id: 21,
-            title: "El Problema",
-            youtubeLink: "https://youtube.com/shorts/ftJYh2elhxY?si=2LBVX5n4EN2aSGO7",
-            category: "Descargas de Risa"
-        },
-        {
-            id: 22,
-            title: "Feliz Día Del Maestro",
-            youtubeLink: "https://youtube.com/shorts/tJq3DtfwvQk?si=mzdKsYUaZIMclVeN",
-            category: "Entregas Festivas"
-        },
-        {
-            id: 23,
-            title: "Llega Nueva Mercancia",
-            youtubeLink: "https://youtube.com/shorts/wL4U8hBPqJE?si=-o3wr5T2bjDp7Pf9",
-            category: "Cargas Promocionales"
-        },
-        {
-            id: 24,
-            title: "Conoce TracTodo",
-            youtubeLink: "https://youtube.com/shorts/kIjeiX2zKyk?si=yW_3SdcR-i7of5RB",
-            category: "Cargas Promocionales"
-        },
-        {
-            id: 25,
-            title: "Confía En Nosotros",
-            youtubeLink: "https://youtube.com/shorts/pn7BgWt1bag?si=ZyMc_kQePGrN__Kl",
-            category: "Descargas de Risa"
-        },
-        {
-            id: 26,
-            title: "No Tengas Dudas",
-            youtubeLink: "https://youtube.com/shorts/WMXAFSCP00o?si=m6A8LEKcCWDk4J6o",
-            category: "Descargas de Risa"
-        },
-        {
-            id: 27,
-            title: "Gracias Por Tu Compra",
-            youtubeLink: "https://youtube.com/shorts/Yudh0cVcKVY?si=IVoDI9CBN97MsenG",
-            category: "Descargas de Risa"
-        },
-        {
-            id: 28,
-            title: "¿Disculpa?",
-            youtubeLink: "https://youtube.com/shorts/bA2qhK3NzLI?si=uEY_DbfESheeKLx-",
-            category: "Descargas de Risa"
-        },
-        {
-            id: 29,
-            title: "Medias Reparaciones",
-            youtubeLink: "https://youtube.com/shorts/Xiq3nmecwZo?si=N2y5RaZJNbn3TR9o",
-            category: "Cargas Promocionales"
-        },
-        {
-            id: 30,
-            title: "Media Reparación ISM",
-            youtubeLink: "https://youtube.com/shorts/uBFnf3OnzSc?si=vLE25Cqa0RezbO7C",
-            category: "Cargas Promocionales"
-        },
-        {
-            id: 31,
-            title: "Confianza Al Cliente",
-            youtubeLink: "https://youtube.com/shorts/u2DCUuzE9eo?si=ln2mcq4KZakh_Q2Q",
-            category: "Descargas de Risa"
-        },
-        {
-            id: 32,
-            title: "No Solo Incluye Eso",
-            youtubeLink: "https://youtube.com/shorts/JhX48L1xocc?si=0uW0sRkWjO8mLXbI",
-            category: "Descargas de Risa"
-        },
-        {
-            id: 33,
-            title: "Chanfle",
-            youtubeLink: "https://youtube.com/shorts/pH6pkCSy7MM?si=EtUqBDV52r5OBFbk",
-            category: "Descargas de Risa"
-        },
-        {
-            id: 34,
-            title: "Gracias Por Tu Compra",
-            youtubeLink: "https://youtube.com/shorts/Yudh0cVcKVY?si=IVoDI9CBN97MsenG",
-            category: "Descargas de Risa"
-        },
-        {
-            id: 35,
-            title: "La Mejor Atención",
-            youtubeLink: "https://youtube.com/shorts/cSgcbzvpJjQ?si=H0wuRWe2KK5ihLde",
-            category: "Descargas de Risa"
-        },
-        {
-            id: 36,
-            title: "TracTo Refacciones",
-            youtubeLink: "https://youtube.com/shorts/xc8Ujk-_t9U?si=kYLod0TU2QkM10Jn",
-            category: "Cargas Promocionales"
-        },
-        {
-            id: 37,
-            title: "Caterpillar",
-            youtubeLink: "https://youtube.com/shorts/5PiVMpn4WZ8?si=fB3Llw-IHZ-fL8Q1",
-            category: "Cargas Promocionales"
-        }
-    ];
-
-    // MODIFICACIÓN: Cargar desde localStorage o usar datos iniciales
-    const [allShorts, setAllShorts] = useState(() => {
-        if (typeof window !== 'undefined') {
-            const savedVideos = localStorage.getItem('tractodo_videos');
-            if (savedVideos) {
-                try {
-                    return JSON.parse(savedVideos);
-                } catch (error) {
-                    console.error('Error al parsear videos guardados:', error);
-                    return videosIniciales;
-                }
-            }
-        }
-        return videosIniciales;
-    });
-
-    // MODIFICACIÓN: Guardar en localStorage cuando cambie allShorts
-    useEffect(() => {
-        if (typeof window !== 'undefined') {
-            localStorage.setItem('tractodo_videos', JSON.stringify(allShorts));
-        }
-    }, [allShorts]);
+    const [allShorts, setAllShorts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    
+    // Estados para el modal de agregar video
+    const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
     const categories = [
         { id: 'todos', label: 'Todos' },
@@ -273,41 +32,101 @@ export default function VideosPage() {
         { id: 'Entregas Festivas', label: 'Entregas Festivas' }
     ];
 
-    // NUEVA FUNCIÓN: Manejar actualizaciones de videos por admin
+    // Cargar videos del backend al montar el componente
+    useEffect(() => {
+        cargarVideos();
+    }, []);
+
+    const cargarVideos = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            console.log('🎬 Cargando videos del backend...');
+            
+            const videos = await obtenerVideos();
+            console.log('✅ Videos cargados:', videos);
+            
+            // Transformar datos si es necesario para compatibilidad
+            const videosFormateados = videos.map(video => ({
+                id: video.id,
+                title: video.titulo || video.title,
+                youtubeLink: video.urlVideo || video.youtubeLink,
+                category: video.categoria || video.category,
+                fecha: video.fecha
+            }));
+            
+            setAllShorts(videosFormateados);
+        } catch (error) {
+            console.error('❌ Error al cargar videos:', error);
+            setError('Error al cargar los videos. Inténtalo de nuevo.');
+            // Mantener array vacío en caso de error
+            setAllShorts([]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Manejar actualizaciones de videos por admin
     const handleVideoUpdate = async (action, videoData) => {
         console.log('🎬 Admin video action:', action, videoData);
 
         try {
             if (action === 'create') {
-                // Agregar nuevo video
-                const newVideo = {
-                    ...videoData,
-                    id: Date.now() // ID único basado en timestamp
+                // Los datos vienen formateados del modal, adaptarlos para el backend
+                const datosBackend = {
+                    titulo: videoData.title,
+                    urlVideo: videoData.youtubeLink,
+                    categoria: videoData.category,
+                    fecha: new Date().toISOString()
                 };
-                setAllShorts(prevShorts => [...prevShorts, newVideo]);
-                console.log('✅ Video agregado:', newVideo);
+
+                await import('../../services/videoService').then(({ agregarVideo }) => 
+                    agregarVideo(datosBackend)
+                );
+                console.log('✅ Video agregado al backend');
 
             } else if (action === 'edit') {
-                // Editar video existente
-                setAllShorts(prevShorts =>
-                    prevShorts.map(short =>
-                        short.id === videoData.id ? videoData : short
-                    )
+                // Actualizar video existente
+                const datosBackend = {
+                    titulo: videoData.title,
+                    urlVideo: videoData.youtubeLink,
+                    categoria: videoData.category
+                };
+
+                await import('../../services/videoService').then(({ actualizarVideo }) => 
+                    actualizarVideo(videoData.id, datosBackend)
                 );
-                console.log('✅ Video editado:', videoData);
+                console.log('✅ Video editado en backend');
 
             } else if (action === 'delete') {
                 // Eliminar video
-                setAllShorts(prevShorts =>
-                    prevShorts.filter(short => short.id !== videoData)
+                await import('../../services/videoService').then(({ eliminarVideo }) => 
+                    eliminarVideo(videoData)
                 );
-                console.log('✅ Video eliminado:', videoData);
+                console.log('✅ Video eliminado del backend');
             }
+
+            // Recargar videos después de cualquier operación
+            await cargarVideos();
 
         } catch (error) {
             console.error('❌ Error en handleVideoUpdate:', error);
-            throw error;
+            alert(`Error al ${action === 'create' ? 'agregar' : action === 'edit' ? 'editar' : 'eliminar'} el video. Inténtalo de nuevo.`);
         }
+    };
+
+    // Manejar agregar video desde el botón integrado
+    const handleAgregarVideo = () => {
+        setIsAddModalOpen(true);
+    };
+
+    const handleCloseAddModal = () => {
+        setIsAddModalOpen(false);
+    };
+
+    const handleVideoSaved = async (action, videoData) => {
+        setIsAddModalOpen(false);
+        await handleVideoUpdate(action, videoData);
     };
 
     // Función para extraer ID de YouTube del link
@@ -393,6 +212,63 @@ export default function VideosPage() {
         window.open('https://www.tiktok.com/@tractodo4', '_blank');
     };
 
+    // Mostrar loading
+    if (loading) {
+        return (
+            <div className="layout videos-page">
+                <Navbar />
+                <main className="mainContent">
+                    <div className="heroSection">
+                        <div className="heroOverlay">
+                            <div className="heroContent">
+                                <h1>Shorts de YouTube</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <section className="videosMainSection">
+                        <div className="videosContainer">
+                            <div className="loadingContainer">
+                                <h2>Cargando videos...</h2>
+                                <p>Por favor espera un momento</p>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+                <Footer />
+            </div>
+        );
+    }
+
+    // Mostrar error
+    if (error) {
+        return (
+            <div className="layout videos-page">
+                <Navbar />
+                <main className="mainContent">
+                    <div className="heroSection">
+                        <div className="heroOverlay">
+                            <div className="heroContent">
+                                <h1>Shorts de YouTube</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <section className="videosMainSection">
+                        <div className="videosContainer">
+                            <div className="errorContainer">
+                                <h2>Error al cargar videos</h2>
+                                <p>{error}</p>
+                                <button onClick={cargarVideos} className="retryButton">
+                                    Intentar de nuevo
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+                <Footer />
+            </div>
+        );
+    }
+
     return (
         <div className="layout videos-page">
             <Navbar />
@@ -423,12 +299,26 @@ export default function VideosPage() {
                             </button>
                         </div>
 
-                        {/* Header con estadísticas */}
+                        {/* Header con estadísticas y botón de agregar */}
                         <div className="videosHeader">
                             <div className="videosStats">
                                 <h2>¡Arranca el motor y vamos a ver!</h2>
                                 <p>{filteredShorts.length} shorts encontrados</p>
                             </div>
+                            
+                            {/* BOTÓN DE AGREGAR VIDEO INTEGRADO - SOLO SI ES ADMIN */}
+                            {isAdmin && (
+                                <div className="adminActionsContainer">
+                                    <button
+                                        className="addVideoButton"
+                                        onClick={handleAgregarVideo}
+                                        title="Agregar nuevo video"
+                                    >
+                                        <FaPlus className="addIcon" />
+                                        Agregar Video
+                                    </button>
+                                </div>
+                            )}
                         </div>
 
                         {/* Filtros de categorías con contadores */}
@@ -538,11 +428,14 @@ export default function VideosPage() {
                     </div>
                 </section>
 
-                {/* BOTÓN DE AGREGAR VIDEO - SOLO SI ES ADMIN */}
-                {isAdmin && (
-                    <AdminVideoButtons
-                        isAddButton={true}
-                        onVideoUpdate={handleVideoUpdate}
+                {/* Modal de agregar video */}
+                {isAddModalOpen && (
+                    <VideoModal
+                        isOpen={isAddModalOpen}
+                        mode="create"
+                        video={null}
+                        onClose={handleCloseAddModal}
+                        onSaved={handleVideoSaved}
                     />
                 )}
 
