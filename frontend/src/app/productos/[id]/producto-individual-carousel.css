@@ -15,17 +15,113 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  user-select: none;
 }
 
 .productImage {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   transition: transform 0.3s ease;
+  pointer-events: none;
+  padding: 15px; /* REDUCIDO: era 20px, ahora 15px para más espacio */
+  box-sizing: border-box;
+}
+
+/* MEJORADO: Clase para imágenes horizontales - MÁS GRANDES */
+.horizontalImage {
+  width: 95% !important;
+  height: 95% !important;
+  max-height: 95%;
+  max-width: 95%;
+  object-fit: contain !important;
+  padding: 10px !important; /* REDUCIDO: menos padding para mayor tamaño */
 }
 
 .productImage:hover {
+  transform: scale(1.02); /* REDUCIDO: era 1.05, muy agresivo */
+}
+
+/* ===== CONTROLES DE IMAGEN (ZOOM Y ROTACIÓN) - TAMAÑOS OPTIMIZADOS ===== */
+.imageControls {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 15;
+}
+
+.imageControlButton {
+  width: 36px;
+  height: 36px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.imageControlButton:hover {
+  background: rgba(0, 180, 216, 0.9);
+  transform: scale(1.1);
+  box-shadow: 0 4px 12px rgba(0, 180, 216, 0.4);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.imageControlButton:active {
   transform: scale(1.05);
+  transition: transform 0.1s ease;
+}
+
+/* Colores específicos para cada botón */
+.zoomInButton:hover {
+  background: rgba(34, 197, 94, 0.9);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+}
+
+.zoomOutButton:hover {
+  background: rgba(239, 68, 68, 0.9);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+.rotateButton:hover {
+  background: rgba(168, 85, 247, 0.9);
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.4);
+}
+
+.resetButton {
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.resetButton:hover {
+  background: rgba(251, 146, 60, 0.9);
+  box-shadow: 0 4px 12px rgba(251, 146, 60, 0.4);
+}
+
+/* ===== INDICADOR DE ZOOM ===== */
+.zoomIndicator {
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 2px;
+  min-width: 45px;
 }
 
 /* ===== FLECHAS DEL CARRUSEL ===== */
@@ -166,12 +262,39 @@
   font-size: 0.9rem;
 }
 
-/* ===== RESPONSIVE DESIGN PARA CARRUSEL ===== */
+/* ===== CURSOR DINÁMICO PARA PAN ===== */
+.productImageContainer.canPan {
+  cursor: grab !important;
+}
+
+.productImageContainer.canPan:active {
+  cursor: grabbing !important;
+}
+
+.productImage.draggable {
+  cursor: grab;
+}
+
+.productImage.dragging {
+  cursor: grabbing;
+}
+
+/* ===== RESPONSIVE DESIGN PARA CARRUSEL - MEJORADO ===== */
 
 /* Tablet (1024px) */
 @media (max-width: 1024px) {
   .productImageContainer {
-    height: 400px;
+    height: 450px; /* AUMENTADO: era 400px */
+  }
+  
+  .productImage {
+    padding: 12px; /* REDUCIDO: para mayor tamaño */
+  }
+
+  .horizontalImage {
+    width: 96% !important;
+    height: 96% !important;
+    padding: 8px !important;
   }
   
   .carouselArrow {
@@ -192,12 +315,44 @@
     width: 12px;
     height: 12px;
   }
+
+  .imageControls {
+    top: 10px;
+    left: 10px;
+    gap: 5px;
+  }
+
+  .imageControlButton {
+    width: 34px;
+    height: 34px;
+    font-size: 0.85rem;
+  }
+
+  .resetButton {
+    font-size: 0.95rem;
+  }
+
+  .zoomIndicator {
+    font-size: 0.65rem;
+    padding: 3px 6px;
+    min-width: 40px;
+  }
 }
 
 /* Tablet (768px) */
 @media (max-width: 768px) {
   .productImageContainer {
-    height: 350px;
+    height: 400px; /* AUMENTADO: era 350px */
+  }
+
+  .productImage {
+    padding: 10px; /* REDUCIDO: para mayor tamaño */
+  }
+
+  .horizontalImage {
+    width: 97% !important;
+    height: 97% !important;
+    padding: 6px !important;
   }
   
   .carouselArrow {
@@ -231,12 +386,44 @@
   .imageNotFound p {
     font-size: 1rem;
   }
+
+  .imageControls {
+    top: 8px;
+    left: 8px;
+    gap: 4px;
+  }
+
+  .imageControlButton {
+    width: 32px;
+    height: 32px;
+    font-size: 0.8rem;
+  }
+
+  .resetButton {
+    font-size: 0.9rem;
+  }
+
+  .zoomIndicator {
+    font-size: 0.6rem;
+    padding: 3px 5px;
+    min-width: 35px;
+  }
 }
 
 /* Móvil (480px) */
 @media (max-width: 480px) {
   .productImageContainer {
-    height: 300px;
+    height: 350px; /* AUMENTADO: era 300px */
+  }
+
+  .productImage {
+    padding: 8px; /* REDUCIDO: para mayor tamaño */
+  }
+
+  .horizontalImage {
+    width: 98% !important;
+    height: 98% !important;
+    padding: 4px !important;
   }
   
   .carouselArrow {
@@ -280,12 +467,44 @@
   .relatedImageNotFound p {
     font-size: 0.8rem;
   }
+
+  .imageControls {
+    top: 6px;
+    left: 6px;
+    gap: 3px;
+  }
+
+  .imageControlButton {
+    width: 30px;
+    height: 30px;
+    font-size: 0.75rem;
+  }
+
+  .resetButton {
+    font-size: 0.85rem;
+  }
+
+  .zoomIndicator {
+    font-size: 0.55rem;
+    padding: 2px 4px;
+    min-width: 30px;
+  }
 }
 
 /* Móvil muy pequeño (360px) */
 @media (max-width: 360px) {
   .productImageContainer {
-    height: 250px;
+    height: 300px; /* AUMENTADO: era 250px */
+  }
+
+  .productImage {
+    padding: 6px; /* REDUCIDO: para mayor tamaño */
+  }
+
+  .horizontalImage {
+    width: 99% !important;
+    height: 99% !important;
+    padding: 3px !important;
   }
   
   .carouselArrow {
@@ -313,6 +532,28 @@
   
   .imageNotFound p {
     font-size: 0.8rem;
+  }
+
+  .imageControls {
+    top: 5px;
+    left: 5px;
+    gap: 2px;
+  }
+
+  .imageControlButton {
+    width: 28px;
+    height: 28px;
+    font-size: 0.7rem;
+  }
+
+  .resetButton {
+    font-size: 0.8rem;
+  }
+
+  .zoomIndicator {
+    font-size: 0.5rem;
+    padding: 2px 3px;
+    min-width: 25px;
   }
 }
 
@@ -343,16 +584,235 @@
   100% { transform: translateY(-50%) scale(1.1); }
 }
 
+/* Efectos de animación para controles de imagen */
+@keyframes controlPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1.1); }
+}
+
+.imageControlButton:hover {
+  animation: controlPulse 0.3s ease;
+}
+
+/* ===== EFECTOS DE PAN SUAVE ===== */
+.productImage.panning {
+  transition: none !important;
+}
+
+.productImage.resetPan {
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
+}
+
+/* ===== INDICADORES VISUALES DE INTERACCIÓN ===== */
+.imageControls::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  background: radial-gradient(circle at center, rgba(0, 180, 216, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.imageControls:hover::before {
+  opacity: 1;
+}
+
 /* Respeto por preferencias de movimiento reducido */
 @media (prefers-reduced-motion: reduce) {
   .productImage,
   .carouselArrow,
-  .imageIndicator {
+  .imageIndicator,
+  .imageControlButton {
     transition: none !important;
     animation: none !important;
   }
   
   .carouselArrow:hover {
     transform: translateY(-50%) !important;
+  }
+
+  .imageControlButton:hover {
+    transform: scale(1.1) !important;
+  }
+
+  .productImage.panning,
+  .productImage.resetPan {
+    transition: none !important;
+  }
+}
+
+/* ===== OPTIMIZACIÓN PARA DISPOSITIVOS TÁCTILES ===== */
+@media (hover: none) and (pointer: coarse) {
+  .imageControls {
+    opacity: 0.9;
+  }
+
+  .imageControlButton {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .imageControlButton:active {
+    transform: scale(0.95);
+    background: rgba(0, 180, 216, 0.9);
+  }
+
+  .zoomIndicator {
+    font-size: 0.7rem;
+    padding: 4px 6px;
+    min-width: 40px;
+  }
+
+  /* Mejorar área táctil en móviles */
+  .imageControlButton::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 50%;
+  }
+}
+
+/* ===== MODO ALTO CONTRASTE ===== */
+@media (prefers-contrast: high) {
+  .imageControlButton {
+    background: #000000;
+    border: 2px solid #ffffff;
+    color: #ffffff;
+  }
+
+  .imageControlButton:hover {
+    background: #ffffff;
+    color: #000000;
+    border-color: #000000;
+  }
+
+  .carouselArrow {
+    background: #000000;
+    border: 2px solid #ffffff;
+  }
+
+  .carouselArrow:hover {
+    background: #ffffff;
+    color: #000000;
+  }
+
+  .imageIndicator {
+    background: #ffffff;
+    border: 2px solid #000000;
+  }
+
+  .imageIndicator.active {
+    background: #000000;
+    border-color: #ffffff;
+  }
+
+  .zoomIndicator {
+    background: #000000;
+    border: 2px solid #ffffff;
+  }
+}
+
+/* ===== EFECTOS ESPECIALES PARA ZOOM Y ROTACIÓN ===== */
+.productImage.zooming {
+  transition: transform 0.2s ease;
+}
+
+.productImage.rotating {
+  transition: transform 0.4s ease;
+}
+
+/* ===== GUÍAS VISUALES PARA EL PAN ===== */
+.productImageContainer.zoomed::after {
+  content: 'Arrastra para mover';
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 12;
+}
+
+.productImageContainer.zoomed:hover::after {
+  opacity: 1;
+}
+
+/* ===== SUAVIZADO DE MOVIMIENTO ===== */
+.productImage {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  transform-origin: center center;
+}
+
+/* ===== PREVENCIÓN DE SELECCIÓN EN DISPOSITIVOS TÁCTILES ===== */
+.productImageContainer,
+.productImage {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ===== LÍMITES VISUALES DEL PAN ===== */
+.productImageContainer.panning {
+  box-shadow: 
+    inset 0 0 20px rgba(0, 180, 216, 0.1),
+    0 15px 40px rgba(0, 42, 92, 0.15);
+}
+
+/* ===== OPTIMIZACIÓN PARA IMÁGENES MÁS GRANDES ===== */
+.productImage {
+  max-width: none;
+  max-height: none;
+  min-width: 90%;
+  min-height: 90%;
+}
+
+.horizontalImage {
+  min-width: 95% !important;
+  min-height: 95% !important;
+}
+
+/* ===== MEJORAR LA VISUALIZACIÓN EN PANTALLAS GRANDES ===== */
+@media (min-width: 1200px) {
+  .productImageContainer {
+    height: 550px; /* MÁS ALTO en pantallas grandes */
+  }
+
+  .horizontalImage {
+    width: 94% !important;
+    height: 94% !important;
+    padding: 12px !important;
+  }
+}
+
+@media (min-width: 1440px) {
+  .productImageContainer {
+    height: 600px; /* INCLUSO MÁS ALTO en pantallas muy grandes */
+  }
+
+  .horizontalImage {
+    width: 93% !important;
+    height: 93% !important;
+    padding: 15px !important;
   }
 }

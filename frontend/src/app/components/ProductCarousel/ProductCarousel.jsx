@@ -132,12 +132,12 @@ const ProductCarousel = () => {
     setCurrentSlide((prev) => (prev === 0 ? products.length - 1 : prev - 1));
   };
 
-  // Cambiar automáticamente cada 5 segundos - solo si hay productos
+  // Cambiar automáticamente cada 15 segundos - solo si hay productos
   useEffect(() => {
     if (products.length > 1) {
       const interval = setInterval(() => {
         nextSlide();
-      }, 5000);
+      }, 15000); // 15000 milisegundos = 15 segundos
       return () => clearInterval(interval);
     }
   }, [products.length]);

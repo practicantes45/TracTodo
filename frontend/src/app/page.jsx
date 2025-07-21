@@ -162,7 +162,6 @@ export default function HomePage() {
             {/* Footer con estado activo */}
             <Footer />
             <AdminPanel />
-            <ManageProductsButton /> {/* AGREGADO */}
             {/* Botón ScrollToTop */}
             <ScrollToTop />
         </div>
