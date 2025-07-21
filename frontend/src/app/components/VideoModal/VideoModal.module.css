@@ -240,7 +240,6 @@
 }
 
 .saveButton::after {
-  content: '🎥';
   position: absolute;
   right: 14px;
   top: 50%;

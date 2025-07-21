@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { IoMdSave } from 'react-icons/io';
 import styles from './VideoModal.module.css';
 
 export default function VideoModal({ isOpen, mode, video, onClose, onSaved }) {
@@ -212,6 +213,7 @@ export default function VideoModal({ isOpen, mode, video, onClose, onSaved }) {
               disabled={loading} 
               className={styles.saveButton}
             >
+              <IoMdSave style={{ marginRight: '8px', verticalAlign: 'middle' }} />
               {loading ? 'Guardando...' : (mode === 'create' ? 'Crear Video' : 'Actualizar Video')}
             </button>
           </div>
