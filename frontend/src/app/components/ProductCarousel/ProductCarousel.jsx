@@ -1,5 +1,6 @@
 // components/ProductCarousel/ProductCarousel.jsx
 import React, { useState, useEffect } from 'react';
+import { useAuth } from '../../../hooks/useAuth'; // IMPORTAR useAuth
 import styles from './ProductCarousel.module.css';
 import { obtenerProductosDelMes } from '../../../services/productoService';
 
@@ -8,6 +9,7 @@ const ProductCarousel = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const { isAdmin } = useAuth(); // OBTENER ESTADO DE ADMIN
   
   // Lista de contactos para WhatsApp
   const contactList = [
@@ -176,7 +178,7 @@ const ProductCarousel = () => {
         <div className={styles.offerBanner}>
           <h2>PRODUCTOS DEL MES</h2>
         </div>
-        <div className={styles.carouselContainer}>
+        <div className={`${styles.carouselContainer} ${isAdmin ? styles.adminMode : styles.userMode}`}>
           <div className={styles.loadingContainer}>
             <div className={styles.spinner}></div>
             <p>Cargando productos del mes...</p>
@@ -193,7 +195,7 @@ const ProductCarousel = () => {
         <div className={styles.offerBanner}>
           <h2>PRODUCTOS DEL MES</h2>
         </div>
-        <div className={styles.carouselContainer}>
+        <div className={`${styles.carouselContainer} ${isAdmin ? styles.adminMode : styles.userMode}`}>
           <div className={styles.errorContainer}>
             <p>Error al cargar productos. Mostrando productos de ejemplo.</p>
           </div>
@@ -209,8 +211,8 @@ const ProductCarousel = () => {
         <h2>PRODUCTOS DEL MES</h2>
       </div>
 
-      {/* Carrusel de productos */}
-      <div className={styles.carouselContainer}>
+      {/* Carrusel de productos con clase condicional */}
+      <div className={`${styles.carouselContainer} ${isAdmin ? styles.adminMode : styles.userMode}`}>
         {products.length > 1 && (
           <button 
             className={`${styles.carouselButton} ${styles.prev}`} 

@@ -5,6 +5,17 @@
   display: flex;
   justify-content: center;
   width: 100%;
+  position: relative;
+  z-index: 9999;
+}
+
+.searchContainer {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 9999;
 }
 
 /* Eliminar estilo predeterminado de botones */
@@ -98,6 +109,128 @@
   margin-top: 3px;
 }
 
+/* ===== ESTILOS PARA HISTORIAL DE BÚSQUEDA ===== */
+
+.historyDropdown {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  right: 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e0e0e0;
+  z-index: 999; /* ALTO pero no excesivo */
+  max-height: 300px;
+  overflow: hidden;
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.historyHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  background: #f9f9f9;
+}
+
+.historyTitle {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #555;
+}
+
+.clearHistoryBtn {
+  background: none;
+  border: none;
+  color: #48cae4;
+  font-size: 0.8rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.clearHistoryBtn:hover {
+  background-color: #f0f9ff;
+  color: #0284c7;
+}
+
+.historyList {
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.historyItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.historyItem:hover {
+  background-color: #f8f9fa;
+}
+
+.historyItem:last-child {
+  border-bottom: none;
+}
+
+.historyItemContent {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.historyIcon {
+  color: #8b8ba7;
+  flex-shrink: 0;
+}
+
+.historyText {
+  font-size: 0.9rem;
+  color: #333;
+  flex: 1;
+  text-align: left;
+}
+
+.removeHistoryBtn {
+  background: none;
+  border: none;
+  color: #ccc;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  opacity: 0;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.historyItem:hover .removeHistoryBtn {
+  opacity: 1;
+}
+
+.removeHistoryBtn:hover {
+  color: #ff4757;
+  background-color: #fff5f5;
+}
+
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 1235px) {
   .form {
@@ -109,13 +242,12 @@
   }
 }
 
-
 @media (max-width: 1205px) {
   .form {
     --width-of-input: 350px;
   }
   .input {
-    font-size: 0.87rem; /* Evita zoom en iOS */
+    font-size: 0.87rem;
     padding-inline: 0.7em;
   }
 }
@@ -125,7 +257,7 @@
     --width-of-input: 340px;
   }
   .input {
-    font-size: 0.82rem; /* Evita zoom en iOS */
+    font-size: 0.82rem;
     padding-inline: 0.7em;
   }
 }
@@ -135,7 +267,7 @@
     --width-of-input: 340px;
   }
   .input {
-    font-size: 13px; /* Evita zoom en iOS */
+    font-size: 13px;
     padding-inline: 0.7em;
   }
 }
@@ -145,7 +277,7 @@
     --width-of-input: 325px;
   }
   .input {
-    font-size: 12.5px; /* Evita zoom en iOS */
+    font-size: 12.5px;
     padding-inline: 0.7em;
   }
 }
@@ -156,8 +288,24 @@
     --width-of-input: 310px;
   }
   .input {
-    font-size: 12px; /* Evita zoom en iOS */
+    font-size: 12px;
     padding-inline: 0.7em;
+  }
+  
+  .historyDropdown {
+    max-height: 280px;
+  }
+  
+  .historyTitle {
+    font-size: 0.8rem;
+  }
+  
+  .clearHistoryBtn {
+    font-size: 0.75rem;
+  }
+  
+  .historyText {
+    font-size: 0.85rem;
   }
 }
 
@@ -166,7 +314,7 @@
     --width-of-input: 300px;
   }
   .input {
-    font-size: 11.4px; /* Evita zoom en iOS */
+    font-size: 11.4px;
     padding-inline: 0.7em;
   }
 }
@@ -176,7 +324,7 @@
     --width-of-input: 290px;
   }
   .input {
-    font-size: 11.05px; /* Evita zoom en iOS */
+    font-size: 11.05px;
     padding-inline: 0.7em;
   }
 }
@@ -186,7 +334,7 @@
     --width-of-input: 285px;
   }
   .input {
-    font-size: 10.8px; /* Evita zoom en iOS */
+    font-size: 10.8px;
     padding-inline: 0.7em;
   }
 }
@@ -196,7 +344,7 @@
     --width-of-input: 280px;
   }
   .input {
-    font-size: 10.5px; /* Evita zoom en iOS */
+    font-size: 10.5px;
     padding-inline: 0.6em;
   }
 }
@@ -206,7 +354,7 @@
     --width-of-input: 265px;
   }
   .input {
-    font-size: 10.3px; /* Evita zoom en iOS */
+    font-size: 10.3px;
     padding-inline: 0.6em;
   }
 }
@@ -220,14 +368,14 @@
   
   .form {
     --width-of-input: 100%;
-    --height-of-input: 44px; /* Más alto para toques móviles */
+    --height-of-input: 44px;
     max-width: 100%;
-    min-width: 100%; /* Cambiado para ocupar todo el ancho */
+    min-width: 100%;
     width: 100%;
   }
   
   .input {
-    font-size: 16px; /* Evita zoom en iOS */
+    font-size: 16px;
     padding-inline: 0.7em;
     width: 100%;
   }
@@ -240,6 +388,45 @@
   .form svg {
     width: 18px;
     margin-top: 2px;
+  }
+  
+  .historyDropdown {
+    left: 0;
+    right: 0;
+    max-height: 250px;
+    border-radius: 10px;
+    margin: 0;
+  }
+  
+  .historyHeader {
+    padding: 10px 14px;
+  }
+  
+  .historyTitle {
+    font-size: 0.8rem;
+  }
+  
+  .clearHistoryBtn {
+    font-size: 0.75rem;
+    padding: 6px 10px;
+  }
+  
+  .historyItem {
+    padding: 14px 16px;
+  }
+  
+  .historyText {
+    font-size: 0.85rem;
+  }
+  
+  .historyIcon {
+    width: 16px;
+    height: 16px;
+  }
+  
+  .removeHistoryBtn {
+    opacity: 1;
+    padding: 8px;
   }
 }
 
@@ -262,6 +449,22 @@
   
   .form svg {
     width: 16px;
+  }
+  
+  .historyDropdown {
+    max-height: 220px;
+  }
+  
+  .historyHeader {
+    padding: 8px 12px;
+  }
+  
+  .historyItem {
+    padding: 12px 14px;
+  }
+  
+  .historyText {
+    font-size: 0.8rem;
   }
 }
 

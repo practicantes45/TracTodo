@@ -32,14 +32,13 @@ export default function VideoModal({ isOpen, mode, video, onClose, onSaved }) {
         category: ''
       });
     }
-  }, [mode, video]);
+    setError(''); // Limpiar errores al cambiar modo
+  }, [mode, video, isOpen]);
 
   const categories = [
     'Cargas Promocionales',
     'Descargas de Risa',
-    'Entregas Festivas',
-    'Tutoriales',
-    'Productos'
+    'Entregas Festivas'
   ];
 
   const handleChange = (e) => {
@@ -48,6 +47,8 @@ export default function VideoModal({ isOpen, mode, video, onClose, onSaved }) {
       ...prev,
       [name]: value
     }));
+    // Limpiar error cuando el usuario empiece a escribir
+    if (error) setError('');
   };
 
   const validateYouTubeUrl = (url) => {
@@ -77,8 +78,8 @@ export default function VideoModal({ isOpen, mode, video, onClose, onSaved }) {
       return;
     }
 
-    if (!validateYouTubeUrl(formData.youtubeLink)) {
-      setError('El enlace de YouTube no es válido');
+    if (!validateYouTubeUrl(formData.youtubeLink.trim())) {
+      setError('El enlace de YouTube no es válido. Debe ser un enlace de YouTube o YouTube Shorts.');
       setLoading(false);
       return;
     }
@@ -92,15 +93,41 @@ export default function VideoModal({ isOpen, mode, video, onClose, onSaved }) {
     try {
       const videoData = {
         ...formData,
-        id: mode === 'edit' ? video.id : Date.now() // Generar ID simple para nuevos videos
+        title: formData.title.trim(),
+        youtubeLink: formData.youtubeLink.trim(),
+        category: formData.category.trim(),
+        id: mode === 'edit' ? video.id : undefined
       };
 
       const action = mode === 'edit' ? 'edit' : 'create';
-      onSaved(action, videoData);
+      
+      console.log('🎬 Enviando datos del video:', action, videoData);
+      
+      // Llamar la función onSaved que maneja la comunicación con el backend
+      await onSaved(action, videoData);
+      
+      console.log('✅ Video guardado exitosamente');
+      
+      // Cerrar modal después de guardar exitosamente
+      onClose();
+      
     } catch (error) {
-      setError(error.message || 'Error al guardar el video');
+      console.error('❌ Error al guardar video:', error);
+      setError(error.message || 'Error al guardar el video. Inténtalo de nuevo.');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleClose = () => {
+    if (!loading) {
+      setError('');
+      setFormData({
+        title: '',
+        youtubeLink: '',
+        category: ''
+      });
+      onClose();
     }
   };
 
@@ -108,11 +135,18 @@ export default function VideoModal({ isOpen, mode, video, onClose, onSaved }) {
   if (!isMounted || !isOpen) return null;
 
   return createPortal(
-    <div className={styles.overlay} onClick={onClose}>
+    <div className={styles.overlay} onClick={handleClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.header}>
           <h2>{mode === 'create' ? 'Agregar Video' : 'Editar Video'}</h2>
-          <button className={styles.closeButton} onClick={onClose}>×</button>
+          <button 
+            className={styles.closeButton} 
+            onClick={handleClose}
+            disabled={loading}
+            type="button"
+          >
+            ×
+          </button>
         </div>
 
         <form className={styles.form} onSubmit={handleSubmit}>
@@ -124,7 +158,9 @@ export default function VideoModal({ isOpen, mode, video, onClose, onSaved }) {
               value={formData.title}
               onChange={handleChange}
               required
+              disabled={loading}
               placeholder="Ej: Cabeza Para Motor Volvo D13 Nueva"
+              maxLength={200}
             />
           </div>
 
@@ -136,7 +172,8 @@ export default function VideoModal({ isOpen, mode, video, onClose, onSaved }) {
               value={formData.youtubeLink}
               onChange={handleChange}
               required
-              placeholder="https://youtube.com/shorts/..."
+              disabled={loading}
+              placeholder="https://youtube.com/shorts/... o https://youtu.be/..."
             />
             <small className={styles.fieldHint}>
               Acepta enlaces de YouTube Shorts, videos normales o enlaces cortos (youtu.be)
@@ -150,6 +187,7 @@ export default function VideoModal({ isOpen, mode, video, onClose, onSaved }) {
               value={formData.category}
               onChange={handleChange}
               required
+              disabled={loading}
             >
               <option value="">Seleccionar categoría</option>
               {categories.map(cat => (
@@ -161,11 +199,20 @@ export default function VideoModal({ isOpen, mode, video, onClose, onSaved }) {
           {error && <div className={styles.error}>{error}</div>}
 
           <div className={styles.buttons}>
-            <button type="button" onClick={onClose} className={styles.cancelButton}>
+            <button 
+              type="button" 
+              onClick={handleClose} 
+              className={styles.cancelButton}
+              disabled={loading}
+            >
               Cancelar
             </button>
-            <button type="submit" disabled={loading} className={styles.saveButton}>
-              {loading ? 'Guardando...' : (mode === 'create' ? 'Crear' : 'Actualizar')}
+            <button 
+              type="submit" 
+              disabled={loading} 
+              className={styles.saveButton}
+            >
+              {loading ? 'Guardando...' : (mode === 'create' ? 'Crear Video' : 'Actualizar Video')}
             </button>
           </div>
         </form>

@@ -59,7 +59,7 @@
   z-index: -1;
 }
 
-/* Header */
+/* Header mejorado con iconos */
 .header {
   background: linear-gradient(135deg, #0a1021 0%, #1a2332 25%, #0096c7 50%, #0077b6 75%, #023047 100%);
   color: white;
@@ -79,12 +79,21 @@
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   font-family: var(--font-ubuntu, 'Ubuntu'), sans-serif;
   letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.headerIcon {
+  font-size: 24px;
+  color: #00b4d8;
+  filter: drop-shadow(0 0 10px rgba(0, 180, 216, 0.5));
 }
 
 .closeButton {
   background: rgba(255, 255, 255, 0.1);
   border: 2px solid rgba(255, 255, 255, 0.2);
-  font-size: 24px;
+  font-size: 18px;
   color: white;
   cursor: pointer;
   padding: 0;
@@ -125,7 +134,7 @@
   border-radius: 4px;
 }
 
-/* Loading */
+/* Loading mejorado */
 .loading {
   display: flex;
   flex-direction: column;
@@ -136,11 +145,8 @@
 }
 
 .spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #00b4d8;
-  border-radius: 50%;
+  font-size: 40px;
+  color: #00b4d8;
   animation: spin 1s linear infinite;
 }
 
@@ -159,7 +165,9 @@
 }
 
 .label {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-weight: 700;
   color: #023047;
   font-size: 16px;
@@ -168,27 +176,40 @@
   position: relative;
 }
 
+.labelIcon {
+  color: #00b4d8;
+  font-size: 14px;
+}
+
 .label::after {
   content: '';
   position: absolute;
   bottom: -4px;
-  left: 0;
+  left: 24px;
   width: 40px;
   height: 2px;
   background: linear-gradient(90deg, #00b4d8 0%, #0096c7 100%);
   border-radius: 1px;
 }
 
-/* Search Container */
+/* Search Container mejorado */
 .searchContainer {
   position: relative;
   display: flex;
   align-items: center;
 }
 
+.searchIcon {
+  position: absolute;
+  left: 15px;
+  color: #666;
+  font-size: 14px;
+  z-index: 2;
+}
+
 .searchInput {
   width: 100%;
-  padding: 16px 50px 16px 20px;
+  padding: 16px 50px 16px 45px;
   border: 2px solid #bae6fd;
   border-radius: 12px;
   font-size: 16px;
@@ -211,7 +232,7 @@
   right: 15px;
   background: transparent;
   border: none;
-  font-size: 20px;
+  font-size: 16px;
   color: #666;
   cursor: pointer;
   width: 24px;
@@ -256,9 +277,17 @@
   font-size: 14px;
   color: #666;
   font-style: italic;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
-/* Product Info */
+.countIcon {
+  color: #00b4d8;
+  font-size: 12px;
+}
+
+/* Product Info mejorado */
 .productInfo {
   background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0f9ff 100%);
   border-radius: 16px;
@@ -271,28 +300,71 @@
   color: #023047;
   font-size: 18px;
   font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sectionIcon {
+  color: #00b4d8;
+  font-size: 16px;
 }
 
 .productDetails p {
   margin: 8px 0;
   color: #0f172a;
   font-size: 15px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.priceIcon {
+  color: #059669;
+  font-size: 14px;
+}
+
+.statusIcon {
+  font-size: 12px;
+  margin-right: 4px;
 }
 
 .enCarrusel {
   color: #059669;
   font-weight: 600;
+  display: flex;
+  align-items: center;
 }
 
 .noEnCarrusel {
   color: #dc2626;
   font-weight: 600;
+  display: flex;
+  align-items: center;
 }
 
-/* Price Input */
+/* Price Input mejorado */
+.priceSection {
+  position: relative;
+}
+
+.priceInputContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.priceInputIcon {
+  position: absolute;
+  left: 15px;
+  color: #059669;
+  font-size: 16px;
+  z-index: 2;
+}
+
 .priceInput {
   width: 100%;
-  padding: 16px 20px;
+  padding: 16px 20px 16px 45px;
   border: 2px solid #bae6fd;
   border-radius: 12px;
   font-size: 18px;
@@ -311,7 +383,7 @@
   transform: translateY(-2px);
 }
 
-/* Messages */
+/* Messages mejorados */
 .error {
   background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 50%, #fef2f2 100%);
   color: #dc2626;
@@ -323,11 +395,6 @@
   display: flex;
   align-items: center;
   gap: 12px;
-}
-
-.error::before {
-  content: '⚠️';
-  font-size: 18px;
 }
 
 .success {
@@ -343,12 +410,7 @@
   gap: 12px;
 }
 
-.success::before {
-  content: '✅';
-  font-size: 18px;
-}
-
-/* Actions */
+/* ===== ESTADOS DE BOTONES MEJORADOS ===== */
 .actions {
   display: flex;
   gap: 16px;
@@ -375,51 +437,181 @@
   min-width: 160px;
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
+.buttonIcon {
+  font-size: 14px;
+}
+
+/* Estados activos y deshabilitados más claros */
 .addButton {
   background: linear-gradient(135deg, #10b981 0%, #059669 100%);
   color: white;
   box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+  border: 2px solid transparent;
 }
 
-.addButton:hover:not(:disabled) {
+.addButton:not(:disabled) {
+  cursor: pointer;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.addButton:not(:disabled):hover {
   transform: translateY(-3px);
   box-shadow: 0 12px 30px rgba(16, 185, 129, 0.5);
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+}
+
+.addButton:disabled {
+  background: linear-gradient(135deg, #d1d5db 0%, #9ca3af 100%);
+  color: #6b7280;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 2px 8px rgba(156, 163, 175, 0.2);
+  border: 2px solid #e5e7eb;
+  position: relative;
+}
+
+.addButton:disabled::after {
+  content: 'Selecciona producto y precio';
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #374151;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 1000;
+}
+
+.addButton:disabled:hover::after {
+  opacity: 1;
 }
 
 .removeButton {
   background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
   color: white;
   box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
+  border: 2px solid transparent;
 }
 
-.removeButton:hover:not(:disabled) {
+.removeButton:not(:disabled) {
+  cursor: pointer;
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+}
+
+.removeButton:not(:disabled):hover {
   transform: translateY(-3px);
   box-shadow: 0 12px 30px rgba(220, 38, 38, 0.5);
+  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+}
+
+.removeButton:disabled {
+  background: linear-gradient(135deg, #d1d5db 0%, #9ca3af 100%);
+  color: #6b7280;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 2px 8px rgba(156, 163, 175, 0.2);
+  border: 2px solid #e5e7eb;
+  position: relative;
+}
+
+.removeButton:disabled::after {
+  content: 'Producto debe estar en carrusel';
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #374151;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 1000;
+}
+
+.removeButton:disabled:hover::after {
+  opacity: 1;
 }
 
 .clearButton {
   background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
   color: white;
   box-shadow: 0 6px 20px rgba(107, 114, 128, 0.4);
+  border: 2px solid transparent;
 }
 
-.clearButton:hover:not(:disabled) {
+.clearButton:not(:disabled) {
+  cursor: pointer;
+  background: linear-gradient(135deg, #8138a0 0%, #631a8a 100%);
+}
+
+.clearButton:not(:disabled):hover {
   transform: translateY(-3px);
   box-shadow: 0 12px 30px rgba(107, 114, 128, 0.5);
+  background: linear-gradient(135deg, #5b2871 0%, #3f1059 100%);
 }
 
-.addButton:disabled,
-.removeButton:disabled,
 .clearButton:disabled {
-  opacity: 0.5;
+  background: linear-gradient(135deg, #d1d5db 0%, #9ca3af 100%);
+  color: #6b7280;
   cursor: not-allowed;
   transform: none;
-  box-shadow: none;
+  box-shadow: 0 2px 8px rgba(156, 163, 175, 0.2);
+  border: 2px solid #e5e7eb;
 }
 
-/* Summary */
+/* Indicadores visuales de estado */
+.buttonStateIndicator {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 900;
+  border: 2px solid white;
+}
+
+.addButton:not(:disabled) .buttonStateIndicator {
+  background: #10b981;
+  color: white;
+}
+
+.addButton:disabled .buttonStateIndicator {
+  background: #ef4444;
+  color: white;
+}
+
+.removeButton:not(:disabled) .buttonStateIndicator {
+  background: #dc2626;
+  color: white;
+}
+
+.removeButton:disabled .buttonStateIndicator {
+  background: #9ca3af;
+  color: white;
+}
+
+/* Summary mejorado */
 .summary {
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #f8fafc 100%);
   border-radius: 16px;
@@ -433,6 +625,10 @@
   font-size: 18px;
   font-weight: 700;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .noProducts {
@@ -440,6 +636,15 @@
   color: #666;
   font-style: italic;
   padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.emptyIcon {
+  color: #cbd5e1;
+  font-size: 18px;
 }
 
 .productList {
@@ -465,10 +670,26 @@
   border-color: #00b4d8;
 }
 
+.productItemInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 1;
+  gap: 16px;
+}
+
 .productName {
   font-weight: 600;
   color: #0f172a;
   flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.productItemIcon {
+  color: #00b4d8;
+  font-size: 14px;
 }
 
 .productPrice {
@@ -478,6 +699,62 @@
   background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
   padding: 6px 12px;
   border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* NUEVO: Botón de eliminación rápida mejorado */
+.quickDeleteButton {
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  margin-left: 12px;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
+  position: relative;
+}
+
+.quickDeleteButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.5);
+}
+
+.quickDeleteButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.quickDeleteButton::after {
+  content: 'Eliminar del carrusel';
+  position: absolute;
+  bottom: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #374151;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 1000;
+}
+
+.quickDeleteButton:hover::after {
+  opacity: 1;
 }
 
 /* Responsive */
@@ -489,6 +766,10 @@
   
   .header {
     padding: 20px 24px;
+  }
+  
+  .header h2 {
+    font-size: 24px;
   }
   
   .content {
@@ -507,14 +788,25 @@
     min-width: auto;
   }
   
+  .addButton:disabled::after,
+  .removeButton:disabled::after {
+    bottom: -25px;
+    font-size: 11px;
+  }
+  
   .productItem {
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
+    gap: 12px;
   }
   
-  .productPrice {
+  .productItemInfo {
+    width: 100%;
+  }
+  
+  .quickDeleteButton {
     align-self: flex-end;
+    margin-left: 0;
   }
 }
 
@@ -525,12 +817,25 @@
   }
   
   .header h2 {
-    font-size: 24px;
+    font-size: 20px;
   }
   
   .searchInput,
   .productSelect,
   .priceInput {
     font-size: 16px; /* Evitar zoom en iOS */
+  }
+  
+  .productItemInfo {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .addButton:disabled::after,
+  .removeButton:disabled::after,
+  .quickDeleteButton::after {
+    font-size: 10px;
+    padding: 4px 8px;
   }
 }
