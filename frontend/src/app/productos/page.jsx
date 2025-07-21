@@ -157,26 +157,36 @@ useEffect(() => {
     router.push(`/productos/${producto.id}`);
   };
 
-  // Función para obtener la primera imagen disponible
+  // FUNCIÓN MODIFICADA: Priorizar imagen "frente"
   const obtenerPrimeraImagen = (producto) => {
-    // Si tiene imagenUrl directa, usarla
+    // 1. PRIORIDAD: Buscar imagen "frente" en imagenesUrl
+    if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object' && producto.imagenesUrl.frente) {
+      console.log('🖼️ Usando imagen frente:', producto.imagenesUrl.frente);
+      return producto.imagenesUrl.frente;
+    }
+
+    // 2. FALLBACK: Si tiene imagenUrl directa, usarla
     if (producto.imagenUrl) {
+      console.log('🖼️ Usando imagenUrl:', producto.imagenUrl);
       return producto.imagenUrl;
     }
 
-    // Si tiene imagenesUrl (objeto con múltiples imágenes)
+    // 3. FALLBACK: Si tiene imagenesUrl (objeto con múltiples imágenes), usar la primera disponible
     if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object') {
-      const imagenes = Object.values(producto.imagenesUrl);
+      const imagenes = Object.values(producto.imagenesUrl).filter(img => img && img.trim() !== '');
       if (imagenes.length > 0) {
+        console.log('🖼️ Usando primera imagen disponible:', imagenes[0]);
         return imagenes[0];
       }
     }
 
-    // Si tiene imagen antigua (string directo)
+    // 4. FALLBACK: Si tiene imagen antigua (string directo)
     if (producto.imagen) {
+      console.log('🖼️ Usando imagen legacy:', producto.imagen);
       return producto.imagen;
     }
 
+    console.log('🚫 No se encontró imagen para el producto:', producto.nombre);
     return null;
   };
 

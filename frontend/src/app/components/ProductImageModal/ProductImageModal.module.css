@@ -48,13 +48,13 @@
   }
 }
 
-/* ===== BOTÓN CERRAR DENTRO DEL CONTENEDOR ===== */
+/* ===== BOTÓN CERRAR OPTIMIZADO ===== */
 .closeButton {
   position: absolute;
   top: 15px;
   right: 15px;
-  width: 45px;
-  height: 45px;
+  width: 40px;
+  height: 40px;
   border: none;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.8);
@@ -63,7 +63,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   transition: all 0.3s ease;
   z-index: 10001;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
@@ -106,6 +106,16 @@
   border-radius: 20px;
   padding: 20px;
   box-sizing: border-box;
+  pointer-events: none;
+}
+
+/* NUEVO: Clase para imágenes horizontales en modal */
+.horizontalImage {
+  width: 100% !important;
+  height: auto !important;
+  max-height: 100%;
+  object-fit: contain !important;
+  aspect-ratio: 16/9;
 }
 
 @keyframes imageZoom {
@@ -117,6 +127,89 @@
     opacity: 1;
     transform: scale(1);
   }
+}
+
+/* ===== CONTROLES DE IMAGEN EN EL MODAL - TAMAÑOS OPTIMIZADOS ===== */
+.modalImageControls {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  z-index: 10002;
+}
+
+.modalControlButton {
+  width: 38px;
+  height: 38px;
+  border: none;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modalControlButton:hover {
+  background: rgba(0, 180, 216, 0.9);
+  transform: scale(1.05);
+  box-shadow: 0 4px 12px rgba(0, 180, 216, 0.4);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.modalControlButton:active {
+  transform: scale(1.02);
+  transition: transform 0.1s ease;
+}
+
+/* Colores específicos para cada botón en el modal */
+.zoomInButton:hover {
+  background: rgba(34, 197, 94, 0.9) !important;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
+}
+
+.zoomOutButton:hover {
+  background: rgba(239, 68, 68, 0.9) !important;
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+.rotateButton:hover {
+  background: rgba(168, 85, 247, 0.9) !important;
+  box-shadow: 0 4px 12px rgba(168, 85, 247, 0.4);
+}
+
+.resetButton {
+  font-size: 1.1rem !important;
+  font-weight: bold;
+}
+
+.resetButton:hover {
+  background: rgba(251, 146, 60, 0.9) !important;
+  box-shadow: 0 4px 12px rgba(251, 146, 60, 0.4);
+}
+
+/* ===== INDICADOR DE ZOOM REPOSICIONADO ===== */
+.zoomIndicator {
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-top: 3px;
+  min-width: 40px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }
 
 /* ===== IMAGEN NO ENCONTRADA ===== */
@@ -148,14 +241,14 @@
   font-family: var(--font-montserrat, 'Montserrat'), sans-serif;
 }
 
-/* ===== FLECHAS DE NAVEGACIÓN ===== */
+/* ===== FLECHAS DE NAVEGACIÓN OPTIMIZADAS ===== */
 .arrowLeft,
 .arrowRight {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  width: 70px;
-  height: 70px;
+  width: 55px;
+  height: 55px;
   border: none;
   border-radius: 50%;
   background: rgba(0, 0, 0, 0.7);
@@ -164,10 +257,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
+  font-size: 1.5rem;
   transition: all 0.3s ease;
   z-index: 10001;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(10px);
   border: 2px solid rgba(255, 255, 255, 0.1);
 }
@@ -184,8 +277,8 @@
 .arrowRight:hover {
   background: rgba(0, 180, 216, 0.9);
   color: white;
-  transform: translateY(-50%) scale(1.15);
-  box-shadow: 0 8px 30px rgba(0, 180, 216, 0.6);
+  transform: translateY(-50%) scale(1.1);
+  box-shadow: 0 6px 20px rgba(0, 180, 216, 0.6);
   border-color: rgba(255, 255, 255, 0.3);
 }
 
@@ -201,25 +294,25 @@
   align-items: center;
   justify-content: center;
   gap: 20px;
-  margin-top: 30px;
+  margin-top: 25px;
 }
 
 /* ===== INDICADORES MEJORADOS ===== */
 .indicators {
   display: flex;
   justify-content: center;
-  gap: 15px;
+  gap: 12px;
   background: rgba(0, 0, 0, 0.6);
-  padding: 15px 25px;
-  border-radius: 30px;
+  padding: 12px 20px;
+  border-radius: 25px;
   backdrop-filter: blur(15px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .indicator {
-  width: 16px;
-  height: 16px;
+  width: 12px;
+  height: 12px;
   border: none;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.4);
@@ -249,13 +342,13 @@
 
 .indicator:hover {
   background: rgba(255, 255, 255, 0.7);
-  transform: scale(1.3);
+  transform: scale(1.2);
 }
 
 .indicator.active {
   background: #00b4d8;
-  box-shadow: 0 0 20px rgba(0, 180, 216, 0.8);
-  transform: scale(1.5);
+  box-shadow: 0 0 15px rgba(0, 180, 216, 0.8);
+  transform: scale(1.3);
 }
 
 .indicator.active::before {
@@ -268,15 +361,48 @@
 .counter {
   background: rgba(0, 0, 0, 0.7);
   color: white;
-  padding: 15px 20px;
-  border-radius: 25px;
-  font-size: 1.1rem;
+  padding: 12px 16px;
+  border-radius: 20px;
+  font-size: 1rem;
   font-weight: 600;
   font-family: var(--font-montserrat, 'Montserrat'), sans-serif;
   backdrop-filter: blur(10px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   border: 1px solid rgba(255, 255, 255, 0.1);
   white-space: nowrap;
+}
+
+/* ===== INSTRUCCIONES DE TECLADO OPTIMIZADAS ===== */
+.keyboardInstructions {
+  position: absolute;
+  bottom: 15px;
+  left: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 10002;
+  max-width: 140px;
+}
+
+.keyboardInstructions span:first-child {
+  font-weight: 600;
+  margin-bottom: 2px;
+  color: #00b4d8;
+  font-size: 0.75rem;
+}
+
+.keyboardInstructions span:not(:first-child) {
+  font-family: monospace;
+  font-size: 0.65rem;
+  opacity: 0.9;
+  line-height: 1.2;
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
@@ -296,22 +422,44 @@
   
   .arrowLeft,
   .arrowRight {
-    width: 60px;
-    height: 60px;
-    font-size: 1.7rem;
+    width: 50px;
+    height: 50px;
+    font-size: 1.3rem;
   }
 
   .closeButton {
-    top: 12px;
-    right: 12px;
-    width: 42px;
-    height: 42px;
-    font-size: 1.2rem;
+    top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
   }
 
   .navigationContainer {
     gap: 15px;
-    margin-top: 25px;
+    margin-top: 20px;
+  }
+
+  .modalImageControls {
+    top: 10px;
+    left: 10px;
+    gap: 4px;
+  }
+
+  .modalControlButton {
+    width: 35px;
+    height: 35px;
+    font-size: 0.9rem;
+  }
+
+  .resetButton {
+    font-size: 1rem !important;
+  }
+
+  .zoomIndicator {
+    font-size: 0.65rem;
+    padding: 3px 6px;
+    min-width: 35px;
   }
 }
 
@@ -328,18 +476,18 @@
   }
   
   .closeButton {
-    top: 10px;
-    right: 10px;
-    width: 40px;
-    height: 40px;
-    font-size: 1.1rem;
+    top: 8px;
+    right: 8px;
+    width: 34px;
+    height: 34px;
+    font-size: 0.95rem;
   }
   
   .arrowLeft,
   .arrowRight {
-    width: 55px;
-    height: 55px;
-    font-size: 1.5rem;
+    width: 45px;
+    height: 45px;
+    font-size: 1.2rem;
   }
   
   .arrowLeft {
@@ -352,23 +500,23 @@
   
   .navigationContainer {
     flex-direction: column;
-    gap: 15px;
-    margin-top: 20px;
+    gap: 12px;
+    margin-top: 18px;
   }
   
   .indicators {
-    gap: 12px;
-    padding: 12px 20px;
+    gap: 10px;
+    padding: 10px 16px;
   }
   
   .indicator {
-    width: 14px;
-    height: 14px;
+    width: 10px;
+    height: 10px;
   }
   
   .counter {
-    font-size: 1rem;
-    padding: 12px 18px;
+    font-size: 0.9rem;
+    padding: 10px 14px;
   }
   
   .imageNotFound {
@@ -388,6 +536,44 @@
     padding: 15px;
     border-radius: 15px;
   }
+
+  .modalImageControls {
+    top: 8px;
+    left: 8px;
+    gap: 3px;
+  }
+
+  .modalControlButton {
+    width: 32px;
+    height: 32px;
+    font-size: 0.8rem;
+  }
+
+  .resetButton {
+    font-size: 0.9rem !important;
+  }
+
+  .zoomIndicator {
+    font-size: 0.6rem;
+    padding: 3px 5px;
+    min-width: 30px;
+  }
+
+  .keyboardInstructions {
+    bottom: 12px;
+    left: 12px;
+    padding: 6px 8px;
+    font-size: 0.6rem;
+    max-width: 120px;
+  }
+
+  .keyboardInstructions span:first-child {
+    font-size: 0.65rem;
+  }
+
+  .keyboardInstructions span:not(:first-child) {
+    font-size: 0.55rem;
+  }
 }
 
 @media (max-width: 480px) {
@@ -398,18 +584,18 @@
   }
 
   .closeButton {
-    top: 8px;
-    right: 8px;
-    width: 38px;
-    height: 38px;
-    font-size: 1rem;
+    top: 6px;
+    right: 6px;
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
   }
   
   .arrowLeft,
   .arrowRight {
-    width: 50px;
-    height: 50px;
-    font-size: 1.3rem;
+    width: 40px;
+    height: 40px;
+    font-size: 1.1rem;
   }
   
   .arrowLeft {
@@ -422,21 +608,22 @@
   
   .navigationContainer {
     position: fixed;
-    bottom: 20px;
+    bottom: 15px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 10001;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
   }
   
   .indicators {
-    padding: 10px 16px;
+    padding: 8px 12px;
+    gap: 8px;
   }
   
   .counter {
-    font-size: 0.9rem;
-    padding: 10px 16px;
+    font-size: 0.8rem;
+    padding: 8px 12px;
   }
   
   .imageNotFound {
@@ -456,37 +643,63 @@
     padding: 10px;
     border-radius: 10px;
   }
+
+  .modalImageControls {
+    top: 6px;
+    left: 6px;
+    gap: 2px;
+  }
+
+  .modalControlButton {
+    width: 30px;
+    height: 30px;
+    font-size: 0.75rem;
+  }
+
+  .resetButton {
+    font-size: 0.85rem !important;
+  }
+
+  .zoomIndicator {
+    padding: 2px 4px;
+    font-size: 0.55rem;
+    min-width: 25px;
+  }
+
+  .keyboardInstructions {
+    display: none; /* Ocultar en móvil para ahorrar espacio */
+  }
 }
 
 @media (max-width: 360px) {
   .closeButton {
-    top: 6px;
-    right: 6px;
-    width: 35px;
-    height: 35px;
-    font-size: 0.9rem;
+    top: 5px;
+    right: 5px;
+    width: 30px;
+    height: 30px;
+    font-size: 0.8rem;
   }
 
   .arrowLeft,
   .arrowRight {
-    width: 45px;
-    height: 45px;
-    font-size: 1.2rem;
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
   }
   
   .indicator {
-    width: 12px;
-    height: 12px;
+    width: 8px;
+    height: 8px;
   }
   
   .indicators {
-    gap: 10px;
-    padding: 8px 12px;
+    gap: 6px;
+    padding: 6px 10px;
   }
   
   .counter {
-    font-size: 0.8rem;
-    padding: 8px 12px;
+    font-size: 0.7rem;
+    padding: 6px 10px;
   }
   
   .imageContainer {
@@ -498,12 +711,34 @@
     padding: 8px;
     border-radius: 8px;
   }
+
+  .modalImageControls {
+    top: 5px;
+    left: 5px;
+    gap: 1px;
+  }
+
+  .modalControlButton {
+    width: 28px;
+    height: 28px;
+    font-size: 0.7rem;
+  }
+
+  .resetButton {
+    font-size: 0.8rem !important;
+  }
+
+  .zoomIndicator {
+    padding: 2px 3px;
+    font-size: 0.5rem;
+    min-width: 22px;
+  }
 }
 
 /* ===== ANIMACIONES ADICIONALES ===== */
 @keyframes pulse {
   0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
+  50% { transform: scale(1.03); }
   100% { transform: scale(1); }
 }
 
@@ -529,8 +764,8 @@
 
 .arrowLeft:hover::before,
 .arrowRight:hover::before {
-  width: 150%;
-  height: 150%;
+  width: 120%;
+  height: 120%;
 }
 
 /* Respeto por preferencias de movimiento reducido */
@@ -540,7 +775,8 @@
   .modalImage,
   .arrowLeft,
   .arrowRight,
-  .indicator {
+  .indicator,
+  .modalControlButton {
     animation: none !important;
     transition: none !important;
   }
@@ -548,6 +784,10 @@
   .arrowLeft:hover,
   .arrowRight:hover {
     transform: translateY(-50%) !important;
+  }
+
+  .modalControlButton:hover {
+    transform: scale(1.05) !important;
   }
 }
 
@@ -565,7 +805,8 @@
   
   .closeButton,
   .arrowLeft,
-  .arrowRight {
+  .arrowRight,
+  .modalControlButton {
     background: #ffffff;
     color: #000000;
     border: 3px solid #000000;
@@ -585,6 +826,11 @@
   .indicator.active {
     background: #000000;
     border-color: #ffffff;
+  }
+
+  .zoomIndicator {
+    background: #000000;
+    border: 2px solid #ffffff;
   }
 }
 
@@ -615,4 +861,41 @@
   .modalOverlay {
     background: rgba(0, 0, 0, 0.85);
   }
+}
+
+/* ===== ANIMACIONES PARA CONTROLES ===== */
+@keyframes modalControlPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1.05); }
+}
+
+.modalControlButton:hover {
+  animation: modalControlPulse 0.3s ease;
+}
+
+/* ===== EFECTOS DE ZOOM SUAVE ===== */
+.modalImage.zooming {
+  transition: transform 0.2s ease;
+}
+
+.modalImage.rotating {
+  transition: transform 0.4s ease;
+}
+
+/* ===== OPTIMIZACIÓN DE CONTROLES SUPERPUESTOS ===== */
+.modalImageControls {
+  background: rgba(0, 0, 0, 0.1);
+  padding: 6px;
+  border-radius: 15px;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* ===== SEPARACIÓN MEJORADA DEL INDICADOR DE ZOOM ===== */
+.zoomIndicator {
+  position: relative;
+  z-index: 1;
+  margin-top: 5px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }

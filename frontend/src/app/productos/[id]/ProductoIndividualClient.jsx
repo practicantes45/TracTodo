@@ -1,8 +1,8 @@
 'use client';
 import './producto-individual.css';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { FaArrowLeft, FaWhatsapp, FaShare, FaCopy, FaCheckCircle, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaArrowLeft, FaWhatsapp, FaShare, FaCopy, FaCheckCircle, FaChevronLeft, FaChevronRight, FaSearchPlus, FaSearchMinus, FaRedo } from "react-icons/fa";
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import ScrollToTop from '../../components/ScrollToTop/ScrollToTop';
@@ -22,6 +22,15 @@ export default function ProductoIndividualPage() {
     // Estados para el carrusel de imágenes del producto principal
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [imagenesProducto, setImagenesProducto] = useState([]);
+
+    // Estados para zoom, rotación y pan del carrusel principal
+    const [carouselZoom, setCarouselZoom] = useState(100);
+    const [carouselRotation, setCarouselRotation] = useState(0);
+    const [carouselPanX, setCarouselPanX] = useState(0);
+    const [carouselPanY, setCarouselPanY] = useState(0);
+    const [isDragging, setIsDragging] = useState(false);
+    const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+    const carouselImageRef = useRef(null);
 
     // Estados para el modal de imágenes
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -59,11 +68,11 @@ export default function ProductoIndividualPage() {
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth <= 768) {
-                setItemsPerSlide(1); // Móvil: 1 producto
+                setItemsPerSlide(1);
             } else if (window.innerWidth <= 1024) {
-                setItemsPerSlide(2); // Tablet: 2 productos
+                setItemsPerSlide(2);
             } else {
-                setItemsPerSlide(3); // Desktop: 3 productos
+                setItemsPerSlide(3);
             }
         };
 
@@ -72,7 +81,6 @@ export default function ProductoIndividualPage() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-    // Resetear carrusel cuando cambien los productos relacionados o items per slide
     useEffect(() => {
         setCurrentSlide(0);
     }, [productosRelacionados, itemsPerSlide]);
@@ -82,6 +90,14 @@ export default function ProductoIndividualPage() {
             cargarProducto();
         }
     }, [params.id]);
+
+    // Resetear zoom, rotación y pan cuando cambia la imagen
+    useEffect(() => {
+        setCarouselZoom(100);
+        setCarouselRotation(0);
+        setCarouselPanX(0);
+        setCarouselPanY(0);
+    }, [currentImageIndex]);
 
     const cargarProducto = async () => {
         try {
@@ -94,7 +110,6 @@ export default function ProductoIndividualPage() {
             setProducto(data.producto);
             setProductosRelacionados(data.recomendados || []);
 
-            // Procesar imágenes del producto
             const imagenes = procesarImagenesProducto(data.producto);
             setImagenesProducto(imagenes);
             setCurrentImageIndex(0);
@@ -102,7 +117,6 @@ export default function ProductoIndividualPage() {
             console.log('🖼️ Imágenes procesadas:', imagenes);
             console.log('🔗 Productos relacionados encontrados:', data.recomendados?.length || 0);
 
-            // Registrar vista del producto
             await registrarVista(params.id);
         } catch (error) {
             console.error("❌ Error al cargar producto:", error);
@@ -112,48 +126,176 @@ export default function ProductoIndividualPage() {
         }
     };
 
-    // Función para procesar las imágenes del producto
+    // FUNCIÓN MODIFICADA: Priorizar imagen "frente" en el procesamiento de imágenes
     const procesarImagenesProducto = (producto) => {
         const imagenes = [];
 
-        // Si tiene imagenesUrl (objeto con múltiples imágenes)
-        if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object') {
-            const imagenesObj = Object.values(producto.imagenesUrl);
-            imagenes.push(...imagenesObj);
+        // 1. PRIORIDAD: Agregar imagen "frente" primero si existe
+        if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object' && producto.imagenesUrl.frente) {
+            console.log('🖼️ Agregando imagen frente como primera:', producto.imagenesUrl.frente);
+            imagenes.push(producto.imagenesUrl.frente);
         }
 
-        // Si tiene imagenUrl directa
+        // 2. Agregar el resto de imágenes de imagenesUrl (excluyendo "frente" que ya se agregó)
+        if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object') {
+            const otrasImagenes = Object.entries(producto.imagenesUrl)
+                .filter(([key, url]) => key !== 'frente' && url && url.trim() !== '')
+                .map(([key, url]) => url);
+            
+            imagenes.push(...otrasImagenes);
+            console.log('🖼️ Agregando otras imágenes:', otrasImagenes);
+        }
+
+        // 3. FALLBACK: Agregar imagenUrl si no está ya incluida
         if (producto.imagenUrl && !imagenes.includes(producto.imagenUrl)) {
+            console.log('🖼️ Agregando imagenUrl como fallback:', producto.imagenUrl);
             imagenes.push(producto.imagenUrl);
         }
 
-        // Si tiene imagen antigua (string directo)
+        // 4. FALLBACK: Agregar imagen legacy si no está ya incluida
         if (producto.imagen && !imagenes.includes(producto.imagen)) {
+            console.log('🖼️ Agregando imagen legacy como fallback:', producto.imagen);
             imagenes.push(producto.imagen);
         }
 
+        console.log('🖼️ Total de imágenes procesadas:', imagenes.length);
         return imagenes;
     };
 
-    // Función para obtener la primera imagen disponible (para productos relacionados)
+    // FUNCIÓN MODIFICADA: Priorizar imagen "frente" para productos relacionados
     const obtenerPrimeraImagen = (producto) => {
+        // 1. PRIORIDAD: Buscar imagen "frente" en imagenesUrl
+        if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object' && producto.imagenesUrl.frente) {
+            console.log('🖼️ Usando imagen frente para producto relacionado:', producto.imagenesUrl.frente);
+            return producto.imagenesUrl.frente;
+        }
+
+        // 2. FALLBACK: Si tiene imagenUrl directa, usarla
         if (producto.imagenUrl) {
+            console.log('🖼️ Usando imagenUrl para producto relacionado:', producto.imagenUrl);
             return producto.imagenUrl;
         }
 
+        // 3. FALLBACK: Si tiene imagenesUrl (objeto con múltiples imágenes), usar la primera disponible
         if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object') {
-            const imagenes = Object.values(producto.imagenesUrl);
+            const imagenes = Object.values(producto.imagenesUrl).filter(img => img && img.trim() !== '');
             if (imagenes.length > 0) {
+                console.log('🖼️ Usando primera imagen disponible para producto relacionado:', imagenes[0]);
                 return imagenes[0];
             }
         }
 
+        // 4. FALLBACK: Si tiene imagen antigua (string directo)
         if (producto.imagen) {
+            console.log('🖼️ Usando imagen legacy para producto relacionado:', producto.imagen);
             return producto.imagen;
         }
 
+        console.log('🚫 No se encontró imagen para el producto relacionado:', producto.nombre);
         return null;
     };
+
+    // Funciones de zoom y rotación para el carrusel
+    const handleCarouselZoomIn = () => {
+        setCarouselZoom(prev => Math.min(prev + 25, 200));
+    };
+
+    const handleCarouselZoomOut = () => {
+        setCarouselZoom(prev => {
+            const newZoom = Math.max(prev - 25, 50);
+            // Si volvemos a zoom normal, resetear el pan
+            if (newZoom <= 100) {
+                setCarouselPanX(0);
+                setCarouselPanY(0);
+            }
+            return newZoom;
+        });
+    };
+
+    const handleCarouselRotate = () => {
+        setCarouselRotation(prev => (prev + 90) % 360);
+    };
+
+    const handleCarouselResetTransform = () => {
+        setCarouselZoom(100);
+        setCarouselRotation(0);
+        setCarouselPanX(0);
+        setCarouselPanY(0);
+    };
+
+    // Funciones para el pan/drag del carrusel
+    const handleCarouselMouseDown = (e) => {
+        if (carouselZoom > 100) {
+            e.preventDefault();
+            setIsDragging(true);
+            setDragStart({
+                x: e.clientX - carouselPanX,
+                y: e.clientY - carouselPanY
+            });
+        }
+    };
+
+    const handleCarouselMouseMove = (e) => {
+        if (isDragging && carouselZoom > 100) {
+            e.preventDefault();
+            const newPanX = e.clientX - dragStart.x;
+            const newPanY = e.clientY - dragStart.y;
+            
+            // Limitar el movimiento para que no se salga demasiado
+            const maxPan = (carouselZoom - 100) * 2;
+            setCarouselPanX(Math.max(-maxPan, Math.min(maxPan, newPanX)));
+            setCarouselPanY(Math.max(-maxPan, Math.min(maxPan, newPanY)));
+        }
+    };
+
+    const handleCarouselMouseUp = () => {
+        setIsDragging(false);
+    };
+
+    // Touch events para móvil
+    const handleCarouselTouchStart = (e) => {
+        if (carouselZoom > 100) {
+            const touch = e.touches[0];
+            setIsDragging(true);
+            setDragStart({
+                x: touch.clientX - carouselPanX,
+                y: touch.clientY - carouselPanY
+            });
+        }
+    };
+
+    const handleCarouselTouchMove = (e) => {
+        if (isDragging && carouselZoom > 100) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const newPanX = touch.clientX - dragStart.x;
+            const newPanY = touch.clientY - dragStart.y;
+            
+            const maxPan = (carouselZoom - 100) * 2;
+            setCarouselPanX(Math.max(-maxPan, Math.min(maxPan, newPanX)));
+            setCarouselPanY(Math.max(-maxPan, Math.min(maxPan, newPanY)));
+        }
+    };
+
+    const handleCarouselTouchEnd = () => {
+        setIsDragging(false);
+    };
+
+    // Event listeners globales para el mouse
+    useEffect(() => {
+        const handleGlobalMouseMove = (e) => handleCarouselMouseMove(e);
+        const handleGlobalMouseUp = () => handleCarouselMouseUp();
+
+        if (isDragging) {
+            document.addEventListener('mousemove', handleGlobalMouseMove);
+            document.addEventListener('mouseup', handleGlobalMouseUp);
+        }
+
+        return () => {
+            document.removeEventListener('mousemove', handleGlobalMouseMove);
+            document.removeEventListener('mouseup', handleGlobalMouseUp);
+        };
+    }, [isDragging, dragStart, carouselZoom]);
 
     const handleWhatsAppClick = () => {
         const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
@@ -230,7 +372,6 @@ export default function ProductoIndividualPage() {
         router.push(`/productos/${relatedProduct.id}`);
     };
 
-    // Funciones del carrusel de imágenes del producto principal
     const nextImage = () => {
         setCurrentImageIndex((prev) => (prev + 1) % imagenesProducto.length);
     };
@@ -243,7 +384,6 @@ export default function ProductoIndividualPage() {
         setCurrentImageIndex(index);
     };
 
-    // Funciones del modal
     const openModal = (index = 0) => {
         if (imagenesProducto.length > 0) {
             setModalImageIndex(index);
@@ -255,7 +395,6 @@ export default function ProductoIndividualPage() {
         setIsModalOpen(false);
     };
 
-    // Productos de ejemplo si no hay recomendaciones (para testing)
     const productosEjemplo = [
         {
             id: 'ejemplo-1',
@@ -301,23 +440,21 @@ export default function ProductoIndividualPage() {
         }
     ];
 
-    // Usar productos de ejemplo si no hay productos relacionados reales
     const productosParaMostrar = productosRelacionados.length > 0 ? productosRelacionados : productosEjemplo;
 
-    // Funciones del carrusel de productos relacionados CORREGIDAS
     const totalSlides = Math.ceil(productosParaMostrar.length / itemsPerSlide);
 
     const nextSlide = () => {
         setCurrentSlide(prev => {
             const nextSlide = prev + 1;
-            return nextSlide >= totalSlides ? 0 : nextSlide; // Volver al inicio
+            return nextSlide >= totalSlides ? 0 : nextSlide;
         });
     };
 
     const prevSlide = () => {
         setCurrentSlide(prev => {
             const prevSlide = prev - 1;
-            return prevSlide < 0 ? totalSlides - 1 : prevSlide; // Ir al final
+            return prevSlide < 0 ? totalSlides - 1 : prevSlide;
         });
     };
 
@@ -325,7 +462,6 @@ export default function ProductoIndividualPage() {
         setCurrentSlide(slideIndex);
     };
 
-    // Obtener productos visibles en el slide actual
     const getVisibleProducts = () => {
         const startIndex = currentSlide * itemsPerSlide;
         const endIndex = startIndex + itemsPerSlide;
@@ -371,7 +507,6 @@ export default function ProductoIndividualPage() {
             <Navbar />
 
             <main className="mainContent">
-                {/* Botón de regreso */}
                 <div className="backButtonContainer">
                     <button className="backButton" onClick={handleBackClick}>
                         <FaArrowLeft />
@@ -379,27 +514,39 @@ export default function ProductoIndividualPage() {
                     </button>
                 </div>
 
-                {/* Sección principal del producto */}
                 <section className="productDetailSection">
                     <div className="productDetailContainer">
 
-                        {/* Carrusel de imágenes del producto */}
                         <div className="productImageSection">
                             <div className="productImageCarousel">
                                 <div
                                     className="productImageContainer"
                                     onClick={() => openModal(currentImageIndex)}
-                                    style={{ cursor: imagenesProducto.length > 0 ? 'pointer' : 'default' }}
+                                    style={{ 
+                                        cursor: imagenesProducto.length > 0 ? (carouselZoom > 100 ? 'grab' : 'pointer') : 'default',
+                                        overflow: 'hidden'
+                                    }}
+                                    onMouseDown={handleCarouselMouseDown}
+                                    onTouchStart={handleCarouselTouchStart}
+                                    onTouchMove={handleCarouselTouchMove}
+                                    onTouchEnd={handleCarouselTouchEnd}
                                 >
                                     {imagenesProducto.length > 0 ? (
                                         <img
+                                            ref={carouselImageRef}
                                             src={imagenesProducto[currentImageIndex]}
                                             alt={`${producto.nombre} - Imagen ${currentImageIndex + 1}`}
-                                            className="productImage"
+                                            className="productImage horizontalImage"
+                                            style={{
+                                                transform: `translate(${carouselPanX}px, ${carouselPanY}px) scale(${carouselZoom / 100}) rotate(${carouselRotation}deg)`,
+                                                transition: isDragging ? 'none' : 'transform 0.3s ease',
+                                                cursor: carouselZoom > 100 ? (isDragging ? 'grabbing' : 'grab') : 'pointer'
+                                            }}
                                             onError={(e) => {
                                                 e.target.style.display = 'none';
                                                 e.target.nextElementSibling.style.display = 'flex';
                                             }}
+                                            draggable={false}
                                         />
                                     ) : null}
                                     <div
@@ -410,7 +557,6 @@ export default function ProductoIndividualPage() {
                                         <p>Imagen no detectada</p>
                                     </div>
 
-                                    {/* Controles del carrusel - solo si hay más de una imagen */}
                                     {imagenesProducto.length > 1 && (
                                         <>
                                             <button
@@ -433,9 +579,57 @@ export default function ProductoIndividualPage() {
                                             </button>
                                         </>
                                     )}
+
+                                    {/* Controles de zoom y rotación */}
+                                    {imagenesProducto.length > 0 && (
+                                        <div className="imageControls">
+                                            <button
+                                                className="imageControlButton zoomInButton"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleCarouselZoomIn();
+                                                }}
+                                                title="Acercar"
+                                            >
+                                                <FaSearchPlus />
+                                            </button>
+                                            <button
+                                                className="imageControlButton zoomOutButton"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleCarouselZoomOut();
+                                                }}
+                                                title="Alejar"
+                                            >
+                                                <FaSearchMinus />
+                                            </button>
+                                            <button
+                                                className="imageControlButton rotateButton"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleCarouselRotate();
+                                                }}
+                                                title="Rotar"
+                                            >
+                                                <FaRedo />
+                                            </button>
+                                            <button
+                                                className="imageControlButton resetButton"
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleCarouselResetTransform();
+                                                }}
+                                                title="Restablecer"
+                                            >
+                                                ↺
+                                            </button>
+                                            <div className="zoomIndicator">
+                                                {carouselZoom}%
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
 
-                                {/* Indicadores de imagen - solo si hay más de una imagen */}
                                 {imagenesProducto.length > 1 && (
                                     <div className="imageIndicators">
                                         {imagenesProducto.map((_, index) => (
@@ -450,7 +644,6 @@ export default function ProductoIndividualPage() {
                             </div>
                         </div>
 
-                        {/* Información del producto */}
                         <div className="productInfoSection">
                             <div className="productHeader">
                                 <h1 className="productTitle">{producto.nombre}</h1>
@@ -506,7 +699,6 @@ export default function ProductoIndividualPage() {
                     </div>
                 </section>
 
-                {/* Sección de descripción */}
                 <section className="descriptionSection">
                     <div className="descriptionContainer">
                         <h2>Descripción</h2>
@@ -516,14 +708,12 @@ export default function ProductoIndividualPage() {
                     </div>
                 </section>
 
-                {/* Productos relacionados con carrusel CORREGIDO */}
                 <section className="relatedProductsSection">
                     <div className="relatedProductsContainer">
                         <h2>PRODUCTOS RELACIONADOS</h2>
 
                         {productosParaMostrar.length > 0 && (
                             <div className="relatedCarouselWrapper">
-                                {/* Flechas de navegación - solo si hay más productos que los que se muestran */}
                                 {productosParaMostrar.length > itemsPerSlide && (
                                     <>
                                         <button
@@ -558,7 +748,7 @@ export default function ProductoIndividualPage() {
                                                             <img
                                                                 src={imagenUrl}
                                                                 alt={relatedProduct.nombre}
-                                                                className="relatedProductImage"
+                                                                className="relatedProductImage horizontalImage"
                                                                 onError={(e) => {
                                                                     e.target.style.display = 'none';
                                                                     e.target.nextElementSibling.style.display = 'flex';
@@ -595,7 +785,6 @@ export default function ProductoIndividualPage() {
                                     </div>
                                 </div>
 
-                                {/* Indicadores - solo si hay más de un slide */}
                                 {totalSlides > 1 && (
                                     <div className="relatedCarouselIndicators">
                                         {Array.from({ length: totalSlides }, (_, index) => (
@@ -614,7 +803,6 @@ export default function ProductoIndividualPage() {
 
             </main>
 
-            {/* Modal de imágenes */}
             <ProductImageModal
                 images={imagenesProducto}
                 isOpen={isModalOpen}
