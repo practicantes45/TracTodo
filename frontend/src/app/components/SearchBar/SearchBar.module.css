@@ -6,7 +6,7 @@
   justify-content: center;
   width: 100%;
   position: relative;
-  z-index: 9999;
+  z-index: 10000;
 }
 
 .searchContainer {
@@ -15,7 +15,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  z-index: 9999;
+  z-index: 10000;
 }
 
 /* Eliminar estilo predeterminado de botones */
@@ -120,7 +120,7 @@
   border-radius: 12px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   border: 1px solid #e0e0e0;
-  z-index: 999; /* ALTO pero no excesivo */
+  z-index: 9999;
   max-height: 300px;
   overflow: hidden;
   animation: slideDown 0.2s ease-out;

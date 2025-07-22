@@ -669,23 +669,23 @@
 
 .liveIndicator {
   font-size: 0.55rem;
-  background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
+  background: linear-gradient(135deg, #af4c4c 0%, #c34a4a 100%);
   color: white;
   padding: 2px 6px;
   border-radius: 4px;
   font-weight: 700;
   letter-spacing: 0.4px;
-  box-shadow: 0 2px 6px rgba(76, 175, 80, 0.4);
+  box-shadow: 0 2px 6px rgba(175, 76, 76, 0.4);
   animation: liveGlow 2s ease-in-out infinite alternate;
 }
 
 @keyframes liveGlow {
   0% { 
-    box-shadow: 0 2px 6px rgba(76, 175, 80, 0.4);
+    box-shadow: 0 2px 6px rgba(175, 76, 76, 0.4);
     transform: scale(1);
   }
   100% { 
-    box-shadow: 0 3px 8px rgba(76, 175, 80, 0.6);
+    box-shadow: 0 3px 8px rgba(175, 76, 76, 0.6);
     transform: scale(1.05);
   }
 }
