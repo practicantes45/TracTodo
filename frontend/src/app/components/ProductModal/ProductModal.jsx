@@ -20,8 +20,8 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
       arriba: '',
       atras: '',
       frente: '',
-      ladoIzquierdo: '',
-      ladoDerecho: ''
+      ladod: '',
+      ladoi: ''
     }
   });
   const [loading, setLoading] = useState(false);
@@ -50,8 +50,8 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
           arriba: producto.imagenesUrl?.arriba || '',
           atras: producto.imagenesUrl?.atras || '',
           frente: producto.imagenesUrl?.frente || '',
-          ladoIzquierdo: producto.imagenesUrl?.ladoIzquierdo || '',
-          ladoDerecho: producto.imagenesUrl?.ladoDerecho || ''
+          ladod: producto.imagenesUrl?.ladod || '',
+          ladoi: producto.imagenesUrl?.ladoi || ''
         }
       });
     }
@@ -263,8 +263,8 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
                 <label>Imagen Lateral Izquierda</label>
                 <input
                   type="url"
-                  name="imagen_ladoIzquierdo"
-                  value={formData.imagenesUrl.ladoIzquierdo}
+                  name="imagen_ladoi"
+                  value={formData.imagenesUrl.ladoi}
                   onChange={handleChange}
                   placeholder="https://..."
                 />
@@ -274,8 +274,8 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
                 <label>Imagen Lateral Derecha</label>
                 <input
                   type="url"
-                  name="imagen_ladoDerecho"
-                  value={formData.imagenesUrl.ladoDerecho}
+                  name="imagen_ladod"
+                  value={formData.imagenesUrl.ladod}
                   onChange={handleChange}
                   placeholder="https://..."
                 />

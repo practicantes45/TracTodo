@@ -6,62 +6,35 @@ import { FaPlay, FaCalendarAlt, FaClock, FaEye, FaShare, FaBook, FaArrowDown } f
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
+import EntertainmentVideoManager from '../components/EntertainmentVideoManager/EntertainmentVideoManager';
+import { useAuth } from '../../hooks/useAuth';
+import { obtenerVideosSeleccionados } from '../../services/entretenimientoVideoService';
 
 export default function EntretenimientoPage() {
     const router = useRouter();
+    const { isAdmin } = useAuth();
     const [selectedVideo, setSelectedVideo] = useState(null);
     const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
     const [showStickyButton, setShowStickyButton] = useState(true);
+    const [shortsData, setShortsData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    // Datos simplificados para shorts de YouTube - Solo 5 videos
-    const shortsData = [
-        {
-            id: 1,
-            title: "Media Reparación ISM",
-            youtubeLink: "https://youtube.com/shorts/uBFnf3OnzSc?si=7tFbTRzaaoV987gm",
-            category: "Cargas Promocionales"
-        },
-        {
-            id: 2,
-            title: "Confianza Al  Cliente",
-            youtubeLink: "https://youtube.com/shorts/u2DCUuzE9eo?si=PvtVB77U6PvsU6fQ",
-            category: "Descargas de Risa"
-        },
-        {
-            id: 3,
-            title: "Dale A Tu Motor Lo Mejor",
-            youtubeLink: "https://youtube.com/shorts/bA2qhK3NzLI?si=EVMAjptREbIn6U9H",
-            category: "Cargas Promocionales"
-        },
-        {
-            id: 4,
-            title: "No Tengas Dudas",
-            youtubeLink: "https://youtube.com/shorts/WMXAFSCP00o?si=vtD1HVKhnPEf96Zc",
-            category: "Descargas de Risa"
-        },
-        {
-            id: 5,
-            title: "Cabeza Para Motor Volvo D13 Nueva",
-            youtubeLink: "https://youtube.com/shorts/n0V3eG2A38Y?si=-mjo1g1NiZ5PKZAf",
-            category: "Cargas Promocionales"
-        }
-    ];
-
-    // Datos del blog - Solo 5 artículos
+    // Datos del blog - mantienen los datos locales como estaban
     const blogData = [
         {
             id: 1,
-            title: "Guía completa de mantenimiento preventivo",
-            excerpt: "Aprende los fundamentos del mantenimiento preventivo para vehículos pesados y cómo implementar un programa efectivo.",
+            title: "Cuando considerar una media reparación",
+            excerpt: "La inversión en un tractocamión es considerable, y maximizar su vida útil es fundamental para el negocio del transporte.",
             image: "/imgs/blog-1.jpg",
-            publishDate: "2024-01-20",
+            publishDate: "2024-01-18",
             readTime: "5 min",
             category: "Mantenimiento"
         },
         {
             id: 2,
-            title: "Las 10 fallas más comunes en motores diésel",
-            excerpt: "Identifica y soluciona los problemas más frecuentes en motores diésel para evitar costosas reparaciones.",
+            title: "La importancia de una cabeza de motor en buen estado",
+            excerpt: "Una cabeza de motor en mal estado puede ser un enemigo silencioso, afectando el consumo de combustible, la potencia y, en última instancia, elevando los costos operativos.",
             image: "/imgs/blog-2.jpg",
             publishDate: "2024-01-15",
             readTime: "3 min",
@@ -70,7 +43,7 @@ export default function EntretenimientoPage() {
         {
             id: 3,
             title: "Cómo elegir las refacciones correctas para tu motor",
-            excerpt: "Elegir las refacciones adecuadas es crucial para mantener el rendimiento óptimo de tu vehículo pesado.",
+            excerpt: "Elegir las refacciones adecuadas es crucial para mantener el rendimiento óptimo de tu vehículo pesado y evitar costosas reparaciones futuras.",
             image: "/imgs/blog-3.jpg",
             publishDate: "2024-01-12",
             readTime: "4 min",
@@ -79,7 +52,7 @@ export default function EntretenimientoPage() {
         {
             id: 4,
             title: "Mantenimiento preventivo: Calendario anual para tu flota",
-            excerpt: "Un programa de mantenimiento preventivo bien estructurado puede reducir hasta un 40% los costos de reparación.",
+            excerpt: "Un programa de mantenimiento preventivo bien estructurado puede reducir hasta un 40% los costos de reparación y aumentar significativamente la vida útil de tus vehículos.",
             image: "/imgs/blog-4.jpg",
             publishDate: "2024-01-08",
             readTime: "7 min",
@@ -88,13 +61,52 @@ export default function EntretenimientoPage() {
         {
             id: 5,
             title: "Síntomas de problemas en el sistema de inyección",
-            excerpt: "Identificar tempranamente los problemas en el sistema de inyección puede ahorrarte miles de pesos en reparaciones.",
+            excerpt: "Identificar tempranamente los problemas en el sistema de inyección puede ahorrarte miles de pesos en reparaciones mayores.",
             image: "/imgs/blog-5.jpg",
             publishDate: "2024-01-05",
             readTime: "6 min",
             category: "Diagnóstico"
         }
     ];
+
+    // Cargar videos seleccionados del backend
+    useEffect(() => {
+        cargarVideosSeleccionados();
+    }, []);
+
+    const cargarVideosSeleccionados = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            console.log('🎬 Cargando videos seleccionados para entretenimiento...');
+            
+            const videos = await obtenerVideosSeleccionados();
+            console.log('✅ Videos seleccionados cargados:', videos);
+            
+            // Transformar datos del backend al formato esperado por el frontend
+            const videosFormateados = videos.map(video => ({
+                id: video.id,
+                title: video.titulo || video.title,
+                youtubeLink: video.urlVideo || video.youtubeLink,
+                category: video.categoria || video.category
+            }));
+            
+            setShortsData(videosFormateados);
+        } catch (error) {
+            console.error('❌ Error al cargar videos seleccionados:', error);
+            setError('Error al cargar los videos. Inténtalo de nuevo.');
+            // En caso de error, usar array vacío
+            setShortsData([]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Manejar actualizaciones cuando el admin modifica videos
+    const handleVideosUpdate = async () => {
+        console.log('🔄 Actualizando videos de entretenimiento...');
+        await cargarVideosSeleccionados();
+    };
 
     // Detectar scroll para ocultar/mostrar botón sticky
     useEffect(() => {
@@ -104,7 +116,6 @@ export default function EntretenimientoPage() {
                 const blogSectionTop = blogSection.offsetTop;
                 const scrollPosition = window.scrollY + window.innerHeight;
                 
-                // Ocultar botón cuando el usuario está cerca o en la sección del blog
                 if (scrollPosition >= blogSectionTop + 100) {
                     setShowStickyButton(false);
                 } else {
@@ -117,41 +128,36 @@ export default function EntretenimientoPage() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Función para extraer ID de YouTube del link
     const extractYouTubeId = (url) => {
         if (!url) {
             console.log('❌ No URL provided');
             return null;
         }
         
-        console.log('🔗 Extracting ID from URL:', url); // Debug
+        console.log('🔗 Extracting ID from URL:', url);
         
         try {
-            // Para YouTube Shorts
             const shortsMatch = url.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/);
             if (shortsMatch) {
-                console.log('📹 Found shorts ID:', shortsMatch[1]); // Debug
+                console.log('📹 Found shorts ID:', shortsMatch[1]);
                 return shortsMatch[1];
             }
             
-            // Para videos normales de YouTube con watch?v=
             const watchMatch = url.match(/youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/);
             if (watchMatch) {
-                console.log('🎥 Found watch video ID:', watchMatch[1]); // Debug
+                console.log('🎥 Found watch video ID:', watchMatch[1]);
                 return watchMatch[1];
             }
             
-            // Para URLs cortas youtu.be
             const shortUrlMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
             if (shortUrlMatch) {
-                console.log('🔗 Found short URL video ID:', shortUrlMatch[1]); // Debug
+                console.log('🔗 Found short URL video ID:', shortUrlMatch[1]);
                 return shortUrlMatch[1];
             }
             
-            // Para URLs que ya contienen solo el ID
             const directIdMatch = url.match(/^[a-zA-Z0-9_-]{11}$/);
             if (directIdMatch) {
-                console.log('🎯 Direct video ID:', url); // Debug
+                console.log('🎯 Direct video ID:', url);
                 return url;
             }
             
@@ -159,16 +165,16 @@ export default function EntretenimientoPage() {
             console.error('💥 Error extracting YouTube ID:', error);
         }
         
-        console.log('❌ No ID found for URL:', url); // Debug
+        console.log('❌ No ID found for URL:', url);
         return null;
     };
 
     const handleVideoClick = (video) => {
-        console.log('🎥 Video clicked:', video); // Debug
+        console.log('🎥 Video clicked:', video);
         
         try {
             const videoId = extractYouTubeId(video.youtubeLink);
-            console.log('🔍 Extracted video ID:', videoId); // Debug
+            console.log('🔍 Extracted video ID:', videoId);
             
             if (videoId) {
                 const videoData = {
@@ -176,33 +182,24 @@ export default function EntretenimientoPage() {
                     youtubeId: videoId,
                     isShort: video.youtubeLink.includes('/shorts/')
                 };
-                console.log('✅ Setting video data:', videoData); // Debug
-                console.log('🎬 Opening modal...'); // Debug
+                console.log('✅ Setting video data:', videoData);
+                console.log('🎬 Opening modal...');
                 
                 setSelectedVideo(videoData);
                 setIsVideoModalOpen(true);
                 
-                // Verificar que el estado se actualizó
-                setTimeout(() => {
-                    console.log('📊 Modal state:', {
-                        isOpen: isVideoModalOpen,
-                        selectedVideo: selectedVideo
-                    });
-                }, 100);
-                
             } else {
-                console.log('❌ No video ID found, opening in new tab:', video.youtubeLink); // Debug
+                console.log('❌ No video ID found, opening in new tab:', video.youtubeLink);
                 window.open(video.youtubeLink, '_blank');
             }
         } catch (error) {
             console.error('💥 Error in handleVideoClick:', error);
-            // Fallback: abrir en YouTube
             window.open(video.youtubeLink, '_blank');
         }
     };
 
     const closeVideoModal = () => {
-        console.log('Closing video modal'); // Debug
+        console.log('Closing video modal');
         setIsVideoModalOpen(false);
         setSelectedVideo(null);
     };
@@ -227,7 +224,6 @@ export default function EntretenimientoPage() {
         }
     };
 
-    // Función para hacer scroll al blog
     const scrollToBlog = () => {
         const blogSection = document.querySelector('.blogSection');
         if (blogSection) {
@@ -238,7 +234,6 @@ export default function EntretenimientoPage() {
         }
     };
 
-    // Funciones de navegación usando router
     const goToVideos = () => {
         router.push('/videos');
     };
@@ -256,13 +251,12 @@ export default function EntretenimientoPage() {
         });
     };
 
-    // Función para generar thumbnail de YouTube
     const getYouTubeThumbnail = (youtubeLink) => {
         const videoId = extractYouTubeId(youtubeLink);
         if (videoId) {
             return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
         }
-        return '/imgs/default-video-thumb.jpg'; // imagen por defecto si no se puede obtener
+        return '/imgs/default-video-thumb.jpg';
     };
 
     return (
@@ -283,6 +277,13 @@ export default function EntretenimientoPage() {
                 <section className="entertainmentMainSection">
                     <div className="entertainmentContainer">
 
+                        {/* Botón de gestión de videos - Solo para admin */}
+                        {isAdmin && (
+                            <div className="adminVideoControls">
+                                <EntertainmentVideoManager onVideosUpdate={handleVideosUpdate} />
+                            </div>
+                        )}
+
                         {/* Sección de Shorts */}
                         <div className="videosSection">
                             <div className="sectionHeader">
@@ -292,61 +293,98 @@ export default function EntretenimientoPage() {
                                 </p>
                             </div>
 
-                            {/* Grid de shorts - SIN FILTROS */}
-                            <div className="shortsGrid">
-                                {shortsData.map((short) => (
-                                    <div
-                                        key={short.id}
-                                        className="shortCard"
-                                        onClick={() => handleVideoClick(short)}
-                                    >
-                                        <div className="shortThumbnail">
-                                            <div 
-                                                className="thumbnailPlaceholder"
-                                                style={{
-                                                    backgroundImage: `url(${getYouTubeThumbnail(short.youtubeLink)})`,
-                                                    backgroundSize: 'cover',
-                                                    backgroundPosition: 'center'
-                                                }}
-                                            >
-                                                <div className="playOverlay">
-                                                    <FaPlay className="playIcon" />
-                                                </div>
-                                                <div className="shortBadge">SHORT</div>
-                                                <button
-                                                    className="shareButton"
-                                                    onClick={(e) => handleShareVideo(short, e)}
-                                                    aria-label="Compartir short"
-                                                >
-                                                    <FaShare />
-                                                </button>
-                                            </div>
-                                        </div>
-                                        <div className="shortInfo">
-                                            <h3 className="shortTitle">{short.title}</h3>
-                                            <div className="shortMeta">
-                                                <span className="shortCategory">
-                                                    {short.category}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
+                            {/* Estado de carga */}
+                            {loading && (
+                                <div className="loadingContainer">
+                                    <h3>Cargando videos...</h3>
+                                    <p>Por favor espera un momento</p>
+                                </div>
+                            )}
 
-                            {/* Botón para ver más shorts - CAMBIADO A BUTTON */}
-                            <div className="sectionFooter">
-                                <button 
-                                    onClick={goToVideos}
-                                    className="viewMoreButton shorts"
-                                    type="button"
-                                >
-                                    Ver más shorts
-                                </button>
-                            </div>
+                            {/* Estado de error */}
+                            {error && (
+                                <div className="errorContainer">
+                                    <h3>Error al cargar videos</h3>
+                                    <p>{error}</p>
+                                    <button onClick={cargarVideosSeleccionados} className="retryButton">
+                                        Intentar de nuevo
+                                    </button>
+                                </div>
+                            )}
+
+                            {/* Grid de shorts */}
+                            {!loading && !error && (
+                                <>
+                                    {shortsData.length > 0 ? (
+                                        <div className="shortsGrid">
+                                            {shortsData.map((short) => (
+                                                <div
+                                                    key={short.id}
+                                                    className="shortCard"
+                                                    onClick={() => handleVideoClick(short)}
+                                                >
+                                                    <div className="shortThumbnail">
+                                                        <div 
+                                                            className="thumbnailPlaceholder"
+                                                            style={{
+                                                                backgroundImage: `url(${getYouTubeThumbnail(short.youtubeLink)})`,
+                                                                backgroundSize: 'cover',
+                                                                backgroundPosition: 'center'
+                                                            }}
+                                                        >
+                                                            <div className="playOverlay">
+                                                                <FaPlay className="playIcon" />
+                                                            </div>
+                                                            <div className="shortBadge">SHORT</div>
+                                                            <button
+                                                                className="shareButton"
+                                                                onClick={(e) => handleShareVideo(short, e)}
+                                                                aria-label="Compartir short"
+                                                            >
+                                                                <FaShare />
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div className="shortInfo">
+                                                        <h3 className="shortTitle">{short.title}</h3>
+                                                        <div className="shortMeta">
+                                                            <span className="shortCategory">
+                                                                {short.category}
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="noVideosMessage">
+                                            <h3>No hay videos seleccionados</h3>
+                                            <p>El administrador no ha seleccionado videos para mostrar en entretenimiento.</p>
+                                            {isAdmin && (
+                                                <p>
+                                                    <strong>Como administrador, puedes seleccionar videos usando el botón "Gestionar Videos" arriba.</strong>
+                                                </p>
+                                            )}
+                                        </div>
+                                    )}
+
+                                    {/* Botón para ver más shorts - solo si hay videos */}
+                                    {shortsData.length > 0 && (
+                                        <div className="sectionFooter">
+                                            <button 
+                                                onClick={goToVideos}
+                                                className="viewMoreButton shorts"
+                                                type="button"
+                                            >
+                                                Ver más shorts
+                                            </button>
+                                        </div>
+                                    )}
+                                </>
+                            )}
                         </div>
 
-                        {/* Sección de Blog */}
+                        {/* Sección de Blog - mantiene el comportamiento original */}
                         <div className="blogSection">
                             <div className="sectionHeader">
                                 <h2>BLOG</h2>
@@ -355,7 +393,6 @@ export default function EntretenimientoPage() {
                                 </p>
                             </div>
 
-                            {/* Grid de blog */}
                             <div className="blogGrid">
                                 {blogData.map((post) => (
                                     <article
@@ -386,7 +423,6 @@ export default function EntretenimientoPage() {
                                 ))}
                             </div>
 
-                            {/* Botón para ver más artículos - CAMBIADO A BUTTON */}
                             <div className="sectionFooter">
                                 <button 
                                     onClick={goToBlog}
