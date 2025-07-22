@@ -33,7 +33,7 @@
 .appBar {
   /* NUEVO: Gradiente animado igual al header */
   background: linear-gradient(135deg, #0a0a1e 0%, #1a1a2e 25%, var(--primary-color) 50%, #16213e 75%, #0f1419 100%);
-  background-size: 400% 400%;
+  background-size: 400% 400%; 
   animation: headerGradientFlow 12s ease infinite;
   color: white;
   overflow: visible; /* CAMBIADO: De "hidden" a "visible" para permitir dropdown */
@@ -100,7 +100,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 120%;
+  width: 50%;
   height: 100%;
   background: linear-gradient(90deg,
       transparent 0%,
