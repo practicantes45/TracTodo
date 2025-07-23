@@ -437,3 +437,168 @@
     font-size: 16px; /* Evitar zoom en iOS */
   }
 }
+
+/* ===== SECCIÓN DE IMÁGENES DINÁMICAS ===== */
+.imagesSectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 3px solid #bae6fd;
+}
+
+.imagesSectionHeader h3 {
+  margin: 0;
+  color: #023047;
+  font-size: 20px;
+  font-weight: 700;
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+}
+
+.imagesSectionHeader h3::after {
+  content: '📸';
+  margin-left: 8px;
+}
+
+.addImageButton {
+  background: linear-gradient(135deg, #00b4d8 0%, #0096c7 100%);
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.addImageButton:hover {
+  background: linear-gradient(135deg, #0096c7 0%, #0077b6 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
+}
+
+.imageFields {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.imageField {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  padding: 20px;
+  background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+  border: 2px solid #e0f2fe;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.imageField:hover {
+  border-color: #0ea5e9;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(14, 165, 233, 0.1);
+}
+
+.imageFieldInputs {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 16px;
+  width: 100%;
+}
+
+.removeImageButton {
+  background: linear-gradient(135deg, #ff4757 0%, #ff3742 100%);
+  color: white;
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.removeImageButton:hover {
+  background: linear-gradient(135deg, #ff3742 0%, #ff2930 100%);
+  transform: scale(1.1);
+  box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+}
+
+.imageHelp {
+  margin-top: 16px;
+  padding: 16px;
+  background: linear-gradient(135deg, #e6f3ff 0%, #cce7ff 100%);
+  border-radius: 8px;
+  border-left: 4px solid #00b4d8;
+}
+
+.imageHelp p {
+  margin: 0;
+  font-size: 14px;
+  color: #023047;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+}
+
+.imageHelp strong {
+  color: #0077b6;
+}
+
+/* ===== RESPONSIVE PARA CAMPOS DE IMAGEN ===== */
+@media (max-width: 768px) {
+  .imagesSectionHeader {
+    flex-direction: column;
+    gap: 12px;
+    align-items: stretch;
+  }
+  
+  .addImageButton {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .imageFieldInputs {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .imageField {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+  
+  .removeImageButton {
+    align-self: flex-end;
+    position: absolute;
+    top: 12px;
+    right: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .imageField {
+    padding: 16px;
+  }
+  
+  .imageHelp {
+    padding: 12px;
+  }
+  
+  .imageHelp p {
+    font-size: 13px;
+  }
+}
