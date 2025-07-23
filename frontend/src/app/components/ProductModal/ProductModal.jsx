@@ -16,14 +16,9 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
     ubicacion: '',
     existencias: 0,
     esMediaReparacion: false,
-    imagenesUrl: {
-      arriba: '',
-      atras: '',
-      frente: '',
-      ladod: '',
-      ladoi: ''
-    }
+    imagenesUrl: {}
   });
+  const [imagenesFormulario, setImagenesFormulario] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [isMounted, setIsMounted] = useState(false);
@@ -35,6 +30,7 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
 
   useEffect(() => {
     if (mode === 'edit' && producto) {
+      // Datos básicos del producto
       setFormData({
         descripcion: producto.descripcion || '',
         marca: producto.marca || '',
@@ -46,33 +42,86 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
         ubicacion: producto.ubicacion || '',
         existencias: producto.existencias || 0,
         esMediaReparacion: producto.esMediaReparacion || false,
-        imagenesUrl: {
-          arriba: producto.imagenesUrl?.arriba || '',
-          atras: producto.imagenesUrl?.atras || '',
-          frente: producto.imagenesUrl?.frente || '',
-          ladod: producto.imagenesUrl?.ladod || '',
-          ladoi: producto.imagenesUrl?.ladoi || ''
-        }
+        imagenesUrl: producto.imagenesUrl || {}
       });
+
+      // Procesar imágenes dinámicamente
+      if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object') {
+        const imagenesArray = Object.entries(producto.imagenesUrl)
+          .filter(([key, url]) => url && url.trim() !== '')
+          .map(([key, url]) => ({ clave: key, url: url }));
+        
+        setImagenesFormulario(imagenesArray);
+      } else {
+        setImagenesFormulario([]);
+      }
+    } else {
+      // Modo crear - inicializar con imagen frente por defecto
+      setFormData({
+        descripcion: '',
+        marca: '',
+        nombre: '',
+        numeroParte: '',
+        precioCompra: 0,
+        precioVentaSugerido: 0,
+        tipoProducto: '',
+        ubicacion: '',
+        existencias: 0,
+        esMediaReparacion: false,
+        imagenesUrl: {}
+      });
+      setImagenesFormulario([{ clave: 'frente', url: '' }]);
     }
   }, [mode, producto]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     
-    if (name.startsWith('imagen_')) {
-      const imageType = name.replace('imagen_', '');
-      setFormData(prev => ({
-        ...prev,
-        imagenesUrl: {
-          ...prev.imagenesUrl,
-          [imageType]: value
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value
+    }));
+  };
+
+  const handleImagenChange = (index, field, value) => {
+    const nuevasImagenes = [...imagenesFormulario];
+    nuevasImagenes[index][field] = value;
+    setImagenesFormulario(nuevasImagenes);
+
+    // Actualizar formData.imagenesUrl
+    const imagenesObj = {};
+    nuevasImagenes.forEach(img => {
+      if (img.clave && img.url) {
+        imagenesObj[img.clave] = img.url;
+      }
+    });
+    
+    setFormData(prev => ({
+      ...prev,
+      imagenesUrl: imagenesObj
+    }));
+  };
+
+  const agregarCampoImagen = () => {
+    setImagenesFormulario(prev => [...prev, { clave: '', url: '' }]);
+  };
+
+  const eliminarCampoImagen = (index) => {
+    if (imagenesFormulario.length > 1) {
+      const nuevasImagenes = imagenesFormulario.filter((_, i) => i !== index);
+      setImagenesFormulario(nuevasImagenes);
+
+      // Actualizar formData.imagenesUrl
+      const imagenesObj = {};
+      nuevasImagenes.forEach(img => {
+        if (img.clave && img.url) {
+          imagenesObj[img.clave] = img.url;
         }
-      }));
-    } else {
+      });
+      
       setFormData(prev => ({
         ...prev,
-        [name]: type === 'checkbox' ? checked : value
+        imagenesUrl: imagenesObj
       }));
     }
   };
@@ -83,10 +132,23 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
     setError('');
 
     try {
+      // Validar que todas las imágenes tengan clave y URL
+      const imagenesValidas = {};
+      imagenesFormulario.forEach(img => {
+        if (img.clave && img.clave.trim() !== '' && img.url && img.url.trim() !== '') {
+          imagenesValidas[img.clave.trim()] = img.url.trim();
+        }
+      });
+
+      const datosFinales = {
+        ...formData,
+        imagenesUrl: imagenesValidas
+      };
+
       if (mode === 'create') {
-        await crearProducto(formData);
+        await crearProducto(datosFinales);
       } else {
-        await actualizarProducto(producto.id, formData);
+        await actualizarProducto(producto.id, datosFinales);
       }
       onSaved();
     } catch (error) {
@@ -99,7 +161,6 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
   // Si no está montado o no está abierto, no renderizar nada
   if (!isMounted || !isOpen) return null;
 
-  // RENDERIZAR CON PORTAL - igual que CookieConsent
   return createPortal(
     <div className={styles.overlay} onClick={onClose}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
@@ -224,62 +285,55 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
           </div>
 
           <div className={styles.imagesSection}>
-            <h3>Imágenes del Producto</h3>
-            <div className={styles.grid}>
-              <div className={styles.field}>
-                <label>Imagen Frontal</label>
-                <input
-                  type="url"
-                  name="imagen_frente"
-                  value={formData.imagenesUrl.frente}
-                  onChange={handleChange}
-                  placeholder="https://..."
-                />
-              </div>
+            <div className={styles.imagesSectionHeader}>
+              <h3>Imágenes del Producto</h3>
+              <button 
+                type="button" 
+                className={styles.addImageButton}
+                onClick={agregarCampoImagen}
+              >
+                + Agregar Imagen
+              </button>
+            </div>
 
-              <div className={styles.field}>
-                <label>Imagen Trasera</label>
-                <input
-                  type="url"
-                  name="imagen_atras"
-                  value={formData.imagenesUrl.atras}
-                  onChange={handleChange}
-                  placeholder="https://..."
-                />
-              </div>
+            <div className={styles.imageFields}>
+              {imagenesFormulario.map((imagen, index) => (
+                <div key={index} className={styles.imageField}>
+                  <div className={styles.imageFieldInputs}>
+                    <div className={styles.field}>
+                      <label>Nombre de la imagen</label>
+                      <input
+                        type="text"
+                        value={imagen.clave}
+                        onChange={(e) => handleImagenChange(index, 'clave', e.target.value)}
+                        placeholder="ej: frente, atras, ladoi..."
+                      />
+                    </div>
+                    <div className={styles.field}>
+                      <label>URL de la imagen</label>
+                      <input
+                        type="url"
+                        value={imagen.url}
+                        onChange={(e) => handleImagenChange(index, 'url', e.target.value)}
+                        placeholder="https://..."
+                      />
+                    </div>
+                  </div>
+                  {imagenesFormulario.length > 1 && (
+                    <button
+                      type="button"
+                      className={styles.removeImageButton}
+                      onClick={() => eliminarCampoImagen(index)}
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
 
-              <div className={styles.field}>
-                <label>Imagen Superior</label>
-                <input
-                  type="url"
-                  name="imagen_arriba"
-                  value={formData.imagenesUrl.arriba}
-                  onChange={handleChange}
-                  placeholder="https://..."
-                />
-              </div>
-
-              <div className={styles.field}>
-                <label>Imagen Lateral Izquierda</label>
-                <input
-                  type="url"
-                  name="imagen_ladoi"
-                  value={formData.imagenesUrl.ladoi}
-                  onChange={handleChange}
-                  placeholder="https://..."
-                />
-              </div>
-
-              <div className={styles.field}>
-                <label>Imagen Lateral Derecha</label>
-                <input
-                  type="url"
-                  name="imagen_ladod"
-                  value={formData.imagenesUrl.ladod}
-                  onChange={handleChange}
-                  placeholder="https://..."
-                />
-              </div>
+            <div className={styles.imageHelp}>
+              <p><strong>Recomendación:</strong> Incluye siempre una imagen con el nombre "frente" para que aparezca primero en la vista de productos.</p>
             </div>
           </div>
 
@@ -296,6 +350,6 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
         </form>
       </div>
     </div>,
-    document.body // RENDERIZAR DIRECTAMENTE EN EL BODY - igual que CookieConsent
+    document.body
   );
 }
