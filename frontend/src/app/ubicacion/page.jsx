@@ -1,16 +1,16 @@
 'use client';
 import './ubicacion.css';
 import { useState } from 'react';
-import { FaCalendarCheck, FaMapMarkedAlt, FaCar, FaBuilding, FaShoppingCart, FaClock, FaPlay, FaInfoCircle, FaTimes } from "react-icons/fa";
+import { FaCalendarCheck, FaMapMarkedAlt, FaCar, FaBuilding, FaShoppingCart, FaClock, FaPlay, FaInfoCircle, FaTimes, FaTruck } from "react-icons/fa";
 import Navbar from '../components/Navbar/Navbar';
 import ContactNumbers from '../components/ContactNumbers/ContactNumbers';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
+import VideoSection from '../components/VideoSection/VideoSection';
 
 export default function UbicacionPage() {
     const [copiedItem, setCopiedItem] = useState('');
     const [imageModalOpen, setImageModalOpen] = useState(false);
-    const [videoModalOpen, setVideoModalOpen] = useState(false);
     const [currentImage, setCurrentImage] = useState({ src: '', alt: '', title: '' });
 
     const copyToClipboard = async (text, type) => {
@@ -34,19 +34,9 @@ export default function UbicacionPage() {
         document.body.style.overflow = 'auto';
     };
 
-    const openVideoModal = () => {
-        setVideoModalOpen(true);
-        document.body.style.overflow = 'hidden';
-    };
-
-    const closeVideoModal = () => {
-        setVideoModalOpen(false);
-        document.body.style.overflow = 'auto';
-    };
-
     return (
         <div className="layout ubicacion-page">
-            
+
             <Navbar />
 
             <main className="mainContent">
@@ -60,28 +50,27 @@ export default function UbicacionPage() {
 
                 <ContactNumbers pageContext="ubicacion" />
 
-                {/* Sección principal con video YouTube y mapa */}
+                {/* Sección principal con videos y mapa */}
                 <section className="locationMainSection">
                     <div className="locationContainer">
-                        {/* Video section con YouTube */}
-                        <div className="videoSection">
-                            <h2>¿CÓMO ENCONTRARNOS?</h2>
-                            <p className="videoDescription">
-                                Mira este video donde te explicamos paso a paso la ruta para llegar a nuestras instalaciones
-                            </p>
+                        {/* Contenedor de videos */}
+                        <div className="videosContainer">
+                            {/* Video de ubicación */}
+                            <VideoSection
+                                title="¿CÓMO ENCONTRARNOS?"
+                                description="Mira este video donde te explicamos paso a paso la ruta para llegar a nuestras instalaciones"
+                                videoId="xlIeCDPO9Es"
+                                thumbnailUrl="https://img.youtube.com/vi/xlIeCDPO9Es/maxresdefault.jpg"
+                            />
 
-                            <div className="youtubeVideoContainer" onClick={openVideoModal}>
-                                <div className="videoThumbnail">
-                                    <img 
-                                        src="https://img.youtube.com/vi/xlIeCDPO9Es/maxresdefault.jpg" 
-                                        alt="Ruta para llegar a TRACTODO"
-                                        className="thumbnailImage"
-                                    />
-                                    <div className="playButton">
-                                        <FaPlay />
-                                    </div>
-                                </div>
-                            </div>
+                            {/* Video de envíos */}
+                            <VideoSection
+                                title="ENVÍOS A DOMICILIO"
+                                description="Conoce nuestro servicio de envíos y cómo llevamos los productos hasta tu ubicación"
+                                videoId="xlIeCDPO9Es" // Cambiar por el ID real del video de envíos
+                                thumbnailUrl="https://img.youtube.com/vi/xlIeCDPO9Es/maxresdefault.jpg" // Cambiar por el thumbnail real
+                                className="envios"
+                            />
                         </div>
 
                         {/* Map section */}
@@ -223,38 +212,14 @@ export default function UbicacionPage() {
                             <FaTimes />
                         </button>
                         <div className="modal-content">
-                            <img 
-                                src={currentImage.src} 
+                            <img
+                                src={currentImage.src}
                                 alt={currentImage.alt}
                                 className="modal-image"
                             />
                             <div className="modal-title">
                                 {currentImage.title}
                             </div>
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {/* Modal de Video */}
-            {videoModalOpen && (
-                <div className="modal-overlay video-modal-overlay" onClick={closeVideoModal}>
-                    <div className="video-modal" onClick={e => e.stopPropagation()}>
-                        <button className="modal-close video-modal-close" onClick={closeVideoModal}>
-                            <FaTimes />
-                        </button>
-                        <div className="video-modal-content">
-                            <iframe
-                                width="100%"
-                                height="100%"
-                                src="https://www.youtube.com/embed/xlIeCDPO9Es?autoplay=1&rel=0"
-                                title="Ruta para llegar a TRACTODO"
-                                frameBorder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                referrerPolicy="strict-origin-when-cross-origin"
-                                allowFullScreen
-                                className="modal-video"
-                            ></iframe>
                         </div>
                     </div>
                 </div>
