@@ -214,6 +214,10 @@
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
   transition: all 0.3s ease;
   min-width: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
 
 .cancelButton {
@@ -239,11 +243,7 @@
   box-shadow: 0 12px 35px rgba(124, 58, 237, 0.6);
 }
 
-.saveButton::after {
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-50%);
+.saveIcon {
   font-size: 1.2rem;
   opacity: 0.9;
 }
@@ -255,15 +255,7 @@
   background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
 }
 
-.saveButton:disabled::after {
-  content: '';
-  width: 20px;
-  height: 20px;
-  margin: -10px 0 0 -10px;
-  border: 2px solid transparent;
-  border-top: 2px solid white;
-  border-right: 2px solid white;
-  border-radius: 50%;
+.saveButton:disabled .saveIcon {
   animation: spin 1s linear infinite;
 }
 

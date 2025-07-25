@@ -2,14 +2,16 @@
 import './entretenimiento.css';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { FaPlay, FaCalendarAlt, FaClock, FaEye, FaShare, FaBook, FaArrowDown } from "react-icons/fa";
+import { FaPlay, FaCalendarAlt, FaClock, FaEye, FaShare, FaBook, FaArrowDown, FaUser } from "react-icons/fa";
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
 import EntertainmentVideoManager from '../components/EntertainmentVideoManager/EntertainmentVideoManager';
+import EntertainmentBlogManager from '../components/EntertainmentBlogManager/EntertainmentBlogManager';
+import BlogPostModal from '../components/BlogPostModal/BlogPostModal';
 import { useAuth } from '../../hooks/useAuth';
 import { obtenerVideosSeleccionados } from '../../services/entretenimientoVideoService';
-import { obtenerPosts } from '../../services/blogService';
+import { obtenerArticulosSeleccionados } from '../../services/entretenimientoBlogService';
 
 export default function EntretenimientoPage() {
     const router = useRouter();
@@ -24,25 +26,127 @@ export default function EntretenimientoPage() {
     const [error, setError] = useState(null);
     const [blogError, setBlogError] = useState(null);
 
+    // Estados para el modal del blog
+    const [selectedPostId, setSelectedPostId] = useState(null);
+    const [showBlogModal, setShowBlogModal] = useState(false);
+
     // Cargar videos seleccionados del backend
     useEffect(() => {
         cargarVideosSeleccionados();
     }, []);
 
-    // Cargar posts del blog del backend
+    // Cargar artículos seleccionados del backend
     useEffect(() => {
-        cargarPostsBlog();
+        cargarArticulosSeleccionados();
     }, []);
+
+    // ===== FUNCIONES PARA PROCESAR CONTENIDO ===== //
+
+    /**
+     * Limpia el contenido Markdown y convierte a texto plano legible
+     * @param {string} content - Contenido con marcadores Markdown
+     * @returns {string} - Texto limpio sin marcadores
+     */
+    const limpiarMarkdown = (content) => {
+        if (!content) return '';
+
+        return content
+            // Remover subtítulos (## texto) pero mantener el texto
+            .replace(/^## (.+)$/gm, '$1')
+            // Remover títulos (# texto) pero mantener el texto  
+            .replace(/^# (.+)$/gm, '$1')
+            // Remover negritas (**texto**) pero mantener el texto
+            .replace(/\*\*(.*?)\*\*/g, '$1')
+            // Remover cursivas (*texto*) pero mantener el texto
+            .replace(/\*(.*?)\*/g, '$1')
+            // Normalizar espacios y saltos de línea
+            .replace(/\n\s*\n/g, ' ')
+            .replace(/\n/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+    };
+
+    /**
+     * Genera un excerpt inteligente priorizando subtítulos
+     * @param {object} post - Post con contenido o bloques
+     * @param {number} maxLength - Máximo de caracteres (default: 180)
+     * @returns {string} - Excerpt procesado
+     */
+    const generarExcerptInteligente = (post, maxLength = 160) => {
+        let contenido = '';
+
+        // PRIORIDAD 1: Si tiene bloques, usar el primer bloque
+        if (post.bloques && Array.isArray(post.bloques) && post.bloques.length > 0) {
+            const primerBloque = post.bloques[0];
+
+            // Si hay subtítulo, incluirlo como inicio del excerpt
+            if (primerBloque.subtitulo && primerBloque.subtitulo.trim()) {
+                contenido = `${primerBloque.subtitulo.trim()}. `;
+            }
+
+            // Agregar texto del bloque
+            if (primerBloque.texto && primerBloque.texto.trim()) {
+                const textoLimpio = limpiarMarkdown(primerBloque.texto);
+                contenido += textoLimpio;
+            }
+        }
+        // PRIORIDAD 2: Usar contenido legacy
+        else if (post.contenido || post.content) {
+            contenido = post.contenido || post.content;
+        }
+
+        // Limpiar y truncar
+        const contenidoLimpio = limpiarMarkdown(contenido);
+
+        if (contenidoLimpio.length <= maxLength) {
+            return contenidoLimpio;
+        }
+
+        // Truncar inteligentemente (por palabras, no por caracteres)
+        const palabras = contenidoLimpio.split(' ');
+        let excerptFinal = '';
+
+        for (const palabra of palabras) {
+            if ((excerptFinal + palabra + ' ').length > maxLength - 3) {
+                break;
+            }
+            excerptFinal += palabra + ' ';
+        }
+
+        return excerptFinal.trim() + '...';
+    };
+
+    /**
+     * Extrae el primer subtítulo del contenido para usarlo como título destacado
+     * @param {object} post - Post con contenido o bloques  
+     * @returns {string|null} - Primer subtítulo encontrado o null
+     */
+    const extraerPrimerSubtitulo = (post) => {
+        // Buscar en bloques primero
+        if (post.bloques && Array.isArray(post.bloques) && post.bloques.length > 0) {
+            const primerBloque = post.bloques[0];
+            if (primerBloque.subtitulo && primerBloque.subtitulo.trim()) {
+                return primerBloque.subtitulo.trim();
+            }
+        }
+
+        // Buscar en contenido legacy
+        const contenido = post.contenido || post.content || '';
+        const subtituloMatch = contenido.match(/^## (.+)$/m);
+        return subtituloMatch ? subtituloMatch[1].trim() : null;
+    };
+
+    // ===== FIN DE FUNCIONES DE CONTENIDO ===== //
 
     const cargarVideosSeleccionados = async () => {
         try {
             setLoading(true);
             setError(null);
             console.log('🎬 Cargando videos seleccionados para entretenimiento...');
-            
+
             const videos = await obtenerVideosSeleccionados();
             console.log('✅ Videos seleccionados cargados:', videos);
-            
+
             // Transformar datos del backend al formato esperado por el frontend
             const videosFormateados = videos.map(video => ({
                 id: video.id,
@@ -50,7 +154,7 @@ export default function EntretenimientoPage() {
                 youtubeLink: video.urlVideo || video.youtubeLink,
                 category: video.categoria || video.category
             }));
-            
+
             setShortsData(videosFormateados);
         } catch (error) {
             console.error('❌ Error al cargar videos seleccionados:', error);
@@ -61,29 +165,39 @@ export default function EntretenimientoPage() {
         }
     };
 
-    const cargarPostsBlog = async () => {
+    const cargarArticulosSeleccionados = async () => {
         try {
             setBlogLoading(true);
             setBlogError(null);
-            console.log('📚 Cargando posts del blog para entretenimiento...');
-            
-            const posts = await obtenerPosts();
-            console.log('✅ Posts del blog cargados:', posts);
-            
+            console.log('📚 Cargando artículos seleccionados para entretenimiento...');
+
+            const articulos = await obtenerArticulosSeleccionados();
+            console.log('✅ Artículos seleccionados cargados:', articulos);
+
             // Transformar datos del backend al formato esperado por el frontend
-            const postsFormateados = posts.slice(0, 5).map(post => ({
-                id: post.id,
-                title: post.titulo || post.title,
-                excerpt: post.contenido ? post.contenido.substring(0, 200) + '...' : 'Sin contenido disponible',
-                image: (post.imagenes && post.imagenes[0]) || post.imagenUrl || post.image || '/imgs/default-blog.jpg',
-                publishDate: post.fechaPublicacion || post.fecha || post.publishDate || new Date().toISOString(),
-                readTime: calcularTiempoLectura(post.contenido || ''),
-                category: post.categoria || post.category || 'Tracto-Consejos'
-            }));
-            
-            setBlogData(postsFormateados);
+            const articulosFormateados = articulos.map(articulo => {
+                // Generar excerpt inteligente usando las nuevas funciones
+                const excerptInteligente = generarExcerptInteligente(articulo, 160);
+                const subtituloDestacado = extraerPrimerSubtitulo(articulo);
+
+                return {
+                    id: articulo.id,
+                    title: articulo.titulo || articulo.title,
+                    excerpt: excerptInteligente,
+                    subtituloDestacado: subtituloDestacado,
+                    content: articulo.contenido || articulo.content,
+                    images: articulo.imagenes || (articulo.imagenUrl ? [articulo.imagenUrl] : []) || (articulo.image ? [articulo.image] : []),
+                    publishDate: articulo.fechaPublicacion || articulo.fecha || articulo.publishDate || new Date().toISOString(),
+                    readTime: calcularTiempoLectura(articulo.contenido || ''),
+                    category: articulo.categoria || articulo.category || 'Tracto-Consejos',
+                    author: articulo.autor || "TracTodo",
+                    bloques: articulo.bloques || []
+                };
+            });
+
+            setBlogData(articulosFormateados);
         } catch (error) {
-            console.error('❌ Error al cargar posts del blog:', error);
+            console.error('❌ Error al cargar artículos seleccionados:', error);
             setBlogError('Error al cargar los artículos del blog.');
             setBlogData([]);
         } finally {
@@ -105,6 +219,12 @@ export default function EntretenimientoPage() {
         await cargarVideosSeleccionados();
     };
 
+    // Manejar actualizaciones cuando el admin modifica artículos
+    const handleArticulosUpdate = async () => {
+        console.log('🔄 Actualizando artículos de entretenimiento...');
+        await cargarArticulosSeleccionados();
+    };
+
     // Detectar scroll para ocultar/mostrar botón sticky
     useEffect(() => {
         const handleScroll = () => {
@@ -112,7 +232,7 @@ export default function EntretenimientoPage() {
             if (blogSection) {
                 const blogSectionTop = blogSection.offsetTop;
                 const scrollPosition = window.scrollY + window.innerHeight;
-                
+
                 if (scrollPosition >= blogSectionTop + 100) {
                     setShowStickyButton(false);
                 } else {
@@ -130,49 +250,49 @@ export default function EntretenimientoPage() {
             console.log('❌ No URL provided');
             return null;
         }
-        
+
         console.log('🔗 Extracting ID from URL:', url);
-        
+
         try {
             const shortsMatch = url.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/);
             if (shortsMatch) {
                 console.log('📹 Found shorts ID:', shortsMatch[1]);
                 return shortsMatch[1];
             }
-            
+
             const watchMatch = url.match(/youtube\.com\/watch\?v=([a-zA-Z0-9_-]+)/);
             if (watchMatch) {
                 console.log('🎥 Found watch video ID:', watchMatch[1]);
                 return watchMatch[1];
             }
-            
+
             const shortUrlMatch = url.match(/youtu\.be\/([a-zA-Z0-9_-]+)/);
             if (shortUrlMatch) {
                 console.log('🔗 Found short URL video ID:', shortUrlMatch[1]);
                 return shortUrlMatch[1];
             }
-            
+
             const directIdMatch = url.match(/^[a-zA-Z0-9_-]{11}$/);
             if (directIdMatch) {
                 console.log('🎯 Direct video ID:', url);
                 return url;
             }
-            
+
         } catch (error) {
             console.error('💥 Error extracting YouTube ID:', error);
         }
-        
+
         console.log('❌ No ID found for URL:', url);
         return null;
     };
 
     const handleVideoClick = (video) => {
         console.log('🎥 Video clicked:', video);
-        
+
         try {
             const videoId = extractYouTubeId(video.youtubeLink);
             console.log('🔍 Extracted video ID:', videoId);
-            
+
             if (videoId) {
                 const videoData = {
                     ...video,
@@ -181,10 +301,10 @@ export default function EntretenimientoPage() {
                 };
                 console.log('✅ Setting video data:', videoData);
                 console.log('🎬 Opening modal...');
-                
+
                 setSelectedVideo(videoData);
                 setIsVideoModalOpen(true);
-                
+
             } else {
                 console.log('❌ No video ID found, opening in new tab:', video.youtubeLink);
                 window.open(video.youtubeLink, '_blank');
@@ -201,13 +321,26 @@ export default function EntretenimientoPage() {
         setSelectedVideo(null);
     };
 
+    // Abrir modal del blog directamente
     const handleBlogClick = (post) => {
-        router.push(`/blog/${post.id}`);
+        console.log('📖 Blog post clicked:', post);
+        setSelectedPostId(post.id);
+        setShowBlogModal(true);
+        // Prevenir scroll del body cuando el modal está abierto
+        document.body.style.overflow = 'hidden';
+    };
+
+    // Cerrar modal del blog
+    const handleCloseBlogModal = () => {
+        setShowBlogModal(false);
+        setSelectedPostId(null);
+        // Restaurar scroll del body
+        document.body.style.overflow = 'unset';
     };
 
     const handleShareVideo = (video, e) => {
         e.stopPropagation();
-        
+
         if (navigator.share) {
             navigator.share({
                 title: video.title,
@@ -224,9 +357,9 @@ export default function EntretenimientoPage() {
     const scrollToBlog = () => {
         const blogSection = document.querySelector('.blogSection');
         if (blogSection) {
-            blogSection.scrollIntoView({ 
-                behavior: 'smooth', 
-                block: 'start' 
+            blogSection.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
             });
         }
     };
@@ -254,6 +387,12 @@ export default function EntretenimientoPage() {
             return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
         }
         return '/imgs/default-video-thumb.jpg';
+    };
+
+    // Función para manejar imágenes no encontradas
+    const handleImageError = (e) => {
+        e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0yMDAgMTAwTDE1MCA3NUwyNTAgNzVMMjAwIDEwMFoiIGZpbGw9IiNEMUQ1REIiLz4KPGV4dCB4PSIyMDAiIHk9IjEzMCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmaWxsPSIjNjU3Mzg5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JbWFnZW4gbm8gZW5jb250cmFkYTwvdGV4dD4KPC9zdmc>';
+        e.target.alt = 'Imagen no encontrada';
     };
 
     return (
@@ -286,7 +425,7 @@ export default function EntretenimientoPage() {
                             <div className="sectionHeader">
                                 <h2>VIDEOS</h2>
                                 <p className="sectionDescription">
-                                     Tractovideos: ¡Vía hacia la emoción y la información!
+                                    Tractovideos: ¡Vía hacia la emoción y la información!
                                 </p>
                             </div>
 
@@ -321,7 +460,7 @@ export default function EntretenimientoPage() {
                                                     onClick={() => handleVideoClick(short)}
                                                 >
                                                     <div className="shortThumbnail">
-                                                        <div 
+                                                        <div
                                                             className="thumbnailPlaceholder"
                                                             style={{
                                                                 backgroundImage: `url(${getYouTubeThumbnail(short.youtubeLink)})`,
@@ -368,7 +507,7 @@ export default function EntretenimientoPage() {
                                     {/* Botón para ver más shorts - solo si hay videos */}
                                     {shortsData.length > 0 && (
                                         <div className="sectionFooter">
-                                            <button 
+                                            <button
                                                 onClick={goToVideos}
                                                 className="viewMoreButton shorts"
                                                 type="button"
@@ -381,7 +520,7 @@ export default function EntretenimientoPage() {
                             )}
                         </div>
 
-                        {/* Sección de Blog - ahora desde la base de datos */}
+                        {/* Sección de Blog */}
                         <div className="blogSection">
                             <div className="sectionHeader">
                                 <h2>BLOG</h2>
@@ -389,6 +528,12 @@ export default function EntretenimientoPage() {
                                     Tractoinformación: ¡Conocimiento en movimiento!
                                 </p>
                             </div>
+                            {/* Botón de gestión de artículos - Solo para admin */}
+                            {isAdmin && (
+                                <div className="adminBlogControls">
+                                    <EntertainmentBlogManager onArticulosUpdate={handleArticulosUpdate} />
+                                </div>
+                            )}
 
                             {/* Estado de carga del blog */}
                             {blogLoading && (
@@ -403,7 +548,7 @@ export default function EntretenimientoPage() {
                                 <div className="errorContainer">
                                     <h3>Error al cargar artículos</h3>
                                     <p>{blogError}</p>
-                                    <button onClick={cargarPostsBlog} className="retryButton">
+                                    <button onClick={cargarArticulosSeleccionados} className="retryButton">
                                         Intentar de nuevo
                                     </button>
                                 </div>
@@ -421,18 +566,32 @@ export default function EntretenimientoPage() {
                                                     onClick={() => handleBlogClick(post)}
                                                 >
                                                     <div className="blogImageContainer">
-                                                        <img src={post.image} alt={post.title} className="blogImage" />
+                                                        <img
+                                                            src={(post.images && post.images[0]) || '/imgs/default-blog.jpg'}
+                                                            alt={post.title}
+                                                            className="blogImage"
+                                                            onError={handleImageError}
+                                                        />
                                                         <div className="blogCategory">{post.category}</div>
+                                                        {post.images && post.images.length > 1 && (
+                                                            <div className="imageCount">+{post.images.length - 1}</div>
+                                                        )}
                                                     </div>
                                                     <div className="blogContent">
                                                         <h3 className="blogTitle">{post.title}</h3>
+
+                                                        {/* MOSTRAR SUBTÍTULO DESTACADO SI EXISTE */}
+                                                        {post.subtituloDestacado && (
+                                                            <h4 className="blogSubtitle">{post.subtituloDestacado}</h4>
+                                                        )}
+
                                                         <p className="blogExcerpt">{post.excerpt}</p>
                                                         <div className="blogMeta">
+                                                            <span className="blogAuthor">
+                                                                <FaUser /> {post.author}
+                                                            </span>
                                                             <span className="blogDate">
                                                                 <FaCalendarAlt /> {formatDate(post.publishDate)}
-                                                            </span>
-                                                            <span className="blogReadTime">
-                                                                <FaClock /> {post.readTime}
                                                             </span>
                                                         </div>
                                                         <button className="readMoreButton">
@@ -444,20 +603,28 @@ export default function EntretenimientoPage() {
                                         </div>
                                     ) : (
                                         <div className="noBlogMessage">
-                                            <h3>No hay artículos disponibles</h3>
-                                            <p>No se han publicado artículos aún.</p>
+                                            <h3>No hay artículos seleccionados</h3>
+                                            <p>El administrador no ha seleccionado artículos para mostrar en entretenimiento.</p>
+                                            {isAdmin && (
+                                                <p>
+                                                    <strong>Como administrador, puedes seleccionar artículos usando el botón "Gestionar Artículos" arriba.</strong>
+                                                </p>
+                                            )}
                                         </div>
                                     )}
 
-                                    <div className="sectionFooter">
-                                        <button 
-                                            onClick={goToBlog}
-                                            className="viewMoreButton"
-                                            type="button"
-                                        >
-                                            Ver más artículos
-                                        </button>
-                                    </div>
+                                    {/* Botón para ver más artículos - solo si hay artículos */}
+                                    {blogData.length > 0 && (
+                                        <div className="sectionFooter">
+                                            <button
+                                                onClick={goToBlog}
+                                                className="viewMoreButton"
+                                                type="button"
+                                            >
+                                                Ver más artículos
+                                            </button>
+                                        </div>
+                                    )}
                                 </>
                             )}
                         </div>
@@ -467,7 +634,7 @@ export default function EntretenimientoPage() {
 
                 {/* Botón Sticky para Ver Blog - Solo móvil */}
                 {showStickyButton && (
-                    <button 
+                    <button
                         className="more-content-sticky"
                         onClick={scrollToBlog}
                         aria-label="Ver blog de TRACTODO"
@@ -504,7 +671,7 @@ export default function EntretenimientoPage() {
                                 ) : (
                                     <div className="videoErrorContainer">
                                         <div>Error al cargar el video</div>
-                                        <button 
+                                        <button
                                             className="youtubeButton"
                                             onClick={() => window.open(selectedVideo.youtubeLink, '_blank')}
                                         >
@@ -516,6 +683,13 @@ export default function EntretenimientoPage() {
                         </div>
                     </div>
                 )}
+
+                {/* Modal para mostrar artículo del blog */}
+                <BlogPostModal
+                    postId={selectedPostId}
+                    isOpen={showBlogModal}
+                    onClose={handleCloseBlogModal}
+                />
 
             </main>
 

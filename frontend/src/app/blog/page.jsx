@@ -37,6 +37,104 @@ export default function BlogPage() {
         cargarPosts();
     }, []);
 
+    // ===== NUEVAS FUNCIONES PARA PROCESAR CONTENIDO ===== //
+
+    /**
+     * Limpia el contenido Markdown y convierte a texto plano legible
+     * @param {string} content - Contenido con marcadores Markdown
+     * @returns {string} - Texto limpio sin marcadores
+     */
+    const limpiarMarkdown = (content) => {
+        if (!content) return '';
+        
+        return content
+            // Remover subtítulos (## texto) pero mantener el texto
+            .replace(/^## (.+)$/gm, '$1')
+            // Remover títulos (# texto) pero mantener el texto  
+            .replace(/^# (.+)$/gm, '$1')
+            // Remover negritas (**texto**) pero mantener el texto
+            .replace(/\*\*(.*?)\*\*/g, '$1')
+            // Remover cursivas (*texto*) pero mantener el texto
+            .replace(/\*(.*?)\*/g, '$1')
+            // Normalizar espacios y saltos de línea
+            .replace(/\n\s*\n/g, ' ')
+            .replace(/\n/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+    };
+
+    /**
+     * Genera un excerpt inteligente priorizando subtítulos
+     * @param {object} post - Post con contenido o bloques
+     * @param {number} maxLength - Máximo de caracteres (default: 200)
+     * @returns {string} - Excerpt procesado
+     */
+    const generarExcerptInteligente = (post, maxLength = 200) => {
+        let contenido = '';
+        
+        // PRIORIDAD 1: Si tiene bloques, usar el primer bloque
+        if (post.bloques && Array.isArray(post.bloques) && post.bloques.length > 0) {
+            const primerBloque = post.bloques[0];
+            
+            // Si hay subtítulo, incluirlo como inicio del excerpt
+            if (primerBloque.subtitulo && primerBloque.subtitulo.trim()) {
+                contenido = `${primerBloque.subtitulo.trim()}. `;
+            }
+            
+            // Agregar texto del bloque
+            if (primerBloque.texto && primerBloque.texto.trim()) {
+                const textoLimpio = limpiarMarkdown(primerBloque.texto);
+                contenido += textoLimpio;
+            }
+        } 
+        // PRIORIDAD 2: Usar contenido legacy
+        else if (post.contenido || post.content) {
+            contenido = post.contenido || post.content;
+        }
+        
+        // Limpiar y truncar
+        const contenidoLimpio = limpiarMarkdown(contenido);
+        
+        if (contenidoLimpio.length <= maxLength) {
+            return contenidoLimpio;
+        }
+        
+        // Truncar inteligentemente (por palabras, no por caracteres)
+        const palabras = contenidoLimpio.split(' ');
+        let excerptFinal = '';
+        
+        for (const palabra of palabras) {
+            if ((excerptFinal + palabra + ' ').length > maxLength - 3) {
+                break;
+            }
+            excerptFinal += palabra + ' ';
+        }
+        
+        return excerptFinal.trim() + '...';
+    };
+
+    /**
+     * Extrae el primer subtítulo del contenido para usarlo como título destacado
+     * @param {object} post - Post con contenido o bloques  
+     * @returns {string|null} - Primer subtítulo encontrado o null
+     */
+    const extraerPrimerSubtitulo = (post) => {
+        // Buscar en bloques primero
+        if (post.bloques && Array.isArray(post.bloques) && post.bloques.length > 0) {
+            const primerBloque = post.bloques[0];
+            if (primerBloque.subtitulo && primerBloque.subtitulo.trim()) {
+                return primerBloque.subtitulo.trim();
+            }
+        }
+        
+        // Buscar en contenido legacy
+        const contenido = post.contenido || post.content || '';
+        const subtituloMatch = contenido.match(/^## (.+)$/m);
+        return subtituloMatch ? subtituloMatch[1].trim() : null;
+    };
+
+    // ===== FIN DE NUEVAS FUNCIONES ===== //
+
     const cargarPosts = async () => {
         try {
             setLoading(true);
@@ -46,20 +144,28 @@ export default function BlogPage() {
             const posts = await obtenerPosts();
             console.log('✅ Posts cargados:', posts);
             
-            // Transformar datos del backend al formato esperado por el frontend - ACTUALIZADO
-            const postsFormateados = posts.map(post => ({
-                id: post.id,
-                title: post.titulo || post.title,
-                excerpt: post.contenido ? post.contenido.substring(0, 200) + '...' : 'Sin contenido disponible',
-                content: post.contenido || post.content,
-                images: post.imagenes || (post.imagenUrl ? [post.imagenUrl] : []) || (post.image ? [post.image] : []),
-                publishDate: post.fechaPublicacion || post.fecha || post.publishDate,
-                readTime: calcularTiempoLectura(post.contenido || ''),
-                category: post.categoria || post.category || 'Tracto-Consejos',
-                author: post.autor || "TracTodo",
-                views: Math.floor(Math.random() * 5000) + "K",
-                tags: extraerTags(post.titulo, post.contenido || '')
-            }));
+            // Transformar datos del backend al formato esperado por el frontend - MEJORADO
+            const postsFormateados = posts.map(post => {
+                // Generar excerpt inteligente usando las nuevas funciones
+                const excerptInteligente = generarExcerptInteligente(post, 180);
+                const subtituloDestacado = extraerPrimerSubtitulo(post);
+                
+                return {
+                    id: post.id,
+                    title: post.titulo || post.title,
+                    excerpt: excerptInteligente,
+                    subtituloDestacado: subtituloDestacado, // NUEVO campo para mostrar subtítulo si existe
+                    content: post.contenido || post.content,
+                    images: post.imagenes || (post.imagenUrl ? [post.imagenUrl] : []) || (post.image ? [post.image] : []),
+                    publishDate: post.fechaPublicacion || post.fecha || post.publishDate,
+                    readTime: calcularTiempoLectura(post.contenido || ''),
+                    category: post.categoria || post.category || 'Tracto-Consejos',
+                    author: post.autor || "TracTodo",
+                    views: Math.floor(Math.random() * 5000) + "K",
+                    tags: extraerTags(post.titulo, post.contenido || ''),
+                    bloques: post.bloques || [] // Mantener bloques para el modal
+                };
+            });
             
             setAllPosts(postsFormateados);
         } catch (error) {
@@ -71,7 +177,7 @@ export default function BlogPage() {
         }
     };
 
-    // Funciones auxiliares para procesar datos
+    // Funciones auxiliares para procesar datos (sin cambios)
     const calcularTiempoLectura = (contenido) => {
         const palabrasPorMinuto = 200;
         const numeroPalabras = contenido.split(' ').length;
@@ -101,7 +207,7 @@ export default function BlogPage() {
         return matchesCategory && matchesSearch;
     });
 
-    // NUEVA FUNCIÓN - Abrir modal en lugar de navegar
+    // Abrir modal en lugar de navegar
     const handlePostClick = (post) => {
         setSelectedPostId(post.id);
         setShowPostModal(true);
@@ -109,7 +215,7 @@ export default function BlogPage() {
         document.body.style.overflow = 'hidden';
     };
 
-    // NUEVA FUNCIÓN - Cerrar modal
+    // Cerrar modal
     const handleCloseModal = () => {
         setShowPostModal(false);
         setSelectedPostId(null);
@@ -263,7 +369,7 @@ export default function BlogPage() {
                             ))}
                         </div>
 
-                        {/* Grid de posts */}
+                        {/* Grid de posts - ACTUALIZADO CON NUEVAS FUNCIONES */}
                         {allPosts.length > 0 ? (
                             <div className="postsGrid">
                                 {filteredPosts.map((post) => (
@@ -286,6 +392,12 @@ export default function BlogPage() {
                                         </div>
                                         <div className="postContent">
                                             <h3 className="postTitle">{post.title}</h3>
+                                            
+                                            {/* MOSTRAR SUBTÍTULO DESTACADO SI EXISTE */}
+                                            {post.subtituloDestacado && (
+                                                <h4 className="postSubtitle">{post.subtituloDestacado}</h4>
+                                            )}
+                                            
                                             <p className="postExcerpt">{post.excerpt}</p>
                                             <div className="postMeta">
                                                 <span className="postAuthor">
@@ -294,7 +406,6 @@ export default function BlogPage() {
                                                 <span className="postDate">
                                                     <FaCalendarAlt /> {formatDate(post.publishDate)}
                                                 </span>
-                                    
                                             </div>
                                             <div className="postTags">
                                                 {post.tags.map((tag, index) => (
@@ -334,7 +445,7 @@ export default function BlogPage() {
                 />
             )}
 
-            {/* NUEVO: Modal para mostrar artículo */}
+            {/* Modal para mostrar artículo */}
             <BlogPostModal
                 postId={selectedPostId}
                 isOpen={showPostModal}

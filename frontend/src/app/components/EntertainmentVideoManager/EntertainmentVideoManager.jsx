@@ -18,6 +18,7 @@ export default function EntertainmentVideoManager({ onVideosUpdate }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [isMounted, setIsMounted] = useState(false);
+  const [initialSelectionCount, setInitialSelectionCount] = useState(0);
   const { isAdmin } = useAuth();
 
   useEffect(() => {
@@ -36,6 +37,7 @@ export default function EntertainmentVideoManager({ onVideosUpdate }) {
       ]);
       setVideosSeleccionados(seleccionados);
       setVideosDisponibles(disponibles);
+      setInitialSelectionCount(seleccionados.length);
     } catch (error) {
       console.error('Error al cargar videos:', error);
       setError('Error al cargar videos');
@@ -46,7 +48,7 @@ export default function EntertainmentVideoManager({ onVideosUpdate }) {
 
   const handleAgregarVideo = async (videoId) => {
     if (videosSeleccionados.length >= 5) {
-      setError('Máximo 5 videos permitidos');
+      setError('Máximo 5 videos permitidos en entretenimiento');
       return;
     }
 
@@ -77,6 +79,24 @@ export default function EntertainmentVideoManager({ onVideosUpdate }) {
     }
   };
 
+  const handleClose = () => {
+    // CAMBIO: Validar que tenga EXACTAMENTE 5 videos antes de cerrar
+    if (videosSeleccionados.length !== 5) {
+      setError('Debes seleccionar exactamente 5 videos antes de cerrar');
+      return;
+    }
+
+    setIsModalOpen(false);
+    setError('');
+    
+    // Notificar cambios si hubo modificaciones
+    if (videosSeleccionados.length !== initialSelectionCount) {
+      if (onVideosUpdate) {
+        onVideosUpdate();
+      }
+    }
+  };
+
   const extractYouTubeId = (url) => {
     if (!url) return null;
     const shortsMatch = url.match(/youtube\.com\/shorts\/([a-zA-Z0-9_-]+)/);
@@ -96,17 +116,23 @@ export default function EntertainmentVideoManager({ onVideosUpdate }) {
 
   if (!isAdmin || !isMounted) return null;
 
+  // CAMBIO: Solo se puede cerrar con exactamente 5 videos
+  const canClose = videosSeleccionados.length === 5;
+  const isMaxReached = videosSeleccionados.length >= 5;
+
   const modal = (
-    <div className={styles.overlay} onClick={() => setIsModalOpen(false)}>
+    <div className={styles.overlay} onClick={(e) => e.target === e.currentTarget && canClose && handleClose()}>
       <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
         <div className={styles.header}>
-          <h2>
+          <div className={styles.headerLeft}>
             <FaVideo className={styles.headerIcon} />
-            Gestionar Videos de Entretenimiento
-          </h2>
+            <h2>Gestionar Videos de Entretenimiento</h2>
+          </div>
           <button 
-            className={styles.closeButton} 
-            onClick={() => setIsModalOpen(false)}
+            className={`${styles.closeButton} ${!canClose ? styles.closeButtonDisabled : ''}`}
+            onClick={handleClose}
+            disabled={!canClose}
+            title={canClose ? "Cerrar" : "Debes seleccionar exactamente 5 videos para cerrar"}
           >
             <FaTimes />
           </button>
@@ -156,10 +182,23 @@ export default function EntertainmentVideoManager({ onVideosUpdate }) {
                 ))}
               </div>
             )}
+            
+            {/* CAMBIO: Mensaje actualizado para requerir exactamente 5 videos */}
+            {videosSeleccionados.length < 5 && (
+              <div className={styles.warning}>
+                ⚠️ Debes seleccionar exactamente 5 videos para cerrar (tienes {videosSeleccionados.length}/5)
+              </div>
+            )}
+
+            {isMaxReached && (
+              <div className={styles.maxReached}>
+                ✅ Perfecto! Has seleccionado los 5 videos requeridos
+              </div>
+            )}
           </div>
 
-          {/* Videos Disponibles */}
-          {videosSeleccionados.length < 5 && (
+          {/* Videos Disponibles - SOLO SI NO SE HA ALCANZADO EL MÁXIMO */}
+          {!isMaxReached && (
             <div className={styles.section}>
               <h3>Videos Disponibles</h3>
               {videosDisponibles.length === 0 ? (
@@ -202,10 +241,11 @@ export default function EntertainmentVideoManager({ onVideosUpdate }) {
 
         <div className={styles.footer}>
           <button 
-            className={styles.closeFooterButton}
-            onClick={() => setIsModalOpen(false)}
+            className={`${styles.closeFooterButton} ${!canClose ? styles.closeFooterButtonDisabled : ''}`}
+            onClick={handleClose}
+            disabled={!canClose}
           >
-            Cerrar
+            {canClose ? 'Cerrar' : `Faltan ${5 - videosSeleccionados.length} videos para completar los 5 requeridos`}
           </button>
         </div>
       </div>

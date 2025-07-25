@@ -94,19 +94,24 @@
   overflow: hidden;
 }
 
+.headerLeft {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.headerIcon {
+  font-size: 2rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
 .header h2 {
   margin: 0;
   font-size: 24px;
   font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 12px;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
-}
-
-.headerIcon {
-  font-size: 28px;
+  letter-spacing: 0.5px;
 }
 
 .closeButton {
@@ -123,11 +128,30 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
 }
 
-.closeButton:hover {
+.closeButton:hover:not(:disabled) {
   background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
   transform: scale(1.1);
+}
+
+.closeButtonDisabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background: rgba(239, 68, 68, 0.2) !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+  animation: disabledPulse 2s infinite;
+}
+
+@keyframes disabledPulse {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.6;
+  }
 }
 
 .content {
@@ -159,6 +183,45 @@
   border: 2px solid #fecaca;
   font-weight: 600;
   text-align: center;
+  animation: errorShake 0.5s ease-in-out;
+}
+
+@keyframes errorShake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.warning {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fef3c7 100%);
+  color: #92400e;
+  padding: 16px 20px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 600;
+  margin: 20px 0;
+  border: 2px solid #fbbf24;
+  animation: warningPulse 2s infinite;
+}
+
+@keyframes warningPulse {
+  0%, 100% {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fef3c7 100%);
+  }
+  50% {
+    background: linear-gradient(135deg, #fde68a 0%, #fef3c7 50%, #fde68a 100%);
+  }
+}
+
+.maxReached {
+  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 50%, #dcfce7 100%);
+  color: #15803d;
+  padding: 16px 20px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 600;
+  margin: 20px 0;
+  border: 2px solid #22c55e;
 }
 
 .section {
@@ -324,27 +387,49 @@
 .footer {
   padding: 24px 32px;
   border-top: 3px solid #e0e7ff;
-  background: rgba(243, 244, 246, 0.3);
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   display: flex;
   justify-content: center;
 }
 
 .closeFooterButton {
-  background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
   color: white;
   border: none;
-  padding: 12px 24px;
-  border-radius: 20px;
+  padding: 16px 32px;
+  border-radius: 25px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
-  min-width: 120px;
+  min-width: 200px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
 }
 
-.closeFooterButton:hover {
-  background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
-  transform: translateY(-2px);
+.closeFooterButton:hover:not(:disabled) {
+  background: linear-gradient(135deg, #5b21b6 0%, #6366f1 50%, #8b5cf6 100%);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 35px rgba(99, 102, 241, 0.4);
+}
+
+.closeFooterButtonDisabled {
+  background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%) !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  opacity: 0.6;
+  animation: disabledButtonPulse 2s infinite;
+}
+
+@keyframes disabledButtonPulse {
+  0%, 100% {
+    box-shadow: 0 6px 20px rgba(156, 163, 175, 0.3);
+  }
+  50% {
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.3);
+  }
 }
 
 /* Responsive */
@@ -356,10 +441,16 @@
   
   .header {
     padding: 20px 24px;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    text-align: center;
   }
   
-  .header h2 {
-    font-size: 20px;
+  .closeButton {
+    position: absolute;
+    top: 15px;
+    right: 15px;
   }
   
   .content {
@@ -377,6 +468,11 @@
     justify-content: center;
     padding: 14px 24px;
     font-size: 1rem;
+  }
+  
+  .closeFooterButton {
+    width: 100%;
+    max-width: 320px;
   }
 }
 
@@ -397,5 +493,10 @@
   
   .section h3 {
     font-size: 18px;
+  }
+  
+  .closeFooterButton {
+    font-size: 14px;
+    padding: 14px 24px;
   }
 }

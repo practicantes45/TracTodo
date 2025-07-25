@@ -213,7 +213,7 @@ export default function VideoModal({ isOpen, mode, video, onClose, onSaved }) {
               disabled={loading} 
               className={styles.saveButton}
             >
-              <IoMdSave style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+              <IoMdSave className={styles.saveIcon} />
               {loading ? 'Guardando...' : (mode === 'create' ? 'Crear Video' : 'Actualizar Video')}
             </button>
           </div>

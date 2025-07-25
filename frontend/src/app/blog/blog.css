@@ -1572,3 +1572,41 @@
     font-size: 0.75rem;
   }
 }
+
+/* ===== SUBTÍTULO DESTACADO EN TARJETAS ===== */
+.postSubtitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  margin: 0 0 12px 0;
+  line-height: 1.3;
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+  font-style: italic;
+  border-left: 3px solid var(--accent-color);
+  padding-left: 12px;
+  background: linear-gradient(90deg, 
+    rgba(0, 180, 216, 0.05) 0%, 
+    transparent 100%);
+  border-radius: 0 8px 8px 0;
+  padding: 8px 0 8px 15px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+/* ===== RESPONSIVE PARA SUBTÍTULO ===== */
+@media (max-width: 768px) {
+  .postSubtitle {
+    font-size: 1rem;
+    margin: 0 0 10px 0;
+    padding: 6px 0 6px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .postSubtitle {
+    font-size: 0.95rem;
+    margin: 0 0 8px 0;
+  }
+}
