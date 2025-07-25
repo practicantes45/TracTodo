@@ -1,0 +1,271 @@
+.editorContainer {
+  border: 2px solid rgba(0, 180, 216, 0.2);
+  border-radius: 15px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.editorContainer:focus-within {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.1);
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  border-bottom: 1px solid rgba(0, 180, 216, 0.1);
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.toolbarLeft {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.toolbarRight {
+  display: flex;
+  gap: 10px;
+}
+
+.toolButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: white;
+  border: 1px solid rgba(0, 180, 216, 0.3);
+  color: var(--primary-color);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+}
+
+.toolButton:hover {
+  background: var(--accent-color);
+  color: white;
+  border-color: var(--accent-color);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 180, 216, 0.3);
+}
+
+.previewButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+  border: none;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+}
+
+.previewButton:hover {
+  background: linear-gradient(135deg, var(--accent-color) 0%, #0077b6 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 180, 216, 0.4);
+}
+
+.previewButton.active {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+}
+
+.editorContent {
+  min-height: 400px;
+  max-height: 500px;
+  position: relative;
+}
+
+.textarea {
+  width: 100%;
+  height: 100%;
+  min-height: 400px;
+  padding: 20px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  line-height: 1.6;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  resize: vertical;
+  background: white;
+  color: #333;
+}
+
+.textarea::placeholder {
+  color: #999;
+  font-style: italic;
+}
+
+.preview {
+  padding: 20px;
+  min-height: 400px;
+  max-height: 480px;
+  overflow-y: auto;
+  background: #fafafa;
+  border: 1px solid #e9ecef;
+}
+
+.previewContent {
+  color: #333;
+  line-height: 1.7;
+}
+
+.previewContent p {
+  margin-bottom: 16px;
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+.previewContent p:last-child {
+  margin-bottom: 0;
+}
+
+.previewContent h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin: 24px 0 16px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--accent-color);
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+}
+
+.previewContent h2:first-child {
+  margin-top: 0;
+}
+
+.previewContent strong {
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.previewContent em {
+  font-style: italic;
+  color: #00436e;
+}
+
+.editorFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: #f8f9fa;
+  border-top: 1px solid rgba(0, 180, 216, 0.1);
+  font-size: 0.85rem;
+  color: #666;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.helpText {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-style: italic;
+}
+
+.characterCount {
+  background: rgba(0, 180, 216, 0.1);
+  color: var(--accent-color);
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-family: monospace;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+  }
+  
+  .toolbarLeft, .toolbarRight {
+    justify-content: center;
+  }
+  
+  .toolButton, .previewButton {
+    flex: 1;
+    justify-content: center;
+    min-width: 120px;
+  }
+  
+  .editorFooter {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+  }
+  
+  .helpText {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .toolbarLeft {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  
+  .toolButton {
+    font-size: 0.8rem;
+    padding: 8px 10px;
+  }
+  
+  .textarea {
+    padding: 15px;
+    font-size: 0.95rem;
+  }
+  
+  .preview {
+    padding: 15px;
+  }
+}
+
+/* Animaciones */
+.toolButton, .previewButton {
+  position: relative;
+  overflow: hidden;
+}
+
+.toolButton::before, .previewButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.toolButton:hover::before, .previewButton:hover::before {
+  left: 100%;
+}
+
+/* Estilos para el contenido de vista previa */
+.previewContent :global(.previewSubtitle) {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin: 24px 0 16px 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--accent-color);
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+}

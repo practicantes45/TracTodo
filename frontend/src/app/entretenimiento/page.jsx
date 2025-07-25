@@ -9,6 +9,7 @@ import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
 import EntertainmentVideoManager from '../components/EntertainmentVideoManager/EntertainmentVideoManager';
 import { useAuth } from '../../hooks/useAuth';
 import { obtenerVideosSeleccionados } from '../../services/entretenimientoVideoService';
+import { obtenerPosts } from '../../services/blogService';
 
 export default function EntretenimientoPage() {
     const router = useRouter();
@@ -17,61 +18,20 @@ export default function EntretenimientoPage() {
     const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
     const [showStickyButton, setShowStickyButton] = useState(true);
     const [shortsData, setShortsData] = useState([]);
+    const [blogData, setBlogData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [blogLoading, setBlogLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    // Datos del blog - mantienen los datos locales como estaban
-    const blogData = [
-        {
-            id: 1,
-            title: "Cuando considerar una media reparación",
-            excerpt: "La inversión en un tractocamión es considerable, y maximizar su vida útil es fundamental para el negocio del transporte.",
-            image: "/imgs/blog-1.jpg",
-            publishDate: "2024-01-18",
-            readTime: "5 min",
-            category: "Mantenimiento"
-        },
-        {
-            id: 2,
-            title: "La importancia de una cabeza de motor en buen estado",
-            excerpt: "Una cabeza de motor en mal estado puede ser un enemigo silencioso, afectando el consumo de combustible, la potencia y, en última instancia, elevando los costos operativos.",
-            image: "/imgs/blog-2.jpg",
-            publishDate: "2024-01-15",
-            readTime: "3 min",
-            category: "Reparaciones"
-        },
-        {
-            id: 3,
-            title: "Cómo elegir las refacciones correctas para tu motor",
-            excerpt: "Elegir las refacciones adecuadas es crucial para mantener el rendimiento óptimo de tu vehículo pesado y evitar costosas reparaciones futuras.",
-            image: "/imgs/blog-3.jpg",
-            publishDate: "2024-01-12",
-            readTime: "4 min",
-            category: "Guías"
-        },
-        {
-            id: 4,
-            title: "Mantenimiento preventivo: Calendario anual para tu flota",
-            excerpt: "Un programa de mantenimiento preventivo bien estructurado puede reducir hasta un 40% los costos de reparación y aumentar significativamente la vida útil de tus vehículos.",
-            image: "/imgs/blog-4.jpg",
-            publishDate: "2024-01-08",
-            readTime: "7 min",
-            category: "Mantenimiento"
-        },
-        {
-            id: 5,
-            title: "Síntomas de problemas en el sistema de inyección",
-            excerpt: "Identificar tempranamente los problemas en el sistema de inyección puede ahorrarte miles de pesos en reparaciones mayores.",
-            image: "/imgs/blog-5.jpg",
-            publishDate: "2024-01-05",
-            readTime: "6 min",
-            category: "Diagnóstico"
-        }
-    ];
+    const [blogError, setBlogError] = useState(null);
 
     // Cargar videos seleccionados del backend
     useEffect(() => {
         cargarVideosSeleccionados();
+    }, []);
+
+    // Cargar posts del blog del backend
+    useEffect(() => {
+        cargarPostsBlog();
     }, []);
 
     const cargarVideosSeleccionados = async () => {
@@ -95,11 +55,48 @@ export default function EntretenimientoPage() {
         } catch (error) {
             console.error('❌ Error al cargar videos seleccionados:', error);
             setError('Error al cargar los videos. Inténtalo de nuevo.');
-            // En caso de error, usar array vacío
             setShortsData([]);
         } finally {
             setLoading(false);
         }
+    };
+
+    const cargarPostsBlog = async () => {
+        try {
+            setBlogLoading(true);
+            setBlogError(null);
+            console.log('📚 Cargando posts del blog para entretenimiento...');
+            
+            const posts = await obtenerPosts();
+            console.log('✅ Posts del blog cargados:', posts);
+            
+            // Transformar datos del backend al formato esperado por el frontend
+            const postsFormateados = posts.slice(0, 5).map(post => ({
+                id: post.id,
+                title: post.titulo || post.title,
+                excerpt: post.contenido ? post.contenido.substring(0, 200) + '...' : 'Sin contenido disponible',
+                image: (post.imagenes && post.imagenes[0]) || post.imagenUrl || post.image || '/imgs/default-blog.jpg',
+                publishDate: post.fechaPublicacion || post.fecha || post.publishDate || new Date().toISOString(),
+                readTime: calcularTiempoLectura(post.contenido || ''),
+                category: post.categoria || post.category || 'Tracto-Consejos'
+            }));
+            
+            setBlogData(postsFormateados);
+        } catch (error) {
+            console.error('❌ Error al cargar posts del blog:', error);
+            setBlogError('Error al cargar los artículos del blog.');
+            setBlogData([]);
+        } finally {
+            setBlogLoading(false);
+        }
+    };
+
+    // Función auxiliar para calcular tiempo de lectura
+    const calcularTiempoLectura = (contenido) => {
+        const palabrasPorMinuto = 200;
+        const numeroPalabras = contenido.split(' ').length;
+        const minutos = Math.ceil(numeroPalabras / palabrasPorMinuto);
+        return `${minutos} min`;
     };
 
     // Manejar actualizaciones cuando el admin modifica videos
@@ -384,7 +381,7 @@ export default function EntretenimientoPage() {
                             )}
                         </div>
 
-                        {/* Sección de Blog - mantiene el comportamiento original */}
+                        {/* Sección de Blog - ahora desde la base de datos */}
                         <div className="blogSection">
                             <div className="sectionHeader">
                                 <h2>BLOG</h2>
@@ -393,45 +390,76 @@ export default function EntretenimientoPage() {
                                 </p>
                             </div>
 
-                            <div className="blogGrid">
-                                {blogData.map((post) => (
-                                    <article
-                                        key={post.id}
-                                        className="blogCard"
-                                        onClick={() => handleBlogClick(post)}
-                                    >
-                                        <div className="blogImageContainer">
-                                            <img src={post.image} alt={post.title} className="blogImage" />
-                                            <div className="blogCategory">{post.category}</div>
-                                        </div>
-                                        <div className="blogContent">
-                                            <h3 className="blogTitle">{post.title}</h3>
-                                            <p className="blogExcerpt">{post.excerpt}</p>
-                                            <div className="blogMeta">
-                                                <span className="blogDate">
-                                                    <FaCalendarAlt /> {formatDate(post.publishDate)}
-                                                </span>
-                                                <span className="blogReadTime">
-                                                    <FaClock /> {post.readTime}
-                                                </span>
-                                            </div>
-                                            <button className="readMoreButton">
-                                                <span>Leer más</span>
-                                            </button>
-                                        </div>
-                                    </article>
-                                ))}
-                            </div>
+                            {/* Estado de carga del blog */}
+                            {blogLoading && (
+                                <div className="loadingContainer">
+                                    <h3>Cargando artículos...</h3>
+                                    <p>Por favor espera un momento</p>
+                                </div>
+                            )}
 
-                            <div className="sectionFooter">
-                                <button 
-                                    onClick={goToBlog}
-                                    className="viewMoreButton"
-                                    type="button"
-                                >
-                                    Ver más artículos
-                                </button>
-                            </div>
+                            {/* Estado de error del blog */}
+                            {blogError && (
+                                <div className="errorContainer">
+                                    <h3>Error al cargar artículos</h3>
+                                    <p>{blogError}</p>
+                                    <button onClick={cargarPostsBlog} className="retryButton">
+                                        Intentar de nuevo
+                                    </button>
+                                </div>
+                            )}
+
+                            {/* Grid de blog */}
+                            {!blogLoading && !blogError && (
+                                <>
+                                    {blogData.length > 0 ? (
+                                        <div className="blogGrid">
+                                            {blogData.map((post) => (
+                                                <article
+                                                    key={post.id}
+                                                    className="blogCard"
+                                                    onClick={() => handleBlogClick(post)}
+                                                >
+                                                    <div className="blogImageContainer">
+                                                        <img src={post.image} alt={post.title} className="blogImage" />
+                                                        <div className="blogCategory">{post.category}</div>
+                                                    </div>
+                                                    <div className="blogContent">
+                                                        <h3 className="blogTitle">{post.title}</h3>
+                                                        <p className="blogExcerpt">{post.excerpt}</p>
+                                                        <div className="blogMeta">
+                                                            <span className="blogDate">
+                                                                <FaCalendarAlt /> {formatDate(post.publishDate)}
+                                                            </span>
+                                                            <span className="blogReadTime">
+                                                                <FaClock /> {post.readTime}
+                                                            </span>
+                                                        </div>
+                                                        <button className="readMoreButton">
+                                                            <span>Leer más</span>
+                                                        </button>
+                                                    </div>
+                                                </article>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="noBlogMessage">
+                                            <h3>No hay artículos disponibles</h3>
+                                            <p>No se han publicado artículos aún.</p>
+                                        </div>
+                                    )}
+
+                                    <div className="sectionFooter">
+                                        <button 
+                                            onClick={goToBlog}
+                                            className="viewMoreButton"
+                                            type="button"
+                                        >
+                                            Ver más artículos
+                                        </button>
+                                    </div>
+                                </>
+                            )}
                         </div>
 
                     </div>
