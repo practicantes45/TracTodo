@@ -1,0 +1,396 @@
+/* ===== COMPONENTE VIDEO SECTION ===== */
+.videoSection {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 25px;
+  padding: 40px;
+  box-shadow:
+    0 20px 60px rgba(0, 42, 92, 0.08),
+    0 8px 25px rgba(0, 180, 216, 0.05),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 180, 216, 0.1);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  text-align: center;
+  width: 100%;
+}
+
+.videoSection:hover {
+  transform: translateY(-5px);
+  box-shadow:
+    0 30px 80px rgba(0, 42, 92, 0.12),
+    0 12px 35px rgba(0, 180, 216, 0.08);
+}
+
+.videoSection h2 {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  margin-bottom: 20px;
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+  font-weight: 700;
+  position: relative;
+  text-shadow: 0 2px 4px rgba(0, 42, 92, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.titleIcon {
+  color: var(--accent-color);
+  font-size: 2.2rem;
+  transition: all 0.3s ease;
+}
+
+.videoSection:hover .titleIcon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+.videoDescription {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 30px;
+  line-height: 1.6;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+}
+
+/* ===== CONTENEDOR DEL THUMBNAIL DE VIDEO ===== */
+.youtubeVideoContainer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  border-radius: 20px;
+  overflow: hidden;
+  max-width: 605px;
+  width: 100%;
+  aspect-ratio: 16/9;
+  box-shadow: 0 15px 40px rgba(0, 42, 92, 0.15);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.youtubeVideoContainer:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 25px 60px rgba(0, 42, 92, 0.2);
+}
+
+.videoThumbnail {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.thumbnailImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: all 0.3s ease;
+}
+
+.youtubeVideoContainer:hover .thumbnailImage {
+  transform: scale(1.05);
+  filter: brightness(0.7);
+}
+
+.playButton {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff0000;
+  font-size: 2rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.youtubeVideoContainer:hover .playButton {
+  transform: translate(-50%, -50%) scale(1.1);
+  background: rgba(255, 255, 255, 1);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.4);
+}
+
+.playButton svg {
+  margin-left: 5px;
+}
+
+/* ===== MODALES ===== */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.95);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.videoModal {
+  position: relative;
+  width: 90vw;
+  height: 90vh;
+  max-width: 1200px;
+  max-height: 675px;
+  background: #000;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.7);
+  animation: modalSlideIn 0.4s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    transform: scale(0.8) translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.videoModalContent {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.modalVideo {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 15px;
+}
+
+.modalClose {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 45px;
+  height: 45px;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  color: #333;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10001;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.modalClose:hover {
+  background: rgba(255, 0, 0, 0.9);
+  color: white;
+  transform: scale(1.1);
+}
+
+/* ===== VARIANTES DE ESTILO ===== */
+.videoSection.envios {
+  border: 1px solid rgba(40, 167, 69, 0.1);
+  box-shadow:
+    0 20px 60px rgba(40, 167, 69, 0.08),
+    0 8px 25px rgba(34, 139, 34, 0.05);
+}
+
+.videoSection.envios h2 {
+  color: #28a745;
+}
+
+.videoSection.envios .titleIcon {
+  color: #28a745;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 1024px) {
+  .videoSection {
+    padding: 35px;
+  }
+  
+  .videoSection h2 {
+    font-size: 2.3rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .videoSection {
+    padding: 25px 20px;
+    border-radius: 20px;
+  }
+  
+  .videoSection h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .titleIcon {
+    font-size: 1.8rem;
+  }
+  
+  .videoDescription {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+  
+  .youtubeVideoContainer {
+    border-radius: 12px;
+  }
+  
+  .playButton {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+  
+  .videoModal {
+    width: 98vw;
+    height: 70vh;
+    border-radius: 10px;
+  }
+  
+  .modalClose {
+    width: 35px;
+    height: 35px;
+    font-size: 1.2rem;
+    top: 10px;
+    right: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .videoSection {
+    padding: 20px 15px;
+  }
+  
+  .videoSection h2 {
+    font-size: 1.8rem;
+  }
+  
+  .titleIcon {
+    font-size: 1.6rem;
+  }
+  
+  .youtubeVideoContainer {
+    border-radius: 10px;
+  }
+  
+  .playButton {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+  }
+  
+  .videoModal {
+    height: 60vh;
+  }
+  
+  .modalClose {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .videoSection {
+    padding: 15px 10px;
+    border-radius: 15px;
+  }
+  
+  .videoSection h2 {
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+  }
+  
+  .titleIcon {
+    font-size: 1.4rem;
+  }
+  
+  .videoDescription {
+    font-size: 0.85rem;
+    margin-bottom: 15px;
+  }
+  
+  .youtubeVideoContainer {
+    border-radius: 8px;
+  }
+  
+  .playButton {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  
+  .videoModal {
+    height: 55vh;
+  }
+  
+  .modalClose {
+    width: 28px;
+    height: 28px;
+    font-size: 0.9rem;
+    top: 8px;
+    right: 8px;
+  }
+}
+
+/* Respeto por preferencias de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  .videoSection,
+  .youtubeVideoContainer,
+  .playButton,
+  .modalClose,
+  .videoModal,
+  .titleIcon {
+    transition: none;
+  }
+  
+  .modalFadeIn,
+  .modalSlideIn {
+    animation: none;
+  }
+}
+
+/* Optimización para dispositivos táctiles */
+@media (hover: none) and (pointer: coarse) {
+  .videoSection:active {
+    transform: scale(0.98);
+  }
+  
+  .youtubeVideoContainer:active {
+    transform: scale(0.98);
+  }
+  
+  .modalClose:active {
+    transform: scale(0.9);
+  }
+}

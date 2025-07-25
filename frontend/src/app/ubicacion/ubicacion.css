@@ -1521,3 +1521,80 @@
     width: 100%;
   }
 }
+/* ===== CONTENEDOR DE VIDEOS ===== */
+.videosContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  flex: 0 0 450px;
+  min-width: 450px;
+}
+
+/* Ajustar el contenedor principal */
+.locationContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  gap: 60px;
+  align-items: flex-start;
+  position: relative;
+  z-index: 2;
+}
+
+/* Remover estilos antiguos de videoSection ya que ahora está en el componente */
+
+/* ===== RESPONSIVE PARA EL NUEVO LAYOUT ===== */
+@media (max-width: 1199px) {
+  .videosContainer {
+    flex: 0 0 400px;
+    min-width: 400px;
+  }
+  
+  .locationContainer {
+    gap: 40px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .locationContainer {
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+  }
+  
+  .videosContainer {
+    flex: none;
+    max-width: 600px;
+    width: 100%;
+    min-width: auto;
+  }
+  
+  .mapSection {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .videosContainer {
+    max-width: 100%;
+    gap: 25px;
+  }
+  
+  .locationContainer {
+    gap: 30px;
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .videosContainer {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 360px) {
+  .videosContainer {
+    gap: 15px;
+  }
+}
