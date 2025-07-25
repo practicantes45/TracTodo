@@ -1,93 +1,96 @@
 'use client';
 import './blog.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { FaSearch, FaCalendarAlt, FaClock, FaEye, FaUser, FaTag, FaArrowLeft } from "react-icons/fa";
+import { FaSearch, FaCalendarAlt, FaClock, FaEye, FaUser, FaTag, FaArrowLeft, FaCog } from "react-icons/fa";
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
+import BlogManager from '../components/BlogManager/BlogManager';
+import BlogPostModal from '../components/BlogPostModal/BlogPostModal';
+import { useAuth } from '../../hooks/useAuth';
+import { obtenerPosts } from '../../services/blogService';
 
 export default function BlogPage() {
     const router = useRouter();
+    const { isAdmin } = useAuth();
     const [selectedCategory, setSelectedCategory] = useState('todos');
     const [searchTerm, setSearchTerm] = useState('');
+    const [allPosts, setAllPosts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [showBlogManager, setShowBlogManager] = useState(false);
+    const [selectedPostId, setSelectedPostId] = useState(null);
+    const [showPostModal, setShowPostModal] = useState(false);
 
-    // Datos de posts del blog - Solo 5 artículos
-    const allPosts = [
-        {
-            id: 1,
-            title: "Cuando considerar una media reparación",
-            excerpt: "La inversión en un tractocamión es considerable, y maximizar su vida útil es fundamental para el negocio del transporte.",
-            content: "La inversión en un tractocamión es considerable, y maximizar su vida útil es fundamental para el negocio del transporte. Una media reparación puede ser la diferencia entre seguir operando de manera rentable o enfrentar costosos gastos de reemplazo...",
-            image: "/imgs/blog-1.jpg",
-            publishDate: "2024-01-18",
-            readTime: "5 min",
-            category: "Mantenimiento",
-            author: "TRACTODO",
-            views: "2.3K",
-            tags: ["mantenimiento", "reparación", "tractocamión", "motor"]
-        },
-        {
-            id: 2,
-            title: "La importancia de una cabeza de motor en buen estado",
-            excerpt: "Una cabeza de motor en mal estado puede ser un enemigo silencioso, afectando el consumo de combustible, la potencia y, en última instancia, elevando los costos operativos.",
-            content: "Una cabeza de motor en mal estado puede ser un enemigo silencioso, afectando el consumo de combustible, la potencia y, en última instancia, elevando los costos operativos. Es fundamental entender cuándo y cómo realizar el mantenimiento adecuado...",
-            image: "/imgs/blog-2.jpg",
-            publishDate: "2024-01-15",
-            readTime: "3 min",
-            category: "Reparaciones",
-            author: "TRACTODO",
-            views: "1.8K",
-            tags: ["cabeza motor", "reparaciones", "consumo", "potencia"]
-        },
-        {
-            id: 3,
-            title: "Cómo elegir las refacciones correctas para tu motor",
-            excerpt: "Elegir las refacciones adecuadas es crucial para mantener el rendimiento óptimo de tu vehículo pesado y evitar costosas reparaciones futuras.",
-            content: "Elegir las refacciones adecuadas es crucial para mantener el rendimiento óptimo de tu vehículo pesado y evitar costosas reparaciones futuras. La calidad de las piezas puede marcar la diferencia entre un motor que dure años o uno que falle prematuramente...",
-            image: "/imgs/blog-3.jpg",
-            publishDate: "2024-01-12",
-            readTime: "4 min",
-            category: "Guías",
-            author: "TRACTODO",
-            views: "3.1K",
-            tags: ["refacciones", "guía", "calidad", "selección"]
-        },
-        {
-            id: 4,
-            title: "Mantenimiento preventivo: Calendario anual para tu flota",
-            excerpt: "Un programa de mantenimiento preventivo bien estructurado puede reducir hasta un 40% los costos de reparación y aumentar significativamente la vida útil de tus vehículos.",
-            content: "Un programa de mantenimiento preventivo bien estructurado puede reducir hasta un 40% los costos de reparación y aumentar significativamente la vida útil de tus vehículos. Te presentamos un calendario completo para organizar el mantenimiento de tu flota...",
-            image: "/imgs/blog-4.jpg",
-            publishDate: "2024-01-08",
-            readTime: "7 min",
-            category: "Mantenimiento",
-            author: "TRACTODO",
-            views: "4.2K",
-            tags: ["preventivo", "calendario", "flota", "programación"]
-        },
-        {
-            id: 5,
-            title: "Síntomas de problemas en el sistema de inyección",
-            excerpt: "Identificar tempranamente los problemas en el sistema de inyección puede ahorrarte miles de pesos en reparaciones mayores.",
-            content: "Identificar tempranamente los problemas en el sistema de inyección puede ahorrarte miles de pesos en reparaciones mayores. Los síntomas pueden ser sutiles al principio, pero conocer las señales de alerta es fundamental...",
-            image: "/imgs/blog-5.jpg",
-            publishDate: "2024-01-05",
-            readTime: "6 min",
-            category: "Diagnóstico",
-            author: "TRACTODO",
-            views: "2.7K",
-            tags: ["inyección", "síntomas", "diagnóstico", "problemas"]
-        }
-    ];
-
+    // CATEGORÍAS ACTUALIZADAS
     const categories = [
         { id: 'todos', label: 'Todos los Artículos' },
-        { id: 'Mantenimiento', label: 'Mantenimiento' },
-        { id: 'Reparaciones', label: 'Reparaciones' },
-        { id: 'Guías', label: 'Guías' },
-        { id: 'Diagnóstico', label: 'Diagnóstico' }
+        { id: 'Tracto-Consejos', label: 'Tracto-Consejos' },
+        { id: 'Tracto-Promociones', label: 'Tracto-Promociones' },
+        { id: 'Tracto-Casos de Éxito', label: 'Tracto-Casos de Éxito' },
+        { id: 'Tracto-Preguntas Frecuentes', label: 'Tracto-Preguntas Frecuentes' }
     ];
+
+    // Cargar posts del backend al montar el componente
+    useEffect(() => {
+        cargarPosts();
+    }, []);
+
+    const cargarPosts = async () => {
+        try {
+            setLoading(true);
+            setError(null);
+            console.log('📚 Cargando posts del blog desde la base de datos...');
+            
+            const posts = await obtenerPosts();
+            console.log('✅ Posts cargados:', posts);
+            
+            // Transformar datos del backend al formato esperado por el frontend - ACTUALIZADO
+            const postsFormateados = posts.map(post => ({
+                id: post.id,
+                title: post.titulo || post.title,
+                excerpt: post.contenido ? post.contenido.substring(0, 200) + '...' : 'Sin contenido disponible',
+                content: post.contenido || post.content,
+                images: post.imagenes || (post.imagenUrl ? [post.imagenUrl] : []) || (post.image ? [post.image] : []),
+                publishDate: post.fechaPublicacion || post.fecha || post.publishDate,
+                readTime: calcularTiempoLectura(post.contenido || ''),
+                category: post.categoria || post.category || 'Tracto-Consejos',
+                author: post.autor || "TracTodo",
+                views: Math.floor(Math.random() * 5000) + "K",
+                tags: extraerTags(post.titulo, post.contenido || '')
+            }));
+            
+            setAllPosts(postsFormateados);
+        } catch (error) {
+            console.error('❌ Error al cargar posts:', error);
+            setError('Error al cargar los artículos del blog. Inténtalo de nuevo.');
+            setAllPosts([]);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Funciones auxiliares para procesar datos
+    const calcularTiempoLectura = (contenido) => {
+        const palabrasPorMinuto = 200;
+        const numeroPalabras = contenido.split(' ').length;
+        const minutos = Math.ceil(numeroPalabras / palabrasPorMinuto);
+        return `${minutos} min`;
+    };
+
+    const extraerTags = (titulo, contenido) => {
+        const texto = `${titulo || ''} ${contenido || ''}`.toLowerCase();
+        const tagsComunes = ['tracto', 'motor', 'reparación', 'mantenimiento', 'refacciones', 'diagnóstico', 'tractocamión', 'sistema', 'problemas'];
+        return tagsComunes.filter(tag => texto.includes(tag)).slice(0, 4);
+    };
+
+    // Manejar actualizaciones desde el admin
+    const handleBlogUpdate = async () => {
+        console.log('🔄 Recargando posts después de actualización admin...');
+        await cargarPosts();
+        setShowBlogManager(false);
+    };
 
     // Filtrar posts según categoría y búsqueda
     const filteredPosts = allPosts.filter(post => {
@@ -98,9 +101,20 @@ export default function BlogPage() {
         return matchesCategory && matchesSearch;
     });
 
+    // NUEVA FUNCIÓN - Abrir modal en lugar de navegar
     const handlePostClick = (post) => {
-        // Redirigir a la página individual del artículo usando router
-        router.push(`/blog/${post.id}`);
+        setSelectedPostId(post.id);
+        setShowPostModal(true);
+        // Prevenir scroll del body cuando el modal está abierto
+        document.body.style.overflow = 'hidden';
+    };
+
+    // NUEVA FUNCIÓN - Cerrar modal
+    const handleCloseModal = () => {
+        setShowPostModal(false);
+        setSelectedPostId(null);
+        // Restaurar scroll del body
+        document.body.style.overflow = 'unset';
     };
 
     const formatDate = (dateString) => {
@@ -117,97 +131,122 @@ export default function BlogPage() {
         return allPosts.filter(post => post.category === categoryId).length;
     };
 
-    const handleBackToEntertainment = () => {
-        router.push('/entretenimiento');
+    // Función para manejar imágenes no encontradas
+    const handleImageError = (e) => {
+        e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0yMDAgMTAwTDE1MCA3NUwyNTAgNzVMMjAwIDEwMFoiIGZpbGw9IiNEMUQ1REIiLz4KPGV4dCB4PSIyMDAiIHk9IjEzMCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmaWxsPSIjNjU3Mzg5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JbWFnZW4gbm8gZW5jb250cmFkYTwvdGV4dD4KPC9zdmc+';
+        e.target.alt = 'Imagen no encontrada';
     };
 
-    // Obtener el post destacado (más reciente)
-    const featuredPost = allPosts[0];
+    // Post destacado (el más reciente)
+    const featuredPost = allPosts.length > 0 ? allPosts[0] : null;
+    const relatedPosts = allPosts.slice(1);
 
-    // Posts relacionados (excluyendo el destacado)
-    const relatedPosts = filteredPosts.slice(1);
-
-    return (
-        <div className="layout blog-page">
-            
-            <Navbar />
-
-            <main className="mainContent">
-                {/* Hero Section */}
+    if (loading) {
+        return (
+            <div className="blog-page">
+                <Navbar />
                 <div className="heroSection">
                     <div className="heroOverlay">
                         <div className="heroContent">
-                            <h1>Blog TRACTODO</h1>
+                            <h1>BLOG TRACTODO</h1>
                         </div>
                     </div>
                 </div>
+                <main className="mainContent">
+                    <section className="blogMainSection">
+                        <div className="blogContainer">
+                            <div className="loadingContainer">
+                                <h2>Cargando artículos...</h2>
+                                <p>Obteniendo contenido desde la base de datos...</p>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+                <Footer />
+                <ScrollToTop />
+            </div>
+        );
+    }
 
-                {/* Sección principal del blog */}
+    if (error) {
+        return (
+            <div className="blog-page">
+                <Navbar />
+                <div className="heroSection">
+                    <div className="heroOverlay">
+                        <div className="heroContent">
+                            <h1>BLOG TRACTODO</h1>
+                        </div>
+                    </div>
+                </div>
+                <main className="mainContent">
+                    <section className="blogMainSection">
+                        <div className="blogContainer">
+                            <div className="errorContainer">
+                                <h2>Error al cargar artículos</h2>
+                                <p>{error}</p>
+                                <button onClick={cargarPosts} className="retryButton">
+                                    Intentar de nuevo
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                </main>
+                <Footer />
+                <ScrollToTop />
+            </div>
+        );
+    }
+
+    return (
+        <div className="blog-page">
+            <Navbar />
+            
+            {/* Hero Section */}
+            <div className="heroSection">
+                <div className="heroOverlay">
+                    <div className="heroContent">
+                        <h1>BLOG TRACTODO</h1>
+                    </div>
+                </div>
+            </div>
+
+            <main className="mainContent">
                 <section className="blogMainSection">
                     <div className="blogContainer">
                         
                         {/* Botón de regreso */}
                         <div className="backButtonContainer">
                             <button 
-                                className="backButton" 
-                                onClick={handleBackToEntertainment}
-                                aria-label="Regresar a entretenimiento"
+                                onClick={() => router.back()}
+                                className="backButton"
+                                aria-label="Regresar a la página anterior"
                             >
                                 <FaArrowLeft className="backIcon" />
-                                Regresar a Entretenimiento
+                                Regresar a entretenimiento
                             </button>
                         </div>
 
-
-                        {/* Post destacado */}
-                        <div className="featuredSection">
-                            <h3>Artículo Destacado</h3>
-                            <article className="featuredPost" onClick={() => handlePostClick(featuredPost)}>
-                                <div className="featuredImageContainer">
-                                    <img 
-                                        src={featuredPost.image} 
-                                        alt={featuredPost.title}
-                                        className="featuredImage"
-                                    />
-                                    <div className="featuredCategory">{featuredPost.category}</div>
-                                </div>
-                                <div className="featuredContent">
-                                    <h4 className="featuredTitle">{featuredPost.title}</h4>
-                                    <p className="featuredExcerpt">{featuredPost.excerpt}</p>
-                                    <div className="featuredMeta">
-                                        <span className="featuredAuthor">
-                                            <FaUser /> {featuredPost.author}
-                                        </span>
-                                        <span className="featuredDate">
-                                            <FaCalendarAlt /> {formatDate(featuredPost.publishDate)}
-                                        </span>
-                                        <span className="featuredViews">
-                                            <FaEye /> {featuredPost.views} vistas
-                                        </span>
-                                        <span className="featuredReadTime">
-                                            <FaClock /> {featuredPost.readTime}
-                                        </span>
-                                    </div>
-                                    <div className="featuredTags">
-                                        {featuredPost.tags.map((tag, index) => (
-                                            <span key={index} className="featuredTag">
-                                                <FaTag /> {tag}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </div>
-                                
-                            </article>
-                        </div>
-
-                        
-                        {/* Header con estadísticas y búsqueda */}
+                        {/* Header con estadísticas y botón de gestión admin */}
                         <div className="blogHeader">
                             <div className="blogStats">
                                 <h2>Artículos del Blog</h2>
                                 <p>{filteredPosts.length} artículos encontrados</p>
                             </div>
-                        
+                            
+                            {/* Botón de gestión para admin */}
+                            {isAdmin && (
+                                <div className="adminActionsContainer">
+                                    <button
+                                        className="manageBlogButton"
+                                        onClick={() => setShowBlogManager(true)}
+                                        title="Gestionar artículos del blog"
+                                    >
+                                        <FaCog className="manageIcon" />
+                                        Gestionar Blog
+                                    </button>
+                                </div>
+                            )}
                         </div>
 
                         {/* Filtros de categorías con contadores */}
@@ -225,9 +264,9 @@ export default function BlogPage() {
                         </div>
 
                         {/* Grid de posts */}
-                        {relatedPosts.length > 0 ? (
+                        {allPosts.length > 0 ? (
                             <div className="postsGrid">
-                                {relatedPosts.map((post) => (
+                                {filteredPosts.map((post) => (
                                     <article
                                         key={post.id}
                                         className="postCard"
@@ -235,11 +274,15 @@ export default function BlogPage() {
                                     >
                                         <div className="postImageContainer">
                                             <img 
-                                                src={post.image} 
-                                                alt={post.title}
+                                                src={(post.images && post.images[0]) || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0yMDAgMTAwTDE1MCA3NUwyNTAgNzVMMjAwIDEwMFoiIGZpbGw9IiNEMUQ1REIiLz4KPGV4dCB4PSIyMDAiIHk9IjEzMCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmaWxsPSIjNjU3Mzg5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JbWFnZW4gbm8gZW5jb250cmFkYTwvdGV4dD4KPC9zdmc+'} 
+                                                alt={post.title} 
                                                 className="postImage"
+                                                onError={handleImageError}
                                             />
                                             <div className="postCategory">{post.category}</div>
+                                            {post.images && post.images.length > 1 && (
+                                                <div className="imageCount">+{post.images.length - 1}</div>
+                                            )}
                                         </div>
                                         <div className="postContent">
                                             <h3 className="postTitle">{post.title}</h3>
@@ -251,19 +294,12 @@ export default function BlogPage() {
                                                 <span className="postDate">
                                                     <FaCalendarAlt /> {formatDate(post.publishDate)}
                                                 </span>
-                                            </div>
-                                            <div className="postStats">
-                                                <span className="postViews">
-                                                    <FaEye /> {post.views}
-                                                </span>
-                                                <span className="postReadTime">
-                                                    <FaClock /> {post.readTime}
-                                                </span>
+                                    
                                             </div>
                                             <div className="postTags">
-                                                {post.tags.slice(0, 3).map((tag, index) => (
+                                                {post.tags.map((tag, index) => (
                                                     <span key={index} className="postTag">
-                                                        {tag}
+                                                        <FaTag /> {tag}
                                                     </span>
                                                 ))}
                                             </div>
@@ -272,19 +308,38 @@ export default function BlogPage() {
                                 ))}
                             </div>
                         ) : (
-                            <div className="noResults">
-                                <h3>No se encontraron artículos</h3>
-                                <p>Intenta cambiar los filtros o términos de búsqueda</p>
+                            <div className="noPostsContainer">
+                                <h3>No hay artículos disponibles</h3>
+                                <p>Aún no se han publicado artículos en esta categoría.</p>
+                                {isAdmin && (
+                                    <p>
+                                        <strong>Como administrador, puedes agregar artículos usando el botón "Gestionar Blog" arriba.</strong>
+                                    </p>
+                                )}
                             </div>
                         )}
 
                     </div>
                 </section>
-
             </main>
 
             <Footer />
             <ScrollToTop />
+
+            {/* Modal de gestión del blog para admin */}
+            {isAdmin && showBlogManager && (
+                <BlogManager 
+                    onClose={() => setShowBlogManager(false)}
+                    onUpdate={handleBlogUpdate}
+                />
+            )}
+
+            {/* NUEVO: Modal para mostrar artículo */}
+            <BlogPostModal
+                postId={selectedPostId}
+                isOpen={showPostModal}
+                onClose={handleCloseModal}
+            />
         </div>
     );
 }
