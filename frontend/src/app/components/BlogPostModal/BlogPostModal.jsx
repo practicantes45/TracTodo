@@ -1,6 +1,6 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { FaTimes, FaCalendarAlt, FaUser, FaShare } from 'react-icons/fa';
+import { FaTimes, FaCalendarAlt, FaUser, FaShare, FaArrowLeft } from 'react-icons/fa';
 import { obtenerPostPorId } from '../../../services/blogService';
 import styles from './BlogPostModal.module.css';
 
@@ -277,11 +277,11 @@ const BlogPostModal = ({ postId, onClose, isOpen }) => {
 
                             <div className={styles.articleFooter}>
                                 <button 
-                                    onClick={handleShare}
+                                    onClick={onClose}
                                     className={styles.footerButton}
                                 >
-                                    <FaShare />
-                                    <span>COMPARTIR ARTÍCULO</span>
+                                    <FaArrowLeft />
+                                    <span>VOLVER AL BLOG</span>
                                 </button>
                             </div>
                         </>

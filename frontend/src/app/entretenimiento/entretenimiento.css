@@ -72,27 +72,22 @@
   flex: 1;
   width: 100%;
   padding-top: 580px;
-  /* IGUAL A LA ALTURA DEL HERO */
 }
 
 /* ===== SECCIÓN PRINCIPAL DE ENTRETENIMIENTO ===== */
 .entertainmentMainSection {
   background: linear-gradient(145deg, #f0f8ff 0%, #e6f3ff 30%, #ffffff 70%, #f8f9fa 100%);
   padding: 40px 20px 80px 20px;
-  /* Igual que videos.css */
   margin: 0;
   margin-top: -100px;
-  /* AJUSTE ESPECÍFICO UNIFICADO */
   position: relative;
   overflow: hidden;
 }
 
 .entertainmentContainer {
   max-width: 1400px;
-  /* Igual que videos.css */
   margin: 0 auto;
   padding: 0 20px;
-  /* Igual que videos.css */
   position: relative;
   z-index: 2;
 }
@@ -151,15 +146,12 @@
   margin-bottom: 80px;
 }
 
-/* ===== GRID DE SHORTS - IGUAL QUE VIDEOS.CSS ===== */
+/* ===== GRID DE SHORTS ===== */
 .shortsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  /* Igual que videos.css */
   gap: 30px;
-  /* Igual que videos.css */
   margin-bottom: 60px;
-  /* Igual que videos.css */
 }
 
 .shortCard {
@@ -206,12 +198,19 @@
   left: 100%;
 }
 
+/*//////////////////////*/
+
+.adminBlogControls {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 30px;
+}
+
 /* ===== THUMBNAIL DE SHORT (FORMATO VERTICAL) ===== */
 .shortThumbnail {
   position: relative;
   width: 100%;
   height: 320px;
-  /* Altura mayor para formato de short */
   overflow: hidden;
 }
 
@@ -245,7 +244,6 @@
   color: var(--primary-color);
   font-size: 1.5rem;
   margin-left: 3px;
-  /* Para centrar visualmente el triángulo */
 }
 
 .shortCard:hover .playOverlay {
@@ -363,12 +361,11 @@
   margin-bottom: 50px;
 }
 
-/* ===== GRID DE BLOG - IGUAL QUE VIDEOS.CSS ===== */
+/* ===== GRID DE BLOG ===== */
 .blogGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   gap: 30px;
-  /* Igual que videos.css */
   margin-bottom: 50px;
 }
 
@@ -452,6 +449,22 @@
   z-index: 2;
 }
 
+/* ===== INDICADOR DE MÚLTIPLES IMÁGENES ===== */
+.imageCount {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .blogContent {
   padding: 25px;
   position: relative;
@@ -476,6 +489,28 @@
 
 .blogCard:hover .blogTitle {
   color: #00b4d8;
+}
+
+/* ===== NUEVO: SUBTÍTULO DESTACADO EN TARJETAS DE BLOG ===== */
+.blogSubtitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--accent-color);
+  margin: 0 0 12px 0;
+  line-height: 1.3;
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+  font-style: italic;
+  border-left: 3px solid var(--accent-color);
+  padding-left: 12px;
+  background: linear-gradient(90deg, 
+    rgba(0, 180, 216, 0.05) 0%, 
+    transparent 100%);
+  border-radius: 0 8px 8px 0;
+  padding: 8px 0 8px 15px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 .blogExcerpt {
@@ -550,6 +585,73 @@
   box-shadow: 0 8px 25px rgba(0, 180, 216, 0.4);
 }
 
+/* ===== ESTADOS DE CARGA Y ERROR ===== */
+.loadingContainer, .errorContainer {
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 42, 92, 0.1);
+  margin: 40px 0;
+}
+
+.loadingContainer h3, .errorContainer h3 {
+  font-size: 1.8rem;
+  color: var(--primary-color);
+  margin-bottom: 15px;
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+}
+
+.loadingContainer p, .errorContainer p {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 20px;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+}
+
+.retryButton {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.retryButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 180, 216, 0.4);
+}
+
+.noVideosMessage, .noBlogMessage {
+  text-align: center;
+  padding: 60px 20px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  border: 2px dashed rgba(0, 180, 216, 0.3);
+  margin: 40px 0;
+}
+
+.noVideosMessage h3, .noBlogMessage h3 {
+  font-size: 1.8rem;
+  color: var(--primary-color);
+  margin-bottom: 15px;
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+}
+
+.noVideosMessage p, .noBlogMessage p {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 15px;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+}
+
 /* ===== SIN RESULTADOS ===== */
 .noResults {
   grid-column: 1 / -1;
@@ -601,6 +703,7 @@
     0 4px 15px rgba(0, 180, 216, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  cursor: pointer;
 }
 
 .viewMoreButton::before {
@@ -722,418 +825,7 @@
   transform: translateY(-2px);
 }
 
-/* ===== RESPONSIVE DESIGN ===== */
-@media (max-width: 992px) {
-  .entretenimiento-page .heroSection {
-    height: 540px;
-    background-position: center center;
-  }
-
-  .entretenimiento-page .mainContent {
-    padding-top: 540px;
-  }
-  .heroContent h1 {
-    margin-top: -150px;
-    font-size: 2.8rem;
-    text-shadow:
-      2px 2px 4px rgba(0, 0, 0, 0.9),
-      0 0 8px rgba(0, 0, 0, 0.7),
-      0 0 16px rgba(0, 42, 92, 0.5);
-  }
-  .entertainmentMainSection{
-    padding: 40px 20px 80px 20px;
-    margin-top: -250px;
-    /* Ajuste específico para tablets */
-  }
-}
-
-/* Tablet */
-@media (max-width: 768px) {
-  .entretenimiento-page .heroSection {
-    height: 420px;
-    margin-top: -30px;
-    background-position: center center;
-  }
-  .entertainmentMainSection {
-    padding: 30px 15px 60px 15px;
-    /* Igual que videos.css */
-    margin-top: -230px;
-  }
-
-  .entertainmentContainer {
-    padding: 0 20px;
-    /* Igual que videos.css */
-  }
-
-  .sectionHeader h2 {
-    font-size: 2.5rem;
-  }
-
-  .shortsGrid {
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 20px;
-    /* Igual que videos.css */
-  }
-
-  .shortThumbnail {
-    height: 280px;
-  }
-
-  .blogGrid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-    /* Igual que videos.css */
-  }
-
-  .viewMoreButton {
-    padding: 15px 30px;
-    font-size: 1rem;
-  }
-
-  .videosFooter {
-    padding: 40px 20px;
-  }
-
-  .channelInfo h3 {
-    font-size: 1.8rem;
-  }
-
-  .subscribeButtonContainer {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-
-/* Móvil */
-@media (max-width: 480px) {
-  .entretenimiento-page .heroSection {
-    height: 360px;
-    background-position: center center;
-  }
-  .entertainmentMainSection {
-    padding: 20px 10px 50px 10px;
-    /* Igual que videos.css */
-    margin-top: -230px;
-  }
-
-  .entertainmentContainer {
-    padding: 0 20px;
-    /* Mantenemos padding consistente */
-  }
-
-  .sectionHeader h2 {
-    font-size: 2rem;
-  }
-
-  .shortsGrid {
-    grid-template-columns: repeat(2, 1fr);
-    /* Igual que videos.css */
-    gap: 15px;
-    /* Igual que videos.css */
-  }
-
-  .shortThumbnail {
-    height: 240px;
-    /* Igual que videos.css */
-  }
-
-  .shortInfo {
-    padding: 15px;
-    /* Igual que videos.css */
-  }
-
-  .blogContent {
-    padding: 20px;
-  }
-
-  .blogTitle {
-    font-size: 1.2rem;
-  }
-
-  .blogExcerpt {
-    font-size: 0.9rem;
-  }
-
-  .blogGrid {
-    gap: 15px;
-    /* Igual que videos.css */
-  }
-
-  .viewMoreButton {
-    padding: 14px 28px;
-    font-size: 0.95rem;
-  }
-
-  .videosFooter {
-    padding: 30px 15px;
-  }
-
-  .channelInfo h3 {
-    font-size: 1.6rem;
-  }
-
-  .channelInfo p {
-    font-size: 1rem;
-  }
-
-  .subscribeButton,
-  .viewChannelButton {
-    padding: 12px 24px;
-    font-size: 0.9rem;
-  }
-}
-
-/* Móvil muy pequeño */
-@media (max-width: 360px) {
-  .entertainmentMainSection {
-    padding: 10px 5px 40px 5px;
-    /* Igual que videos.css */
-  }
-
-  .sectionHeader h2 {
-    font-size: 1.8rem;
-  }
-
-  .shortsGrid {
-    grid-template-columns: repeat(2, 1fr);
-    /* Igual que videos.css */
-    gap: 10px;
-    /* Igual que videos.css */
-  }
-
-  .shortThumbnail {
-    height: 200px;
-    /* Igual que videos.css */
-  }
-
-  .shortInfo {
-    padding: 10px;
-    /* Igual que videos.css */
-  }
-
-  .blogContent {
-    padding: 15px;
-  }
-
-  .blogTitle {
-    font-size: 1.1rem;
-  }
-
-  .blogGrid {
-    gap: 10px;
-    /* Igual que videos.css */
-  }
-
-  .viewMoreButton {
-    padding: 12px 24px;
-    font-size: 0.9rem;
-  }
-}
-
-/* ===== MODAL DE VIDEO ===== */
-.videoModal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.9);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 20px;
-}
-
-.videoModalContent {
-  position: relative;
-  max-width: 90%;
-  max-height: 90%;
-  background: white;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
-}
-
-.videoModalClose {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: rgba(0, 0, 0, 0.7);
-  color: white;
-  border: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  font-size: 1.5rem;
-  cursor: pointer;
-  z-index: 1001;
-  transition: all 0.3s ease;
-}
-
-.videoModalClose:hover {
-  background: rgba(0, 0, 0, 0.9);
-  transform: scale(1.1);
-}
-
-.videoContainer {
-  position: relative;
-  width: 100%;
-  height: 0;
-  padding-bottom: 56.25%;
-  /* 16:9 aspect ratio */
-}
-
-.videoContainer iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-
-/* ===== MODAL DE SUSCRIPCIÓN ===== */
-.subscriptionModal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  padding: 20px;
-}
-
-.subscriptionModalContent {
-  background: white;
-  border-radius: 20px;
-  padding: 40px;
-  max-width: 500px;
-  width: 100%;
-  text-align: center;
-  position: relative;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
-}
-
-.subscriptionModalClose {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  color: #666;
-  transition: color 0.3s ease;
-}
-
-.subscriptionModalClose:hover {
-  color: #000;
-}
-
-.subscriptionForm {
-  margin-top: 20px;
-}
-
-.subscriptionInput {
-  width: 100%;
-  padding: 15px;
-  border: 2px solid rgba(0, 180, 216, 0.2);
-  border-radius: 25px;
-  font-size: 1rem;
-  margin-bottom: 20px;
-  transition: border-color 0.3s ease;
-}
-
-.subscriptionInput:focus {
-  outline: none;
-  border-color: var(--accent-color);
-}
-
-.subscriptionSubmit {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
-  color: white;
-  border: none;
-  padding: 15px 30px;
-  border-radius: 25px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  width: 100%;
-}
-
-.subscriptionSubmit:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 180, 216, 0.3);
-}
-
-.subscriptionSubmit:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  transform: none;
-}
-
-/* ===== ANIMACIONES ===== */
-.shortCard,
-.blogCard {
-  animation: cardFadeIn 0.6s ease-out;
-  animation-fill-mode: both;
-}
-
-@keyframes cardFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Delays progresivos */
-.shortCard:nth-child(1) {
-  animation-delay: 0.1s;
-}
-
-.shortCard:nth-child(2) {
-  animation-delay: 0.15s;
-}
-
-.shortCard:nth-child(3) {
-  animation-delay: 0.2s;
-}
-
-.shortCard:nth-child(4) {
-  animation-delay: 0.25s;
-}
-
-.shortCard:nth-child(5) {
-  animation-delay: 0.3s;
-}
-
-.shortCard:nth-child(6) {
-  animation-delay: 0.35s;
-}
-
-.blogCard:nth-child(1) {
-  animation-delay: 0.1s;
-}
-
-.blogCard:nth-child(2) {
-  animation-delay: 0.15s;
-}
-
-.blogCard:nth-child(3) {
-  animation-delay: 0.2s;
-}
-
+/* ===== BOTÓN STICKY PARA VER BLOG ===== */
 .more-content-sticky {
   position: fixed;
   bottom: 20px;
@@ -1146,7 +838,6 @@
   border-radius: 30px;
   box-shadow: 0 4px 15px rgba(238, 90, 36, 0.4);
   display: none;
-  /* Oculto por defecto */
   align-items: center;
   gap: 12px;
   font-weight: 700;
@@ -1180,249 +871,510 @@
 }
 
 @keyframes bounce {
-
-  0%,
-  20%,
-  50%,
-  80%,
-  100% {
+  0%, 20%, 50%, 80%, 100% {
     transform: translateX(-50%) translateY(0);
   }
-
   40% {
     transform: translateX(-50%) translateY(-10px);
   }
-
-  60% {
-    transform: translateX(-50%) translateY(-5px);
-  }
+60% {
+   transform: translateX(-50%) translateY(-5px);
+ }
 }
 
 @keyframes iconBounce {
-
-  0%,
-  20%,
-  50%,
-  80%,
-  100% {
-    transform: translateY(0);
-  }
-
-  40% {
-    transform: translateY(-3px);
-  }
-
-  60% {
-    transform: translateY(-1px);
-  }
+ 0%, 20%, 50%, 80%, 100% {
+   transform: translateY(0);
+ }
+ 40% {
+   transform: translateY(-3px);
+ }
+ 60% {
+   transform: translateY(-1px);
+ }
 }
 
 /* Solo mostrar en móvil y cuando NO se ha llegado al blog */
 @media (max-width: 768px) {
-  .more-content-sticky {
-    display: flex;
-  }
+ .more-content-sticky {
+   display: flex;
+ }
 
-  /* Ocultar cuando el blog está visible */
-  .more-content-sticky.hidden {
-    opacity: 0;
-    pointer-events: none;
-    transform: translateX(-50%) translateY(20px);
-  }
+ /* Ocultar cuando el blog está visible */
+ .more-content-sticky.hidden {
+   opacity: 0;
+   pointer-events: none;
+   transform: translateX(-50%) translateY(20px);
+ }
 }
 
 /* Variante con pulsación de brillo */
 .more-content-sticky::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
-  border-radius: inherit;
-  opacity: 0;
-  animation: shimmer 3s infinite;
+ content: '';
+ position: absolute;
+ top: 0;
+ left: 0;
+ right: 0;
+ bottom: 0;
+ background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.2) 50%, transparent 70%);
+ border-radius: inherit;
+ opacity: 0;
+ animation: shimmer 3s infinite;
 }
 
 @keyframes shimmer {
-  0% {
-    opacity: 0;
-    transform: translateX(-100%) skewX(-25deg);
-  }
-
-  50% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-    transform: translateX(200%) skewX(-25deg);
-  }
+ 0% {
+   opacity: 0;
+   transform: translateX(-100%) skewX(-25deg);
+ }
+ 50% {
+   opacity: 1;
+ }
+ 100% {
+   opacity: 0;
+   transform: translateX(200%) skewX(-25deg);
+ }
 }
 
-/* Estilo responsive para pantallas muy pequeñas */
+/* ===== MODAL DE VIDEO ===== */
+.videoModal {
+ position: fixed !important;
+ top: 0 !important;
+ left: 0 !important;
+ width: 100% !important;
+ height: 100% !important;
+ background-color: rgba(0, 0, 0, 0.9) !important;
+ z-index: 9999 !important;
+ display: flex !important;
+ align-items: center !important;
+ justify-content: center !important;
+ padding: 20px !important;
+}
+
+.videoModalContent {
+ background: white !important;
+ border-radius: 15px !important;
+ overflow: hidden !important;
+ position: relative !important;
+ width: 100% !important;
+ max-width: 900px !important;
+ max-height: 90vh !important;
+ box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5) !important;
+}
+
+.videoModalClose {
+ position: absolute !important;
+ top: 15px !important;
+ right: 15px !important;
+ background: rgba(0, 0, 0, 0.8) !important;
+ color: white !important;
+ border: none !important;
+ width: 40px !important;
+ height: 40px !important;
+ border-radius: 50% !important;
+ font-size: 1.5rem !important;
+ cursor: pointer !important;
+ z-index: 10 !important;
+ display: flex !important;
+ align-items: center !important;
+ justify-content: center !important;
+ transition: all 0.3s ease !important;
+}
+
+.videoModalClose:hover {
+ background: rgba(0, 0, 0, 0.9) !important;
+ transform: scale(1.1) !important;
+}
+
+.videoContainer {
+ width: 100% !important;
+ height: 500px !important;
+ position: relative !important;
+ background: #000 !important;
+}
+
+.videoContainer iframe {
+ width: 100% !important;
+ height: 100% !important;
+ border: none !important;
+}
+
+.videoErrorContainer {
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ justify-content: center;
+ height: 100%;
+ background: #000;
+ color: white;
+ font-size: 1.2rem;
+ text-align: center;
+ gap: 15px;
+ font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+}
+
+.youtubeButton {
+ background: #ff0000;
+ color: white;
+ border: none;
+ padding: 12px 24px;
+ border-radius: 8px;
+ cursor: pointer;
+ font-size: 1rem;
+ font-weight: 600;
+ transition: all 0.3s ease;
+ font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+ text-transform: uppercase;
+ letter-spacing: 0.5px;
+}
+
+.youtubeButton:hover {
+ background: #cc0000;
+ transform: translateY(-2px);
+ box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+}
+
+/* ===== ANIMACIONES ===== */
+.shortCard,
+.blogCard {
+ animation: cardFadeIn 0.6s ease-out;
+ animation-fill-mode: both;
+}
+
+@keyframes cardFadeIn {
+ from {
+   opacity: 0;
+   transform: translateY(30px);
+ }
+ to {
+   opacity: 1;
+   transform: translateY(0);
+ }
+}
+
+/* Delays progresivos */
+.shortCard:nth-child(1) {
+ animation-delay: 0.1s;
+}
+
+.shortCard:nth-child(2) {
+ animation-delay: 0.15s;
+}
+
+.shortCard:nth-child(3) {
+ animation-delay: 0.2s;
+}
+
+.shortCard:nth-child(4) {
+ animation-delay: 0.25s;
+}
+
+.shortCard:nth-child(5) {
+ animation-delay: 0.3s;
+}
+
+.shortCard:nth-child(6) {
+ animation-delay: 0.35s;
+}
+
+.blogCard:nth-child(1) {
+ animation-delay: 0.1s;
+}
+
+.blogCard:nth-child(2) {
+ animation-delay: 0.15s;
+}
+
+.blogCard:nth-child(3) {
+ animation-delay: 0.2s;
+}
+/* ===== ESTILOS PARA AUTOR EN BLOG META ===== */
+.blogAuthor {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 600;
+  color: #5a6c7d;
+}
+
+.blogAuthor svg {
+  color: var(--accent-color);
+  font-size: 0.9rem;
+}
+
+/* Ajustar el meta del blog para autor y fecha */
+.blogMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: #7a8a99;
+  margin-bottom: 15px;
+  gap: 10px;
+}
+
+.blogDate {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.blogDate svg {
+  color: var(--accent-color);
+  font-size: 0.9rem;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+@media (max-width: 992px) {
+ .entretenimiento-page .heroSection {
+   height: 540px;
+   background-position: center center;
+ }
+
+ .entretenimiento-page .mainContent {
+   padding-top: 540px;
+ }
+ 
+ .heroContent h1 {
+   margin-top: -150px;
+   font-size: 2.8rem;
+   text-shadow:
+     2px 2px 4px rgba(0, 0, 0, 0.9),
+     0 0 8px rgba(0, 0, 0, 0.7),
+     0 0 16px rgba(0, 42, 92, 0.5);
+ }
+ 
+ .entertainmentMainSection{
+   padding: 40px 20px 80px 20px;
+   margin-top: -250px;
+ }
+}
+
+/* Tablet */
+@media (max-width: 768px) {
+ .entretenimiento-page .heroSection {
+   height: 420px;
+   margin-top: -30px;
+   background-position: center center;
+ }
+ 
+ .entertainmentMainSection {
+   padding: 30px 15px 60px 15px;
+   margin-top: -230px;
+ }
+
+ .entertainmentContainer {
+   padding: 0 20px;
+ }
+
+ .sectionHeader h2 {
+   font-size: 2.5rem;
+ }
+
+ .shortsGrid {
+   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+   gap: 20px;
+ }
+
+ .shortThumbnail {
+   height: 280px;
+ }
+
+ .blogGrid {
+   grid-template-columns: 1fr;
+   gap: 20px;
+ }
+
+ .blogSubtitle {
+   font-size: 1rem;
+   margin: 0 0 10px 0;
+   padding: 6px 0 6px 12px;
+ }
+
+ .viewMoreButton {
+   padding: 15px 30px;
+   font-size: 1rem;
+ }
+
+ .videosFooter {
+   padding: 40px 20px;
+ }
+
+ .channelInfo h3 {
+   font-size: 1.8rem;
+ }
+
+ .subscribeButtonContainer {
+   flex-direction: column;
+   align-items: center;
+ }
+}
+
+/* Móvil */
 @media (max-width: 480px) {
-  .more-content-sticky {
-    padding: 12px 20px;
-    font-size: 0.9rem;
-    bottom: 15px;
-  }
+ .entretenimiento-page .heroSection {
+   height: 360px;
+   background-position: center center;
+ }
+ 
+ .entertainmentMainSection {
+   padding: 20px 10px 50px 10px;
+   margin-top: -230px;
+ }
+
+ .entertainmentContainer {
+   padding: 0 20px;
+ }
+
+ .sectionHeader h2 {
+   font-size: 2rem;
+ }
+
+ .shortsGrid {
+   grid-template-columns: repeat(2, 1fr);
+   gap: 15px;
+ }
+
+ .shortThumbnail {
+   height: 240px;
+ }
+
+ .shortInfo {
+   padding: 15px;
+ }
+
+ .blogContent {
+   padding: 20px;
+ }
+
+ .blogTitle {
+   font-size: 1.2rem;
+ }
+
+ .blogSubtitle {
+   font-size: 0.95rem;
+   margin: 0 0 8px 0;
+ }
+
+ .blogExcerpt {
+   font-size: 0.9rem;
+ }
+
+ .blogGrid {
+   gap: 15px;
+ }
+
+ .viewMoreButton {
+   padding: 14px 28px;
+   font-size: 0.95rem;
+ }
+
+ .videosFooter {
+   padding: 30px 15px;
+ }
+
+ .channelInfo h3 {
+   font-size: 1.6rem;
+ }
+
+ .channelInfo p {
+   font-size: 1rem;
+ }
+
+ .subscribeButton,
+ .viewChannelButton {
+   padding: 12px 24px;
+   font-size: 0.9rem;
+ }
+
+ .more-content-sticky {
+   padding: 12px 20px;
+   font-size: 0.9rem;
+   bottom: 15px;
+ }
 }
 
-/* Estilo para cuando se está scrolleando hacia el blog */
-.more-content-sticky.scrolling {
-  background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%);
-  animation: pulse 1s infinite;
-}
+/* Móvil muy pequeño */
+@media (max-width: 360px) {
+ .entertainmentMainSection {
+   padding: 10px 5px 40px 5px;
+ }
 
-@keyframes pulse {
+ .sectionHeader h2 {
+   font-size: 1.8rem;
+ }
 
-  0%,
-  100% {
-    box-shadow: 0 4px 15px rgba(0, 180, 216, 0.4);
-  }
+ .shortsGrid {
+   grid-template-columns: repeat(2, 1fr);
+   gap: 10px;
+ }
 
-  50% {
-    box-shadow: 0 8px 25px rgba(0, 180, 216, 0.8);
-  }
+ .shortThumbnail {
+   height: 200px;
+ }
+
+ .shortInfo {
+   padding: 10px;
+ }
+
+ .blogContent {
+   padding: 15px;
+ }
+
+ .blogTitle {
+   font-size: 1.1rem;
+ }
+
+ .blogSubtitle {
+   font-size: 0.9rem;
+ }
+
+ .blogGrid {
+   gap: 10px;
+ }
+
+ .viewMoreButton {
+   padding: 12px 24px;
+   font-size: 0.9rem;
+ }
 }
 
 /* ===== ARREGLO PARA INFORMACIÓN DE SHORT EN ENTRETENIMIENTO ===== */
 .shortMeta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.8rem;
-  color: #7a8a99;
-  gap: 8px;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ font-size: 0.8rem;
+ color: #7a8a99;
+ gap: 8px;
 }
 
 .shortCategory {
-  background: rgba(0, 180, 216, 0.1);
-  color: var(--accent-color);
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: capitalize;
+ background: rgba(0, 180, 216, 0.1);
+ color: var(--accent-color);
+ padding: 4px 8px;
+ border-radius: 12px;
+ font-size: 0.75rem;
+ font-weight: 600;
+ text-transform: capitalize;
 }
 
 .shortViews {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  font-weight: 500;
-  color: #888;
+ display: flex;
+ align-items: center;
+ gap: 4px;
+ font-weight: 500;
+ color: #888;
 }
 
 /* ===== THUMBNAIL MEJORADO ===== */
 .thumbnailPlaceholder {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  background-color: #000 !important;
-  /* Fallback para cuando no carga el thumbnail */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-/* ===== MODAL DE VIDEO MEJORADO ===== */
-.videoModal {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  width: 100% !important;
-  height: 100% !important;
-  background-color: rgba(0, 0, 0, 0.9) !important;
-  z-index: 9999 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  padding: 20px !important;
-}
-
-.videoModalContent {
-  background: white !important;
-  border-radius: 15px !important;
-  overflow: hidden !important;
-  position: relative !important;
-  width: 100% !important;
-  max-width: 900px !important;
-  max-height: 90vh !important;
-  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5) !important;
-}
-
-.videoModalClose {
-  position: absolute !important;
-  top: 15px !important;
-  right: 15px !important;
-  background: rgba(0, 0, 0, 0.8) !important;
-  color: white !important;
-  border: none !important;
-  width: 40px !important;
-  height: 40px !important;
-  border-radius: 50% !important;
-  font-size: 1.5rem !important;
-  cursor: pointer !important;
-  z-index: 10 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  transition: all 0.3s ease !important;
-}
-
-.videoModalClose:hover {
-  background: rgba(0, 0, 0, 0.9) !important;
-  transform: scale(1.1) !important;
-}
-
-.videoContainer {
-  width: 100% !important;
-  height: 500px !important;
-  position: relative !important;
-  background: #000 !important;
-}
-
-.videoContainer iframe {
-  width: 100% !important;
-  height: 100% !important;
-  border: none !important;
-}
-
-.videoErrorContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  background: #000;
-  color: white;
-  font-size: 1.2rem;
-  text-align: center;
-  gap: 15px;
-  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
-}
-
-.youtubeButton {
-  background: #ff0000;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.youtubeButton:hover {
-  background: #cc0000;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+ width: 100%;
+ height: 100%;
+ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+ background-color: #000 !important;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ position: relative;
 }
