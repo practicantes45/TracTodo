@@ -24,7 +24,11 @@ app.use((req, res, next) => {
 
 // CONFIGURACIÓN MEJORADA DE CORS
 app.use(cors({
-  origin: ["http://localhost:3001", "http://127.0.0.1:3001"], // Permitir ambas variantes
+  origin: [
+    "http://localhost:3001", 
+    "http://127.0.0.1:3001",
+    "https://tractodo-production-3e8e.up.railway.app"
+  ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
