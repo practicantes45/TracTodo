@@ -3,7 +3,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  // Configuración para Railway
+  // Configuración para Railway - NO static export
   generateEtags: false,
   poweredByHeader: false,
   
@@ -39,6 +39,11 @@ const nextConfig = {
       },
     ];
   },
+  
+  // Configuración para servidor personalizado en Railway  
+  experimental: {
+    serverComponentsExternalPackages: []
+  }
 };
 
 export default nextConfig;
