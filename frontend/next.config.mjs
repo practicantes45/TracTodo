@@ -40,10 +40,8 @@ const nextConfig = {
     ];
   },
   
-  // Configuración para servidor personalizado en Railway  
-  experimental: {
-    serverComponentsExternalPackages: []
-  }
+  // Configuración actualizada para servidor personalizado en Railway
+  serverExternalPackages: []
 };
 
 export default nextConfig;
