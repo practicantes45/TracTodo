@@ -1,10 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // REMOVER: output: 'export',
   images: {
     unoptimized: true,
   },
-  // Configuración para evitar caché excesivo
+  // Configuración para Railway
   generateEtags: false,
   poweredByHeader: false,
   
@@ -34,7 +33,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=3600, must-revalidate', // 1 hora con revalidación
+            value: 'public, max-age=3600, must-revalidate',
           },
         ],
       },
