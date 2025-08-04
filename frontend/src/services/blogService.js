@@ -43,22 +43,22 @@ export const obtenerPostPorId = async (id) => {
 
 // Crear post (solo admin) - CORREGIDO
 export const crearPost = async (datosPost) => {
-  try {    
+  try {
     console.log('📤 Enviando datos al backend:', datosPost);
-    
+
     // Validar que los datos tienen la estructura correcta
     if (!datosPost.titulo || !datosPost.titulo.trim()) {
       throw new Error('El título es obligatorio');
     }
-    
+
     if (!datosPost.categoria) {
       throw new Error('La categoría es obligatoria');
     }
-    
+
     if (!datosPost.bloques || !Array.isArray(datosPost.bloques) || datosPost.bloques.length === 0) {
       throw new Error('Se requiere al menos un bloque de contenido');
     }
-    
+
     // Validar primer bloque
     const primerBloque = datosPost.bloques[0];
     if (!primerBloque.subtitulo || !primerBloque.subtitulo.trim()) {
@@ -70,7 +70,7 @@ export const crearPost = async (datosPost) => {
     if (!primerBloque.imagen || !primerBloque.imagen.trim()) {
       throw new Error('La imagen del primer bloque es obligatoria');
     }
-    
+
     const respuesta = await api.post('/entretenimiento/blogs', datosPost);
     console.log('✅ Post creado exitosamente:', respuesta.data);
     return respuesta.data;
