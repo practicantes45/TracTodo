@@ -1,18 +1,18 @@
-import { db } from "../config/firebase.js";
+const { db } = require("../config/firebase");
 
-export const generarRecomendaciones = async () => {
+const generarRecomendaciones = async () => {
   try {
-    console.log("🔄 === INICIANDO GENERACIÓN DE RECOMENDACIONES ===");
+    console.log("=== INICIANDO GENERACIÓN DE RECOMENDACIONES ===");
     
     const snapshot = await db.ref("/tracking").once("value");
     const data = snapshot.val();
 
     if (!data) {
-      console.log("⚠️ No hay eventos en /tracking");
+      console.log("No hay eventos en /tracking");
       return;
     }
 
-    console.log("📊 Usuarios con tracking:", Object.keys(data).length);
+    console.log("Usuarios con tracking:", Object.keys(data).length);
 
     const coVisitas = {};
     let totalEventos = 0;
@@ -24,12 +24,12 @@ export const generarRecomendaciones = async () => {
         .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
 
       if (eventos.length < 2) {
-        console.log(`⏭️ Usuario ${uid}: solo ${eventos.length} eventos, saltando`);
+        console.log(`Usuario ${uid}: solo ${eventos.length} eventos, saltando`);
         continue;
       }
 
       const ids = eventos.map(e => e.data.id);
-      console.log(`👤 Usuario ${uid} vio productos:`, ids);
+      console.log(`Usuario ${uid} vio productos:`, ids);
       totalEventos += eventos.length;
 
       // Comparar todos con todos (co-visitas)
@@ -50,8 +50,8 @@ export const generarRecomendaciones = async () => {
       }
     }
 
-    console.log("📈 Total eventos procesados:", totalEventos);
-    console.log("🔗 Productos con co-visitas:", Object.keys(coVisitas).length);
+    console.log("Total eventos procesados:", totalEventos);
+    console.log("Productos con co-visitas:", Object.keys(coVisitas).length);
 
     // Generar recomendaciones ordenadas
     const recomendaciones = {};
@@ -63,33 +63,33 @@ export const generarRecomendaciones = async () => {
 
       if (ordenados.length > 0) {
         recomendaciones[id] = ordenados;
-        console.log(`✅ ${id} → recomendados:`, ordenados);
+        console.log(`${id} → recomendados:`, ordenados);
       }
     }
 
     // Guardar recomendaciones en Firebase
     await db.ref("/recomendaciones").set(recomendaciones);
-    console.log("💾 Recomendaciones guardadas exitosamente");
-    console.log("📊 Total productos con recomendaciones:", Object.keys(recomendaciones).length);
+    console.log("Recomendaciones guardadas exitosamente");
+    console.log("Total productos con recomendaciones:", Object.keys(recomendaciones).length);
 
     // LIMPIAR TRACKING DESPUÉS DE PROCESAR
     await limpiarTracking();
 
-    console.log("🎉 === GENERACIÓN COMPLETADA ===");
+    console.log("=== GENERACIÓN COMPLETADA ===");
 
   } catch (error) {
-    console.error("💥 Error al generar recomendaciones:", error.message);
+    console.error("Error al generar recomendaciones:", error.message);
   }
 };
 
 // Función para limpiar el tracking después de procesar
 const limpiarTracking = async () => {
   try {
-    console.log("🧹 Limpiando tracking después de procesar...");
+    console.log("Limpiando tracking después de procesar...");
     
     // Opción 1: Borrar todo el tracking
     await db.ref("/tracking").remove();
-    console.log("✅ Tracking limpiado completamente");
+    console.log("Tracking limpiado completamente");
     
     // Opción 2: Si prefieres mantener tracking reciente (últimas 6 horas)
     // const SEIS_HORAS_MS = 6 * 60 * 60 * 1000;
@@ -111,12 +111,19 @@ const limpiarTracking = async () => {
     // }
 
   } catch (error) {
-    console.error("❌ Error al limpiar tracking:", error.message);
+    console.error("Error al limpiar tracking:", error.message);
   }
 };
 
 // Función para ejecutar manualmente (para testing)
-export const ejecutarRecomendacionesManual = async () => {
-  console.log("🔧 Ejecutando recomendaciones manualmente...");
+const ejecutarRecomendacionesManual = async () => {
+  console.log("Ejecutando recomendaciones manualmente...");
   await generarRecomendaciones();
+};
+
+
+module.exports = { 
+  generarRecomendaciones,
+  limpiarTracking,
+  ejecutarRecomendacionesManual
 };

@@ -1,14 +1,19 @@
 {
-  "name": "tractodo-backend",
+  "name": "backend",
   "version": "1.0.0",
-  "description": "TracTodo Backend API",
+  "description": "TracTodo Backend API - Express.js server with Firebase integration",
   "main": "server.js",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
+    "build": "echo \"Build completed - Backend ready for production\"",
     "dev": "nodemon server.js"
   },
-  "keywords": [],
+  "keywords": ["api", "express", "firebase", "backend"],
   "author": "",
   "license": "ISC",
   "dependencies": {

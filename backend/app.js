@@ -11,6 +11,7 @@ const reversionRoutes = require("./src/routes/reversionRoutes.js");
 const { limpiarBackupsAntiguos } = require("./src/controllers/limpiarBackupsAntiguos.js");
 const vistasRoutes = require("./src/routes/vistasRoutes.js");
 const healthRoutes = require("./src/routes/healthRoutes.js");
+const seoRoutes = require("./src/routes/seoRoutes.js");
 const cookieParser = require("cookie-parser");
 
 const app = express();
@@ -36,10 +37,10 @@ app.use(cookieParser());
 // MIDDLEWARE PARA DEBUGGING DE COOKIES
 app.use((req, res, next) => {
   if (req.path.includes('/user/administradores')) {
-    console.log('🔍 === DEBUGGING ADMIN REQUEST ===');
-    console.log('📍 Ruta:', req.path);
-    console.log('🍪 Cookies parseadas:', req.cookies);
-    console.log('📋 Headers:', req.headers.cookie);
+    console.log(' === DEBUGGING ADMIN REQUEST ===');
+    console.log('Ruta:', req.path);
+    console.log('Cookies parseadas:', req.cookies);
+    console.log('Headers:', req.headers.cookie);
   }
   next();
 });
@@ -52,6 +53,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/entretenimiento", entretenimientoRoutes);
 app.use("/api/reversion", reversionRoutes);
 app.use("/api/vistas", vistasRoutes);
+app.use("/api/seo", seoRoutes);
 
 // Log de inicio
 console.log("✅ Backend iniciado correctamente");
