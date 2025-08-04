@@ -57,127 +57,86 @@ function ProductosContent() {
     }
   ];
 
-  // Efecto para pre-seleccionar marca desde URL
+  // Función para obtener contacto aleatorio
+  const getRandomContact = () => {
+    return contactList[Math.floor(Math.random() * contactList.length)];
+  };
+
+  // Cargar productos al inicializar
   useEffect(() => {
-    // Si hay un parámetro de marca en la URL, pre-seleccionarlo
-    if (marcaParam && marcasPredefinidas.includes(marcaParam)) {
-      console.log('🔄 Inicializando con marca desde URL:', marcaParam);
-      setSelectedMarcas([marcaParam]);
+    loadProducts();
+  }, [busquedaParam, marcaParam]);
+
+  // Efecto para aplicar filtros locales
+  useEffect(() => {
+    if (busquedaParam || marcaParam) {
+      // Para búsqueda o marca del URL, no aplicar filtros locales adicionales
+      return;
     }
-  }, [marcaParam]);
+    filterProducts();
+  }, [selectedMarcas, selectedOrden]);
 
-  // AGREGAR ESTE useEffect que faltaba:
-  useEffect(() => {
-    cargarProductosConFiltros();
-  }, [selectedMarcas, selectedOrden, busquedaParam]);
-
-  // Función principal para cargar productos con filtros
-  const cargarProductosConFiltros = async () => {
+  const loadProducts = async () => {
     try {
       setLoading(true);
       setError('');
 
-      let resultados;
-
+      let result;
       if (busquedaParam) {
-        // Si hay búsqueda, usar buscarProductos con filtros
-        console.log('🔍 Buscando con término y filtros:', {
-          q: busquedaParam,
-          marcas: selectedMarcas,
-          orden: selectedOrden
-        });
-
-        resultados = await buscarProductos({
-          q: busquedaParam,
-          marcas: selectedMarcas,
-          orden: selectedOrden
-        });
+        console.log('🔍 Realizando búsqueda:', busquedaParam);
+        result = await buscarProductos({ q: busquedaParam });
       } else {
-        // Si no hay búsqueda, usar obtenerProductos con filtros
-        console.log('📦 Cargando productos con filtros:', {
-          marcas: selectedMarcas,
-          orden: selectedOrden
-        });
-
-        resultados = await obtenerProductos({
-          marcas: selectedMarcas,
-          orden: selectedOrden
+        console.log('📦 Obteniendo productos con filtros:', { marcas: marcaParam ? [marcaParam] : [], orden: 'A-Z' });
+        result = await obtenerProductos({
+          marcas: marcaParam ? [marcaParam] : [],
+          orden: 'A-Z'
         });
       }
 
-      setProductos(resultados);
+      console.log('✅ Productos cargados:', result);
+      setProductos(result);
 
-      // Extraer marcas únicas de los resultados para el filtro
-      const marcasUnicas = [...new Set(resultados.map(p => p.marca).filter(Boolean))];
-      setMarcasDisponibles(marcasUnicas);
+      // Calcular marcas disponibles
+      const marcasEncontradas = [...new Set(result.map(p => p.marca).filter(Boolean))];
+      console.log('🏷️ Marcas encontradas:', marcasEncontradas);
+      setMarcasDisponibles(marcasEncontradas);
 
-      console.log(`✅ Cargados ${resultados.length} productos con filtros del backend`);
+      // Inicializar filtros si hay parámetro de marca en URL
+      if (marcaParam && !selectedMarcas.includes(marcaParam)) {
+        setSelectedMarcas([marcaParam]);
+      }
+
     } catch (error) {
-      console.error("❌ Error al cargar productos:", error);
-      setError('No se pudieron cargar los productos');
+      console.error('❌ Error loading products:', error);
+      setError('Error al cargar productos. Inténtalo de nuevo.');
+      setProductos([]);
     } finally {
       setLoading(false);
     }
   };
 
-  // Función para refrescar productos (llamada desde AdminButtons)
-  const refetchProducts = () => {
-    cargarProductosConFiltros();
+  const filterProducts = () => {
+    console.log('🔧 Aplicando filtros locales:', { selectedMarcas, selectedOrden });
+    // Este filtrado se aplica solo cuando no hay búsqueda activa
+    // La lógica de filtrado la maneja el backend en loadProducts
   };
 
-  const handleWhatsAppClick = (producto, e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
-    const precio = producto.precioVentaSugerido || producto.precio || 0;
-    const personalizedMessage = randomContact.message
-      .replace('{producto}', producto.nombre)
-      .replace('{precio}', precio.toLocaleString());
-
-    const cleanPhoneNumber = randomContact.phoneNumber.replace(/\D/g, '');
-    const formattedNumber = cleanPhoneNumber.startsWith('52') 
-      ? cleanPhoneNumber 
-      : `52${cleanPhoneNumber}`;
-
-    const whatsappURL = `https://wa.me/${formattedNumber}?text=${encodeURIComponent(personalizedMessage)}`;
-
-    // Registrar vista antes de abrir WhatsApp
-    registrarVista(producto.id, 'whatsapp_click');
-
-    window.open(whatsappURL, '_blank');
-  };
-
-  const handleProductClick = (producto) => {
-    console.log('🔗 Navegando a producto:', producto.id);
-    registrarVista(producto.id, 'product_view');
-    router.push(`/productos/${producto.id}`);
-  };
-
-  // FUNCIÓN MODIFICADA: Priorizar imagen "frente"
-  const obtenerPrimeraImagen = (producto) => {
-    // 1. PRIORIDAD: Buscar imagen "frente" en imagenesUrl
-    if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object' && producto.imagenesUrl.frente) {
-      console.log('📸 Usando imagen frente:', producto.imagenesUrl.frente);
-      return producto.imagenesUrl.frente;
+  // Función para obtener imagen del producto
+  const getProductImage = (producto) => {
+    // PRIORIDAD 1: Array de imágenes (nuevo formato)
+    if (producto.imagenes && Array.isArray(producto.imagenes) && producto.imagenes.length > 0) {
+      const primeraImagen = producto.imagenes[0];
+      console.log('🖼️ Usando imagen del array:', primeraImagen);
+      return primeraImagen;
     }
 
-    // 2. FALLBACK: Si tiene imagenUrl directa, usarla
+    // PRIORIDAD 2: imagenUrl (formato intermedio)
     if (producto.imagenUrl) {
       console.log('🖼️ Usando imagenUrl:', producto.imagenUrl);
       return producto.imagenUrl;
     }
 
-    // 3. FALLBACK: Si tiene imagenesUrl (objeto con múltiples imágenes), usar la primera disponible
-    if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object') {
-      const imagenes = Object.values(producto.imagenesUrl).filter(img => img && img.trim() !== '');
-      if (imagenes.length > 0) {
-        console.log('🖼️ Usando primera imagen disponible:', imagenes[0]);
-        return imagenes[0];
-      }
-    }
-
-    // 4. FALLBACK: Si tiene imagen antigua (string directo)
+    // FALLBACK: Si tiene imagen antigua (string directo)
     if (producto.imagen) {
       console.log('🖼️ Usando imagen legacy:', producto.imagen);
       return producto.imagen;
@@ -220,6 +179,32 @@ function ProductosContent() {
   const clearSearch = () => {
     console.log('🔄 Borrando búsqueda y reseteando filtros');
     router.push('/productos');
+  };
+
+  // Función para manejar clic en WhatsApp
+  const handleWhatsAppClick = async (producto, e) => {
+    e.stopPropagation();
+    
+    try {
+      // Registrar vista del producto
+      await registrarVista(producto.id);
+      console.log('📊 Vista registrada para producto:', producto.nombre);
+    } catch (error) {
+      console.error('❌ Error registrando vista:', error);
+    }
+
+    const contact = getRandomContact();
+    const message = contact.message
+      .replace('{producto}', producto.nombre)
+      .replace('{precio}', (producto.precioVentaSugerido || producto.precio || 0).toLocaleString());
+    
+    const whatsappUrl = `https://wa.me/${contact.phoneNumber}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
+  // Función para manejar clic en producto
+  const handleProductClick = (producto) => {
+    router.push(`/productos/${producto.id}`);
   };
 
   if (loading) {
@@ -275,42 +260,57 @@ function ProductosContent() {
 
         {/* Menú de filtros móvil */}
         <div className={`mobileFilterMenu ${isMobileFilterOpen ? 'menuOpen' : ''}`}>
-          <div className="mobileFilterHeader">
-            <h3>Filtros</h3>
-            <button
-              className="closeMobileFilter"
-              onClick={closeMobileFilter}
-            >
-              <FaTimes />
-            </button>
-          </div>
-
           <div className="mobileFilterContent">
+            <div className="mobileFilterHeader">
+              <h3>Filtrar productos</h3>
+              <button
+                className="closeMobileFilter"
+                onClick={closeMobileFilter}
+              >
+                <FaTimes />
+              </button>
+            </div>
+
+            {/* Información de prioridad de búsqueda */}
+            <div className="searchPriorityInfo">
+              <h3>💡 Optimiza tu búsqueda</h3>
+              <p>Para mejores resultados, busca por:</p>
+              <ol>
+                <li><strong>Número de parte:</strong> ej. "23532191"</li>
+                <li><strong>Nombre específico:</strong> ej. "Bomba de agua"</li>
+                <li><strong>Marca + modelo:</strong> ej. "Cummins ISX"</li>
+                <li><strong>Palabras clave:</strong> ej. "filtro aceite"</li>
+              </ol>
+            </div>
+
             {/* Botón borrar búsqueda en móvil */}
             {busquedaParam && (
-              <div className="mobileFilterGroup">
+              <div className="clearSearchSection">
                 <button
-                  className="clearSearchButtonMobile"
+                  className="clearSearchButton"
                   onClick={clearSearch}
                 >
                   <FaEraser />
-                  Borrar búsqueda "{busquedaParam}"
+                  Borrar búsqueda
                 </button>
+                <p className="searchTermDisplay">
+                  Buscando: "{busquedaParam}"
+                </p>
               </div>
             )}
 
             {/* Marcas */}
-            <div className="mobileFilterGroup">
+            <div className="filtroGroup">
               <h4>Marcas</h4>
-              <div className="mobileMarcasList">
+              <div className="marcasList">
                 {marcasPredefinidas.map((marca) => (
-                  <label key={marca} className="mobileMarcaCheckbox">
+                  <label key={marca} className="marcaCheckbox">
                     <input
                       type="checkbox"
                       checked={selectedMarcas.includes(marca)}
                       onChange={() => handleMarcaChange(marca)}
                     />
-                    <span className="mobileCheckmark"></span>
+                    <span className="checkmark"></span>
                     {marca}
                   </label>
                 ))}
@@ -319,63 +319,50 @@ function ProductosContent() {
 
             {/* Ordenamiento solo visible cuando NO hay búsqueda */}
             {!busquedaParam && (
-              <div className="mobileFilterGroup">
+              <div className="filtroGroup">
                 <h4>Ordenar Por</h4>
-                <div className="mobileOrdenamientoList">
-                  <label className="mobileOrdenamientoRadio">
+                <div className="ordenList">
+                  <label className="ordenRadio">
                     <input
                       type="radio"
                       name="orden"
                       value="A-Z"
                       checked={selectedOrden === 'A-Z'}
-                      onChange={(e) => handleOrdenChange(e.target.value)}
+                      onChange={() => handleOrdenChange('A-Z')}
                     />
-                    <span className="mobileRadiomark"></span>
-                    <FaSortAlphaDown className="sortIcon" />
-                    Alfabéticamente, A-Z
+                    <span className="radiomark"></span>
+                    <FaSortAlphaDown />
+                    A-Z
                   </label>
-                  <label className="mobileOrdenamientoRadio">
+                  <label className="ordenRadio">
                     <input
                       type="radio"
                       name="orden"
                       value="Z-A"
                       checked={selectedOrden === 'Z-A'}
-                      onChange={(e) => handleOrdenChange(e.target.value)}
+                      onChange={() => handleOrdenChange('Z-A')}
                     />
-                    <span className="mobileRadiomark"></span>
-                    <FaSortAlphaUp className="sortIcon" />
-                    Alfabéticamente, Z-A
+                    <span className="radiomark"></span>
+                    <FaSortAlphaUp />
+                    Z-A
                   </label>
                 </div>
               </div>
             )}
 
-            {/* Mensaje explicativo cuando hay búsqueda */}
-            {busquedaParam && (
-              <div className="searchPriorityInfo">
-                <h3>Orden de Relevancia</h3>
-                <p>Los resultados se muestran por prioridad:</p>
-                <ol>
-                  <li><strong>Número de parte</strong></li>
-                  <li><strong>Nombre del producto</strong></li>
-                  <li><strong>Descripción</strong></li>
-                </ol>
-              </div>
-            )}
-
-            {/* Botón limpiar filtros */}
+            {/* Botones de acción */}
             <div className="mobileFilterActions">
               <button
                 className="clearMobileFilters"
                 onClick={clearAllFilters}
               >
-                Borrar filtros
+                Limpiar filtros
               </button>
               <button
                 className="applyMobileFilters"
                 onClick={closeMobileFilter}
               >
-                Aplicar
+                Aplicar filtros
               </button>
             </div>
           </div>
@@ -395,6 +382,18 @@ function ProductosContent() {
                 >
                   Borrar filtros
                 </button>
+              </div>
+
+              {/* Información de prioridad de búsqueda en desktop */}
+              <div className="searchPriorityInfo">
+                <h3>💡 Optimiza tu búsqueda</h3>
+                <p>Para mejores resultados, busca por:</p>
+                <ol>
+                  <li><strong>Número de parte:</strong> ej. "23532191"</li>
+                  <li><strong>Nombre específico:</strong> ej. "Bomba de agua"</li>
+                  <li><strong>Marca + modelo:</strong> ej. "Cummins ISX"</li>
+                  <li><strong>Palabras clave:</strong> ej. "filtro aceite"</li>
+                </ol>
               </div>
 
               {/* Botón borrar búsqueda en desktop */}
@@ -435,75 +434,70 @@ function ProductosContent() {
               {!busquedaParam && (
                 <div className="filtroGroup">
                   <h3>Ordenar Por</h3>
-                  <div className="ordenamientoList">
-                    <label className="ordenamientoRadio">
+                  <div className="ordenList">
+                    <label className="ordenRadio">
                       <input
                         type="radio"
-                        name="ordenamiento"
+                        name="orden"
                         value="A-Z"
                         checked={selectedOrden === 'A-Z'}
-                        onChange={(e) => handleOrdenChange(e.target.value)}
+                        onChange={() => handleOrdenChange('A-Z')}
                       />
                       <span className="radiomark"></span>
-                      <FaSortAlphaDown className="sortIcon" />
-                      Alfabéticamente, A-Z
+                      <FaSortAlphaDown />
+                      A-Z
                     </label>
-                    <label className="ordenamientoRadio">
+                    <label className="ordenRadio">
                       <input
                         type="radio"
-                        name="ordenamiento"
+                        name="orden"
                         value="Z-A"
                         checked={selectedOrden === 'Z-A'}
-                        onChange={(e) => handleOrdenChange(e.target.value)}
+                        onChange={() => handleOrdenChange('Z-A')}
                       />
                       <span className="radiomark"></span>
-                      <FaSortAlphaUp className="sortIcon" />
-                      Alfabéticamente, Z-A
+                      <FaSortAlphaUp />
+                      Z-A
                     </label>
                   </div>
-                </div>
-              )}
-
-              {/* Información de prioridad de búsqueda */}
-              {busquedaParam && (
-                <div className="searchPriorityInfo">
-                  <h3>Orden de Relevancia</h3>
-                  <p>Los resultados se muestran por prioridad:</p>
-                  <ol>
-                    <li><strong>Número de parte</strong></li>
-                    <li><strong>Nombre del producto</strong></li>
-                    <li><strong>Descripción</strong></li>
-                  </ol>
                 </div>
               )}
             </aside>
 
             {/* Grid de productos */}
             <div className="productosGrid">
-              <AdminButtons onProductUpdate={refetchProducts} />
               {error ? (
-                <div className="errorMessage">{error}</div>
+                <div className="errorMessage">
+                  <p>⚠️ {error}</p>
+                  <button onClick={loadProducts} className="retryButton">
+                    Reintentar
+                  </button>
+                </div>
               ) : productos.length === 0 ? (
                 <div className="noProducts">
-                  {busquedaParam ?
-                    `No se encontraron productos para "${busquedaParam}"` :
-                    'No se encontraron productos'
-                  }
+                  <p>
+                    {busquedaParam 
+                      ? `No se encontraron productos para "${busquedaParam}"`
+                      : 'No hay productos disponibles'
+                    }
+                  </p>
+                  {busquedaParam && (
+                    <button onClick={clearSearch} className="clearSearchButton">
+                      <FaEraser />
+                      Borrar búsqueda
+                    </button>
+                  )}
                 </div>
               ) : (
                 productos.map((producto) => {
-                  const imagenUrl = obtenerPrimeraImagen(producto);
+                  const imagenUrl = getProductImage(producto);
+
                   return (
                     <div
                       key={producto.id}
                       className="productoCard"
                       onClick={() => handleProductClick(producto)}
-                      style={{ cursor: 'pointer', position: 'relative' }}
                     >
-                      <AdminButtons
-                        producto={producto}
-                        onProductUpdate={refetchProducts}
-                      />
                       <div className="productoImageContainer">
                         {imagenUrl ? (
                           <img
@@ -545,6 +539,9 @@ function ProductosContent() {
             </div>
           </div>
         </section>
+
+        {/* Botones de administración */}
+        <AdminButtons />
       </main>
 
       <Footer />
@@ -553,20 +550,37 @@ function ProductosContent() {
   );
 }
 
+// Componente de fallback para Suspense
+function ProductosPageFallback() {
+  return (
+    <div className="layout productos-page">
+      <Navbar />
+      <main className="mainContent">
+        <div className="heroSection">
+          <div className="heroOverlay">
+            <div className="heroContent">
+              <h1>Nuestros Productos</h1>
+            </div>
+          </div>
+        </div>
+        <section className="productosMainSection">
+          <div className="productosContainer">
+            <div className="loadingContainer">
+              <div className="spinner"></div>
+              <p>Cargando productos...</p>
+            </div>
+          </div>
+        </section>
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
+// Componente principal con Suspense
 export default function ProductosPage() {
   return (
-    <Suspense fallback={
-      <div className="layout productos-page">
-        <Navbar />
-        <main className="mainContent">
-          <div className="loadingContainer">
-            <div className="spinner"></div>
-            <p>Cargando productos...</p>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    }>
+    <Suspense fallback={<ProductosPageFallback />}>
       <ProductosContent />
     </Suspense>
   );
