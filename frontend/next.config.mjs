@@ -38,10 +38,7 @@ const nextConfig = {
         ],
       },
     ];
-  },
-  
-  // Configuración actualizada - SIN experimental
-  serverExternalPackages: []
+  }
 };
 
 export default nextConfig;
