@@ -38,7 +38,10 @@ const nextConfig = {
         ],
       },
     ];
-  }
+  },
+  
+  // CORREGIDO: Movido fuera de experimental con el nuevo nombre
+  serverExternalPackages: []
 };
 
 export default nextConfig;
