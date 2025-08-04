@@ -5,7 +5,6 @@ import { useState, useEffect, Suspense } from 'react';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
-import ContactNumbers from '../components/ContactNumbers/ContactNumbers';
 import { obtenerProductos, buscarProductos } from '../../services/productoService';
 import { registrarVista } from '../../services/trackingService';
 import { useSearchParams, useRouter } from 'next/navigation';
