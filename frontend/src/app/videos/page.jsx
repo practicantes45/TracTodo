@@ -1,8 +1,8 @@
 'use client';
 import './videos.css';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { FaCalendarCheck, FaMapMarkedAlt, FaFilter, FaWhatsapp, FaSortAlphaDown, FaSortAlphaUp, FaTimes, FaEraser, FaPlay, FaEye, FaShare, FaYoutube, FaTiktok, FaArrowLeft, FaPlus } from "react-icons/fa";
+import { useState, useEffect, Suspense } from 'react';
+import { useRouter } from 'next/navigation';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
@@ -11,7 +11,7 @@ import VideoModal from '../components/VideoModal/VideoModal';
 import { useAuth } from '../../hooks/useAuth';
 import { obtenerVideos } from '../../services/videoService';
 
-export default function VideosPage() {
+function VideosContent() {
     const router = useRouter();
     const { isAdmin } = useAuth();
     const [selectedCategory, setSelectedCategory] = useState('todos');
@@ -195,24 +195,17 @@ export default function VideosPage() {
         }
     };
 
-    const getCategoryCount = (categoryId) => {
-        if (categoryId === 'todos') return allShorts.length;
-        return allShorts.filter(short => short.category === categoryId).length;
-    };
-
     const handleBackToEntertainment = () => {
         router.push('/entretenimiento');
     };
 
-    const goToYouTubeChannel = () => {
-        window.open('https://www.youtube.com/@TRACTODO', '_blank');
+    // Función para manejar imágenes no encontradas
+    const handleImageError = (e) => {
+        e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0yMDAgMTAwTDE1MCA3NUwyNTAgNzVMMjAwIDEwMFoiIGZpbGw9IiNEMUQ1REIiLz4KPGV4dCB4PSIyMDAiIHk9IjEzMCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmaWxsPSIjNjU3Mzg5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JbWFnZW4gbm8gZW5jb250cmFkYTwvdGV4dD4KPC9zdmc+';
+        e.target.alt = 'Imagen no encontrada';
     };
 
-    const goToTikTokProfile = () => {
-        window.open('https://www.tiktok.com/@tractodo4', '_blank');
-    };
-
-    // Mostrar loading
+    // Renderizar estado de carga
     if (loading) {
         return (
             <div className="layout videos-page">
@@ -229,7 +222,7 @@ export default function VideosPage() {
                         <div className="videosContainer">
                             <div className="loadingContainer">
                                 <h2>Cargando videos...</h2>
-                                <p>Por favor espera un momento</p>
+                                <div className="spinner"></div>
                             </div>
                         </div>
                     </section>
@@ -239,7 +232,7 @@ export default function VideosPage() {
         );
     }
 
-    // Mostrar error
+    // Renderizar estado de error
     if (error) {
         return (
             <div className="layout videos-page">
@@ -292,85 +285,76 @@ export default function VideosPage() {
                             <button
                                 className="backButton"
                                 onClick={handleBackToEntertainment}
-                                aria-label="Regresar a entretenimiento"
+                                aria-label="Regresar a Entretenimiento"
                             >
                                 <FaArrowLeft className="backIcon" />
-                                Regresar a Entretenimiento
+                                Regresar
                             </button>
                         </div>
 
-                        {/* Header con estadísticas y botón de agregar */}
-                        <div className="videosHeader">
-                            <div className="videosStats">
-                                <h2>¡Arranca el motor y vamos a ver!</h2>
-                                <p>{filteredShorts.length} shorts encontrados</p>
-                            </div>
-                            
-                            {/* BOTÓN DE AGREGAR VIDEO INTEGRADO - SOLO SI ES ADMIN */}
-                            {isAdmin && (
-                                <div className="adminActionsContainer">
+                        {/* Botones de administración - Solo para admin */}
+                        {isAdmin && (
+                            <AdminVideoButtons
+                                onVideoUpdate={handleVideoUpdate}
+                                existingVideos={allShorts}
+                                showAddButton={true}
+                                onAddVideo={handleAgregarVideo}
+                            />
+                        )}
+
+                        {/* Filtros y controles */}
+                        <div className="videosControls">
+                            <div className="categoryTabs">
+                                {categories.map(category => (
                                     <button
-                                        className="addVideoButton"
-                                        onClick={handleAgregarVideo}
-                                        title="Agregar nuevo video"
+                                        key={category.id}
+                                        className={`categoryTab ${selectedCategory === category.id ? 'active' : ''}`}
+                                        onClick={() => setSelectedCategory(category.id)}
                                     >
-                                        <FaPlus className="addIcon" />
-                                        Agregar Video
+                                        {category.label}
                                     </button>
-                                </div>
-                            )}
+                                ))}
+                            </div>
+
+                            <div className="searchContainer">
+                                <input
+                                    type="text"
+                                    placeholder="Buscar videos..."
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    className="searchInput"
+                                />
+                                {searchTerm && (
+                                    <button
+                                        onClick={() => setSearchTerm('')}
+                                        className="clearSearchButton"
+                                        aria-label="Limpiar búsqueda"
+                                    >
+                                        <FaTimes />
+                                    </button>
+                                )}
+                            </div>
                         </div>
 
-                        {/* Filtros de categorías con contadores */}
-                        <div className="categoryFilters">
-                            {categories.map((category) => (
-                                <button
-                                    key={category.id}
-                                    className={`categoryButton ${selectedCategory === category.id ? 'active' : ''}`}
-                                    onClick={() => setSelectedCategory(category.id)}
-                                >
-                                    {category.label}
-                                    <span className="categoryCount">
-                                        {getCategoryCount(category.id)}
-                                    </span>
-                                </button>
-                            ))}
-                        </div>
-
-                        {/* Grid de shorts */}
+                        {/* Grid de videos */}
                         <div className="shortsGrid">
                             {filteredShorts.length > 0 ? (
                                 filteredShorts.map((short) => (
-                                    <div
-                                        key={short.id}
-                                        className="shortCard"
-                                        onClick={() => handleVideoClick(short)}
-                                    >
-                                        {/* BOTONES DE ADMIN - SOLO SI ES ADMIN */}
-                                        {isAdmin && (
-                                            <AdminVideoButtons
-                                                video={short}
-                                                onVideoUpdate={handleVideoUpdate}
-                                            />
-                                        )}
-
+                                    <div key={short.id} className="shortCard" onClick={() => handleVideoClick(short)}>
                                         <div className="shortThumbnail">
-                                            <div
-                                                className="thumbnailPlaceholder"
-                                                style={{
-                                                    backgroundImage: `url(${getYouTubeThumbnail(short.youtubeLink)})`,
-                                                    backgroundSize: 'cover',
-                                                    backgroundPosition: 'center'
-                                                }}
-                                            >
-                                                <div className="playOverlay">
-                                                    <FaPlay className="playIcon" />
-                                                </div>
-                                                <div className="shortBadge">SHORT</div>
+                                            <img
+                                                src={getYouTubeThumbnail(short.youtubeLink)}
+                                                alt={short.title}
+                                                onError={handleImageError}
+                                            />
+                                            <div className="playOverlay">
+                                                <FaPlay />
+                                            </div>
+                                            <div className="videoControls">
                                                 <button
                                                     className="shareButton"
                                                     onClick={(e) => handleShareVideo(short, e)}
-                                                    aria-label="Compartir short"
+                                                    aria-label="Compartir video"
                                                 >
                                                     <FaShare />
                                                 </button>
@@ -378,98 +362,107 @@ export default function VideosPage() {
                                         </div>
                                         <div className="shortInfo">
                                             <h3 className="shortTitle">{short.title}</h3>
-                                            <div className="shortMeta">
-                                                <span className="shortCategory">
-                                                    {short.category}
-                                                </span>
-                                            </div>
+                                            <p className="shortCategory">{short.category}</p>
                                         </div>
                                     </div>
                                 ))
                             ) : (
-                                <div className="noResults">
-                                    <h3>No se encontraron shorts</h3>
-                                    <p>Intenta con otros términos de búsqueda o cambia la categoría.</p>
+                                <div className="noVideosMessage">
+                                    <h3>No se encontraron videos</h3>
+                                    <p>
+                                        {searchTerm
+                                            ? `No hay videos que coincidan con "${searchTerm}"`
+                                            : selectedCategory !== 'todos'
+                                            ? `No hay videos en la categoría "${categories.find(c => c.id === selectedCategory)?.label}"`
+                                            : 'No hay videos disponibles en este momento'
+                                        }
+                                    </p>
+                                    {isAdmin && (
+                                        <p>Como administrador, puedes agregar videos usando el botón "Agregar Video" arriba.</p>
+                                    )}
                                 </div>
                             )}
                         </div>
 
-                        {/* Footer de videos con botones sociales */}
-                        <footer className="videosFooter">
+                        {/* Footer de videos */}
+                        <div className="videosFooter">
                             <div className="channelInfo">
-                                <h3>¡Síguenos en nuestras redes!</h3>
-                                <p>
-                                    Descubre más contenido educativo sobre refacciones, mantenimiento y
-                                    reparaciones de vehículos pesados en nuestros canales oficiales.
-                                </p>
+                                <h3>¡Suscríbete a nuestro canal!</h3>
+                                <p>No te pierdas nuestros últimos videos y contenido exclusivo.</p>
                             </div>
-
-                            <div className="socialButtonsContainer">
-                                <button
-                                    className="youtubeButton"
-                                    onClick={goToYouTubeChannel}
-                                    aria-label="Visitar canal de YouTube"
+                            <div className="subscribeButtonContainer">
+                                <a
+                                    href="https://www.youtube.com/@TRACTODO"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="subscribeButton"
                                 >
-                                    <FaYoutube className="youtubeIcon" />
-                                    <span className="buttonText">Ir al Canal</span>
-                                </button>
-
-                                <button
-                                    className="tiktokButton"
-                                    onClick={goToTikTokProfile}
-                                    aria-label="Visitar perfil de TikTok"
+                                    <FaYoutube />
+                                    Suscribirse
+                                </a>
+                                <a
+                                    href="https://www.youtube.com/@TRACTODO"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="viewChannelButton"
                                 >
-                                    <FaTiktok className="tiktokIcon" />
-                                    <span className="buttonText">Ver TikTok</span>
-                                </button>
-                            </div>
-                        </footer>
-
-                    </div>
-                </section>
-
-                {/* Modal de agregar video */}
-                {isAddModalOpen && (
-                    <VideoModal
-                        isOpen={isAddModalOpen}
-                        mode="create"
-                        video={null}
-                        onClose={handleCloseAddModal}
-                        onSaved={handleVideoSaved}
-                    />
-                )}
-
-                {/* Modal de video/short */}
-                {isVideoModalOpen && selectedVideo && (
-                    <div className="videoModal" onClick={closeVideoModal}>
-                        <div className="videoModalContent" onClick={(e) => e.stopPropagation()}>
-                            <button
-                                className="videoModalClose"
-                                onClick={closeVideoModal}
-                                aria-label="Cerrar modal"
-                            >
-                                ×
-                            </button>
-                            <div className="videoContainer">
-                                <iframe
-                                    src={selectedVideo.isShort
-                                        ? `https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1&mute=1`
-                                        : `https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1`
-                                    }
-                                    title={selectedVideo.title}
-                                    frameBorder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
-                                ></iframe>
+                                    Ver Canal
+                                </a>
                             </div>
                         </div>
                     </div>
+                </section>
+
+                {/* Modal de Video */}
+                {isVideoModalOpen && selectedVideo && (
+                    <VideoModal
+                        isOpen={isVideoModalOpen}
+                        video={selectedVideo}
+                        onClose={closeVideoModal}
+                    />
                 )}
 
+                {/* ScrollToTop Component */}
+                <ScrollToTop />
             </main>
 
             <Footer />
-            <ScrollToTop />
         </div>
+    );
+}
+
+// Componente de fallback para Suspense
+function VideosPageFallback() {
+    return (
+        <div className="layout videos-page">
+            <Navbar />
+            <main className="mainContent">
+                <div className="heroSection">
+                    <div className="heroOverlay">
+                        <div className="heroContent">
+                            <h1>Shorts de YouTube</h1>
+                        </div>
+                    </div>
+                </div>
+                <section className="videosMainSection">
+                    <div className="videosContainer">
+                        <div className="loadingContainer">
+                            <h2>Cargando...</h2>
+                            <div className="spinner"></div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+            <Footer />
+        </div>
+    );
+}
+
+// Componente principal con Suspense
+export default function VideosPage() {
+    return (
+        <Suspense fallback={<VideosPageFallback />}>
+            <VideosContent />
+        </Suspense>
     );
 }
