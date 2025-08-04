@@ -1,51 +1,55 @@
 'use client';
 import './sobre.css';
-import { useState } from 'react';
-import { FaCalendarCheck, FaMapMarkedAlt } from "react-icons/fa";
+import { Suspense } from 'react';
 import Navbar from '../components/Navbar/Navbar';
 import ContactNumbers from '../components/ContactNumbers/ContactNumbers';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
 
-export default function SobrePage() {
+function SobreContent() {
     return (
         <div className="layout sobre-page">
-
-            {/* Navbar principal */}
             <Navbar />
 
-            {/* Contenido principal */}
             <main className="mainContent">
-                {/* Hero Section con imagen de fondo */}
+                {/* Hero Section */}
                 <div className="heroSection">
                     <div className="heroOverlay">
                         <div className="heroContent">
-                            <h1>Conoce Nuestra Historia</h1>
+                            <h1>Sobre Nosotros</h1>
                         </div>
                     </div>
                 </div>
-                {/* Números de contacto */}
+
+                {/* Números de contacto - Con contexto específico */}
                 <ContactNumbers pageContext="sobre" />
 
-                {/* Sección ¿Quiénes Somos? - MODIFICADA para layout horizontal */}
+                {/* Sección ¿Quiénes Somos? */}
                 <section className="aboutSection">
                     <div className="aboutContainer">
-                        <div className="aboutContentWithImage">
-                            {/* Contenido de texto */}
-                            <div className="aboutTextContent">
-                                <h2>¿QUIÉNES SOMOS?</h2>
-                                <p>
-                                    En Tractodo, llevamos más de 15 años ofreciendo soluciones confiables en refacciones para motores diésel. Fundados en 2010 en San Juan del Río, Querétaro, nacimos con la idea de brindar todo lo necesario para el tractocamión, de ahí nuestro nombre.
-                                </p>
-                                <p>
-                                    Nos especializamos en piezas para mantenimiento y reparación de transporte pesado, con un enfoque en la calidad, la atención personalizada y la disponibilidad inmediata. Somos tu aliado en el camino.
-                                </p>
-                            </div>
-
-                            {/* Imagen del camión - MOVIDA AQUÍ */}
-                            <div className="aboutImageContent">
-                                <img src="https://i.postimg.cc/4dLwnhJp/2afb9413-ab9a-4012-8dbc-e73e0733d142.jpg" alt="Camión en carretera" className="aboutTruckImage" />
-                            </div>
+                        <div className="aboutTextContent">
+                            <h2>¿QUIÉNES SOMOS?</h2>
+                            <p>
+                                Somos una empresa 100% mexicana con más de 15 años de experiencia en el mercado, 
+                                especializada en la venta de refacciones para motores de diésel, autobuses y autotransporte en general.
+                            </p>
+                            <p>
+                                Nuestra trayectoria nos respalda como líderes en el sector, ofreciendo siempre productos 
+                                de la más alta calidad y un servicio excepcional que ha ganado la confianza de miles de clientes 
+                                en todo el país.
+                            </p>
+                            <p>
+                                En TRACTODO nos especializamos en brindar soluciones integrales para el mantenimiento 
+                                y reparación de vehículos de carga y transporte, contribuyendo al desarrollo y crecimiento 
+                                del sector automotriz mexicano.
+                            </p>
+                        </div>
+                        <div className="aboutImageContent">
+                            <img 
+                                src="https://i.postimg.cc/TPmrSDzQ/tracto-sobre-nosotros.png" 
+                                alt="Camión TRACTODO - Sobre Nosotros" 
+                                className="aboutTruckImage"
+                            />
                         </div>
                     </div>
                 </section>
@@ -56,19 +60,24 @@ export default function SobrePage() {
                         <div className="missionCard">
                             <h3>MISIÓN</h3>
                             <p>
-                                Satisfacer con refacciones de calidad las necesidades de nuestros clientes como flotillas, transportadoras, constructoras y talleres diésel superando las expectativas de surtido de refacciones para tracto camiones, equipo pesado, camiones de equipo medio, transporte urbano, y carga. Con una cobertura nacional.
+                                Ofrecer refacciones de motores diésel de la mejor calidad en el mercado, 
+                                proporcionando a nuestros clientes una atención personalizada y un trato justo, 
+                                con entregas rápidas y seguras. Con una cobertura nacional.
                             </p>
                         </div>
                         <div className="visionCard">
                             <h3>VISIÓN</h3>
                             <p>
-                                Ser la proveedora de refacciones a diésel número uno en el centro de la república y con miras a expandir nuestra presencia en todo el país como líderes en el ramo, fortaleciendo la relación con los clientes y proveedores a base de confianza una capacitación óptima con colaboradores y empleados.
+                                Ser la proveedora de refacciones a diésel número uno en el centro de la república 
+                                y con miras a expandir nuestra presencia en todo el país como líderes en el ramo, 
+                                fortaleciendo la relación con los clientes y proveedores a base de confianza, 
+                                una capacitación óptima con colaboradores y empleados.
                             </p>
                         </div>
                     </div>
                 </section>
 
-                {/* Sección Valores - ÚLTIMA SECCIÓN */}
+                {/* Sección Valores */}
                 <section className="valuesSection">
                     <div className="valuesContainer">
                         <h2>VALORES</h2>
@@ -100,14 +109,46 @@ export default function SobrePage() {
                         </div>
                     </div>
                 </section>
-
             </main>
 
-            {/* Footer */}
             <Footer />
-
-            {/* Botón ScrollToTop */}
             <ScrollToTop />
         </div>
+    );
+}
+
+// Componente de fallback para Suspense
+function SobrePageFallback() {
+    return (
+        <div className="layout sobre-page">
+            <Navbar />
+            <main className="mainContent">
+                <div className="heroSection">
+                    <div className="heroOverlay">
+                        <div className="heroContent">
+                            <h1>Sobre Nosotros</h1>
+                        </div>
+                    </div>
+                </div>
+                <section className="aboutSection">
+                    <div className="aboutContainer">
+                        <div className="loadingContainer">
+                            <h2>Cargando...</h2>
+                            <div className="spinner"></div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+            <Footer />
+        </div>
+    );
+}
+
+// Componente principal con Suspense
+export default function SobrePage() {
+    return (
+        <Suspense fallback={<SobrePageFallback />}>
+            <SobreContent />
+        </Suspense>
     );
 }
