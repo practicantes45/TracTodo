@@ -155,18 +155,30 @@ function ProductosContent() {
     router.push(`/productos/${producto.id}`);
   };
 
-  // Función para obtener la imagen del producto
-  const obtenerImagenProducto = (producto) => {
-    console.log('🖼️ Obteniendo imagen para producto:', producto.nombre);
-
-    // PREFERENCIA: Si tiene imágenes en array
-    if (producto.imagenes && Array.isArray(producto.imagenes) && producto.imagenes.length > 0) {
-      const primeraImagen = producto.imagenes[0];
-      console.log('📸 Usando primera imagen del array:', primeraImagen);
-      return primeraImagen;
+  // FUNCIÓN MODIFICADA: Priorizar imagen "frente"
+  const obtenerPrimeraImagen = (producto) => {
+    // 1. PRIORIDAD: Buscar imagen "frente" en imagenesUrl
+    if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object' && producto.imagenesUrl.frente) {
+      console.log('📸 Usando imagen frente:', producto.imagenesUrl.frente);
+      return producto.imagenesUrl.frente;
     }
 
-    // FALLBACK: Si tiene imagen antigua (string directo)
+    // 2. FALLBACK: Si tiene imagenUrl directa, usarla
+    if (producto.imagenUrl) {
+      console.log('🖼️ Usando imagenUrl:', producto.imagenUrl);
+      return producto.imagenUrl;
+    }
+
+    // 3. FALLBACK: Si tiene imagenesUrl (objeto con múltiples imágenes), usar la primera disponible
+    if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object') {
+      const imagenes = Object.values(producto.imagenesUrl).filter(img => img && img.trim() !== '');
+      if (imagenes.length > 0) {
+        console.log('🖼️ Usando primera imagen disponible:', imagenes[0]);
+        return imagenes[0];
+      }
+    }
+
+    // 4. FALLBACK: Si tiene imagen antigua (string directo)
     if (producto.imagen) {
       console.log('🖼️ Usando imagen legacy:', producto.imagen);
       return producto.imagen;
@@ -277,84 +289,100 @@ function ProductosContent() {
           <div className="mobileFilterContent">
             {/* Botón borrar búsqueda en móvil */}
             {busquedaParam && (
-              <div className="clearSearchSectionMobile">
+              <div className="mobileFilterGroup">
                 <button
-                  className="clearSearchButton"
+                  className="clearSearchButtonMobile"
                   onClick={clearSearch}
                 >
                   <FaEraser />
-                  Borrar búsqueda
+                  Borrar búsqueda "{busquedaParam}"
                 </button>
-                <p className="searchTermDisplay">
-                  Buscando: "{busquedaParam}"
-                </p>
               </div>
             )}
 
-            {/* Marcas Móvil */}
+            {/* Marcas */}
             <div className="mobileFilterGroup">
               <h4>Marcas</h4>
-              <div className="marcasListMobile">
+              <div className="mobileMarcasList">
                 {marcasPredefinidas.map((marca) => (
-                  <label key={marca} className="marcaCheckboxMobile">
+                  <label key={marca} className="mobileMarcaCheckbox">
                     <input
                       type="checkbox"
                       checked={selectedMarcas.includes(marca)}
                       onChange={() => handleMarcaChange(marca)}
                     />
-                    <span className="checkmarkMobile"></span>
+                    <span className="mobileCheckmark"></span>
                     {marca}
                   </label>
                 ))}
               </div>
             </div>
 
-            {/* Ordenamiento Móvil solo cuando NO hay búsqueda */}
+            {/* Ordenamiento solo visible cuando NO hay búsqueda */}
             {!busquedaParam && (
               <div className="mobileFilterGroup">
                 <h4>Ordenar Por</h4>
-                <div className="ordenRadioGroup">
-                  <label className="ordenRadio">
+                <div className="mobileOrdenamientoList">
+                  <label className="mobileOrdenamientoRadio">
                     <input
                       type="radio"
                       name="orden"
                       value="A-Z"
                       checked={selectedOrden === 'A-Z'}
-                      onChange={() => handleOrdenChange('A-Z')}
+                      onChange={(e) => handleOrdenChange(e.target.value)}
                     />
-                    <span className="radioMark"></span>
-                    <FaSortAlphaDown />
-                    A - Z
+                    <span className="mobileRadiomark"></span>
+                    <FaSortAlphaDown className="sortIcon" />
+                    Alfabéticamente, A-Z
                   </label>
-                  <label className="ordenRadio">
+                  <label className="mobileOrdenamientoRadio">
                     <input
                       type="radio"
                       name="orden"
                       value="Z-A"
                       checked={selectedOrden === 'Z-A'}
-                      onChange={() => handleOrdenChange('Z-A')}
+                      onChange={(e) => handleOrdenChange(e.target.value)}
                     />
-                    <span className="radioMark"></span>
-                    <FaSortAlphaUp />
-                    Z - A
+                    <span className="mobileRadiomark"></span>
+                    <FaSortAlphaUp className="sortIcon" />
+                    Alfabéticamente, Z-A
                   </label>
                 </div>
               </div>
             )}
 
-            {/* Botón limpiar filtros móvil */}
-            <button
-              className="limpiarFiltrosBtnMobile"
-              onClick={() => {
-                clearAllFilters();
-                closeMobileFilter();
-              }}
-            >
-              Borrar todos los filtros
-            </button>
+            {/* Mensaje explicativo cuando hay búsqueda */}
+            {busquedaParam && (
+              <div className="searchPriorityInfo">
+                <h3>Orden de Relevancia</h3>
+                <p>Los resultados se muestran por prioridad:</p>
+                <ol>
+                  <li><strong>Número de parte</strong></li>
+                  <li><strong>Nombre del producto</strong></li>
+                  <li><strong>Descripción</strong></li>
+                </ol>
+              </div>
+            )}
+
+            {/* Botón limpiar filtros */}
+            <div className="mobileFilterActions">
+              <button
+                className="clearMobileFilters"
+                onClick={clearAllFilters}
+              >
+                Borrar filtros
+              </button>
+              <button
+                className="applyMobileFilters"
+                onClick={closeMobileFilter}
+              >
+                Aplicar
+              </button>
+            </div>
           </div>
         </div>
 
+        {/* Sección principal de productos */}
         <section className="productosMainSection">
           <div className="productosContainer">
 
@@ -408,128 +436,116 @@ function ProductosContent() {
               {!busquedaParam && (
                 <div className="filtroGroup">
                   <h3>Ordenar Por</h3>
-                  <div className="ordenRadioGroup">
-                    <label className="ordenRadio">
+                  <div className="ordenamientoList">
+                    <label className="ordenamientoRadio">
                       <input
                         type="radio"
-                        name="orden"
+                        name="ordenamiento"
                         value="A-Z"
                         checked={selectedOrden === 'A-Z'}
-                        onChange={() => handleOrdenChange('A-Z')}
+                        onChange={(e) => handleOrdenChange(e.target.value)}
                       />
-                      <span className="radioMark"></span>
-                      <FaSortAlphaDown />
-                      A - Z
+                      <span className="radiomark"></span>
+                      <FaSortAlphaDown className="sortIcon" />
+                      Alfabéticamente, A-Z
                     </label>
-                    <label className="ordenRadio">
+                    <label className="ordenamientoRadio">
                       <input
                         type="radio"
-                        name="orden"
+                        name="ordenamiento"
                         value="Z-A"
                         checked={selectedOrden === 'Z-A'}
-                        onChange={() => handleOrdenChange('Z-A')}
+                        onChange={(e) => handleOrdenChange(e.target.value)}
                       />
-                      <span className="radioMark"></span>
-                      <FaSortAlphaUp />
-                      Z - A
+                      <span className="radiomark"></span>
+                      <FaSortAlphaUp className="sortIcon" />
+                      Alfabéticamente, Z-A
                     </label>
                   </div>
                 </div>
               )}
+
+              {/* Información de prioridad de búsqueda */}
+              {busquedaParam && (
+                <div className="searchPriorityInfo">
+                  <h3>Orden de Relevancia</h3>
+                  <p>Los resultados se muestran por prioridad:</p>
+                  <ol>
+                    <li><strong>Número de parte</strong></li>
+                    <li><strong>Nombre del producto</strong></li>
+                    <li><strong>Descripción</strong></li>
+                  </ol>
+                </div>
+              )}
             </aside>
 
-            {/* Contenido principal - Lista de productos */}
-            <div className="productosContent">
-              {error && (
-                <div className="errorMessage">
-                  <p>❌ {error}</p>
+            {/* Grid de productos */}
+            <div className="productosGrid">
+              <AdminButtons onProductUpdate={refetchProducts} />
+              {error ? (
+                <div className="errorMessage">{error}</div>
+              ) : productos.length === 0 ? (
+                <div className="noProducts">
+                  {busquedaParam ?
+                    `No se encontraron productos para "${busquedaParam}"` :
+                    'No se encontraron productos'
+                  }
                 </div>
-              )}
-
-              {productos.length === 0 && !loading && (
-                <div className="noProductsMessage">
-                  <p>No se encontraron productos{busquedaParam ? ` para "${busquedaParam}"` : ''}.</p>
-                  {busquedaParam && (
-                    <button className="clearSearchButton" onClick={clearSearch}>
-                      <FaEraser />
-                      Borrar búsqueda
-                    </button>
-                  )}
-                </div>
-              )}
-
-              <div className="productosGrid">
-                {productos.map((producto) => {
-                  const imagen = obtenerImagenProducto(producto);
-                  
+              ) : (
+                productos.map((producto) => {
+                  const imagenUrl = obtenerPrimeraImagen(producto);
                   return (
-                    <div 
-                      key={producto.id} 
+                    <div
+                      key={producto.id}
                       className="productoCard"
                       onClick={() => handleProductClick(producto)}
+                      style={{ cursor: 'pointer', position: 'relative' }}
                     >
+                      <AdminButtons
+                        producto={producto}
+                        onProductUpdate={refetchProducts}
+                      />
                       <div className="productoImageContainer">
-                        {imagen ? (
+                        {imagenUrl ? (
                           <img
-                            src={imagen}
+                            src={imagenUrl}
                             alt={producto.nombre}
                             className="productoImage"
                             onError={(e) => {
-                              console.log('❌ Error cargando imagen:', imagen);
                               e.target.style.display = 'none';
+                              e.target.nextElementSibling.style.display = 'flex';
                             }}
                           />
-                        ) : (
-                          <div className="noImagePlaceholder">
-                            <p>Sin imagen</p>
-                          </div>
-                        )}
+                        ) : null}
+                        <div
+                          className="imageNotFound"
+                          style={{ display: imagenUrl ? 'none' : 'flex' }}
+                        >
+                          <div className="noImageIcon">🖼️</div>
+                          <p>Imagen no detectada</p>
+                        </div>
                       </div>
-
                       <div className="productoInfo">
                         <h3 className="productoNombre">{producto.nombre}</h3>
-                        
-                        <div className="productoDetalles">
-                          <p className="productoMarca">
-                            <strong>Marca:</strong> {producto.marca}
-                          </p>
-                          
-                          {producto.precioVentaSugerido && (
-                            <p className="productoPrecio">
-                              <strong>Precio:</strong> ${producto.precioVentaSugerido.toLocaleString()}
-                            </p>
-                          )}
-
-                          {producto.compatibilidad && (
-                            <p className="productoCompatibilidad">
-                              <strong>Compatible con:</strong> {producto.compatibilidad}
-                            </p>
-                          )}
+                        <p className="productoDescripcion">{producto.descripcion}</p>
+                        <div className="productoPrecio">
+                          ${(producto.precioVentaSugerido || producto.precio || 0).toLocaleString()}
                         </div>
-
-                        <div className="productoAcciones">
-                          <button
-                            className="whatsappBtn"
-                            onClick={(e) => handleWhatsAppClick(producto, e)}
-                          >
-                            <FaWhatsapp />
-                            Consultar
-                          </button>
-                        </div>
+                        <button
+                          className="whatsappBtn"
+                          onClick={(e) => handleWhatsAppClick(producto, e)}
+                        >
+                          <FaWhatsapp />
+                          Compra por WhatsApp
+                        </button>
                       </div>
                     </div>
                   );
-                })}
-              </div>
+                })
+              )}
             </div>
           </div>
         </section>
-
-        {/* Números de contacto*/}
-        <ContactNumbers pageContext="productos" />
-
-        {/* Botones de Admin */}
-        <AdminButtons onRefresh={refetchProducts} />
       </main>
 
       <Footer />
