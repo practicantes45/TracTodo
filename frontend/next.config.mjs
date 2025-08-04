@@ -40,7 +40,7 @@ const nextConfig = {
     ];
   },
   
-  // Configuración actualizada para servidor personalizado en Railway
+  // Configuración actualizada - SIN experimental
   serverExternalPackages: []
 };
 
