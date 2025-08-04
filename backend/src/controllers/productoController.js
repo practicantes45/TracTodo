@@ -46,19 +46,19 @@ exports.getAllProductos = async (req, res) => {
         if (numeroParte.includes(queryNormalizado)) {
           prioridad1_numeroParte.push(producto);
           coincidencia = true;
-          console.log(`✅ P1 (Número): ${producto.nombre} - ${producto.numeroParte}`);
+          console.log(`P1 (Número): ${producto.nombre} - ${producto.numeroParte}`);
         }
         // PRIORIDAD 2: Nombre (solo si no coincidió en número de parte)
         else if (nombre.includes(queryNormalizado)) {
           prioridad2_nombre.push(producto);
           coincidencia = true;
-          console.log(`✅ P2 (Nombre): ${producto.nombre}`);
+          console.log(`P2 (Nombre): ${producto.nombre}`);
         }
         // PRIORIDAD 3: Descripción (solo si no coincidió en anteriores)
         else if (descripcion.includes(queryNormalizado)) {
           prioridad3_descripcion.push(producto);
           coincidencia = true;
-          console.log(`✅ P3 (Descripción): ${producto.nombre}`);
+          console.log(`P3 (Descripción): ${producto.nombre}`);
         }
       });
 
@@ -69,14 +69,14 @@ exports.getAllProductos = async (req, res) => {
         ...prioridad3_descripcion
       ];
 
-      console.log(`🔍 Resultados de búsqueda para "${q}":`);
+      console.log(`Resultados de búsqueda para "${q}":`);
       console.log(`   - Prioridad 1 (Número de parte): ${prioridad1_numeroParte.length} productos`);
       console.log(`   - Prioridad 2 (Nombre): ${prioridad2_nombre.length} productos`);
       console.log(`   - Prioridad 3 (Descripción): ${prioridad3_descripcion.length} productos`);
       console.log(`   - Total: ${filtrados.length} productos`);
       
       // Mostrar los primeros 5 resultados para debug
-      console.log(`📋 Primeros resultados:`, filtrados.slice(0, 5).map(p => `${p.nombre} (${p.numeroParte || 'Sin número'})`));
+      console.log(`Primeros resultados:`, filtrados.slice(0, 5).map(p => `${p.nombre} (${p.numeroParte || 'Sin número'})`));
     }
 
     // Filtro por marca (analiza también nombre y descripción)
@@ -101,7 +101,7 @@ exports.getAllProductos = async (req, res) => {
         filtrados.sort((a, b) => b.nombre?.localeCompare(a.nombre));
       }
     } else {
-      console.log(`ℹ️ Manteniendo orden de prioridad de búsqueda (sin ordenamiento alfabético)`);
+      console.log(`ℹManteniendo orden de prioridad de búsqueda (sin ordenamiento alfabético)`);
     }
 
     res.json(filtrados);
@@ -123,15 +123,50 @@ exports.getProductoById = async (req, res) => {
     }
     const producto = snapshot.val();
 
+    // Obtener datos SEO del producto
+    let datosSEO = null;
+    try {
+      const seoSnapshot = await db.ref(`/seo/productos/${id}`).once("value");
+      datosSEO = seoSnapshot.val();
+      
+      // Si no hay datos SEO, generarlos automáticamente
+      if (!datosSEO) {
+        console.log(`Generando SEO automático para producto ${id}`);
+        const { 
+          generarTituloSEO, 
+          generarDescripcionSEO, 
+          generarPalabrasClaveProducto,
+          generarSchemaProducto,
+          generarSlug
+        } = require("../services/seoService");
+        
+        datosSEO = {
+          titulo: generarTituloSEO(producto),
+          descripcion: generarDescripcionSEO(producto),
+          palabrasClave: generarPalabrasClaveProducto(producto),
+          schema: generarSchemaProducto({ id, ...producto }),
+          slug: generarSlug(producto.nombre),
+          fechaCreacion: new Date().toISOString(),
+          generadoAutomaticamente: true
+        };
+        
+        // Guardar datos SEO generados
+        await db.ref(`/seo/productos/${id}`).set(datosSEO);
+        console.log(`SEO generado y guardado para producto ${id}`);
+      }
+    } catch (seoError) {
+      console.warn(`Error obteniendo SEO para producto ${id}:`, seoError.message);
+    }
+
     // Obtener recomendaciones generadas (por comportamiento)
     const recoSnapshot = await db.ref(`/recomendaciones/${id}`).once("value");
     let idsRecomendados = recoSnapshot.val() || [];
 
-    console.log(`🔍 Recomendaciones para producto ${id}:`, idsRecomendados);
+    console.log(`Recomendaciones para producto ${id}:`, idsRecomendados);
 
     // Si no hay recomendaciones por comportamiento, crear recomendaciones básicas
     if (idsRecomendados.length === 0) {
-      console.log('⚠️ No hay recomendaciones por comportamiento, generando básicas...');
+      console.log('No hay recomendaciones por comportamiento, generando básicas...');
       
       // Obtener todos los productos
       const allSnapshot = await db.ref("/").once("value");
@@ -170,7 +205,7 @@ exports.getProductoById = async (req, res) => {
 
       idsRecomendados = recomendacionesUnicas.map(p => p.id);
       
-      console.log(`✅ Generadas ${idsRecomendados.length} recomendaciones básicas:`, idsRecomendados);
+      console.log(`Generadas ${idsRecomendados.length} recomendaciones básicas:`, idsRecomendados);
     }
 
     // Obtener datos completos de productos recomendados
@@ -181,7 +216,7 @@ exports.getProductoById = async (req, res) => {
       .map(pid => ({ id: pid, ...allData[pid] }))
       .filter(p => p.nombre); // filtramos los que existen
 
-    console.log(`📦 Devolviendo ${recomendados.length} productos relacionados`);
+    console.log(`Devolviendo ${recomendados.length} productos relacionados`);
 
     res.json({
       producto: { id, ...producto },
