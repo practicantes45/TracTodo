@@ -99,6 +99,7 @@ export const obtenerProductoPorId = async (id) => {
   }
 };
 
+// Resto de funciones...
 export const crearProducto = async (productoData) => {
   try {
     const response = await fetch(`${API_URL}/productos`, {
@@ -117,6 +118,133 @@ export const crearProducto = async (productoData) => {
     return data;
   } catch (error) {
     console.error('Error al crear producto:', error);
+    throw error;
+  }
+};
+
+export const actualizarProducto = async (id, productoData) => {
+  try {
+    const response = await fetch(`${API_URL}/productos/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(productoData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error al actualizar producto: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error al actualizar producto:', error);
+    throw error;
+  }
+};
+
+export const eliminarProducto = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}/productos/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error al eliminar producto: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error al eliminar producto:', error);
+    throw error;
+  }
+};
+
+// Obtener productos del mes
+export const obtenerProductosDelMes = async () => {
+  try {
+    const response = await fetch(`${API_URL}/productos/mes/destacados`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error al obtener productos del mes: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error al obtener productos del mes:', error);
+    throw error;
+  }
+};
+
+// Agregar productos al mes con precios específicos
+export const agregarProductosDelMes = async (productos) => {
+  try {
+    console.log('🔄 Enviando productos al backend:', productos);
+
+    const response = await fetch(`${API_URL}/productos/mes/agregar`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include', // Para enviar cookies de autenticación
+      body: JSON.stringify({ productos: productos }),
+    });
+
+    console.log('📡 Respuesta del servidor:', response.status);
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error('❌ Error del servidor:', errorData);
+      throw new Error(`Error al agregar productos del mes: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('✅ Productos agregados exitosamente:', data);
+    return data;
+  } catch (error) {
+    console.error('❌ Error al agregar productos del mes:', error);
+    throw error;
+  }
+};
+
+// Eliminar producto del mes
+export const eliminarProductoDelMes = async (id) => {
+  try {
+    console.log('🗑️ Eliminando producto del mes:', id);
+
+    const response = await fetch(`${API_URL}/productos/mes/eliminar`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include', // Para enviar cookies de autenticación
+      body: JSON.stringify({ id }),
+    });
+
+    console.log('📡 Respuesta del servidor:', response.status);
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error('❌ Error del servidor:', errorData);
+      throw new Error(`Error al eliminar producto del mes: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('✅ Producto eliminado exitosamente:', data);
+    return data;
+  } catch (error) {
+    console.error('❌ Error al eliminar producto del mes:', error);
     throw error;
   }
 };
