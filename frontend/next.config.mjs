@@ -1,12 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // ELIMINAR output: 'export' para que funcione como servidor en Railway
   images: {
     unoptimized: true,
   },
   // Configuración para evitar caché excesivo
   generateEtags: false,
   poweredByHeader: false,
+  
+  // CORREGIDO: serverExternalPackages en lugar de experimental.serverComponentsExternalPackages
+  serverExternalPackages: [],
   
   // Headers personalizados para controlar el caché
   async headers() {
