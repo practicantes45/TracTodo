@@ -1,24 +1,40 @@
-import { obtenerPostPorId } from '../../../services/blogService';
+import { obtenerPostPorId, obtenerPosts } from '../../../services/blogService';
 import BlogPostClient from './BlogPostClient';
 import { notFound } from 'next/navigation';
 
-// SIMPLIFICADO: generateStaticParams sin dependencias externas
+// Función requerida para rutas dinámicas
 export async function generateStaticParams() {
   try {
     console.log('🏗️ Generando parámetros estáticos para blog...');
     
-    // Durante build time, no hay backend disponible, así que retornamos array vacío
-    // Las rutas se generarán dinámicamente en runtime
-    console.log('⚠️ Build time - retornando array vacío, rutas dinámicas en runtime');
-    return [];
+    // Usar URL de producción para build
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://tractodo-production.up.railway.app/api';
+    const response = await fetch(`${apiUrl}/entretenimiento/blogs`, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    
+    if (!response.ok) {
+        console.warn('⚠️ No se pudieron obtener posts para build estático');
+        return [];
+    }
+    
+    const posts = await response.json();
+    
+    // Retornar array de objetos con la propiedad 'id'
+    const params = posts.map((post) => ({
+      id: post.id.toString()
+    }));
+    
+    console.log('✅ Parámetros generados:', params);
+    return params;
   } catch (error) {
     console.error('❌ Error al generar parámetros estáticos:', error);
+    // En caso de error, retornar array vacío
     return [];
   }
 }
-
-// IMPORTANTE: Permitir parámetros dinámicos
-export const dynamicParams = true;
 
 // Metadata dinámica para SEO
 export async function generateMetadata({ params }) {
