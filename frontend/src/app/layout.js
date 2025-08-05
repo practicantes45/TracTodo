@@ -1,4 +1,3 @@
-'use client';
 
 import { Montserrat, Ubuntu, Prompt, Mina } from 'next/font/google';
 import './styles/global.css';
