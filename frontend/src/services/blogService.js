@@ -43,7 +43,7 @@ export const obtenerPostPorId = async (id) => {
   }
 };
 
-// Crear post (solo admin) - CORREGIDO
+// Resto de funciones permanecen igual...
 export const crearPost = async (datosPost) => {
   try {    
     console.log('📤 Enviando datos al backend:', datosPost);
@@ -82,7 +82,6 @@ export const crearPost = async (datosPost) => {
   }
 };
 
-// Resto de las funciones permanecen igual...
 export const eliminarPost = async (id) => {
   try {
     const respuesta = await api.delete(`/entretenimiento/blogs/${id}`);
