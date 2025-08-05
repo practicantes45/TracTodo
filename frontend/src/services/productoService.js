@@ -78,6 +78,7 @@ export const buscarProductos = async (params) => {
   }
 };
 
+// ... resto de funciones sin cambios
 export const obtenerProductoPorId = async (id) => {
   try {
     const response = await fetch(`${API_URL}/productos/${id}`, {
@@ -99,7 +100,6 @@ export const obtenerProductoPorId = async (id) => {
   }
 };
 
-// Resto de funciones...
 export const crearProducto = async (productoData) => {
   try {
     const response = await fetch(`${API_URL}/productos`, {
@@ -165,6 +165,8 @@ export const eliminarProducto = async (id) => {
   }
 };
 
+// services/productoService.js - AGREGAR esta función al final del archivo existente
+
 // Obtener productos del mes
 export const obtenerProductosDelMes = async () => {
   try {
@@ -186,6 +188,8 @@ export const obtenerProductosDelMes = async () => {
     throw error;
   }
 };
+
+// services/productoService.js - REEMPLAZAR las funciones anteriores con estas corregidas
 
 // Agregar productos al mes con precios específicos
 export const agregarProductosDelMes = async (productos) => {
@@ -228,8 +232,8 @@ export const eliminarProductoDelMes = async (id) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      credentials: 'include', // Para enviar cookies de autenticación
-      body: JSON.stringify({ id }),
+      credentials: 'include',
+      body: JSON.stringify({ id: id }),
     });
 
     console.log('📡 Respuesta del servidor:', response.status);
@@ -245,6 +249,37 @@ export const eliminarProductoDelMes = async (id) => {
     return data;
   } catch (error) {
     console.error('❌ Error al eliminar producto del mes:', error);
+    throw error;
+  }
+};
+
+// Actualizar precio de producto del mes
+export const actualizarPrecioProductoDelMes = async (id, precioMes) => {
+  try {
+    console.log('💰 Actualizando precio del producto del mes:', { id, precioMes });
+
+    const response = await fetch(`${API_URL}/productos/mes/precio/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({ precioMes: parseFloat(precioMes) }),
+    });
+
+    console.log('📡 Respuesta del servidor:', response.status);
+
+    if (!response.ok) {
+      const errorData = await response.text();
+      console.error('❌ Error del servidor:', errorData);
+      throw new Error(`Error al actualizar precio: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log('✅ Precio actualizado exitosamente:', data);
+    return data;
+  } catch (error) {
+    console.error('❌ Error al actualizar precio del producto del mes:', error);
     throw error;
   }
 };
