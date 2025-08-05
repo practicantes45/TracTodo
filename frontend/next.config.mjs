@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  // ELIMINAR output: 'export' para que funcione como servidor en Railway
   images: {
     unoptimized: true,
   },
