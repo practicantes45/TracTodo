@@ -23,6 +23,7 @@ api.interceptors.request.use(
   },
   error => {
     console.error('❌ Error en petición:', error);
+    console.log('Detalles del error:', error.response?.data);
     return Promise.reject(error);
   }
 );
