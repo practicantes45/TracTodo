@@ -2,11 +2,25 @@ import { obtenerPostPorId, obtenerPosts } from '../../../services/blogService';
 import BlogPostClient from './BlogPostClient';
 import { notFound } from 'next/navigation';
 
-// Función requerida para rutas dinámicas con output: export
+// Función requerida para rutas dinámicas
 export async function generateStaticParams() {
   try {
     console.log('🏗️ Generando parámetros estáticos para blog...');
-    const posts = await obtenerPosts();
+    
+    // Usar URL de producción para build
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://tractodo-production.up.railway.app/api';
+    const response = await fetch(`${apiUrl}/entretenimiento/blogs`, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    
+    if (!response.ok) {
+        console.warn('⚠️ No se pudieron obtener posts para build estático');
+        return [];
+    }
+    
+    const posts = await response.json();
     
     // Retornar array de objetos con la propiedad 'id'
     const params = posts.map((post) => ({
