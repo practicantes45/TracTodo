@@ -1,9 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
   images: {
     unoptimized: true,
   },
-  // Configuración para Railway - NO static export
+  // Configuración para evitar caché excesivo
   generateEtags: false,
   poweredByHeader: false,
   
@@ -33,15 +34,12 @@ const nextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=3600, must-revalidate',
+            value: 'public, max-age=3600, must-revalidate', // 1 hora con revalidación
           },
         ],
       },
     ];
   },
-  
-  // CORREGIDO: Movido fuera de experimental con el nuevo nombre
-  serverExternalPackages: []
 };
 
 export default nextConfig;

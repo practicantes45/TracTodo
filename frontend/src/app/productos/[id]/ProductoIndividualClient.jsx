@@ -1,7 +1,7 @@
 'use client';
 import './producto-individual.css';
 import { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { FaArrowLeft, FaWhatsapp, FaShare, FaCopy, FaCheckCircle, FaChevronLeft, FaChevronRight, FaSearchPlus, FaSearchMinus, FaRedo } from "react-icons/fa";
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
@@ -10,7 +10,8 @@ import ProductImageModal from '../../components/ProductImageModal/ProductImageMo
 import { obtenerProductoPorId } from '../../../services/productoService';
 import { registrarVista } from '../../../services/trackingService';
 
-export default function ProductoIndividualClient({ params }) {
+export default function ProductoIndividualPage() {
+    const params = useParams();
     const router = useRouter();
     const [producto, setProducto] = useState(null);
     const [productosRelacionados, setProductosRelacionados] = useState([]);
@@ -84,43 +85,11 @@ export default function ProductoIndividualClient({ params }) {
         setCurrentSlide(0);
     }, [productosRelacionados, itemsPerSlide]);
 
-    // Efecto para cargar el producto
     useEffect(() => {
-        const cargarProducto = async () => {
-            try {
-                setLoading(true);
-                console.log('🔄 Cargando producto con ID:', params.id);
-                
-                const data = await obtenerProductoPorId(params.id);
-                console.log('📦 Datos del producto:', data);
-                
-                setProducto(data.producto);
-                setProductosRelacionados(data.recomendados || []);
-
-                // Preparar imágenes para el carrusel
-                const imagenes = procesarImagenesProducto(data.producto);
-                setImagenesProducto(imagenes);
-                setCurrentImageIndex(0);
-
-                console.log('🖼️ Imágenes procesadas:', imagenes);
-                console.log('🔗 Productos relacionados encontrados:', data.recomendados?.length || 0);
-
-                // Registrar vista del producto
-                await registrarVista(params.id, 'product_view');
-
-                console.log('✅ Producto cargado:', data.producto);
-            } catch (error) {
-                console.error('❌ Error al cargar producto:', error);
-                setError('No se pudo cargar el producto');
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        if (params?.id) {
+        if (params.id) {
             cargarProducto();
         }
-    }, [params?.id]);
+    }, [params.id]);
 
     // Resetear zoom, rotación y pan cuando cambia la imagen
     useEffect(() => {
@@ -130,13 +99,40 @@ export default function ProductoIndividualClient({ params }) {
         setCarouselPanY(0);
     }, [currentImageIndex]);
 
+    const cargarProducto = async () => {
+        try {
+            setLoading(true);
+            console.log('🔄 Cargando producto ID:', params.id);
+
+            const data = await obtenerProductoPorId(params.id);
+            console.log('📦 Datos del producto:', data);
+
+            setProducto(data.producto);
+            setProductosRelacionados(data.recomendados || []);
+
+            const imagenes = procesarImagenesProducto(data.producto);
+            setImagenesProducto(imagenes);
+            setCurrentImageIndex(0);
+
+            console.log('🖼️ Imágenes procesadas:', imagenes);
+            console.log('🔗 Productos relacionados encontrados:', data.recomendados?.length || 0);
+
+            await registrarVista(params.id);
+        } catch (error) {
+            console.error("❌ Error al cargar producto:", error);
+            setError('No se pudo cargar el producto');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     // FUNCIÓN MODIFICADA: Priorizar imagen "frente" en el procesamiento de imágenes
     const procesarImagenesProducto = (producto) => {
         const imagenes = [];
 
         // 1. PRIORIDAD: Agregar imagen "frente" primero si existe
         if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object' && producto.imagenesUrl.frente) {
-            console.log('📸 Agregando imagen frente como primera:', producto.imagenesUrl.frente);
+            console.log('🖼️ Agregando imagen frente como primera:', producto.imagenesUrl.frente);
             imagenes.push(producto.imagenesUrl.frente);
         }
 
@@ -145,6 +141,7 @@ export default function ProductoIndividualClient({ params }) {
             const otrasImagenes = Object.entries(producto.imagenesUrl)
                 .filter(([key, url]) => key !== 'frente' && url && url.trim() !== '')
                 .map(([key, url]) => url);
+            
             imagenes.push(...otrasImagenes);
             console.log('🖼️ Agregando otras imágenes:', otrasImagenes);
         }
@@ -161,7 +158,7 @@ export default function ProductoIndividualClient({ params }) {
             imagenes.push(producto.imagen);
         }
 
-        console.log('📋 Total de imágenes procesadas:', imagenes.length);
+        console.log('🖼️ Total de imágenes procesadas:', imagenes.length);
         return imagenes;
     };
 
@@ -169,7 +166,7 @@ export default function ProductoIndividualClient({ params }) {
     const obtenerPrimeraImagen = (producto) => {
         // 1. PRIORIDAD: Buscar imagen "frente" en imagenesUrl
         if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object' && producto.imagenesUrl.frente) {
-            console.log('📸 Usando imagen frente para producto relacionado:', producto.imagenesUrl.frente);
+            console.log('🖼️ Usando imagen frente para producto relacionado:', producto.imagenesUrl.frente);
             return producto.imagenesUrl.frente;
         }
 
@@ -243,7 +240,7 @@ export default function ProductoIndividualClient({ params }) {
             e.preventDefault();
             const newPanX = e.clientX - dragStart.x;
             const newPanY = e.clientY - dragStart.y;
-
+            
             // Limitar el movimiento para que no se salga demasiado
             const maxPan = (carouselZoom - 100) * 2;
             setCarouselPanX(Math.max(-maxPan, Math.min(maxPan, newPanX)));
@@ -273,7 +270,7 @@ export default function ProductoIndividualClient({ params }) {
             const touch = e.touches[0];
             const newPanX = touch.clientX - dragStart.x;
             const newPanY = touch.clientY - dragStart.y;
-
+            
             const maxPan = (carouselZoom - 100) * 2;
             setCarouselPanX(Math.max(-maxPan, Math.min(maxPan, newPanX)));
             setCarouselPanY(Math.max(-maxPan, Math.min(maxPan, newPanY)));
@@ -300,23 +297,22 @@ export default function ProductoIndividualClient({ params }) {
         };
     }, [isDragging, dragStart, carouselZoom]);
 
-    // Función para manejar clic en WhatsApp
     const handleWhatsAppClick = () => {
         const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
-        const precio = producto.precioVentaSugerido || producto.precio || 0;
+        const precio = producto.precioVentaSugerido || 0;
         const personalizedMessage = randomContact.message
             .replace('{producto}', producto.nombre)
             .replace('{precio}', precio.toLocaleString());
 
         const cleanPhoneNumber = randomContact.phoneNumber.replace(/\D/g, '');
-        const formattedNumber = cleanPhoneNumber.startsWith('52') 
-            ? cleanPhoneNumber 
+        const formattedNumber = cleanPhoneNumber.startsWith('52')
+            ? cleanPhoneNumber
             : `52${cleanPhoneNumber}`;
 
-        const whatsappURL = `https://wa.me/${formattedNumber}?text=${encodeURIComponent(personalizedMessage)}`;
+        const encodedMessage = encodeURIComponent(personalizedMessage);
+        const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodedMessage}`;
 
-        registrarVista(producto.id, 'whatsapp_click');
-        window.open(whatsappURL, '_blank');
+        window.open(whatsappUrl, '_blank');
     };
 
     const handleRelatedWhatsAppClick = (relatedProduct, e) => {
@@ -324,19 +320,20 @@ export default function ProductoIndividualClient({ params }) {
         e.stopPropagation();
 
         const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
-        const precio = relatedProduct.precioVentaSugerido || relatedProduct.precio || 0;
+        const precio = relatedProduct.precioVentaSugerido || 0;
         const personalizedMessage = randomContact.message
             .replace('{producto}', relatedProduct.nombre)
             .replace('{precio}', precio.toLocaleString());
 
         const cleanPhoneNumber = randomContact.phoneNumber.replace(/\D/g, '');
-        const formattedNumber = cleanPhoneNumber.startsWith('52') 
-            ? cleanPhoneNumber 
+        const formattedNumber = cleanPhoneNumber.startsWith('52')
+            ? cleanPhoneNumber
             : `52${cleanPhoneNumber}`;
 
-        const whatsappURL = `https://wa.me/${formattedNumber}?text=${encodeURIComponent(personalizedMessage)}`;
+        const encodedMessage = encodeURIComponent(personalizedMessage);
+        const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodedMessage}`;
 
-        window.open(whatsappURL, '_blank');
+        window.open(whatsappUrl, '_blank');
     };
 
     const handleShareProduct = async () => {
@@ -398,7 +395,6 @@ export default function ProductoIndividualClient({ params }) {
         setIsModalOpen(false);
     };
 
-    // Productos ejemplo para mostrar cuando no hay relacionados
     const productosEjemplo = [
         {
             id: 'ejemplo-1',
@@ -445,6 +441,7 @@ export default function ProductoIndividualClient({ params }) {
     ];
 
     const productosParaMostrar = productosRelacionados.length > 0 ? productosRelacionados : productosEjemplo;
+
     const totalSlides = Math.ceil(productosParaMostrar.length / itemsPerSlide);
 
     const nextSlide = () => {
@@ -519,12 +516,13 @@ export default function ProductoIndividualClient({ params }) {
 
                 <section className="productDetailSection">
                     <div className="productDetailContainer">
+
                         <div className="productImageSection">
                             <div className="productImageCarousel">
                                 <div
                                     className="productImageContainer"
                                     onClick={() => openModal(currentImageIndex)}
-                                    style={{
+                                    style={{ 
                                         cursor: imagenesProducto.length > 0 ? (carouselZoom > 100 ? 'grab' : 'pointer') : 'default',
                                         overflow: 'hidden'
                                     }}
@@ -551,12 +549,11 @@ export default function ProductoIndividualClient({ params }) {
                                             draggable={false}
                                         />
                                     ) : null}
-
                                     <div
                                         className="imageNotFound"
                                         style={{ display: imagenesProducto.length > 0 ? 'none' : 'flex' }}
                                     >
-                                        <div className="noImageIcon">🖼️</div>
+                                        <div className="noImageIcon">📷</div>
                                         <p>Imagen no detectada</p>
                                     </div>
 
@@ -670,7 +667,7 @@ export default function ProductoIndividualClient({ params }) {
                             </div>
 
                             <div className="productPrice">
-                                ${(producto.precioVentaSugerido || producto.precio || 0).toLocaleString()}
+                                ${(producto.precioVentaSugerido || 0).toLocaleString()}
                             </div>
 
                             <div className="productMeta">
@@ -686,12 +683,6 @@ export default function ProductoIndividualClient({ params }) {
                                         {producto.marca || 'Cummins'}
                                     </span>
                                 </div>
-                                {producto.compatibilidad && (
-                                    <div className="metaItem">
-                                        <span className="metaLabel">Compatible con:</span>
-                                        <span className="metaValue">{producto.compatibilidad}</span>
-                                    </div>
-                                )}
                                 <div className="shippingInfo">
                                     <span>Envíos a toda la república mexicana.</span>
                                 </div>
@@ -708,20 +699,19 @@ export default function ProductoIndividualClient({ params }) {
                     </div>
                 </section>
 
-                {producto.descripcion && (
-                    <section className="descriptionSection">
-                        <div className="descriptionContainer">
-                            <h2>Descripción</h2>
-                            <div className="descriptionContent">
-                                <p>{producto.descripcion}</p>
-                            </div>
+                <section className="descriptionSection">
+                    <div className="descriptionContainer">
+                        <h2>Descripción</h2>
+                        <div className="descriptionContent">
+                            <p>{producto.descripcion}</p>
                         </div>
-                    </section>
-                )}
+                    </div>
+                </section>
 
                 <section className="relatedProductsSection">
                     <div className="relatedProductsContainer">
                         <h2>PRODUCTOS RELACIONADOS</h2>
+
                         {productosParaMostrar.length > 0 && (
                             <div className="relatedCarouselWrapper">
                                 {productosParaMostrar.length > itemsPerSlide && (
@@ -745,6 +735,7 @@ export default function ProductoIndividualClient({ params }) {
                                     <div className="relatedProductsGrid">
                                         {getVisibleProducts().map((relatedProduct) => {
                                             const imagenUrl = obtenerPrimeraImagen(relatedProduct);
+
                                             return (
                                                 <div
                                                     key={relatedProduct.id}
@@ -768,7 +759,7 @@ export default function ProductoIndividualClient({ params }) {
                                                             className="relatedImageNotFound"
                                                             style={{ display: imagenUrl ? 'none' : 'flex' }}
                                                         >
-                                                            <div className="noImageIcon">🖼️</div>
+                                                            <div className="noImageIcon">📷</div>
                                                             <p>Imagen no detectada</p>
                                                         </div>
                                                     </div>
@@ -778,7 +769,7 @@ export default function ProductoIndividualClient({ params }) {
                                                             {relatedProduct.descripcion?.substring(0, 80)}...
                                                         </p>
                                                         <div className="relatedProductPrice">
-                                                            ${(relatedProduct.precioVentaSugerido || relatedProduct.precio || 0).toLocaleString()}
+                                                            ${(relatedProduct.precioVentaSugerido || 0).toLocaleString()}
                                                         </div>
                                                         <button
                                                             className="relatedWhatsappButton"
@@ -809,6 +800,7 @@ export default function ProductoIndividualClient({ params }) {
                         )}
                     </div>
                 </section>
+
             </main>
 
             <ProductImageModal
