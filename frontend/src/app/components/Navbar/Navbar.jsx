@@ -2,6 +2,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
+import { Suspense } from 'react';
 import SearchBar from '../SearchBar/SearchBar';
 import MobileMenu from '../MobileMenu/MobileMenu';
 import VisitCounter from '../VisitCounter/VisitCounter';
@@ -21,7 +22,7 @@ const Navbar = () => {
 
     const handleNavClick = (href, e) => {
         e.preventDefault();
-        
+
         // NUEVO: Si hacemos clic en "Productos", resetear cualquier búsqueda
         if (href === '/productos') {
             console.log('🔄 Navegando a productos - reseteando búsqueda');
@@ -40,7 +41,9 @@ const Navbar = () => {
                         <MobileMenu />
                     </div>
                     <div className={styles.mobileSearchBar}>
-                        <SearchBar />
+                        <Suspense fallback={<div>Cargando...</div>}>
+                            <SearchBar />
+                        </Suspense>
                     </div>
                 </div>
             </div>
@@ -56,7 +59,7 @@ const Navbar = () => {
                 <ul className={styles.navList}>
                     {navItems.map((item) => (
                         <li key={item.href} className={styles.navItem}>
-                            <Link 
+                            <Link
                                 href={item.href}
                                 className={`${styles.navLink} ${pathname === item.href ? styles.active : ''}`}
                                 onClick={(e) => handleNavClick(item.href, e)}
@@ -75,7 +78,9 @@ const Navbar = () => {
 
                 {/* SearchBar desktop - visible solo en desktop */}
                 <div className={styles.searchSection}>
-                    <SearchBar />
+                    <Suspense fallback={<div>Cargando...</div>}>
+                        <SearchBar />
+                    </Suspense>
                 </div>
             </nav>
 

@@ -3,7 +3,6 @@ import './styles/global.css';
 import './styles/responsive.css';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { FaCalendarCheck, FaMapMarkedAlt } from "react-icons/fa";
 import Navbar from './components/Navbar/Navbar';
 import HeroSection from './components/HeroSection/HeroSection';
 import ContactNumbers from './components/ContactNumbers/ContactNumbers';
