@@ -116,115 +116,56 @@ exports.getProductoById = async (req, res) => {
   const { id } = req.params;
 
   try {
-    // Obtener el producto
     const snapshot = await db.ref(`/${id}`).once("value");
     if (!snapshot.exists()) {
       return res.status(404).json({ error: "Producto no encontrado" });
     }
     const producto = snapshot.val();
 
-    // Obtener datos SEO del producto
-    let datosSEO = null;
-    try {
-      const seoSnapshot = await db.ref(`/seo/productos/${id}`).once("value");
-      datosSEO = seoSnapshot.val();
-      
-      // Si no hay datos SEO, generarlos automáticamente
-      if (!datosSEO) {
-        console.log(`Generando SEO automático para producto ${id}`);
-        const { 
-          generarTituloSEO, 
-          generarDescripcionSEO, 
-          generarPalabrasClaveProducto,
-          generarSchemaProducto,
-          generarSlug
-        } = require("../services/seoService");
-        
-        datosSEO = {
-          titulo: generarTituloSEO(producto),
-          descripcion: generarDescripcionSEO(producto),
-          palabrasClave: generarPalabrasClaveProducto(producto),
-          schema: generarSchemaProducto({ id, ...producto }),
-          slug: generarSlug(producto.nombre),
-          fechaCreacion: new Date().toISOString(),
-          generadoAutomaticamente: true
-        };
-        
-        // Guardar datos SEO generados
-        await db.ref(`/seo/productos/${id}`).set(datosSEO);
-        console.log(`SEO generado y guardado para producto ${id}`);
-      }
-    } catch (seoError) {
-      console.warn(`Error obteniendo SEO para producto ${id}:`, seoError.message);
-    }
+    // ✅ SEO híbrido optimizado
+    const { obtenerDatosSEOProducto } = require("../services/seoService");
+    const datosSEO = await obtenerDatosSEOProducto(id, producto);
 
-    // Obtener recomendaciones generadas (por comportamiento)
+    // Obtener recomendaciones (optimizado)
     const recoSnapshot = await db.ref(`/recomendaciones/${id}`).once("value");
     let idsRecomendados = recoSnapshot.val() || [];
 
-    console.log(`Recomendaciones para producto ${id}:`, idsRecomendados);
-
-    // Si no hay recomendaciones por comportamiento, crear recomendaciones básicas
     if (idsRecomendados.length === 0) {
-      console.log('No hay recomendaciones por comportamiento, generando básicas...');
-      
-      // Obtener todos los productos
-      const allSnapshot = await db.ref("/").once("value");
+      // ✅ Recomendaciones básicas optimizadas
+      const allSnapshot = await db.ref("/").limitToFirst(50).once("value");
       const allData = allSnapshot.val() || {};
       
-      // Filtrar productos similares (misma marca o palabras clave en nombre)
       const productosDisponibles = Object.entries(allData)
-        .filter(([pid, prod]) => pid !== id && prod?.nombre) // Excluir el producto actual
-        .map(([pid, prod]) => ({ id: pid, ...prod }));
+        .filter(([pid, prod]) => pid !== id && prod?.nombre)
+        .slice(0, 10);
 
-      // Buscar productos de la misma marca
-      const productosMismaMarca = productosDisponibles.filter(p => 
-        p.marca && producto.marca && p.marca.toLowerCase() === producto.marca.toLowerCase()
-      );
-
-      // Buscar productos con palabras clave similares en el nombre
-      const palabrasProducto = producto.nombre?.toLowerCase().split(' ') || [];
-      const productosSimilares = productosDisponibles.filter(p => {
-        const palabrasOtro = p.nombre?.toLowerCase().split(' ') || [];
-        return palabrasProducto.some(palabra => 
-          palabra.length > 3 && palabrasOtro.some(otraPalabra => otraPalabra.includes(palabra))
-        );
-      });
-
-      // Combinar y limitar a 6 productos
-      const recomendacionesBasicas = [
-        ...productosMismaMarca.slice(0, 3),
-        ...productosSimilares.slice(0, 3),
-        ...productosDisponibles.slice(0, 2) // Productos aleatorios como fallback
-      ];
-
-      // Eliminar duplicados y limitar
-      const recomendacionesUnicas = recomendacionesBasicas
-        .filter((prod, index, arr) => arr.findIndex(p => p.id === prod.id) === index)
-        .slice(0, 6);
-
-      idsRecomendados = recomendacionesUnicas.map(p => p.id);
-      
-      console.log(`Generadas ${idsRecomendados.length} recomendaciones básicas:`, idsRecomendados);
+      idsRecomendados = productosDisponibles.slice(0, 6).map(([pid]) => pid);
     }
 
-    // Obtener datos completos de productos recomendados
-    const allSnapshot = await db.ref("/").once("value");
-    const allData = allSnapshot.val() || {};
-
-    const recomendados = idsRecomendados
-      .map(pid => ({ id: pid, ...allData[pid] }))
-      .filter(p => p.nombre); // filtramos los que existen
-
-    console.log(`Devolviendo ${recomendados.length} productos relacionados`);
+    // Obtener datos de recomendados (optimizado)
+    const recomendados = [];
+    for (const pid of idsRecomendados.slice(0, 6)) {
+      try {
+        const recSnapshot = await db.ref(`/${pid}`).once("value");
+        if (recSnapshot.exists()) {
+          recomendados.push({ id: pid, ...recSnapshot.val() });
+        }
+      } catch (error) {
+        console.warn(`Error obteniendo recomendado ${pid}:`, error.message);
+      }
+    }
 
     res.json({
-      producto: { id, ...producto },
+      producto: { 
+        id, 
+        ...producto,
+        seo: datosSEO // ✅ SEO híbrido incluido
+      },
       recomendados
     });
   } catch (error) {
-    console.error("Error al obtener producto:", error.message);
-    res.status(500).json({ error: "Error al obtener producto", detalles: error.message });
+    console.error("Error obteniendo producto:", error.message);
+    res.status(500).json({ error: "Error obteniendo producto", detalles: error.message });
   }
 };
 
