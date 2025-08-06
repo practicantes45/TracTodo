@@ -27,7 +27,8 @@ const corsOrigins = [
   "http://localhost:3001", 
   "http://127.0.0.1:3001",
   "https://tractodo-production-3e8e.up.railway.app", // Frontend Railway
-  "https://tractodo-production.up.railway.app" // Backend Railway (para health checks)
+  "https://tractodo-production.up.railway.app",
+  "https://tractodo.com" // Backend Railway (para health checks)
 ];
 
 // Agregar dinámicamente el dominio de Railway si existe
