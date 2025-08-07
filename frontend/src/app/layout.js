@@ -39,6 +39,12 @@ export default function RootLayout({ children }) {
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+        
+        {/* Favicon */}
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        
         <title>TRACTODO - Refacciones para Motores Diésel</title>
         <meta name="description" content="Refacciones de calidad para motores diésel. Amplio inventario, precios competitivos y garantía confiable." />
         <meta name="keywords" content="refacciones, motores diesel, tractocamión, Querétaro, San Juan del Río" />
