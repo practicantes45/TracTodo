@@ -1,14 +1,17 @@
 const express = require("express");
 const router = express.Router();
 
-const { getAllProductos, getProductoById, borrarProductoPorId,actualizarProductoPorId,insertarProducto,getProductosDelMes,actualizarProductosDelMes,insertarProductosDelMes, eliminarProductoDelMes, actualizarPrecioProductoDelMes} = require("../controllers/productoController");
+const { getAllProductos, getProductoById, getProductoByNombre, borrarProductoPorId,actualizarProductoPorId,insertarProducto,getProductosDelMes,actualizarProductosDelMes,insertarProductosDelMes, eliminarProductoDelMes, actualizarPrecioProductoDelMes} = require("../controllers/productoController");
 
 const { generarRecomendaciones } = require("../services/productoRecomendado");
 
 // Obtener todos los productos
 router.get("/", getAllProductos);
 
-// Obtener un producto por ID (con recomendaciones)
+// NUEVA RUTA: Obtener un producto por NOMBRE (con recomendaciones)
+router.get("/nombre/:nombre", getProductoByNombre);
+
+// Obtener un producto por ID (mantenida por compatibilidad)
 router.get("/:id", getProductoById);
 
 //Crear un nuevo producto

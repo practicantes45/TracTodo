@@ -111,7 +111,117 @@ exports.getAllProductos = async (req, res) => {
   }
 };
 
-// obtener producto por ID
+// NUEVA FUNCIÓN: obtener producto por NOMBRE en lugar de ID
+exports.getProductoByNombre = async (req, res) => {
+  const { nombre } = req.params;
+
+  try {
+    console.log(`🔍 Buscando producto por nombre: "${nombre}"`);
+    
+    // Normalizar el nombre buscado para comparación
+    const nombreNormalizado = normalizarTexto(nombre);
+    console.log(`🔍 Nombre normalizado: "${nombreNormalizado}"`);
+
+    // Obtener todos los productos
+    const snapshot = await db.ref("/").once("value");
+    const data = snapshot.val();
+
+    if (!data) {
+      return res.status(404).json({ error: "No hay productos en la base de datos" });
+    }
+
+    // Buscar producto por coincidencia exacta de nombre normalizado
+    let productoEncontrado = null;
+    let idProducto = null;
+
+    for (const [id, producto] of Object.entries(data)) {
+      if (producto?.nombre) {
+        const nombreProductoNormalizado = normalizarTexto(producto.nombre);
+        
+        // Coincidencia exacta del nombre normalizado
+        if (nombreProductoNormalizado === nombreNormalizado) {
+          productoEncontrado = producto;
+          idProducto = id;
+          console.log(`✅ Producto encontrado: "${producto.nombre}" con ID: ${id}`);
+          break;
+        }
+      }
+    }
+
+    // Si no se encontró coincidencia exacta, buscar coincidencia parcial
+    if (!productoEncontrado) {
+      console.log(`ℹ️ No se encontró coincidencia exacta, buscando coincidencia parcial...`);
+      
+      for (const [id, producto] of Object.entries(data)) {
+        if (producto?.nombre) {
+          const nombreProductoNormalizado = normalizarTexto(producto.nombre);
+          
+          // Coincidencia parcial (el nombre buscado está contenido en el nombre del producto)
+          if (nombreProductoNormalizado.includes(nombreNormalizado)) {
+            productoEncontrado = producto;
+            idProducto = id;
+            console.log(`✅ Producto encontrado (coincidencia parcial): "${producto.nombre}" con ID: ${id}`);
+            break;
+          }
+        }
+      }
+    }
+
+    if (!productoEncontrado) {
+      console.log(`❌ Producto no encontrado para: "${nombre}"`);
+      return res.status(404).json({ error: "Producto no encontrado" });
+    }
+
+    // ✅ SEO híbrido optimizado (usando el ID encontrado)
+    const { obtenerDatosSEOProducto } = require("../services/seoService");
+    const datosSEO = await obtenerDatosSEOProducto(idProducto, productoEncontrado);
+
+    // Obtener recomendaciones (optimizado)
+    const recoSnapshot = await db.ref(`/recomendaciones/${idProducto}`).once("value");
+    let idsRecomendados = recoSnapshot.val() || [];
+
+    if (idsRecomendados.length === 0) {
+      // ✅ Recomendaciones básicas optimizadas
+      const allSnapshot = await db.ref("/").limitToFirst(50).once("value");
+      const allData = allSnapshot.val() || {};
+      
+      const productosDisponibles = Object.entries(allData)
+        .filter(([pid, prod]) => pid !== idProducto && prod?.nombre)
+        .slice(0, 10);
+
+      idsRecomendados = productosDisponibles.slice(0, 6).map(([pid]) => pid);
+    }
+
+    // Obtener datos de recomendados (optimizado)
+    const recomendados = [];
+    for (const pid of idsRecomendados.slice(0, 6)) {
+      try {
+        const recSnapshot = await db.ref(`/${pid}`).once("value");
+        if (recSnapshot.exists()) {
+          recomendados.push({ id: pid, ...recSnapshot.val() });
+        }
+      } catch (error) {
+        console.warn(`Error obteniendo recomendado ${pid}:`, error.message);
+      }
+    }
+
+    console.log(`✅ Respuesta completa preparada para: "${productoEncontrado.nombre}"`);
+
+    res.json({
+      producto: { 
+        id: idProducto, 
+        ...productoEncontrado,
+        seo: datosSEO // ✅ SEO híbrido incluido
+      },
+      recomendados
+    });
+  } catch (error) {
+    console.error("Error obteniendo producto por nombre:", error.message);
+    res.status(500).json({ error: "Error obteniendo producto", detalles: error.message });
+  }
+};
+
+// MANTENER LA FUNCIÓN ORIGINAL POR COMPATIBILIDAD
 exports.getProductoById = async (req, res) => {
   const { id } = req.params;
 
