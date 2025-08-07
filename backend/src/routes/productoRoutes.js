@@ -9,7 +9,7 @@ const { generarRecomendaciones } = require("../services/productoRecomendado");
 router.get("/", getAllProductos);
 
 // NUEVA RUTA: Obtener un producto por NOMBRE (con recomendaciones)
-router.get("/nombre/:nombre", getProductoByNombre);
+router.get("/:nombre", getProductoByNombre);
 
 // Obtener un producto por ID (mantenida por compatibilidad)
 router.get("/:id", getProductoById);
