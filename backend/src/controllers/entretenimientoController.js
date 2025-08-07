@@ -390,107 +390,247 @@ exports.getVideosDisponibles = async (req, res) => {
   }
 };
 
-// =============================================================== ARTÍCULOS SELECCIONADOS PARA ENTRETENIMIENTO ==========================================================================
+// =============================================================== ARTÍCULOS SELECCIONADOS PARA ENTRETENIMIENTO - CORREGIDO ==========================================================================
 
 // Obtener artículos seleccionados para entretenimiento (máximo 3)
 exports.getArticulosSeleccionados = async (req, res) => {
   try {
+    console.log('📚 Backend: Obteniendo artículos seleccionados...');
+    
     // Obtener IDs de artículos seleccionados
     const snapshot = await db.ref("/entretenimiento/articulosSeleccionados").once("value");
     const articulosSeleccionadosIds = snapshot.val() || [];
+    
+    console.log('📚 Backend: IDs seleccionados:', articulosSeleccionadosIds);
 
     if (articulosSeleccionadosIds.length === 0) {
+      console.log('📚 Backend: No hay artículos seleccionados');
       return res.json([]);
     }
 
     // Obtener datos completos de los artículos seleccionados
     const articulosSnapshot = await db.ref("/entretenimiento/blog").once("value");
     const todosLosArticulos = articulosSnapshot.val() || {};
+    
+    console.log('📚 Backend: Total de artículos en DB:', Object.keys(todosLosArticulos).length);
 
     const articulosSeleccionados = articulosSeleccionadosIds
-      .map(id => ({ id, ...todosLosArticulos[id] }))
-      .filter(articulo => articulo.titulo); // Solo artículos que existen
+      .map(id => {
+        if (todosLosArticulos[id]) {
+          return { id, ...todosLosArticulos[id] };
+        }
+        console.log(`⚠️ Backend: Artículo ${id} no encontrado en DB`);
+        return null;
+      })
+      .filter(articulo => articulo && articulo.titulo); // Solo artículos que existen
 
+    console.log(`✅ Backend: ${articulosSeleccionados.length} artículos seleccionados encontrados`);
     res.json(articulosSeleccionados);
   } catch (error) {
+    console.error('❌ Backend: Error al obtener artículos seleccionados:', error);
     res.status(500).json({ mensaje: "Error al obtener artículos seleccionados", detalles: error.message });
   }
 };
 
-// Agregar artículo a seleccionados para entretenimiento
+// Agregar artículo a seleccionados para entretenimiento - CORREGIDO
 exports.agregarArticuloSeleccionado = async (req, res) => {
   const { articuloId } = req.body;
 
   try {
+    console.log('📚 Backend: Intentando agregar artículo:', articuloId);
+    
+    if (!articuloId) {
+      console.log('❌ Backend: ID de artículo no proporcionado');
+      return res.status(400).json({ mensaje: "ID del artículo es requerido" });
+    }
+
     // Verificar que el artículo existe
     const articuloSnapshot = await db.ref(`/entretenimiento/blog/${articuloId}`).once("value");
     if (!articuloSnapshot.exists()) {
+      console.log(`❌ Backend: Artículo ${articuloId} no encontrado en DB`);
       return res.status(404).json({ mensaje: "Artículo no encontrado" });
     }
 
     // Obtener lista actual de seleccionados
     const snapshot = await db.ref("/entretenimiento/articulosSeleccionados").once("value");
     const articulosSeleccionados = snapshot.val() || [];
+    
+    console.log('📚 Backend: Artículos actualmente seleccionados:', articulosSeleccionados);
+    console.log('📚 Backend: Cantidad actual:', articulosSeleccionados.length);
 
     // Verificar límite de 3 artículos
     if (articulosSeleccionados.length >= 3) {
+      console.log('❌ Backend: Límite de 3 artículos alcanzado');
       return res.status(400).json({ mensaje: "Máximo 3 artículos permitidos en entretenimiento" });
     }
 
     // Verificar que no esté ya seleccionado
     if (articulosSeleccionados.includes(articuloId)) {
+      console.log('❌ Backend: Artículo ya está seleccionado');
       return res.status(400).json({ mensaje: "Artículo ya está seleccionado" });
     }
 
     // Agregar a la lista
-    articulosSeleccionados.push(articuloId);
-    await db.ref("/entretenimiento/articulosSeleccionados").set(articulosSeleccionados);
+    const nuevaLista = [...articulosSeleccionados, articuloId];
+    await db.ref("/entretenimiento/articulosSeleccionados").set(nuevaLista);
+    
+    console.log('✅ Backend: Artículo agregado correctamente. Nueva lista:', nuevaLista);
 
-    res.status(200).json({ mensaje: "Artículo agregado a entretenimiento correctamente" });
+    res.status(200).json({ 
+      mensaje: "Artículo agregado a entretenimiento correctamente",
+      articuloId: articuloId,
+      totalSeleccionados: nuevaLista.length
+    });
   } catch (error) {
-    res.status(400).json({ mensaje: "Error al agregar artículo", detalles: error.message });
+    console.error('❌ Backend: Error al agregar artículo:', error);
+    res.status(500).json({ mensaje: "Error interno al agregar artículo", detalles: error.message });
   }
 };
 
-// Eliminar artículo de seleccionados para entretenimiento
+// Eliminar artículo de seleccionados para entretenimiento - CORREGIDO
 exports.eliminarArticuloSeleccionado = async (req, res) => {
   const { articuloId } = req.body;
 
   try {
+    console.log('📚 Backend: Intentando eliminar artículo:', articuloId);
+    
+    if (!articuloId) {
+      console.log('❌ Backend: ID de artículo no proporcionado');
+      return res.status(400).json({ mensaje: "ID del artículo es requerido" });
+    }
+
     // Obtener lista actual
     const snapshot = await db.ref("/entretenimiento/articulosSeleccionados").once("value");
     const articulosSeleccionados = snapshot.val() || [];
+    
+    console.log('📚 Backend: Artículos actualmente seleccionados:', articulosSeleccionados);
+
+    // Verificar que el artículo esté en la lista
+    if (!articulosSeleccionados.includes(articuloId)) {
+      console.log('❌ Backend: Artículo no está en la lista de seleccionados');
+      return res.status(404).json({ mensaje: "Artículo no encontrado en entretenimiento" });
+    }
 
     // Filtrar el artículo a eliminar
     const nuevaLista = articulosSeleccionados.filter(id => id !== articuloId);
-
-    // Guardar nueva lista
     await db.ref("/entretenimiento/articulosSeleccionados").set(nuevaLista);
+    
+    console.log('✅ Backend: Artículo eliminado correctamente. Nueva lista:', nuevaLista);
 
-    res.status(200).json({ mensaje: "Artículo eliminado de entretenimiento correctamente" });
+    res.status(200).json({ 
+      mensaje: "Artículo eliminado de entretenimiento correctamente",
+      articuloId: articuloId,
+      totalSeleccionados: nuevaLista.length
+    });
   } catch (error) {
-    res.status(400).json({ mensaje: "Error al eliminar artículo", detalles: error.message });
+    console.error('❌ Backend: Error al eliminar artículo:', error);
+    res.status(500).json({ mensaje: "Error interno al eliminar artículo", detalles: error.message });
   }
 };
 
-// Obtener artículos disponibles para seleccionar (todos menos los ya seleccionados)
+// Obtener artículos disponibles para seleccionar (todos menos los ya seleccionados) - CORREGIDO
 exports.getArticulosDisponibles = async (req, res) => {
   try {
+    console.log('📚 Backend: Obteniendo artículos disponibles...');
+    
     // Obtener artículos seleccionados
     const seleccionadosSnapshot = await db.ref("/entretenimiento/articulosSeleccionados").once("value");
     const articulosSeleccionados = seleccionadosSnapshot.val() || [];
+    
+    console.log('📚 Backend: Artículos seleccionados:', articulosSeleccionados);
 
     // Obtener todos los artículos
     const todosSnapshot = await db.ref("/entretenimiento/blog").once("value");
     const todosLosArticulos = todosSnapshot.val() || {};
+    
+    console.log('📚 Backend: Total de artículos en DB:', Object.keys(todosLosArticulos).length);
 
     // Filtrar artículos no seleccionados
     const articulosDisponibles = Object.entries(todosLosArticulos)
-      .filter(([id, articulo]) => !articulosSeleccionados.includes(id) && articulo.titulo)
+      .filter(([id, articulo]) => {
+        const noEstaSeleccionado = !articulosSeleccionados.includes(id);
+        const tieneTitle = articulo && articulo.titulo;
+        return noEstaSeleccionado && tieneTitle;
+      })
       .map(([id, articulo]) => ({ id, ...articulo }));
 
+    console.log(`✅ Backend: ${articulosDisponibles.length} artículos disponibles encontrados`);
     res.json(articulosDisponibles);
   } catch (error) {
+    console.error('❌ Backend: Error al obtener artículos disponibles:', error);
     res.status(500).json({ mensaje: "Error al obtener artículos disponibles", detalles: error.message });
+  }
+};
+
+// =============================================================== FUNCIONES DE DEPURACIÓN Y LIMPIEZA ==========================================================================
+
+// Función para limpiar/resetear artículos seleccionados (solo admin)
+exports.limpiarArticulosSeleccionados = async (req, res) => {
+  try {
+    console.log('🧹 Backend: Limpiando artículos seleccionados...');
+    
+    // Obtener estado actual
+    const snapshot = await db.ref("/entretenimiento/articulosSeleccionados").once("value");
+    const estadoAnterior = snapshot.val() || [];
+    
+    console.log('🧹 Backend: Estado anterior:', estadoAnterior);
+    
+    // Limpiar la lista
+    await db.ref("/entretenimiento/articulosSeleccionados").set([]);
+    
+    console.log('✅ Backend: Artículos seleccionados limpiados correctamente');
+    
+    res.status(200).json({ 
+      mensaje: "Artículos seleccionados limpiados correctamente",
+      estadoAnterior: estadoAnterior,
+      nuevoEstado: []
+    });
+  } catch (error) {
+    console.error('❌ Backend: Error al limpiar artículos seleccionados:', error);
+    res.status(500).json({ mensaje: "Error al limpiar artículos seleccionados", detalles: error.message });
+  }
+};
+
+// Función de debug para ver el estado completo de Firebase (solo admin)
+exports.debugEstadoFirebase = async (req, res) => {
+  try {
+    console.log('🔍 Backend: Debug - Obteniendo estado completo...');
+    
+    // Obtener artículos seleccionados
+    const seleccionadosSnapshot = await db.ref("/entretenimiento/articulosSeleccionados").once("value");
+    const articulosSeleccionados = seleccionadosSnapshot.val();
+    
+    // Obtener todos los artículos del blog
+    const blogSnapshot = await db.ref("/entretenimiento/blog").once("value");
+    const todosLosArticulos = blogSnapshot.val();
+    
+    // Obtener videos seleccionados para comparación
+    const videosSnapshot = await db.ref("/entretenimiento/videosSeleccionados").once("value");
+    const videosSeleccionados = videosSnapshot.val();
+    
+    const estadoCompleto = {
+      articulosSeleccionados: {
+        datos: articulosSeleccionados,
+        tipo: typeof articulosSeleccionados,
+        esArray: Array.isArray(articulosSeleccionados),
+        longitud: articulosSeleccionados ? (Array.isArray(articulosSeleccionados) ? articulosSeleccionados.length : Object.keys(articulosSeleccionados).length) : 0
+      },
+      totalArticulosEnBlog: {
+        datos: todosLosArticulos ? Object.keys(todosLosArticulos) : [],
+        cantidad: todosLosArticulos ? Object.keys(todosLosArticulos).length : 0
+      },
+      videosSeleccionados: {
+        datos: videosSeleccionados,
+        cantidad: videosSeleccionados ? (Array.isArray(videosSeleccionados) ? videosSeleccionados.length : Object.keys(videosSeleccionados).length) : 0
+      },
+      timestamp: new Date().toISOString()
+    };
+    
+    console.log('🔍 Backend: Estado completo:', JSON.stringify(estadoCompleto, null, 2));
+    
+    res.status(200).json(estadoCompleto);
+  } catch (error) {
+    console.error('❌ Backend: Error en debug:', error);
+    res.status(500).json({ mensaje: "Error en debug", detalles: error.message });
   }
 };

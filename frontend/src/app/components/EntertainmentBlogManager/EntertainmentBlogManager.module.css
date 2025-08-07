@@ -48,6 +48,13 @@
   background: linear-gradient(135deg, #059669 0%, #047857 50%, #065f46 100%);
 }
 
+.manageButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.1) !important;
+}
+
 .manageIcon {
   font-size: 1.2rem;
   filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.3));
@@ -84,7 +91,6 @@
   width: 100%;
   max-width: 1200px;
   max-height: 90vh;
-  /* CAMBIO: Removido el background verde que causaba el flash */
   background: linear-gradient(145deg, #ffffff 0%, #f8fafc 30%, #f0f8ff 100%);
   border-radius: 25px;
   box-shadow: 
@@ -102,7 +108,6 @@
   content: '';
   position: absolute;
   inset: -3px;
-  /* CAMBIO: Cambiado el gradiente para usar colores azules en lugar de verdes */
   background: linear-gradient(135deg, #1e40af, #3b82f6, #6366f1, #8b5cf6);
   border-radius: 28px;
   z-index: -1;
@@ -120,7 +125,6 @@
 }
 
 .header {
-  /* CAMBIO: Cambiado el gradiente para usar tonos azules/púrpuras en lugar de verdes */
   background: linear-gradient(135deg, #1e293b 0%, #334155 25%, #1e40af 50%, #3b82f6 75%, #6366f1 100%);
   color: white;
   display: flex;
@@ -186,7 +190,6 @@
   padding: 32px;
   overflow-y: auto;
   max-height: calc(90vh - 140px);
-  /* CAMBIO: Fondo neutro sin tonos verdes */
   background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
 }
 
@@ -211,9 +214,69 @@
   left: 0;
   width: 60px;
   height: 3px;
-  /* CAMBIO: Cambiado de verde a azul */
   background: linear-gradient(90deg, #3b82f6 0%, #6366f1 100%);
   border-radius: 2px;
+}
+
+/* Estado cuando no hay artículos en la base de datos */
+.noArticlesInDatabase {
+  text-align: center;
+  padding: 80px 40px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-radius: 20px;
+  border: 2px dashed #cbd5e1;
+  margin: 20px 0;
+}
+
+.noArticlesIcon {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  opacity: 0.6;
+}
+
+.noArticlesInDatabase h3 {
+  font-size: 2rem;
+  color: #1e293b;
+  margin-bottom: 15px;
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+  font-weight: 700;
+}
+
+.noArticlesInDatabase h3::after {
+  display: none;
+}
+
+.noArticlesInDatabase p {
+  font-size: 1.2rem;
+  color: #64748b;
+  margin-bottom: 30px;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  line-height: 1.6;
+}
+
+.goToBlogButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 50%, #1e40af 100%);
+  color: white;
+  border: none;
+  padding: 18px 32px;
+  border-radius: 30px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+}
+
+.goToBlogButton:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5);
+  background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 50%, #1e3a8a 100%);
 }
 
 .articlesGrid {
@@ -228,7 +291,6 @@
   overflow: hidden;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
-  /* CAMBIO: Cambiado el borde de verde a azul */
   border: 2px solid rgba(59, 130, 246, 0.1);
   position: relative;
 }
@@ -236,7 +298,6 @@
 .articleCard:hover {
   transform: translateY(-5px);
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-  /* CAMBIO: Cambiado el hover de verde a azul */
   border-color: rgba(59, 130, 246, 0.3);
 }
 
@@ -275,17 +336,23 @@
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
 }
 
-.removeButton:hover {
+.removeButton:hover:not(:disabled) {
   transform: scale(1.1);
   box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
   background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+}
+
+.removeButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
 }
 
 .addButton {
   position: absolute;
   top: 12px;
   right: 12px;
-  /* CAMBIO: Cambiado de verde a azul para consistencia */
   background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
   color: white;
   border: none;
@@ -300,9 +367,16 @@
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
 
-.addButton:hover {
+.addButton:hover:not(:disabled) {
   transform: scale(1.1);
   box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+.addButton:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
 }
 
 .articleInfo {
@@ -323,7 +397,6 @@
 }
 
 .articleCategory {
-  /* CAMBIO: Cambiado de verde a azul */
   background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(29, 78, 216, 0.1) 100%);
   color: #1d4ed8;
   padding: 6px 12px;
@@ -346,8 +419,18 @@
   animation: warningPulse 2s infinite;
 }
 
+@keyframes warningPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
+}
+
 .maxReached {
-  /* CAMBIO: Cambiado de verde a azul para consistencia */
   background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 50%, #dbeafe 100%);
   color: #1d4ed8;
   padding: 16px 20px;
@@ -395,6 +478,86 @@
   75% { transform: translateX(5px); }
 }
 
+.processing {
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fef3c7 100%);
+  color: #92400e;
+  padding: 16px 20px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 600;
+  margin: 20px 0;
+  border: 2px solid #fbbf24;
+  animation: processingPulse 1.5s infinite;
+}
+
+@keyframes processingPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
+}
+
+/* Sección del botón "Ver más artículos" */
+.blogLinkSection {
+  padding: 30px 0;
+  text-align: center;
+  border-top: 1px solid #e2e8f0;
+  margin-top: 40px;
+}
+
+.viewMoreArticlesButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+  color: white;
+  border: none;
+  padding: 16px 32px;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.4s ease;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.viewMoreArticlesButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s ease;
+}
+
+.viewMoreArticlesButton:hover::before {
+  left: 100%;
+}
+
+.viewMoreArticlesButton:hover:not(:disabled) {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 15px 40px rgba(99, 102, 241, 0.5);
+  background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 50%, #c084fc 100%);
+}
+
+.viewMoreArticlesButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.2) !important;
+}
+
 .footer {
   padding: 24px 32px;
   border-top: 2px solid #e2e8f0;
@@ -415,7 +578,6 @@
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
   transition: all 0.3s ease;
   min-width: 200px;
-  /* CAMBIO: Cambiado de verde a azul para mantener consistencia */
   background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 50%, #1e40af 100%);
   color: white;
   box-shadow: 0 6px 20px rgba(59, 130, 246, 0.3);
@@ -470,6 +632,18 @@
     padding: 14px 24px;
     font-size: 1rem;
   }
+
+  .viewMoreArticlesButton {
+    width: 100%;
+    max-width: 320px;
+    justify-content: center;
+  }
+
+  .goToBlogButton {
+    width: 100%;
+    max-width: 280px;
+    justify-content: center;
+  }
 }
 
 @media (max-width: 480px) {
@@ -487,5 +661,21 @@
   
   .articleImage {
     height: 150px;
+  }
+
+  .noArticlesInDatabase {
+    padding: 60px 20px;
+  }
+
+  .noArticlesInDatabase h3 {
+    font-size: 1.6rem;
+  }
+
+  .noArticlesInDatabase p {
+    font-size: 1rem;
+  }
+
+  .noArticlesIcon {
+    font-size: 3rem;
   }
 }
