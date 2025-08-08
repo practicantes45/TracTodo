@@ -8,11 +8,27 @@ const { generarRecomendaciones } = require("../services/productoRecomendado");
 // Obtener todos los productos
 router.get("/", getAllProductos);
 
-// NUEVA RUTA: Obtener un producto por NOMBRE (con recomendaciones)
-router.get("/:nombre", getProductoByNombre);
+// NUEVA RUTA: Obtener un producto por NOMBRE (patrón específico)
+router.get("/nombre/:nombre", getProductoByNombre);
 
 // Obtener un producto por ID (mantenida por compatibilidad)
-router.get("/:id", getProductoById);
+router.get("/id/:id", getProductoById);
+
+// RUTA GENÉRICA: Detectar automáticamente si es ID o nombre
+router.get("/:slug", async (req, res) => {
+  const { slug } = req.params;
+  
+  // Si el slug parece ser un ID de Firebase (empieza con - y tiene caracteres específicos)
+  if (slug.startsWith('-') && slug.length > 10) {
+    // Llamar al controlador de ID
+    req.params.id = slug;
+    return require("../controllers/productoController").getProductoById(req, res);
+  } else {
+    // Asumir que es un nombre
+    req.params.nombre = slug;
+    return require("../controllers/productoController").getProductoByNombre(req, res);
+  }
+});
 
 //Crear un nuevo producto
 router.post("/", insertarProducto);

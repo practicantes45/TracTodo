@@ -1,6 +1,6 @@
 'use client';
 import './productos.css';
-import { FaCalendarCheck, FaMapMarkedAlt, FaFilter, FaWhatsapp, FaSortAlphaDown, FaSortAlphaUp, FaTimes, FaEraser } from "react-icons/fa";
+import { FaFilter, FaWhatsapp, FaSortAlphaDown, FaSortAlphaUp, FaTimes, FaEraser } from "react-icons/fa";
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
@@ -9,6 +9,7 @@ import { obtenerProductos, buscarProductos } from '../../services/productoServic
 import { registrarVista } from '../../services/trackingService';
 import { useSearchParams, useRouter } from 'next/navigation';
 import AdminButtons from '../components/AdminButtons/AdminButtons';
+import { getProductSlug } from '../../utils/slugUtils'; // NUEVA IMPORTACIÓN
 
 export default function ProductosPage() {
   // Estados
@@ -57,20 +58,19 @@ export default function ProductosPage() {
     }
   ];
 
-  // Efecto para cargar productos cuando cambian los filtros
-// Efecto para pre-seleccionar marca desde URL
-useEffect(() => {
-  // Si hay un parámetro de marca en la URL, pre-seleccionarlo
-  if (marcaParam && marcasPredefinidas.includes(marcaParam)) {
-    console.log('🔄 Inicializando con marca desde URL:', marcaParam);
-    setSelectedMarcas([marcaParam]);
-  }
-}, [marcaParam]);
+  // Efecto para pre-seleccionar marca desde URL
+  useEffect(() => {
+    // Si hay un parámetro de marca en la URL, pre-seleccionarlo
+    if (marcaParam && marcasPredefinidas.includes(marcaParam)) {
+      console.log('🔄 Inicializando con marca desde URL:', marcaParam);
+      setSelectedMarcas([marcaParam]);
+    }
+  }, [marcaParam]);
 
-// AGREGAR ESTE useEffect que faltaba:
-useEffect(() => {
-  cargarProductosConFiltros();
-}, [selectedMarcas, selectedOrden, busquedaParam]);
+  // AGREGAR ESTE useEffect que faltaba:
+  useEffect(() => {
+    cargarProductosConFiltros();
+  }, [selectedMarcas, selectedOrden, busquedaParam]);
 
   // Función principal para cargar productos con filtros
   const cargarProductosConFiltros = async () => {
@@ -147,13 +147,15 @@ useEffect(() => {
     window.open(whatsappUrl, '_blank');
   };
 
+  // FUNCIÓN MODIFICADA: Usar slug en lugar de ID
   const handleProductoClick = async (producto) => {
-    // Registrar vista
+    // Registrar vista usando el ID (para tracking)
     await registrarVista(producto.id);
 
-    // Navegar al detalle
-    console.log('Producto seleccionado:', producto);
-    router.push(`/productos/${producto.id}`);
+    // Navegar usando el slug del nombre
+    const slug = getProductSlug(producto);
+    console.log('🔗 Navegando a producto:', { nombre: producto.nombre, slug });
+    router.push(`/productos/${slug}`);
   };
 
   // FUNCIÓN MODIFICADA: Priorizar imagen "frente"

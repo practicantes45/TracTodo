@@ -283,3 +283,27 @@ export const actualizarPrecioProductoDelMes = async (id, precioMes) => {
     throw error;
   }
 };
+// Nueva función para obtener producto por nombre
+export const obtenerProductoPorNombre = async (nombre) => {
+  try {
+    // Decodificar el nombre de la URL por si tiene caracteres especiales
+    const nombreDecodificado = decodeURIComponent(nombre);
+    
+    const response = await fetch(`${API_URL}/productos/${nombreDecodificado}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error al obtener producto: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error al obtener producto por nombre:', error);
+    throw error;
+  }
+};

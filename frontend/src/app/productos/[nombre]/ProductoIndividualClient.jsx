@@ -7,11 +7,11 @@ import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import ScrollToTop from '../../components/ScrollToTop/ScrollToTop';
 import ProductImageModal from '../../components/ProductImageModal/ProductImageModal';
-import { obtenerProductoPorId } from '@/services/productoService';
+import { obtenerProductoPorNombre } from '@/services/productoService';
 import { registrarVista } from '../../../services/trackingService';
+import { getProductSlug } from '../../../utils/slugUtils';
 
-export default function ProductoIndividualPage() {
-    const params = useParams();
+export default function ProductoIndividualPage({ params }) { // CAMBIADO: recibir params como prop
     const router = useRouter();
     const [producto, setProducto] = useState(null);
     const [productosRelacionados, setProductosRelacionados] = useState([]);
@@ -85,11 +85,12 @@ export default function ProductoIndividualPage() {
         setCurrentSlide(0);
     }, [productosRelacionados, itemsPerSlide]);
 
+    // EFECTO MODIFICADO: Usar params prop
     useEffect(() => {
-        if (params.id) {
+        if (params?.nombre) {
             cargarProducto();
         }
-    }, [params.id]);
+    }, [params?.nombre]);
 
     // Resetear zoom, rotación y pan cuando cambia la imagen
     useEffect(() => {
@@ -99,12 +100,20 @@ export default function ProductoIndividualPage() {
         setCarouselPanY(0);
     }, [currentImageIndex]);
 
+    // FUNCIÓN MODIFICADA: Convertir slug de vuelta a nombre para búsqueda
     const cargarProducto = async () => {
         try {
             setLoading(true);
-            console.log('🔄 Cargando producto ID:', params.id);
+            console.log('🔄 Cargando producto por slug:', params.nombre);
 
-            const data = await obtenerProductoPorId(params.id);
+            // Convertir el slug de vuelta a formato de búsqueda
+            const nombreParaBusqueda = params.nombre
+                .replace(/-/g, ' ') // Reemplazar guiones con espacios
+                .toLowerCase();
+
+            console.log('🔍 Buscando producto con nombre:', nombreParaBusqueda);
+
+            const data = await obtenerProductoPorNombre(nombreParaBusqueda);
             console.log('📦 Datos del producto:', data);
 
             setProducto(data.producto);
@@ -117,7 +126,8 @@ export default function ProductoIndividualPage() {
             console.log('🖼️ Imágenes procesadas:', imagenes);
             console.log('🔗 Productos relacionados encontrados:', data.recomendados?.length || 0);
 
-            await registrarVista(params.id);
+            // Registrar vista usando el ID del producto
+            await registrarVista(data.producto.id);
         } catch (error) {
             console.error("❌ Error al cargar producto:", error);
             setError('No se pudo cargar el producto');
@@ -368,8 +378,11 @@ export default function ProductoIndividualPage() {
         router.push('/productos');
     };
 
+    // FUNCIÓN MODIFICADA: Navegar usando slug
     const handleRelatedProductClick = (relatedProduct) => {
-        router.push(`/productos/${relatedProduct.id}`);
+        const slug = getProductSlug(relatedProduct);
+        console.log('🔗 Navegando a producto relacionado:', { nombre: relatedProduct.nombre, slug });
+        router.push(`/productos/${slug}`);
     };
 
     const nextImage = () => {

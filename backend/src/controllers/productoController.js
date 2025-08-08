@@ -111,7 +111,7 @@ exports.getAllProductos = async (req, res) => {
   }
 };
 
-// NUEVA FUNCIÓN: obtener producto por NOMBRE en lugar de ID
+// FUNCIÓN MEJORADA: obtener producto por NOMBRE con mejor coincidencia
 exports.getProductoByNombre = async (req, res) => {
   const { nombre } = req.params;
 
@@ -130,25 +130,25 @@ exports.getProductoByNombre = async (req, res) => {
       return res.status(404).json({ error: "No hay productos en la base de datos" });
     }
 
-    // Buscar producto por coincidencia exacta de nombre normalizado
+    // MEJORADO: Buscar con múltiples estrategias
     let productoEncontrado = null;
     let idProducto = null;
 
+    // 1. Búsqueda exacta del nombre normalizado
     for (const [id, producto] of Object.entries(data)) {
       if (producto?.nombre) {
         const nombreProductoNormalizado = normalizarTexto(producto.nombre);
         
-        // Coincidencia exacta del nombre normalizado
         if (nombreProductoNormalizado === nombreNormalizado) {
           productoEncontrado = producto;
           idProducto = id;
-          console.log(`✅ Producto encontrado: "${producto.nombre}" con ID: ${id}`);
+          console.log(`✅ Coincidencia exacta: "${producto.nombre}" con ID: ${id}`);
           break;
         }
       }
     }
 
-    // Si no se encontró coincidencia exacta, buscar coincidencia parcial
+    // 2. Si no hay coincidencia exacta, buscar coincidencia parcial
     if (!productoEncontrado) {
       console.log(`ℹ️ No se encontró coincidencia exacta, buscando coincidencia parcial...`);
       
@@ -156,14 +156,48 @@ exports.getProductoByNombre = async (req, res) => {
         if (producto?.nombre) {
           const nombreProductoNormalizado = normalizarTexto(producto.nombre);
           
-          // Coincidencia parcial (el nombre buscado está contenido en el nombre del producto)
+          // Coincidencia parcial
           if (nombreProductoNormalizado.includes(nombreNormalizado)) {
             productoEncontrado = producto;
             idProducto = id;
-            console.log(`✅ Producto encontrado (coincidencia parcial): "${producto.nombre}" con ID: ${id}`);
+            console.log(`✅ Coincidencia parcial: "${producto.nombre}" con ID: ${id}`);
             break;
           }
         }
+      }
+    }
+
+    // 3. NUEVO: Si no hay coincidencia, buscar por palabras clave
+    if (!productoEncontrado) {
+      console.log(`ℹ️ Buscando por palabras clave individuales...`);
+      
+      const palabrasClave = nombreNormalizado.split(' ').filter(p => p.length > 2);
+      let mejorCoincidencia = null;
+      let mejorPuntaje = 0;
+      
+      for (const [id, producto] of Object.entries(data)) {
+        if (producto?.nombre) {
+          const nombreProductoNormalizado = normalizarTexto(producto.nombre);
+          let puntaje = 0;
+          
+          // Contar cuántas palabras clave coinciden
+          palabrasClave.forEach(palabra => {
+            if (nombreProductoNormalizado.includes(palabra)) {
+              puntaje++;
+            }
+          });
+          
+          if (puntaje > mejorPuntaje) {
+            mejorPuntaje = puntaje;
+            mejorCoincidencia = { id, producto };
+          }
+        }
+      }
+      
+      if (mejorCoincidencia && mejorPuntaje > 0) {
+        productoEncontrado = mejorCoincidencia.producto;
+        idProducto = mejorCoincidencia.id;
+        console.log(`✅ Coincidencia por palabras clave: "${productoEncontrado.nombre}" con puntaje ${mejorPuntaje}`);
       }
     }
 
