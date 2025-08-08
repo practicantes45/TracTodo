@@ -10,6 +10,32 @@ const normalizarTexto = (texto) => {
     .toLowerCase();
 };
 
+// NUEVA FUNCIÓN: Convertir texto a formato URL amigable
+const convertirAURLAmigable = (texto) => {
+  return texto
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // Quitar acentos
+    .replace(/[^a-z0-9\s-]/g, '') // Quitar caracteres especiales
+    .replace(/\s+/g, '-') // Espacios a guiones
+    .replace(/-+/g, '-') // Múltiples guiones a uno solo
+    .trim();
+};
+
+// NUEVA FUNCIÓN: Verificar si dos nombres son equivalentes
+const sonNombresEquivalentes = (nombre1, nombre2) => {
+  const normalizado1 = normalizarTexto(nombre1);
+  const normalizado2 = normalizarTexto(nombre2);
+  const urlAmigable1 = convertirAURLAmigable(nombre1);
+  const urlAmigable2 = convertirAURLAmigable(nombre2);
+  
+  // Verificar coincidencias exactas o URL amigables
+  return normalizado1 === normalizado2 || 
+         urlAmigable1 === urlAmigable2 ||
+         normalizado1 === urlAmigable2 ||
+         urlAmigable1 === normalizado2;
+};
+
 exports.getAllProductos = async (req, res) => {
   const { q, marca, orden } = req.query;
 
