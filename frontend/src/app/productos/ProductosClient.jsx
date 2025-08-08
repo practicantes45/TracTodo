@@ -1,562 +1,745 @@
 'use client';
-import './productos.css';
-import { FaCalendarCheck, FaMapMarkedAlt, FaFilter, FaWhatsapp, FaSortAlphaDown, FaSortAlphaUp, FaTimes, FaEraser } from "react-icons/fa";
-import { useState, useEffect } from 'react';
-import Navbar from '../components/Navbar/Navbar';
-import Footer from '../components/Footer/Footer';
-import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
-import ContactNumbers from '../components/ContactNumbers/ContactNumbers';
-import { obtenerProductos, buscarProductos, generarURLAmigable } from '../../services/productoService';
-import { registrarVista } from '../../services/trackingService';
-import { useSearchParams, useRouter } from 'next/navigation';
-import AdminButtons from '../components/AdminButtons/AdminButtons';
+import './producto-individual.css';
+import { useState, useEffect, useRef } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { FaArrowLeft, FaWhatsapp, FaShare, FaCopy, FaCheckCircle, FaChevronLeft, FaChevronRight, FaSearchPlus, FaSearchMinus, FaRedo } from "react-icons/fa";
+import Navbar from '../../components/Navbar/Navbar';
+import Footer from '../../components/Footer/Footer';
+import ScrollToTop from '../../components/ScrollToTop/ScrollToTop';
+import ProductImageModal from '../../components/ProductImageModal/ProductImageModal';
+import { obtenerProductoPorNombre, generarURLAmigable } from '../../../services/productoService';
+import { registrarVista } from '../../../services/trackingService';
 
-export default function ProductosPage() {
-  // Estados
-  const [productos, setProductos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-  const router = useRouter();
+export default function ProductoIndividualClient({ params }) {
+    const router = useRouter();
+    const [producto, setProducto] = useState(null);
+    const [productosRelacionados, setProductosRelacionados] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+    const [copied, setCopied] = useState(false);
 
-  // Estados para filtros
-  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
-  const [selectedMarcas, setSelectedMarcas] = useState([]);
-  const [selectedOrden, setSelectedOrden] = useState('A-Z');
-  const [marcasDisponibles, setMarcasDisponibles] = useState([]);
+    // Estados para el carrusel de imágenes del producto principal
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [imagenesProducto, setImagenesProducto] = useState([]);
 
-  const searchParams = useSearchParams();
-  const busquedaParam = searchParams.get('busqueda');
-  const marcaParam = searchParams.get('marca');
+    // Estados para zoom, rotación y pan del carrusel principal
+    const [carouselZoom, setCarouselZoom] = useState(100);
+    const [carouselRotation, setCarouselRotation] = useState(0);
+    const [carouselPanX, setCarouselPanX] = useState(0);
+    const [carouselPanY, setCarouselPanY] = useState(0);
+    const [isDragging, setIsDragging] = useState(false);
+    const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+    const carouselImageRef = useRef(null);
 
-  console.log('🔍 Parámetro de búsqueda:', busquedaParam);
-  console.log('🏷️ Parámetro de marca:', marcaParam);
+    // Estados para el modal de imágenes
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [modalImageIndex, setModalImageIndex] = useState(0);
 
-  // Lista de marcas predefinidas
-  const marcasPredefinidas = ["Cummins", "Navistar", "Volvo", "Mercedes Benz", "Detroit", "Otros"];
+    // Estados para el carrusel de productos relacionados
+    const [currentSlide, setCurrentSlide] = useState(0);
+    const [itemsPerSlide, setItemsPerSlide] = useState(3);
 
-  // Lista de contactos
-  const contactList = [
-    {
-      name: "Alan",
-      phoneNumber: "+524272245923",
-      message: "Hola Alan, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
-    },
-    {
-      name: "Laura",
-      phoneNumber: "+524272033515",
-      message: "Hola Laura, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
-    },
-    {
-      name: "Oscar",
-      phoneNumber: "+524272032672",
-      message: "Hola Oscar, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
-    },
-    {
-      name: "Hugo",
-      phoneNumber: "+524424128926",
-      message: "Hola Hugo, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
-    }
-  ];
+    // Lista de contactos para WhatsApp
+    const contactList = [
+        {
+            name: "Alan",
+            phoneNumber: "+524272245923",
+            message: "Hola Alan, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
+        },
+        {
+            name: "Laura",
+            phoneNumber: "+524272033515",
+            message: "Hola Laura, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
+        },
+        {
+            name: "Oscar",
+            phoneNumber: "+524272032672",
+            message: "Hola Oscar, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
+        },
+        {
+            name: "Hugo",
+            phoneNumber: "+524424128926",
+            message: "Hola Hugo, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
+        }
+    ];
 
-  // Efecto para cargar productos cuando cambian los filtros
-// Efecto para pre-seleccionar marca desde URL
-useEffect(() => {
-  // Si hay un parámetro de marca en la URL, pre-seleccionarlo
-  if (marcaParam && marcasPredefinidas.includes(marcaParam)) {
-    console.log('🔄 Inicializando con marca desde URL:', marcaParam);
-    setSelectedMarcas([marcaParam]);
-  }
-}, [marcaParam]);
+    // Detectar tamaño de pantalla para items per slide
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth <= 768) {
+                setItemsPerSlide(1);
+            } else if (window.innerWidth <= 1024) {
+                setItemsPerSlide(2);
+            } else {
+                setItemsPerSlide(3);
+            }
+        };
 
-// AGREGAR ESTE useEffect que faltaba:
-useEffect(() => {
-  cargarProductosConFiltros();
-}, [selectedMarcas, selectedOrden, busquedaParam]);
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
-  // Función principal para cargar productos con filtros
-  const cargarProductosConFiltros = async () => {
-    try {
-      setLoading(true);
-      setError('');
+    useEffect(() => {
+        setCurrentSlide(0);
+    }, [productosRelacionados, itemsPerSlide]);
 
-      let resultados;
+    // Cargar producto cuando cambia el parámetro
+    useEffect(() => {
+        if (params.nombre) {
+            cargarProducto();
+        }
+    }, [params.nombre]);
 
-      if (busquedaParam) {
-        // Si hay búsqueda, usar buscarProductos con filtros
-        console.log('🔍 Buscando con término y filtros:', {
-          q: busquedaParam,
-          marcas: selectedMarcas,
-          orden: selectedOrden
+    // Resetear zoom, rotación y pan cuando cambia la imagen
+    useEffect(() => {
+        setCarouselZoom(100);
+        setCarouselRotation(0);
+        setCarouselPanX(0);
+        setCarouselPanY(0);
+    }, [currentImageIndex]);
+
+    // FUNCIÓN CORREGIDA para cargar producto por nombre
+    const cargarProducto = async () => {
+        try {
+            setLoading(true);
+            setError('');
+            console.log('🔄 Cargando producto por nombre/URL:', params.nombre);
+
+            // Decodificar la URL
+            const nombreDecodificado = decodeURIComponent(params.nombre);
+            console.log('📝 Nombre decodificado:', nombreDecodificado);
+
+            // Obtener producto por nombre (el backend maneja URLs amigables)
+            const data = await obtenerProductoPorNombre(nombreDecodificado);
+            console.log('📦 Datos del producto recibidos:', data);
+
+            // MEJORADO: Procesamiento más robusto de la respuesta
+            let producto = null;
+            let recomendados = [];
+
+            if (!data) {
+                throw new Error('No se recibieron datos del servidor');
+            }
+
+            // Verificar diferentes formatos de respuesta del backend
+            if (data.producto && (data.producto.nombre || data.producto.id)) {
+                // Formato: { producto: {...}, recomendados: [...] }
+                producto = data.producto;
+                recomendados = data.recomendados || data.recomendaciones || [];
+                console.log('✅ Formato: respuesta con objeto producto');
+            } else if (data.nombre || data.id) {
+                // Formato: producto directo
+                producto = data;
+                console.log('✅ Formato: producto directo');
+            } else if (Array.isArray(data) && data.length > 0 && (data[0].nombre || data[0].id)) {
+                // Formato: array con el producto
+                producto = data[0];
+                console.log('✅ Formato: array de productos');
+            } else {
+                console.error('❌ Formato de respuesta no reconocido:', data);
+                throw new Error('Formato de respuesta del servidor no válido');
+            }
+
+            console.log('🎯 Producto final:', producto);
+            console.log('🔗 Recomendados:', recomendados);
+
+            if (!producto || (!producto.nombre && !producto.id)) {
+                throw new Error('Producto no encontrado o datos incompletos');
+            }
+
+            // Actualizar estados
+            setProducto(producto);
+            setProductosRelacionados(Array.isArray(recomendados) ? recomendados : []);
+
+            // Procesar imágenes
+            const imagenes = procesarImagenesProducto(producto);
+            setImagenesProducto(imagenes);
+            setCurrentImageIndex(0);
+
+            console.log('🖼️ Imágenes procesadas:', imagenes);
+
+            // Registrar vista si tiene ID
+            if (producto.id) {
+                try {
+                    await registrarVista(producto.id);
+                    console.log('👁️ Vista registrada para producto:', producto.id);
+                } catch (vistaError) {
+                    console.warn('⚠️ No se pudo registrar la vista:', vistaError.message);
+                }
+            }
+
+            console.log('✅ Producto cargado exitosamente');
+
+        } catch (error) {
+            console.error("❌ Error al cargar producto:", error);
+            setError(`No se pudo cargar el producto: ${error.message}`);
+            setProducto(null);
+            setProductosRelacionados([]);
+        } finally {
+            // CRÍTICO: Siempre detener loading, sin importar si hay error o éxito
+            setLoading(false);
+            console.log('🏁 Carga finalizada');
+        }
+    };
+
+    // FUNCIÓN MEJORADA para procesar imágenes del producto
+    const procesarImagenesProducto = (producto) => {
+        console.log('🖼️ Iniciando procesamiento de imágenes para:', producto.nombre);
+        const imagenes = [];
+
+        try {
+            // 1. PRIORIDAD: imagenesUrl (objeto con múltiples imágenes)
+            if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object') {
+                console.log('🖼️ Encontrado imagenesUrl:', Object.keys(producto.imagenesUrl));
+                
+                const ordenImagenes = ['frente', 'trasera', 'lateral', 'superior', 'inferior'];
+                
+                // Agregar primero las imágenes en orden específico
+                ordenImagenes.forEach(tipo => {
+                    const url = producto.imagenesUrl[tipo];
+                    if (url && typeof url === 'string' && url.trim() !== '') {
+                        imagenes.push({
+                            tipo,
+                            url: url.trim(),
+                            descripcion: `Vista ${tipo}`
+                        });
+                        console.log(`✅ Agregada imagen ${tipo}:`, url);
+                    }
+                });
+
+                // Agregar cualquier otra imagen que no esté en el orden específico
+                Object.entries(producto.imagenesUrl).forEach(([tipo, url]) => {
+                    if (url && typeof url === 'string' && url.trim() !== '' && !ordenImagenes.includes(tipo)) {
+                        imagenes.push({
+                            tipo,
+                            url: url.trim(),
+                            descripcion: `Vista ${tipo}`
+                        });
+                        console.log(`✅ Agregada imagen adicional ${tipo}:`, url);
+                    }
+                });
+            }
+
+            // 2. FALLBACK: imagenUrl directa
+            if (imagenes.length === 0 && producto.imagenUrl && 
+                typeof producto.imagenUrl === 'string' && producto.imagenUrl.trim() !== '') {
+                imagenes.push({
+                    tipo: 'principal',
+                    url: producto.imagenUrl.trim(),
+                    descripcion: 'Imagen principal'
+                });
+                console.log('✅ Usando imagenUrl como fallback:', producto.imagenUrl);
+            }
+
+            // 3. FALLBACK: imagen legacy
+            if (imagenes.length === 0 && producto.imagen && 
+                typeof producto.imagen === 'string' && producto.imagen.trim() !== '') {
+                imagenes.push({
+                    tipo: 'legacy',
+                    url: producto.imagen.trim(),
+                    descripcion: 'Imagen del producto'
+                });
+                console.log('✅ Usando imagen legacy como fallback:', producto.imagen);
+            }
+
+            // 4. FALLBACK FINAL: imagen por defecto
+            if (imagenes.length === 0) {
+                console.log('⚠️ No se encontraron imágenes, usando placeholder');
+                imagenes.push({
+                    tipo: 'placeholder',
+                    url: '/imgs/producto-placeholder.jpg',
+                    descripcion: 'Imagen no disponible'
+                });
+            }
+
+            console.log(`✅ Procesamiento completado: ${imagenes.length} imágenes encontradas`);
+            return imagenes;
+
+        } catch (error) {
+            console.error('❌ Error procesando imágenes:', error);
+            return [{
+                tipo: 'error',
+                url: '/imgs/producto-placeholder.jpg',
+                descripcion: 'Error al cargar imágenes'
+            }];
+        }
+    };
+
+    // Funciones de navegación del carrusel de imágenes
+    const nextImage = () => {
+        setCurrentImageIndex(prev => 
+            prev === imagenesProducto.length - 1 ? 0 : prev + 1
+        );
+    };
+
+    const prevImage = () => {
+        setCurrentImageIndex(prev => 
+            prev === 0 ? imagenesProducto.length - 1 : prev - 1
+        );
+    };
+
+    // Funciones para controles de zoom y rotación
+    const handleZoomIn = () => {
+        setCarouselZoom(prev => Math.min(prev + 25, 300));
+    };
+
+    const handleZoomOut = () => {
+        setCarouselZoom(prev => Math.max(prev - 25, 50));
+    };
+
+    const handleRotate = () => {
+        setCarouselRotation(prev => (prev + 90) % 360);
+    };
+
+    const handleResetView = () => {
+        setCarouselZoom(100);
+        setCarouselRotation(0);
+        setCarouselPanX(0);
+        setCarouselPanY(0);
+    };
+
+    // Funciones para el sistema de arrastrar (pan)
+    const handleMouseDown = (e) => {
+        if (carouselZoom > 100) {
+            setIsDragging(true);
+            setDragStart({ 
+                x: e.clientX - carouselPanX, 
+                y: e.clientY - carouselPanY 
+            });
+        }
+    };
+
+    const handleMouseMove = (e) => {
+        if (isDragging && carouselZoom > 100) {
+            setCarouselPanX(e.clientX - dragStart.x);
+            setCarouselPanY(e.clientY - dragStart.y);
+        }
+    };
+
+    const handleMouseUp = () => {
+        setIsDragging(false);
+    };
+
+    // Función para volver a la página anterior
+    const handleBack = () => {
+        router.back();
+    };
+
+    // Función para compartir producto
+    const handleShare = async () => {
+        if (navigator.share && producto) {
+            try {
+                await navigator.share({
+                    title: producto.nombre,
+                    text: `Mira este producto: ${producto.nombre}`,
+                    url: window.location.href,
+                });
+            } catch (error) {
+                console.log('Error al compartir:', error);
+                handleCopyUrl();
+            }
+        } else {
+            handleCopyUrl();
+        }
+    };
+
+    // Función para copiar URL
+    const handleCopyUrl = () => {
+        navigator.clipboard.writeText(window.location.href).then(() => {
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
         });
+    };
 
-        resultados = await buscarProductos({
-          q: busquedaParam,
-          marcas: selectedMarcas,
-          orden: selectedOrden
-        });
-      } else {
-        // Si no hay búsqueda, usar obtenerProductos con filtros
-        console.log('📦 Cargando productos con filtros:', {
-          marcas: selectedMarcas,
-          orden: selectedOrden
-        });
+    // Funciones para WhatsApp
+    const handleWhatsAppClick = () => {
+        if (!producto) return;
 
-        resultados = await obtenerProductos({
-          marcas: selectedMarcas,
-          orden: selectedOrden
-        });
-      }
+        const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
+        const precio = producto.precioVentaSugerido || producto.precio || 0;
+        const personalizedMessage = randomContact.message
+            .replace('{producto}', producto.nombre)
+            .replace('{precio}', precio.toLocaleString());
 
-      setProductos(resultados);
+        const cleanPhoneNumber = randomContact.phoneNumber.replace(/\D/g, '');
+        const formattedNumber = cleanPhoneNumber.startsWith('52') 
+            ? cleanPhoneNumber 
+            : `52${cleanPhoneNumber}`;
 
-      // Extraer marcas únicas de los resultados para el filtro
-      const marcasUnicas = [...new Set(resultados.map(p => p.marca).filter(Boolean))];
-      setMarcasDisponibles(marcasUnicas);
+        const whatsappURL = `https://wa.me/${formattedNumber}?text=${encodeURIComponent(personalizedMessage)}`;
+        window.open(whatsappURL, '_blank', 'noopener,noreferrer');
+    };
 
-      console.log(`✅ Cargados ${resultados.length} productos con filtros del backend`);
-    } catch (error) {
-      console.error("❌ Error al cargar productos:", error);
-      setError('No se pudieron cargar los productos');
-    } finally {
-      setLoading(false);
-    }
-  };
+    // Funciones para el modal de imágenes
+    const openImageModal = (index = 0) => {
+        setModalImageIndex(index);
+        setIsModalOpen(true);
+    };
 
-  // Función para refrescar productos (llamada desde AdminButtons)
-  const refetchProducts = () => {
-    cargarProductosConFiltros();
-  };
+    const closeImageModal = () => {
+        setIsModalOpen(false);
+    };
 
-  const handleWhatsAppClick = (producto, e) => {
-    e.preventDefault();
-    e.stopPropagation();
+    // Funciones para el carrusel de productos relacionados
+    const nextSlide = () => {
+        const maxSlide = Math.ceil(productosRelacionados.length / itemsPerSlide) - 1;
+        setCurrentSlide(prev => prev === maxSlide ? 0 : prev + 1);
+    };
 
-    const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
-    const precio = producto.precioVentaSugerido || producto.precio || 0;
-    const personalizedMessage = randomContact.message
-      .replace('{producto}', producto.nombre)
-      .replace('{precio}', precio.toLocaleString());
+    const prevSlide = () => {
+        const maxSlide = Math.ceil(productosRelacionados.length / itemsPerSlide) - 1;
+        setCurrentSlide(prev => prev === 0 ? maxSlide : prev - 1);
+    };
 
-    const cleanPhoneNumber = randomContact.phoneNumber.replace(/\D/g, '');
-    const formattedNumber = cleanPhoneNumber.startsWith('52')
-      ? cleanPhoneNumber
-      : `52${cleanPhoneNumber}`;
+    // Función para navegar a producto relacionado
+    const handleRelatedProductClick = (productoRelacionado) => {
+        const urlAmigable = generarURLAmigable(productoRelacionado.nombre);
+        router.push(`/productos/${urlAmigable}`);
+    };
 
-    const encodedMessage = encodeURIComponent(personalizedMessage);
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodedMessage}`;
-
-    window.open(whatsappUrl, '_blank');
-  };
-
-  // MODIFICADO: Navegar usando nombre en lugar de ID
-  const handleProductoClick = async (producto) => {
-    // Registrar vista usando ID (para el tracking)
-    await registrarVista(producto.id);
-
-    // Navegar usando nombre del producto para URL amigable
-    const nombreParaURL = generarURLAmigable(producto.nombre);
-    console.log('🔗 Navegando al producto:', nombreParaURL);
-    router.push(`/productos/${nombreParaURL}`);
-  };
-
-  // FUNCIÓN MODIFICADA: Priorizar imagen "frente"
-  const obtenerPrimeraImagen = (producto) => {
-    // 1. PRIORIDAD: Buscar imagen "frente" en imagenesUrl
-    if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object' && producto.imagenesUrl.frente) {
-      console.log('🖼️ Usando imagen frente:', producto.imagenesUrl.frente);
-      return producto.imagenesUrl.frente;
-    }
-
-    // 2. FALLBACK: Si tiene imagenUrl directa, usarla
-    if (producto.imagenUrl) {
-      console.log('🖼️ Usando imagenUrl:', producto.imagenUrl);
-      return producto.imagenUrl;
-    }
-
-    // 3. FALLBACK: Si tiene imagenesUrl (objeto con múltiples imágenes), usar la primera disponible
-    if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object') {
-      const imagenes = Object.values(producto.imagenesUrl).filter(img => img && img.trim() !== '');
-      if (imagenes.length > 0) {
-        console.log('🖼️ Usando primera imagen disponible:', imagenes[0]);
-        return imagenes[0];
-      }
-    }
-
-    // 4. FALLBACK: Si tiene imagen antigua (string directo)
-    if (producto.imagen) {
-      console.log('🖼️ Usando imagen legacy:', producto.imagen);
-      return producto.imagen;
-    }
-
-    console.log('🚫 No se encontró imagen para el producto:', producto.nombre);
-    return null;
-  };
-
-  // Funciones para filtros móviles
-  const toggleMobileFilter = () => {
-    setIsMobileFilterOpen(!isMobileFilterOpen);
-  };
-
-  const closeMobileFilter = () => {
-    setIsMobileFilterOpen(false);
-  };
-
-  const handleMarcaChange = (marca) => {
-    const nuevasMarcas = selectedMarcas.includes(marca)
-      ? selectedMarcas.filter(m => m !== marca)
-      : [...selectedMarcas, marca];
-
-    console.log('🔄 Cambiando filtro de marca:', { marca, nuevasMarcas });
-    setSelectedMarcas(nuevasMarcas);
-  };
-
-  const handleOrdenChange = (nuevoOrden) => {
-    console.log('🔄 Cambiando orden:', nuevoOrden);
-    setSelectedOrden(nuevoOrden);
-  };
-
-  const clearAllFilters = () => {
-    console.log('🧹 Limpiando todos los filtros');
-    setSelectedMarcas([]);
-    setSelectedOrden('A-Z');
-  };
-
-  // función para borrar búsqueda
-  const clearSearch = () => {
-    console.log('🔄 Borrando búsqueda y reseteando filtros');
-    router.push('/productos');
-  };
-
-  if (loading) {
-    return (
-      <div className="layout productos-page">
-        <Navbar />
-        <main className="mainContent">
-          <div className="loadingContainer">
-            <div className="spinner"></div>
-            <p>Cargando productos...</p>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
-
-  return (
-    <div className="layout productos-page">
-      <Navbar />
-
-      <main className="mainContent">
-        {/* Hero Section */}
-        <div className="heroSection">
-          <div className="heroOverlay">
-            <div className="heroContent">
-              <h1>Nuestros Productos</h1>
-              {busquedaParam && (
-                <p className="searchIndicator">
-                  Resultados para: "{busquedaParam}" ({productos.length} productos encontrados)
-                </p>
-              )}
-            </div>
-          </div>
-        </div>
-
-        {/* Botón Filtrar móvil */}
-        <div className="mobileFilterToggle">
-          <button
-            className="mobileFilterButton"
-            onClick={toggleMobileFilter}
-          >
-            <FaFilter />
-            Filtrar por
-          </button>
-        </div>
-
-        {/* Overlay para filtro móvil */}
-        <div
-          className={`mobileFilterOverlay ${isMobileFilterOpen ? 'overlayOpen' : ''}`}
-          onClick={closeMobileFilter}
-        ></div>
-
-        {/* Menú de filtros móvil */}
-        <div className={`mobileFilterMenu ${isMobileFilterOpen ? 'menuOpen' : ''}`}>
-          <div className="mobileFilterHeader">
-            <h3>Filtros</h3>
-            <button
-              className="closeMobileFilter"
-              onClick={closeMobileFilter}
-            >
-              <FaTimes />
-            </button>
-          </div>
-
-          <div className="mobileFilterContent">
-            {/* Botón borrar búsqueda en móvil */}
-            {busquedaParam && (
-              <div className="mobileFilterGroup">
-                <button
-                  className="clearSearchButtonMobile"
-                  onClick={clearSearch}
-                >
-                  <FaEraser />
-                  Borrar búsqueda "{busquedaParam}"
-                </button>
-              </div>
-            )}
-
-            {/* Marcas */}
-            <div className="mobileFilterGroup">
-              <h4>Marcas</h4>
-              <div className="mobileMarcasList">
-                {marcasPredefinidas.map((marca) => (
-                  <label key={marca} className="mobileMarcaCheckbox">
-                    <input
-                      type="checkbox"
-                      checked={selectedMarcas.includes(marca)}
-                      onChange={() => handleMarcaChange(marca)}
-                    />
-                    <span className="mobileCheckmark"></span>
-                    {marca}
-                  </label>
-                ))}
-              </div>
-            </div>
-
-            {/* Ordenamiento solo visible cuando NO hay búsqueda */}
-            {!busquedaParam && (
-              <div className="mobileFilterGroup">
-                <h4>Ordenar Por</h4>
-                <div className="mobileOrdenamientoList">
-                  <label className="mobileOrdenamientoRadio">
-                    <input
-                      type="radio"
-                      name="orden"
-                      value="A-Z"
-                      checked={selectedOrden === 'A-Z'}
-                      onChange={(e) => handleOrdenChange(e.target.value)}
-                    />
-                    <span className="mobileRadiomark"></span>
-                    <FaSortAlphaDown className="sortIcon" />
-                    Alfabéticamente, A-Z
-                  </label>
-                  <label className="mobileOrdenamientoRadio">
-                    <input
-                      type="radio"
-                      name="orden"
-                      value="Z-A"
-                      checked={selectedOrden === 'Z-A'}
-                      onChange={(e) => handleOrdenChange(e.target.value)}
-                    />
-                    <span className="mobileRadiomark"></span>
-                    <FaSortAlphaUp className="sortIcon" />
-                    Alfabéticamente, Z-A
-                  </label>
-                </div>
-              </div>
-            )}
-
-            {/* Mensaje explicativo cuando hay búsqueda */}
-            {busquedaParam && (
-              <div className="searchPriorityInfo">
-                <h3>Orden de Relevancia</h3>
-                <p>Los resultados se muestran por prioridad:</p>
-                <ol>
-                  <li><strong>Número de parte</strong></li>
-                  <li><strong>Nombre del producto</strong></li>
-                  <li><strong>Descripción</strong></li>
-                </ol>
-              </div>
-            )}
-
-            {/* Botón limpiar filtros */}
-            <div className="mobileFilterActions">
-              <button
-                className="clearMobileFilters"
-                onClick={clearAllFilters}
-              >
-                Borrar filtros
-              </button>
-              <button
-                className="applyMobileFilters"
-                onClick={closeMobileFilter}
-              >
-                Aplicar
-              </button>
-            </div>
-          </div>
-        </div>
-
-        {/* Sección principal de productos */}
-        <section className="productosMainSection">
-          <div className="productosContainer">
-
-            {/* Sidebar - Filtros DESKTOP */}
-            <aside className="filtrosSidebar">
-              <div className="filtrosHeader">
-                <h2>Filtros</h2>
-                <button
-                  className="limpiarFiltrosBtn"
-                  onClick={clearAllFilters}
-                >
-                  Borrar filtros
-                </button>
-              </div>
-
-              {/* Botón borrar búsqueda en desktop */}
-              {busquedaParam && (
-                <div className="clearSearchSection">
-                  <button
-                    className="clearSearchButton"
-                    onClick={clearSearch}
-                  >
-                    <FaEraser />
-                    Borrar búsqueda
-                  </button>
-                  <p className="searchTermDisplay">
-                    Buscando: "{busquedaParam}"
-                  </p>
-                </div>
-              )}
-
-              {/* Marcas */}
-              <div className="filtroGroup">
-                <h3>Marcas</h3>
-                <div className="marcasList">
-                  {marcasPredefinidas.map((marca) => (
-                    <label key={marca} className="marcaCheckbox">
-                      <input
-                        type="checkbox"
-                        checked={selectedMarcas.includes(marca)}
-                        onChange={() => handleMarcaChange(marca)}
-                      />
-                      <span className="checkmark"></span>
-                      {marca}
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Ordenamiento solo visible cuando NO hay búsqueda */}
-              {!busquedaParam && (
-                <div className="filtroGroup">
-                  <h3>Ordenar Por</h3>
-                  <div className="ordenamientoList">
-                    <label className="ordenamientoRadio">
-                      <input
-                        type="radio"
-                        name="ordenamiento"
-                        value="A-Z"
-                        checked={selectedOrden === 'A-Z'}
-                        onChange={(e) => handleOrdenChange(e.target.value)}
-                      />
-                      <span className="radiomark"></span>
-                      <FaSortAlphaDown className="sortIcon" />
-                      Alfabéticamente, A-Z
-                    </label>
-                    <label className="ordenamientoRadio">
-                      <input
-                        type="radio"
-                        name="ordenamiento"
-                        value="Z-A"
-                        checked={selectedOrden === 'Z-A'}
-                        onChange={(e) => handleOrdenChange(e.target.value)}
-                      />
-                      <span className="radiomark"></span>
-                      <FaSortAlphaUp className="sortIcon" />
-                      Alfabéticamente, Z-A
-                    </label>
-                  </div>
-                </div>
-              )}
-
-              {/* Información de prioridad de búsqueda */}
-              {busquedaParam && (
-                <div className="searchPriorityInfo">
-                  <h3>Orden de Relevancia</h3>
-                  <p>Los resultados se muestran por prioridad:</p>
-                  <ol>
-                    <li><strong>Número de parte</strong></li>
-                    <li><strong>Nombre del producto</strong></li>
-                    <li><strong>Descripción</strong></li>
-                  </ol>
-                </div>
-              )}
-            </aside>
-
-            {/* Grid de productos */}
-            <div className="productosGrid">
-              <AdminButtons onProductUpdate={refetchProducts} />
-
-              {error ? (
-                <div className="errorMessage">{error}</div>
-              ) : productos.length === 0 ? (
-                <div className="noProducts">
-                  {busquedaParam ?
-                    `No se encontraron productos para "${busquedaParam}"` :
-                    'No se encontraron productos'
-                  }
-                </div>
-              ) : (
-                productos.map((producto) => {
-                  const imagenUrl = obtenerPrimeraImagen(producto);
-
-                  return (
-                    <div
-                      key={producto.id}
-                      className="productoCard"
-                      onClick={() => handleProductoClick(producto)}
-                      style={{ cursor: 'pointer', position: 'relative' }}
-                    >
-                      <AdminButtons
-                        producto={producto}
-                        onProductUpdate={refetchProducts}
-                      />
-                      <div className="productoImageContainer">
-                        {imagenUrl ? (
-                          <img
-                            src={imagenUrl}
-                            alt={producto.nombre}
-                            className="productoImage"
-                            onError={(e) => {
-                              e.target.style.display = 'none';
-                              e.target.nextElementSibling.style.display = 'flex';
-                            }}
-                          />
-                        ) : null}
-                        <div
-                          className="imageNotFound"
-                          style={{ display: imagenUrl ? 'none' : 'flex' }}
-                        >
-                          <div className="noImageIcon">📷</div>
-                          <p>Imagen no detectada</p>
-                        </div>
-                      </div>
-
-                      <div className="productoInfo">
-                        <h3 className="productoNombre">{producto.nombre}</h3>
-                        <p className="productoDescripcion">{producto.descripcion}</p>
-                        <div className="productoPrecio">
-                          ${(producto.precioVentaSugerido || producto.precio || 0).toLocaleString()}
-                        </div>
-                        <button
-                          className="whatsappBtn"
-                          onClick={(e) => handleWhatsAppClick(producto, e)}
-                        >
-                          <FaWhatsapp />
-                          Compra por WhatsApp
-                        </button>
-                      </div>
+    // Renderizado de estados de carga y error
+    if (loading) {
+        return (
+            <div className="producto-individual-page">
+                <Navbar />
+                <main className="mainContent">
+                    <div className="loadingContainer">
+                        <div className="spinner"></div>
+                        <p>Cargando producto...</p>
+                        <small>Buscando: "{params.nombre}"</small>
                     </div>
-                  );
-                })
-              )}
+                </main>
+                <Footer />
+                <ScrollToTop />
             </div>
-          </div>
-        </section>
-      </main>
+        );
+    }
 
-      <Footer />
-      <ScrollToTop />
-    </div>
-  );
+    if (error || !producto) {
+        return (
+            <div className="producto-individual-page">
+                <Navbar />
+                <main className="mainContent">
+                    <div className="errorContainer">
+                        <h2>Producto no encontrado</h2>
+                        <p>{error || 'No se pudo cargar el producto'}</p>
+                        <p>Producto buscado: "{params.nombre}"</p>
+                        <button onClick={handleBack} className="backButton">
+                            <FaArrowLeft /> Volver a productos
+                        </button>
+                        <button onClick={() => window.location.reload()} className="backButton" style={{ marginTop: '10px' }}>
+                            Reintentar
+                        </button>
+                    </div>
+                </main>
+                <Footer />
+                <ScrollToTop />
+            </div>
+        );
+    }
+
+    return (
+        <div className="producto-individual-page">
+            <Navbar />
+            
+            <main className="mainContent">
+                {/* Botón de regreso */}
+                <div className="backButtonContainer">
+                    <button onClick={handleBack} className="backButton">
+                        <FaArrowLeft />
+                        Volver a productos
+                    </button>
+                </div>
+
+                {/* Detalle del producto */}
+                <section className="productDetailSection">
+                    <div className="productDetailContainer">
+                        {/* Sección de imagen con carrusel */}
+                        <div className="productImageSection">
+                            <div 
+                                className="productImageContainer"
+                                onMouseDown={handleMouseDown}
+                                onMouseMove={handleMouseMove}
+                                onMouseUp={handleMouseUp}
+                                onMouseLeave={handleMouseUp}
+                            >
+                                {imagenesProducto.length > 0 ? (
+                                    <div className="carouselImageWrapper">
+                                        <img
+                                            ref={carouselImageRef}
+                                            src={imagenesProducto[currentImageIndex]?.url}
+                                            alt={imagenesProducto[currentImageIndex]?.descripcion || producto.nombre}
+                                            className="productImage"
+                                            style={{
+                                                transform: `scale(${carouselZoom / 100}) rotate(${carouselRotation}deg) translate(${carouselPanX}px, ${carouselPanY}px)`,
+                                                cursor: carouselZoom > 100 ? (isDragging ? 'grabbing' : 'grab') : 'default'
+                                            }}
+                                            onError={(e) => {
+                                                console.warn('❌ Error cargando imagen:', e.target.src);
+                                                e.target.src = '/imgs/producto-placeholder.jpg';
+                                            }}
+                                            onClick={() => openImageModal(currentImageIndex)}
+                                        />
+                                    </div>
+                                ) : (
+                                    <div className="imageNotFound">
+                                        <div className="noImageIcon">📷</div>
+                                        <p>Sin imagen disponible</p>
+                                    </div>
+                                )}
+
+                                {/* Controles del carrusel */}
+                                {imagenesProducto.length > 1 && (
+                                    <>
+                                        <button 
+                                            onClick={prevImage} 
+                                            className="carouselArrow carouselArrowLeft"
+                                            aria-label="Imagen anterior"
+                                        >
+                                            <FaChevronLeft />
+                                        </button>
+                                        <button 
+                                            onClick={nextImage} 
+                                            className="carouselArrow carouselArrowRight"
+                                            aria-label="Siguiente imagen"
+                                        >
+                                            <FaChevronRight />
+                                        </button>
+                                    </>
+                                )}
+
+                                {/* Controles de zoom y rotación */}
+                                <div className="imageControls">
+                                    <button onClick={handleZoomOut} className="imageControlButton zoomOutButton" title="Alejar">
+                                        <FaSearchMinus />
+                                    </button>
+                                    <button onClick={handleZoomIn} className="imageControlButton zoomInButton" title="Acercar">
+                                        <FaSearchPlus />
+                                    </button>
+                                    <button onClick={handleRotate} className="imageControlButton rotateButton" title="Rotar">
+                                        <FaRedo />
+                                    </button>
+                                    <button onClick={handleResetView} className="imageControlButton resetButton" title="Reset">
+                                        ⟲
+                                    </button>
+                                    <div className="zoomIndicator">
+                                        {carouselZoom}%
+                                    </div>
+                                </div>
+
+                                {/* Indicadores del carrusel */}
+                                {imagenesProducto.length > 1 && (
+                                    <div className="imageIndicators">
+                                        {imagenesProducto.map((_, index) => (
+                                            <button
+                                                key={index}
+                                                onClick={() => setCurrentImageIndex(index)}
+                                                className={`imageIndicator ${index === currentImageIndex ? 'active' : ''}`}
+                                                aria-label={`Ir a imagen ${index + 1}`}
+                                            />
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Sección de información */}
+                        <div className="productInfoSection">
+                            {/* Header con título y acciones */}
+                            <div className="productHeader">
+                                <h1 className="productTitle">{producto.nombre}</h1>
+                                <div className="productActions">
+                                    <button onClick={handleShare} className="shareButton" title="Compartir">
+                                        <FaShare />
+                                    </button>
+                                    <button onClick={handleCopyUrl} className="copyButton" title="Copiar enlace">
+                                        {copied ? <FaCheckCircle /> : <FaCopy />}
+                                        {copied && <span className="copiedText">¡Copiado!</span>}
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Precio */}
+                            <div className="productPrice">
+                                ${(producto.precioVentaSugerido || producto.precio || 0).toLocaleString()}
+                            </div>
+
+                            {/* Metadatos del producto */}
+                            <div className="productMeta">
+                                {producto.numeroParte && (
+                                    <div className="metaItem">
+                                        <span className="metaLabel">Número de Parte:</span>
+                                        <span className="metaValue">{producto.numeroParte}</span>
+                                    </div>
+                                )}
+                                
+                                {producto.marca && (
+                                    <div className="metaItem">
+                                        <span className="metaLabel">Marca:</span>
+                                        <span className="metaValue">{producto.marca}</span>
+                                    </div>
+                                )}
+                                
+                                {producto.tipoProducto && (
+                                    <div className="metaItem">
+                                        <span className="metaLabel">Tipo:</span>
+                                        <span className="metaValue">{producto.tipoProducto}</span>
+                                    </div>
+                                )}
+                                
+                                {producto.ubicacion && (
+                                    <div className="metaItem">
+                                        <span className="metaLabel">Ubicación:</span>
+                                        <span className="metaValue">{producto.ubicacion}</span>
+                                    </div>
+                                )}
+                                
+                                {producto.compatibilidad && (
+                                    <div className="metaItem">
+                                        <span className="metaLabel">Compatible con:</span>
+                                        <span className="metaValue">{producto.compatibilidad}</span>
+                                    </div>
+                                )}
+
+                                {(producto.numeroMotor || producto.aplicaciones || producto.año) && (
+                                    <>
+                                        {producto.numeroMotor && (
+                                            <div className="metaItem">
+                                                <span className="metaLabel">Motor:</span>
+                                                <span className="metaValue">{producto.numeroMotor}</span>
+                                            </div>
+                                        )}
+                                        {producto.aplicaciones && (
+                                            <div className="metaItem">
+                                                <span className="metaLabel">Aplicaciones:</span>
+                                                <span className="metaValue">{producto.aplicaciones}</span>
+                                            </div>
+                                        )}
+                                        {producto.año && (
+                                            <div className="metaItem">
+                                                <span className="metaLabel">Año:</span>
+                                                <span className="metaValue">{producto.año}</span>
+                                            </div>
+                                        )}
+                                    </>
+                                )}
+                            </div>
+
+                            <div className="shippingInfo">
+                                📦 Envío a toda la República Mexicana
+                            </div>
+
+                            {/* Botón de WhatsApp */}
+                            <button onClick={handleWhatsAppClick} className="whatsappButton">
+                                <FaWhatsapp />
+                                Consultar por WhatsApp
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Descripción del producto */}
+                {producto.descripcion && (
+                    <section className="descriptionSection">
+                        <div className="descriptionContainer">
+                            <h2>Descripción del Producto</h2>
+                            <div className="descriptionContent">
+                                <p>{producto.descripcion}</p>
+                            </div>
+                        </div>
+                    </section>
+                )}
+
+                {/* Productos relacionados */}
+                {productosRelacionados.length > 0 && (
+                    <section className="relatedProductsSection">
+                        <div className="relatedProductsContainer">
+                            <h2>Productos Relacionados</h2>
+                            <div className="relatedCarouselWrapper">
+                                <div className="relatedProductsGrid">
+                                    {productosRelacionados.map((productoRel, index) => {
+                                        const imagenRelacionada = productoRel.imagenesUrl?.frente || 
+                                                               productoRel.imagenUrl || 
+                                                               productoRel.imagen || 
+                                                               '/imgs/producto-placeholder.jpg';
+                                        
+                                        return (
+                                            <div key={productoRel.id || index} className="relatedProductCard">
+                                                <div 
+                                                    className="relatedProductImageContainer"
+                                                    onClick={() => handleRelatedProductClick(productoRel)}
+                                                >
+                                                    {imagenRelacionada ? (
+                                                        <img 
+                                                            src={imagenRelacionada}
+                                                            alt={productoRel.nombre}
+                                                            className="relatedProductImage"
+                                                            onError={(e) => {
+                                                                e.target.style.display = 'none';
+                                                                e.target.nextElementSibling.style.display = 'flex';
+                                                            }}
+                                                        />
+                                                    ) : null}
+                                                    <div 
+                                                        className="relatedImageNotFound"
+                                                        style={{ display: imagenRelacionada ? 'none' : 'flex' }}
+                                                    >
+                                                        <div className="noImageIcon">📷</div>
+                                                        <p>Sin imagen</p>
+                                                    </div>
+                                                </div>
+                                                <div className="relatedProductInfo">
+                                                    <h3 className="relatedProductTitle">{productoRel.nombre}</h3>
+                                                    {productoRel.descripcion && (
+                                                        <p className="relatedProductDescription">
+                                                            {productoRel.descripcion.substring(0, 100)}...
+                                                        </p>
+                                                    )}
+                                                    <div className="relatedProductPrice">
+                                                        ${(productoRel.precioVentaSugerido || productoRel.precio || 0).toLocaleString()}
+                                                    </div>
+                                                    <button 
+                                                        className="relatedWhatsappButton"
+                                                        onClick={(e) => {
+                                                            e.stopPropagation();
+                                                            // WhatsApp para producto relacionado
+                                                            const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
+                                                            const precio = productoRel.precioVentaSugerido || productoRel.precio || 0;
+                                                            const message = randomContact.message
+                                                                .replace('{producto}', productoRel.nombre)
+                                                                .replace('{precio}', precio.toLocaleString());
+                                                            const cleanNumber = randomContact.phoneNumber.replace(/\D/g, '');
+                                                            const formattedNumber = cleanNumber.startsWith('52') ? cleanNumber : `52${cleanNumber}`;
+                                                            const whatsappURL = `https://wa.me/${formattedNumber}?text=${encodeURIComponent(message)}`;
+                                                            window.open(whatsappURL, '_blank', 'noopener,noreferrer');
+                                                        }}
+                                                    >
+                                                        <FaWhatsapp /> Consultar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                )}
+            </main>
+
+            <Footer />
+            <ScrollToTop />
+
+            {/* Modal de imágenes */}
+            {isModalOpen && (
+                <ProductImageModal
+                    images={imagenesProducto}
+                    currentIndex={modalImageIndex}
+                    onClose={closeImageModal}
+                    productName={producto.nombre}
+                />
+            )}
+        </div>
+    );
 }
