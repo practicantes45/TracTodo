@@ -6,7 +6,7 @@ import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
 import ContactNumbers from '../components/ContactNumbers/ContactNumbers';
-import { obtenerProductos, buscarProductos } from '../../services/productoService';
+import { obtenerProductos, buscarProductos, generarURLAmigable } from '../../services/productoService';
 import { registrarVista } from '../../services/trackingService';
 import { useSearchParams, useRouter } from 'next/navigation';
 import AdminButtons from '../components/AdminButtons/AdminButtons';
@@ -148,13 +148,15 @@ useEffect(() => {
     window.open(whatsappUrl, '_blank');
   };
 
+  // MODIFICADO: Navegar usando nombre en lugar de ID
   const handleProductoClick = async (producto) => {
-    // Registrar vista
+    // Registrar vista usando ID (para el tracking)
     await registrarVista(producto.id);
 
-    // Navegar al detalle
-    console.log('Producto seleccionado:', producto);
-    router.push(`/productos/${producto.id}`);
+    // Navegar usando nombre del producto para URL amigable
+    const nombreParaURL = generarURLAmigable(producto.nombre);
+    console.log('🔗 Navegando al producto:', nombreParaURL);
+    router.push(`/productos/${nombreParaURL}`);
   };
 
   // FUNCIÓN MODIFICADA: Priorizar imagen "frente"

@@ -297,6 +297,164 @@
   font-family: var(--font-montserrat, 'Montserrat'), sans-serif;
   margin-top: 10px;
 }
+/* Controles de imagen */
+.imageControls {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    background: rgba(0, 0, 0, 0.7);
+    padding: 8px;
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.imageControlButton {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.8rem;
+}
+
+.imageControlButton:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+/* Navegación del carrusel */
+.carouselNavButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 42, 92, 0.8);
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.carouselPrev {
+    left: 15px;
+}
+
+.carouselNext {
+    right: 15px;
+}
+
+.carouselNavButton:hover {
+    background: rgba(0, 42, 92, 1);
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Indicadores del carrusel */
+.carouselIndicators {
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+}
+
+.carouselIndicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.carouselIndicator.active {
+    background: white;
+    transform: scale(1.2);
+}
+
+/* Controles del carrusel de productos relacionados */
+.carouselControlButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 42, 92, 0.9);
+    border: none;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 5;
+}
+
+.carouselControlPrev {
+    left: -25px;
+}
+
+.carouselControlNext {
+    right: -25px;
+}
+
+.carouselControlButton:hover {
+    background: rgba(0, 42, 92, 1);
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Información de productos relacionados */
+.relatedProductPart {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 5px 0;
+}
+
+.relatedProductPrice {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin: 8px 0;
+}
+
+.relatedWhatsappButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    background: #25D366;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: auto;
+}
+
+.relatedWhatsappButton:hover {
+    background: #20B358;
+    transform: translateY(-2px);
+}
 
 /* ===== BOTÓN WHATSAPP PRINCIPAL ===== */
 .whatsappButton {
