@@ -1,6 +1,9 @@
 import axios from "axios";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "https://tractodo-production.up.railway.app/api";
+// CONFIGURACIÓN CORREGIDA PARA DESARROLLO LOCAL
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
+
+console.log('🔗 API configurada para:', API_URL);
 
 // Crear instancia de axios con configuración base
 const api = axios.create({
@@ -38,7 +41,8 @@ api.interceptors.response.use(
   error => {
     if (error.response?.status === 401) {
       console.log('🚫 Token inválido - sesión expirada');
-      // No redirigir automáticamente, dejar que useAuth maneje esto
+    } else if (error.code === 'ECONNREFUSED') {
+      console.error('🔥 No se pudo conectar al backend. ¿Está corriendo en puerto 3000?');
     }
     return Promise.reject(error);
   }

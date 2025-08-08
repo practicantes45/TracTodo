@@ -78,7 +78,32 @@ export const buscarProductos = async (params) => {
   }
 };
 
-// ... resto de funciones sin cambios
+// FUNCIÓN PRINCIPAL: Obtener producto por nombre (con soporte para URL amigables)
+export const obtenerProductoPorNombre = async (nombre) => {
+  try {
+    console.log('🔍 Obteniendo producto por nombre:', nombre);
+    
+    // El backend ya maneja la búsqueda inteligente, solo enviamos el nombre tal como viene
+    const response = await fetch(`${API_URL}/productos/${encodeURIComponent(nombre)}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error al obtener producto: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error al obtener producto por nombre:', error);
+    throw error;
+  }
+};
+
+// MANTENER por compatibilidad con funciones admin
 export const obtenerProductoPorId = async (id) => {
   try {
     const response = await fetch(`${API_URL}/productos/${id}`, {
@@ -98,6 +123,31 @@ export const obtenerProductoPorId = async (id) => {
     console.error('Error al obtener producto por ID:', error);
     throw error;
   }
+};
+
+// Función para generar URL amigable a partir del nombre
+export const generarURLAmigable = (nombre) => {
+  if (!nombre) return '';
+  
+  return nombre
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // Quitar acentos
+    .replace(/[^a-z0-9\s-]/g, '') // Quitar caracteres especiales
+    .replace(/\s+/g, '-') // Espacios a guiones
+    .replace(/-+/g, '-') // Múltiples guiones a uno solo
+    .replace(/^-+|-+$/g, '') // Quitar guiones al inicio y final
+    .trim();
+};
+
+// Función para intentar convertir URL amigable de vuelta al nombre original
+export const convertirDeURLAmigable = (urlAmigable) => {
+  if (!urlAmigable) return '';
+  
+  return urlAmigable
+    .replace(/-/g, ' ') // Guiones a espacios
+    .replace(/\b\w/g, l => l.toUpperCase()) // Primera letra de cada palabra en mayúscula
+    .trim();
 };
 
 export const crearProducto = async (productoData) => {
@@ -165,8 +215,6 @@ export const eliminarProducto = async (id) => {
   }
 };
 
-// services/productoService.js - AGREGAR esta función al final del archivo existente
-
 // Obtener productos del mes
 export const obtenerProductosDelMes = async () => {
   try {
@@ -188,8 +236,6 @@ export const obtenerProductosDelMes = async () => {
     throw error;
   }
 };
-
-// services/productoService.js - REEMPLAZAR las funciones anteriores con estas corregidas
 
 // Agregar productos al mes con precios específicos
 export const agregarProductosDelMes = async (productos) => {
