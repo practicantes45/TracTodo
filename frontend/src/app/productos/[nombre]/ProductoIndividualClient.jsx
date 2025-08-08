@@ -7,7 +7,7 @@ import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import ScrollToTop from '../../components/ScrollToTop/ScrollToTop';
 import ProductImageModal from '../../components/ProductImageModal/ProductImageModal';
-import { obtenerProductoPorId } from '../../../services/productoService';
+import { obtenerProductoPorId } from '@/services/productoService';
 import { registrarVista } from '../../../services/trackingService';
 
 export default function ProductoIndividualPage() {
