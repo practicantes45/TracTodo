@@ -2423,3 +2423,367 @@
   }
 }
 
+/* ===== PAGINACIÓN - BOTÓN VER MÁS PRODUCTOS ===== */
+.verMasContainer {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  gap: 20px;
+}
+
+.verMasBtn {
+  background: linear-gradient(135deg, var(--primary-color, #002a5c) 0%, var(--accent-color, #00b4d8) 100%);
+  color: white;
+  border: none;
+  padding: 18px 40px;
+  border-radius: 25px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-width: 250px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 8px 25px rgba(0, 42, 92, 0.2),
+    0 4px 15px rgba(0, 180, 216, 0.1);
+  border: 1px solid rgba(0, 180, 216, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.verMasBtn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+  pointer-events: none;
+}
+
+.verMasBtn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 
+    0 12px 35px rgba(0, 42, 92, 0.3),
+    0 6px 20px rgba(0, 180, 216, 0.2);
+  border-color: rgba(0, 180, 216, 0.4);
+}
+
+.verMasBtn:hover::before {
+  width: 300%;
+  height: 300%;
+}
+
+.verMasBtn:active {
+  transform: translateY(-1px) scale(0.99);
+  transition: transform 0.1s ease;
+}
+
+.verMasBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  pointer-events: none;
+}
+
+.verMasBtn svg {
+  font-size: 1.1rem;
+  transition: transform 0.3s ease;
+}
+
+.verMasBtn:hover svg {
+  transform: translateY(3px) scale(1.1);
+  animation: bounce 0.6s ease infinite alternate;
+}
+
+@keyframes bounce {
+  0% { transform: translateY(3px) scale(1.1); }
+  100% { transform: translateY(6px) scale(1.15); }
+}
+
+/* ===== SPINNER DEL BOTÓN VER MÁS ===== */
+.verMasSpinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: verMasSpin 1s linear infinite;
+}
+
+@keyframes verMasSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ===== INFORMACIÓN DE PAGINACIÓN ===== */
+.paginacionInfo {
+  color: #666;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+  padding: 12px 24px;
+  border-radius: 20px;
+  border: 1px solid rgba(0, 180, 216, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 180, 216, 0.05);
+  backdrop-filter: blur(10px);
+  position: relative;
+}
+
+.paginacionInfo::before {
+  content: '📄';
+  margin-right: 8px;
+  font-size: 1.1rem;
+}
+
+/* ===== RESPONSIVE PARA PAGINACIÓN ===== */
+@media (max-width: 768px) {
+  .verMasContainer {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    gap: 15px;
+  }
+
+  .verMasBtn {
+    padding: 16px 32px;
+    font-size: 1.1rem;
+    min-width: 220px;
+    gap: 10px;
+  }
+
+  .verMasBtn svg {
+    font-size: 1rem;
+  }
+
+  .paginacionInfo {
+    font-size: 0.9rem;
+    padding: 10px 20px;
+  }
+
+  .paginacionInfo::before {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .verMasContainer {
+    margin-top: 25px;
+    margin-bottom: 12px;
+    gap: 12px;
+  }
+
+  .verMasBtn {
+    padding: 14px 28px;
+    font-size: 1rem;
+    min-width: 200px;
+    gap: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  .verMasBtn svg {
+    font-size: 0.9rem;
+  }
+
+  .paginacionInfo {
+    font-size: 0.85rem;
+    padding: 8px 16px;
+  }
+
+  .paginacionInfo::before {
+    font-size: 0.9rem;
+    margin-right: 6px;
+  }
+}
+
+@media (max-width: 360px) {
+  .verMasContainer {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    gap: 10px;
+  }
+
+  .verMasBtn {
+    padding: 12px 24px;
+    font-size: 0.9rem;
+    min-width: 180px;
+    gap: 6px;
+  }
+
+  .verMasBtn svg {
+    font-size: 0.8rem;
+  }
+
+  .paginacionInfo {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
+
+  .paginacionInfo::before {
+    font-size: 0.8rem;
+    margin-right: 4px;
+  }
+}
+
+/* ===== ANIMACIONES ADICIONALES PARA PAGINACIÓN ===== */
+.verMasBtn {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 
+      0 8px 25px rgba(0, 42, 92, 0.2),
+      0 4px 15px rgba(0, 180, 216, 0.1);
+  }
+  50% {
+    box-shadow: 
+      0 8px 25px rgba(0, 42, 92, 0.3),
+      0 4px 15px rgba(0, 180, 216, 0.2),
+      0 0 30px rgba(0, 180, 216, 0.1);
+  }
+}
+
+.verMasBtn:hover {
+  animation: none;
+}
+
+/* ===== EFECTOS DE APARICIÓN SUAVE PARA PRODUCTOS NUEVOS ===== */
+.productoCard {
+  animation: fadeInUp 0.6s ease-out both;
+}
+
+.productoCard:nth-child(n+16) {
+  animation-delay: 0.1s;
+}
+
+.productoCard:nth-child(n+17) {
+  animation-delay: 0.2s;
+}
+
+.productoCard:nth-child(n+18) {
+  animation-delay: 0.3s;
+}
+
+/* Evitar animaciones en productos que ya están cargados */
+.productoCard.loaded {
+  animation: none;
+}
+
+/* ===== MODO DE ALTO CONTRASTE PARA PAGINACIÓN ===== */
+@media (prefers-contrast: high) {
+  .verMasBtn {
+    background: #000000;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+  }
+
+  .paginacionInfo {
+    background: #ffffff;
+    color: #000000;
+    border: 2px solid #000000;
+  }
+}
+
+/* ===== REDUCIR MOVIMIENTO PARA PAGINACIÓN ===== */
+@media (prefers-reduced-motion: reduce) {
+  .verMasBtn,
+  .verMasBtn::before {
+    animation: none !important;
+    transition: opacity 0.2s ease !important;
+  }
+
+  .verMasBtn:hover {
+    transform: none !important;
+  }
+
+  .verMasBtn svg {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .verMasBtn:hover svg {
+    transform: none !important;
+  }
+
+  .productoCard {
+    animation: none !important;
+  }
+}
+
+/* ===== OPTIMIZACIÓN PARA DISPOSITIVOS TÁCTILES ===== */
+@media (hover: none) and (pointer: coarse) {
+  .verMasBtn:hover {
+    transform: none;
+  }
+
+  .verMasBtn:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+
+  .verMasBtn:hover::before {
+    width: 0;
+    height: 0;
+  }
+
+  .verMasBtn:hover svg {
+    transform: none;
+    animation: none;
+  }
+}
+
+/* ===== ESTADOS DE CARGA MEJORADOS ===== */
+.verMasBtn:disabled .verMasSpinner {
+  animation: verMasSpin 1s linear infinite;
+}
+
+/* ===== AJUSTE FINAL DE GRID PARA PAGINACIÓN ===== */
+.productosGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+  min-height: 400px;
+  align-items: stretch;
+  justify-items: center;
+  position: relative;
+}
+
+/* Asegurar que el contenedor de "ver más" ocupé todo el ancho */
+.verMasContainer {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* ===== INDICADOR VISUAL DE PRODUCTOS CARGADOS ===== */
+.productoCard.nuevoCargado {
+  border: 2px solid rgba(0, 180, 216, 0.3);
+  animation: highlightNew 2s ease-out;
+}
+
+@keyframes highlightNew {
+  0% {
+    border-color: rgba(0, 180, 216, 0.8);
+    box-shadow: 0 0 20px rgba(0, 180, 216, 0.4);
+  }
+  100% {
+    border-color: rgba(0, 180, 216, 0.08);
+    box-shadow: none;
+  }
+}
+

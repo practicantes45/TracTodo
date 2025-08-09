@@ -6,8 +6,7 @@ import {
     obtenerProductos,
     obtenerProductosDelMes,
     agregarProductosDelMes,
-    eliminarProductoDelMes,
-    actualizarPrecioProductoDelMes
+    eliminarProductoDelMes
 } from '../../../services/productoService';
 import { 
     FaSearch, 

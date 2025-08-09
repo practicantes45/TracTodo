@@ -61,7 +61,8 @@ const Navbar = () => {
                         <li key={item.href} className={styles.navItem}>
                             <Link
                                 href={item.href}
-                                className={`${styles.navLink} ${pathname === item.href ? styles.active : ''}`}
+                                className={`${styles.navLink} ${pathname === item.href ?
+                                styles.active : ''}`}
                                 onClick={(e) => handleNavClick(item.href, e)}
                                 prefetch={true}
                             >
@@ -71,9 +72,9 @@ const Navbar = () => {
                     ))}
                 </ul>
 
-                {/* Sección central con contador de visitas */}
+                {/* Sección central con contador de visitas - REMOVIDO */}
                 <div className={styles.centerSection}>
-                    <VisitCounter />
+                    {/* El contador ahora se maneja solo como flotante */}
                 </div>
 
                 {/* SearchBar desktop - visible solo en desktop */}
@@ -84,7 +85,7 @@ const Navbar = () => {
                 </div>
             </nav>
 
-            {/* NUEVO: Contador independiente para modo flotante */}
+            {/* Contador flotante independiente - SOLO ESTE SE MANTIENE */}
             <VisitCounter />
         </>
     );

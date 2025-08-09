@@ -1,6 +1,6 @@
 'use client';
 import './productos.css';
-import { FaFilter, FaWhatsapp, FaSortAlphaDown, FaSortAlphaUp, FaTimes, FaEraser } from "react-icons/fa";
+import { FaFilter, FaWhatsapp, FaSortAlphaDown, FaSortAlphaUp, FaTimes, FaEraser, FaChevronDown } from "react-icons/fa";
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
@@ -9,10 +9,13 @@ import { obtenerProductos, buscarProductos } from '../../services/productoServic
 import { registrarVista } from '../../services/trackingService';
 import { useSearchParams, useRouter } from 'next/navigation';
 import AdminButtons from '../components/AdminButtons/AdminButtons';
-import { getProductSlug } from '../../utils/slugUtils'; // NUEVA IMPORTACIÓN
+import { getProductSlug } from '../../utils/slugUtils';
+
+// Constante para productos por página
+const PRODUCTOS_POR_PAGINA = 15;
 
 export default function ProductosPage() {
-  // Estados
+  // Estados existentes
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -23,6 +26,13 @@ export default function ProductosPage() {
   const [selectedMarcas, setSelectedMarcas] = useState([]);
   const [selectedOrden, setSelectedOrden] = useState('A-Z');
   const [marcasDisponibles, setMarcasDisponibles] = useState([]);
+  const [filtrosInicializados, setFiltrosInicializados] = useState(false); // NUEVO estado
+
+  // Estados para paginación
+  const [productosVisibles, setProductosVisibles] = useState([]);
+  const [paginaActual, setPaginaActual] = useState(1);
+  const [hayMasProductos, setHayMasProductos] = useState(false);
+  const [cargandoMas, setCargandoMas] = useState(false);
 
   const searchParams = useSearchParams();
   const busquedaParam = searchParams.get('busqueda');
@@ -32,7 +42,7 @@ export default function ProductosPage() {
   console.log('🏷️ Parámetro de marca:', marcaParam);
 
   // Lista de marcas predefinidas
-  const marcasPredefinidas = ["Cummins", "Navistar", "Volvo", "Mercedes Benz", "Detroit", "Otros"];
+  const marcasPredefinidas = ["Cummins", "Navistar", "Volvo", "Mercedes Benz", "Detroit", "Caterpillar","Otros"];
 
   // Lista de contactos
   const contactList = [
@@ -58,51 +68,90 @@ export default function ProductosPage() {
     }
   ];
 
-  // Efecto para pre-seleccionar marca desde URL
+  // MODIFICADO: Efecto combinado para inicializar filtros y cargar productos
   useEffect(() => {
-    // Si hay un parámetro de marca en la URL, pre-seleccionarlo
-    if (marcaParam && marcasPredefinidas.includes(marcaParam)) {
-      console.log('🔄 Inicializando con marca desde URL:', marcaParam);
-      setSelectedMarcas([marcaParam]);
+    const inicializarFiltrosYCargar = async () => {
+      console.log('🔄 Inicializando filtros desde URL...');
+      
+      // Inicializar marca si viene desde URL
+      let marcasIniciales = [];
+      if (marcaParam && marcasPredefinidas.includes(marcaParam)) {
+        console.log('🔄 Inicializando con marca desde URL:', marcaParam);
+        marcasIniciales = [marcaParam];
+        setSelectedMarcas([marcaParam]);
+      }
+
+      // Marcar como inicializados
+      setFiltrosInicializados(true);
+
+      // Cargar productos con los filtros iniciales
+      await cargarProductosConFiltros(marcasIniciales, selectedOrden, busquedaParam);
+    };
+
+    inicializarFiltrosYCargar();
+  }, [marcaParam, busquedaParam]); // Solo depende de los parámetros de URL
+
+  // MODIFICADO: Efecto para cargar productos cuando cambian los filtros (después de la inicialización)
+  useEffect(() => {
+    if (filtrosInicializados) {
+      console.log('🔄 Filtros cambiados, recargando productos...');
+      cargarProductosConFiltros(selectedMarcas, selectedOrden, busquedaParam);
     }
-  }, [marcaParam]);
+  }, [selectedMarcas, selectedOrden, filtrosInicializados]);
 
-  // AGREGAR ESTE useEffect que faltaba:
+  // Efecto para actualizar productos visibles cuando cambian los productos o la página
   useEffect(() => {
-    cargarProductosConFiltros();
-  }, [selectedMarcas, selectedOrden, busquedaParam]);
+    actualizarProductosVisibles();
+  }, [productos, paginaActual]);
 
-  // Función principal para cargar productos con filtros
-  const cargarProductosConFiltros = async () => {
+  // Función para actualizar productos visibles basado en paginación
+  const actualizarProductosVisibles = () => {
+    const inicio = 0;
+    const fin = paginaActual * PRODUCTOS_POR_PAGINA;
+    const nuevosProductosVisibles = productos.slice(inicio, fin);
+    
+    setProductosVisibles(nuevosProductosVisibles);
+    setHayMasProductos(fin < productos.length);
+    
+    console.log(`📦 Mostrando ${nuevosProductosVisibles.length} de ${productos.length} productos (página ${paginaActual})`);
+  };
+
+  // MODIFICADO: Función principal para cargar productos con filtros (acepta parámetros directos)
+  const cargarProductosConFiltros = async (marcas = selectedMarcas, orden = selectedOrden, busqueda = busquedaParam) => {
     try {
       setLoading(true);
       setError('');
+      setPaginaActual(1);
+
+      console.log('🔄 Cargando productos con filtros:', {
+        marcas,
+        orden,
+        busqueda
+      });
 
       let resultados;
 
-      if (busquedaParam) {
-        // Si hay búsqueda, usar buscarProductos con filtros
+      if (busqueda) {
         console.log('🔍 Buscando con término y filtros:', {
-          q: busquedaParam,
-          marcas: selectedMarcas,
-          orden: selectedOrden
+          q: busqueda,
+          marcas: marcas,
+          orden: orden
         });
 
         resultados = await buscarProductos({
-          q: busquedaParam,
-          marcas: selectedMarcas,
-          orden: selectedOrden
+          q: busqueda,
+          marcas: marcas,
+          orden: orden
         });
       } else {
-        // Si no hay búsqueda, usar obtenerProductos con filtros
         console.log('📦 Cargando productos con filtros:', {
-          marcas: selectedMarcas,
-          orden: selectedOrden
+          marcas: marcas,
+          orden: orden
         });
 
         resultados = await obtenerProductos({
-          marcas: selectedMarcas,
-          orden: selectedOrden
+          marcas: marcas,
+          orden: orden
         });
       }
 
@@ -119,6 +168,19 @@ export default function ProductosPage() {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Función para cargar más productos
+  const cargarMasProductos = async () => {
+    setCargandoMas(true);
+    
+    // Simular pequeña carga para mejor UX
+    await new Promise(resolve => setTimeout(resolve, 300));
+    
+    setPaginaActual(prev => prev + 1);
+    setCargandoMas(false);
+    
+    console.log('📄 Cargando página:', paginaActual + 1);
   };
 
   // Función para refrescar productos (llamada desde AdminButtons)
@@ -147,32 +209,24 @@ export default function ProductosPage() {
     window.open(whatsappUrl, '_blank');
   };
 
-  // FUNCIÓN MODIFICADA: Usar slug en lugar de ID
   const handleProductoClick = async (producto) => {
-    // Registrar vista usando el ID (para tracking)
     await registrarVista(producto.id);
-
-    // Navegar usando el slug del nombre
     const slug = getProductSlug(producto);
     console.log('🔗 Navegando a producto:', { nombre: producto.nombre, slug });
     router.push(`/productos/${slug}`);
   };
 
-  // FUNCIÓN MODIFICADA: Priorizar imagen "frente"
   const obtenerPrimeraImagen = (producto) => {
-    // 1. PRIORIDAD: Buscar imagen "frente" en imagenesUrl
     if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object' && producto.imagenesUrl.frente) {
       console.log('🖼️ Usando imagen frente:', producto.imagenesUrl.frente);
       return producto.imagenesUrl.frente;
     }
 
-    // 2. FALLBACK: Si tiene imagenUrl directa, usarla
     if (producto.imagenUrl) {
       console.log('🖼️ Usando imagenUrl:', producto.imagenUrl);
       return producto.imagenUrl;
     }
 
-    // 3. FALLBACK: Si tiene imagenesUrl (objeto con múltiples imágenes), usar la primera disponible
     if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object') {
       const imagenes = Object.values(producto.imagenesUrl).filter(img => img && img.trim() !== '');
       if (imagenes.length > 0) {
@@ -181,7 +235,6 @@ export default function ProductosPage() {
       }
     }
 
-    // 4. FALLBACK: Si tiene imagen antigua (string directo)
     if (producto.imagen) {
       console.log('🖼️ Usando imagen legacy:', producto.imagen);
       return producto.imagen;
@@ -220,7 +273,6 @@ export default function ProductosPage() {
     setSelectedOrden('A-Z');
   };
 
-  // función para borrar búsqueda
   const clearSearch = () => {
     console.log('🔄 Borrando búsqueda y reseteando filtros');
     router.push('/productos');
@@ -488,7 +540,7 @@ export default function ProductosPage() {
 
               {error ? (
                 <div className="errorMessage">{error}</div>
-              ) : productos.length === 0 ? (
+              ) : productosVisibles.length === 0 ? (
                 <div className="noProducts">
                   {busquedaParam ?
                     `No se encontraron productos para "${busquedaParam}"` :
@@ -496,58 +548,86 @@ export default function ProductosPage() {
                   }
                 </div>
               ) : (
-                productos.map((producto) => {
-                  const imagenUrl = obtenerPrimeraImagen(producto);
+                <>
+                  {productosVisibles.map((producto) => {
+                    const imagenUrl = obtenerPrimeraImagen(producto);
 
-                  return (
-                    <div
-                      key={producto.id}
-                      className="productoCard"
-                      onClick={() => handleProductoClick(producto)}
-                      style={{ cursor: 'pointer', position: 'relative' }}
-                    >
-                      <AdminButtons
-                        producto={producto}
-                        onProductUpdate={refetchProducts}
-                      />
-                      <div className="productoImageContainer">
-                        {imagenUrl ? (
-                          <img
-                            src={imagenUrl}
-                            alt={producto.nombre}
-                            className="productoImage"
-                            onError={(e) => {
-                              e.target.style.display = 'none';
-                              e.target.nextElementSibling.style.display = 'flex';
-                            }}
-                          />
-                        ) : null}
-                        <div
-                          className="imageNotFound"
-                          style={{ display: imagenUrl ? 'none' : 'flex' }}
-                        >
-                          <div className="noImageIcon">📷</div>
-                          <p>Imagen no detectada</p>
+                    return (
+                      <div
+                        key={producto.id}
+                        className="productoCard"
+                        onClick={() => handleProductoClick(producto)}
+                        style={{ cursor: 'pointer', position: 'relative' }}
+                      >
+                        <AdminButtons
+                          producto={producto}
+                          onProductUpdate={refetchProducts}
+                        />
+                        <div className="productoImageContainer">
+                          {imagenUrl ? (
+                            <img
+                              src={imagenUrl}
+                              alt={producto.nombre}
+                              className="productoImage"
+                              onError={(e) => {
+                                e.target.style.display = 'none';
+                                e.target.nextElementSibling.style.display = 'flex';
+                              }}
+                            />
+                          ) : null}
+                          <div
+                            className="imageNotFound"
+                            style={{ display: imagenUrl ? 'none' : 'flex' }}
+                          >
+                            <div className="noImageIcon">📷</div>
+                            <p>Imagen no detectada</p>
+                          </div>
+                        </div>
+
+                        <div className="productoInfo">
+                          <h3 className="productoNombre">{producto.nombre}</h3>
+                          <p className="productoDescripcion">{producto.descripcion}</p>
+                          <div className="productoPrecio">
+                            ${(producto.precioVentaSugerido || producto.precio || 0).toLocaleString()}
+                          </div>
+                          <button
+                            className="whatsappBtn"
+                            onClick={(e) => handleWhatsAppClick(producto, e)}
+                          >
+                            <FaWhatsapp />
+                            Compra por WhatsApp
+                          </button>
                         </div>
                       </div>
-
-                      <div className="productoInfo">
-                        <h3 className="productoNombre">{producto.nombre}</h3>
-                        <p className="productoDescripcion">{producto.descripcion}</p>
-                        <div className="productoPrecio">
-                          ${(producto.precioVentaSugerido || producto.precio || 0).toLocaleString()}
-                        </div>
-                        <button
-                          className="whatsappBtn"
-                          onClick={(e) => handleWhatsAppClick(producto, e)}
-                        >
-                          <FaWhatsapp />
-                          Compra por WhatsApp
-                        </button>
+                    );
+                  })}
+                  
+                  {/* Botón Ver más productos */}
+                  {hayMasProductos && (
+                    <div className="verMasContainer">
+                      <button
+                        className="verMasBtn"
+                        onClick={cargarMasProductos}
+                        disabled={cargandoMas}
+                      >
+                        {cargandoMas ? (
+                          <>
+                            <div className="verMasSpinner"></div>
+                            Cargando...
+                          </>
+                        ) : (
+                          <>
+                            <FaChevronDown />
+                            Ver más productos
+                          </>
+                        )}
+                      </button>
+                      <div className="paginacionInfo">
+                        Mostrando {productosVisibles.length} de {productos.length} productos
                       </div>
                     </div>
-                  );
-                })
+                  )}
+                </>
               )}
             </div>
           </div>

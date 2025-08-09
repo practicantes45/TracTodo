@@ -1,4 +1,4 @@
 module.exports = {
-    MARCAS_PREDEFINIDAS: ["Cummins", "Navistar", "Volvo", "Mercedes Benz", "Detroit"]
+    MARCAS_PREDEFINIDAS: ["Cummins", "Navistar", "Volvo", "Mercedes Benz", "Detroit", "Caterpillar"],
   };
   

@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
-import { FaEye, FaUsers } from 'react-icons/fa';
+import { FaEye } from 'react-icons/fa';
 import { usePathname } from 'next/navigation';
 import styles from './VisitCounter.module.css';
 import { registrarVista, obtenerContadorVistas } from '../../../services/visitService';
@@ -20,23 +20,9 @@ const VisitCounter = ({ isMobile = false }) => {
     const isMounted = useRef(false);
     const initPromise = useRef(null);
 
-    // Páginas donde debe aparecer el contador
-    const allowedPages = ['/', '/productos', '/sobre-nosotros', '/ubicacion', '/entretenimiento'];
-
-    // Verificar si la página actual está permitida
+    // Verificar si la página actual está permitida - SOLO página de inicio
     const isPageAllowed = () => {
-        // Si es página de producto individual, no mostrar
-        if (pathname.startsWith('/productos/') && pathname !== '/productos') {
-            return false;
-        }
-
-        // Verificar si está en la lista de páginas permitidas
-        return allowedPages.some(page => {
-            if (page === '/') {
-                return pathname === '/';
-            }
-            return pathname.startsWith(page);
-        });
+        return pathname === '/';
     };
 
     // Si la página no está permitida, no renderizar el componente
@@ -141,7 +127,7 @@ const VisitCounter = ({ isMobile = false }) => {
         return () => {
             isMounted.current = false;
         };
-    }, [pathname]); // Agregar pathname como dependencia
+    }, [pathname]);
 
     const getFallbackCount = () => {
         if (typeof window === 'undefined') return 15847;
@@ -190,10 +176,8 @@ const VisitCounter = ({ isMobile = false }) => {
                 <div className={styles.counterContent}>
                     <div className={styles.counterLabel}>
                         {isMobile ? 'Visitas Totales' : 'Visitas'}
-                        {error ? (
+                        {error && (
                             <span className={styles.errorIndicator}>ERROR</span>
-                        ) : (
-                            <span className={styles.liveIndicator}>LIVE</span>
                         )}
                     </div>
                     <div className={styles.counterNumber}>
@@ -209,10 +193,6 @@ const VisitCounter = ({ isMobile = false }) => {
                             </span>
                         )}
                     </div>
-                </div>
-
-                <div className={styles.usersIcon}>
-                    <FaUsers />
                 </div>
             </div>
 

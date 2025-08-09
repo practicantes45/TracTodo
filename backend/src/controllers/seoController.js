@@ -246,7 +246,7 @@ exports.generarSitemap = async (req, res) => {
       });
     
     // Agregar páginas de categorías/marcas principales
-    const marcas = ["cummins", "caterpillar", "detroit", "navistar", "volvo"];
+    const marcas = ["cummins", "caterpillar", "detroit", "navistar", "volvo", "mercedes-benz"];
     marcas.forEach(marca => {
       sitemap += `
   <!-- Categoría: ${marca} -->

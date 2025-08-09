@@ -94,17 +94,17 @@ export default function HomePage() {
                             </div>
                             <div
                                 className="brandCard clickable"
-                                onClick={() => handleMarcaClick('Otros')}
+                                onClick={() => handleMarcaClick('Caterpillar')}
                                 role="button"
                                 tabIndex={0}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter' || e.key === ' ') {
                                         e.preventDefault();
-                                        handleMarcaClick('Otros');
+                                        handleMarcaClick('Caterpillar');
                                     }
                                 }}
                             >
-                                <img src="https://i.postimg.cc/B6tJN9TQ/caterpillar.png" alt="Otras marcas" className="brandLogo large" />
+                                <img src="https://i.postimg.cc/B6tJN9TQ/caterpillar.png" alt="Caterpillar" className="brandLogo large" />
                             </div>
                             <div
                                 className="brandCard clickable"
