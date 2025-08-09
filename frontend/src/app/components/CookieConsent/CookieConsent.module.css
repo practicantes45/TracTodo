@@ -7,12 +7,12 @@
   background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(12px);
   z-index: 9998;
-  animation: overlayFadeIn 0.6s ease-out;
+  animation: overlayFadeIn 0.3s ease-out;
 }
 
 @keyframes overlayFadeIn {
-  from { opacity: 0; backdrop-filter: blur(0); }
-  to { opacity: 1; backdrop-filter: blur(12px); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .cookieModal {
@@ -32,7 +32,7 @@
   background-clip: padding-box;
   z-index: 9999;
   overflow: hidden;
-  animation: modalSlideDownBounce 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  animation: modalSlideDown 0.4s ease-out;
 }
 
 .cookieModal::before {
@@ -42,33 +42,16 @@
   background: linear-gradient(135deg, #00b4d8, #0096c7, #0077b6, #023047);
   border-radius: 31px;
   z-index: -1;
-  animation: borderRotate 4s linear infinite;
 }
 
-@keyframes borderRotate {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-@keyframes modalSlideDownBounce {
+@keyframes modalSlideDown {
   0% {
     opacity: 0;
-    transform: translateX(-50%) translateY(-150px) scale(0.3) rotate(-10deg);
-  }
-  30% {
-    opacity: 0.7;
-    transform: translateX(-50%) translateY(20px) scale(1.1) rotate(3deg);
-  }
-  60% {
-    opacity: 0.9;
-    transform: translateX(-50%) translateY(-10px) scale(0.95) rotate(-1deg);
-  }
-  80% {
-    transform: translateX(-50%) translateY(5px) scale(1.02) rotate(0.5deg);
+    transform: translateX(-50%) translateY(-50px);
   }
   100% {
     opacity: 1;
-    transform: translateX(-50%) translateY(0) scale(1) rotate(0deg);
+    transform: translateX(-50%) translateY(0);
   }
 }
 
@@ -88,30 +71,8 @@
 
 .cookieEmoji {
   font-size: 3rem;
-  animation: cookieDance 3s ease-in-out infinite;
   filter: drop-shadow(0 6px 12px rgba(210, 105, 30, 0.4));
   transform-origin: center;
-}
-
-@keyframes cookieDance {
-  0%, 100% { 
-    transform: rotate(0deg) scale(1) translateY(0);
-  }
-  15% { 
-    transform: rotate(-12deg) scale(1.1) translateY(-5px);
-  }
-  30% { 
-    transform: rotate(8deg) scale(1.15) translateY(-8px);
-  }
-  45% { 
-    transform: rotate(-5deg) scale(1.08) translateY(-3px);
-  }
-  60% { 
-    transform: rotate(3deg) scale(1.12) translateY(-6px);
-  }
-  75% { 
-    transform: rotate(-2deg) scale(1.05) translateY(-2px);
-  }
 }
 
 .cookieHeader h3 {
@@ -153,19 +114,8 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   font-family: var(--font-ubuntu, 'Ubuntu'), sans-serif;
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+  transition: all 0.2s ease;
   transform-origin: center;
-}
-
-.cookieBtn::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-  transition: left 0.6s ease;
 }
 
 .cookieBtn:hover::before {
@@ -173,7 +123,7 @@
 }
 
 .cookieBtn:active {
-  transform: scale(0.95);
+  transform: scale(0.98);
 }
 
 .cookieBtnReject {
@@ -186,9 +136,9 @@
 }
 
 .cookieBtnReject:hover {
-  transform: translateY(-4px) scale(1.02);
+  transform: translateY(-2px);
   box-shadow: 
-    0 12px 35px rgba(255, 107, 107, 0.5),
+    0 8px 25px rgba(255, 107, 107, 0.5),
     inset 0 1px 2px rgba(255, 255, 255, 0.4);
   background: linear-gradient(135deg, #ff5252 0%, #e53935 50%, #c62828 100%);
 }
@@ -204,9 +154,9 @@
 }
 
 .cookieBtnAccept:hover {
-  transform: translateY(-4px) scale(1.02);
+  transform: translateY(-2px);
   box-shadow: 
-    0 12px 35px rgba(0, 180, 216, 0.6),
+    0 8px 25px rgba(0, 180, 216, 0.6),
     inset 0 1px 2px rgba(255, 255, 255, 0.4);
   background: linear-gradient(135deg, #0096c7 0%, #0077b6 50%, #023047 100%);
 }
@@ -229,7 +179,7 @@
     right: 20px;
     width: auto;
     transform: none;
-    animation: modalSlideDownBounceMobile 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    animation: modalSlideDownMobile 0.3s ease-out;
   }
   
   .cookieContent {
@@ -254,22 +204,14 @@
   }
 }
 
-@keyframes modalSlideDownBounceMobile {
+@keyframes modalSlideDownMobile {
   0% {
     opacity: 0;
-    transform: translateY(-150px) scale(0.3);
-  }
-  30% {
-    opacity: 0.7;
-    transform: translateY(20px) scale(1.1);
-  }
-  60% {
-    opacity: 0.9;
-    transform: translateY(-10px) scale(0.95);
+    transform: translateY(-30px);
   }
   100% {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
 

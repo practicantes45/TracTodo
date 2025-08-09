@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useAuth } from '../../../hooks/useAuth';
 import { usePathname } from 'next/navigation';
 import AdminLoginButton from '../AdminLoginButton/AdminLoginButton';
 import {
@@ -17,6 +18,7 @@ import styles from './Footer.module.css';
 
 const Footer = () => {
   const pathname = usePathname();
+  const { isAdmin } = useAuth();
   const currentYear = new Date().getFullYear();
   const [copiedItem, setCopiedItem] = useState('');
 
@@ -45,7 +47,13 @@ const Footer = () => {
 
   const copyToClipboard = async (text, type) => {
     try {
-      await navigator.clipboard.writeText(text);
+      // Si es un número de teléfono, remover guiones
+      let textToCopy = text;
+      if (type.startsWith('phone-')) {
+        textToCopy = text.replace(/-/g, '');
+      }
+
+      await navigator.clipboard.writeText(textToCopy);
       setCopiedItem(type);
       setTimeout(() => setCopiedItem(''), 2000);
     } catch (err) {
@@ -147,9 +155,9 @@ const Footer = () => {
               <div className={styles.contactContent}>
                 <span
                   className={styles.clickableContact}
-                  onClick={() => copyToClipboard('contacto@tractodo.com', 'email')}
+                  onClick={() => copyToClipboard('tractodo62@gmail.com', 'email')}
                 >
-                  contacto@tractodo.com
+                  tractodo62@gmail.com
                 </span>
                 {copiedItem === 'email' && (
                   <div className={styles.copyTooltip}>
@@ -170,7 +178,7 @@ const Footer = () => {
           <p>&copy; {currentYear} TRACTODO - Todos los derechos reservados</p>
         </div>
       </div>
-      {pathname === '/' && <AdminLoginButton />}
+      {pathname === '/' && !isAdmin && <AdminLoginButton />}
 
     </footer>
   );
