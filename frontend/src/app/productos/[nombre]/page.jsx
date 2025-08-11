@@ -1,4 +1,5 @@
 import './producto-individual.css';
+
 import ProductoIndividualClient from './ProductoIndividualClient';
 
 export const dynamicParams = true;

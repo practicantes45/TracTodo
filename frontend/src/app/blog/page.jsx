@@ -10,6 +10,7 @@ import BlogManager from '../components/BlogManager/BlogManager';
 import BlogPostModal from '../components/BlogPostModal/BlogPostModal';
 import { useAuth } from '../../hooks/useAuth';
 import { obtenerPosts } from '../../services/blogService';
+import SEOHead from '../components/SEOHead/SEOHead';
 
 export default function BlogPage() {
     const router = useRouter();
@@ -46,7 +47,7 @@ export default function BlogPage() {
      */
     const limpiarMarkdown = (content) => {
         if (!content) return '';
-        
+
         return content
             // Remover subtítulos (## texto) pero mantener el texto
             .replace(/^## (.+)$/gm, '$1')
@@ -71,45 +72,45 @@ export default function BlogPage() {
      */
     const generarExcerptInteligente = (post, maxLength = 200) => {
         let contenido = '';
-        
+
         // PRIORIDAD 1: Si tiene bloques, usar el primer bloque
         if (post.bloques && Array.isArray(post.bloques) && post.bloques.length > 0) {
             const primerBloque = post.bloques[0];
-            
+
             // Si hay subtítulo, incluirlo como inicio del excerpt
             if (primerBloque.subtitulo && primerBloque.subtitulo.trim()) {
                 contenido = `${primerBloque.subtitulo.trim()}. `;
             }
-            
+
             // Agregar texto del bloque
             if (primerBloque.texto && primerBloque.texto.trim()) {
                 const textoLimpio = limpiarMarkdown(primerBloque.texto);
                 contenido += textoLimpio;
             }
-        } 
+        }
         // PRIORIDAD 2: Usar contenido legacy
         else if (post.contenido || post.content) {
             contenido = post.contenido || post.content;
         }
-        
+
         // Limpiar y truncar
         const contenidoLimpio = limpiarMarkdown(contenido);
-        
+
         if (contenidoLimpio.length <= maxLength) {
             return contenidoLimpio;
         }
-        
+
         // Truncar inteligentemente (por palabras, no por caracteres)
         const palabras = contenidoLimpio.split(' ');
         let excerptFinal = '';
-        
+
         for (const palabra of palabras) {
             if ((excerptFinal + palabra + ' ').length > maxLength - 3) {
                 break;
             }
             excerptFinal += palabra + ' ';
         }
-        
+
         return excerptFinal.trim() + '...';
     };
 
@@ -126,7 +127,7 @@ export default function BlogPage() {
                 return primerBloque.subtitulo.trim();
             }
         }
-        
+
         // Buscar en contenido legacy
         const contenido = post.contenido || post.content || '';
         const subtituloMatch = contenido.match(/^## (.+)$/m);
@@ -140,16 +141,16 @@ export default function BlogPage() {
             setLoading(true);
             setError(null);
             console.log('📚 Cargando posts del blog desde la base de datos...');
-            
+
             const posts = await obtenerPosts();
             console.log('✅ Posts cargados:', posts);
-            
+
             // Transformar datos del backend al formato esperado por el frontend - MEJORADO
             const postsFormateados = posts.map(post => {
                 // Generar excerpt inteligente usando las nuevas funciones
                 const excerptInteligente = generarExcerptInteligente(post, 180);
                 const subtituloDestacado = extraerPrimerSubtitulo(post);
-                
+
                 return {
                     id: post.id,
                     title: post.titulo || post.title,
@@ -166,7 +167,7 @@ export default function BlogPage() {
                     bloques: post.bloques || [] // Mantener bloques para el modal
                 };
             });
-            
+
             setAllPosts(postsFormateados);
         } catch (error) {
             console.error('❌ Error al cargar posts:', error);
@@ -202,8 +203,8 @@ export default function BlogPage() {
     const filteredPosts = allPosts.filter(post => {
         const matchesCategory = selectedCategory === 'todos' || post.category === selectedCategory;
         const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                             post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                             post.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
+            post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            post.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
         return matchesCategory && matchesSearch;
     });
 
@@ -250,6 +251,8 @@ export default function BlogPage() {
     if (loading) {
         return (
             <div className="blog-page">
+                {/* COMPONENTE SEO AGREGADO */}
+                <SEOHead datosSEOPersonalizados={datosSEOBlog} />
                 <Navbar />
                 <div className="heroSection">
                     <div className="heroOverlay">
@@ -307,7 +310,7 @@ export default function BlogPage() {
     return (
         <div className="blog-page">
             <Navbar />
-            
+
             {/* Hero Section */}
             <div className="heroSection">
                 <div className="heroOverlay">
@@ -320,10 +323,10 @@ export default function BlogPage() {
             <main className="mainContent">
                 <section className="blogMainSection">
                     <div className="blogContainer">
-                        
+
                         {/* Botón de regreso */}
                         <div className="backButtonContainer">
-                            <button 
+                            <button
                                 onClick={() => router.back()}
                                 className="backButton"
                                 aria-label="Regresar a la página anterior"
@@ -339,7 +342,7 @@ export default function BlogPage() {
                                 <h2>Artículos del Blog</h2>
                                 <p>{filteredPosts.length} artículos encontrados</p>
                             </div>
-                            
+
                             {/* Botón de gestión para admin */}
                             {isAdmin && (
                                 <div className="adminActionsContainer">
@@ -379,9 +382,9 @@ export default function BlogPage() {
                                         onClick={() => handlePostClick(post)}
                                     >
                                         <div className="postImageContainer">
-                                            <img 
-                                                src={(post.images && post.images[0]) || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0yMDAgMTAwTDE1MCA3NUwyNTAgNzVMMjAwIDEwMFoiIGZpbGw9IiNEMUQ1REIiLz4KPGV4dCB4PSIyMDAiIHk9IjEzMCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmaWxsPSIjNjU3Mzg5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JbWFnZW4gbm8gZW5jb250cmFkYTwvdGV4dD4KPC9zdmc+'} 
-                                                alt={post.title} 
+                                            <img
+                                                src={(post.images && post.images[0]) || 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjIwMCIgdmlld0JveD0iMCAwIDQwMCAyMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMjAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0yMDAgMTAwTDE1MCA3NUwyNTAgNzVMMjAwIDEwMFoiIGZpbGw9IiNEMUQ1REIiLz4KPGV4dCB4PSIyMDAiIHk9IjEzMCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE0IiBmaWxsPSIjNjU3Mzg5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JbWFnZW4gbm8gZW5jb250cmFkYTwvdGV4dD4KPC9zdmc+'}
+                                                alt={post.title}
                                                 className="postImage"
                                                 onError={handleImageError}
                                             />
@@ -392,12 +395,12 @@ export default function BlogPage() {
                                         </div>
                                         <div className="postContent">
                                             <h3 className="postTitle">{post.title}</h3>
-                                            
+
                                             {/* MOSTRAR SUBTÍTULO DESTACADO SI EXISTE */}
                                             {post.subtituloDestacado && (
                                                 <h4 className="postSubtitle">{post.subtituloDestacado}</h4>
                                             )}
-                                            
+
                                             <p className="postExcerpt">{post.excerpt}</p>
                                             <div className="postMeta">
                                                 <span className="postAuthor">
@@ -439,7 +442,7 @@ export default function BlogPage() {
 
             {/* Modal de gestión del blog para admin */}
             {isAdmin && showBlogManager && (
-                <BlogManager 
+                <BlogManager
                     onClose={() => setShowBlogManager(false)}
                     onUpdate={handleBlogUpdate}
                 />

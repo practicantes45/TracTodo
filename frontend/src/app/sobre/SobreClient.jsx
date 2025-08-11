@@ -6,10 +6,13 @@ import Navbar from '../components/Navbar/Navbar';
 import ContactNumbers from '../components/ContactNumbers/ContactNumbers';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
+import SEOHead from '../components/SEOHead/SEOHead';
 
 export default function SobrePage() {
     return (
         <div className="layout sobre-page">
+            {/* COMPONENTE SEO AGREGADO */}
+            <SEOHead datosSEOPersonalizados={datosSEOSobre} />
 
             {/* Navbar principal */}
             <Navbar />

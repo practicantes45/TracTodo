@@ -1,0 +1,4 @@
+/* Este componente no necesita estilos visuales ya que maneja meta tags */
+.seoHead {
+  display: none;
+}

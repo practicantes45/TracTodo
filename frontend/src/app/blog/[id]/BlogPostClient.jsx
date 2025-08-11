@@ -5,6 +5,7 @@ import { FaArrowLeft, FaCalendarAlt, FaUser, FaShare } from 'react-icons/fa';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import ScrollToTop from '../../components/ScrollToTop/ScrollToTop';
+import SEOHead from '../../components/SEOHead/SEOHead';
 import './blog-post.css';
 
 export default function BlogPostClient({ post }) {
@@ -21,7 +22,7 @@ export default function BlogPostClient({ post }) {
     };
 
     const handleImageError = (e) => {
-        e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0yMDAgMTUwTDE1MCA5NUwyNTAgOTVMMjAwIDE1MFoiIGZpbGw9IiNEMUQ1REIiLz4KPGV4dCB4PSIyMDAiIHk9IjE5MCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNjU3Mzg5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JbWFnZW4gbm8gZW5jb250cmFkYTwvdGV4dD4KPC9zdmc+'; 
+        e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgdmlld0JveD0iMCAwIDQwMCAzMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iMzAwIiBmaWxsPSIjRjNGNEY2Ii8+CjxwYXRoIGQ9Ik0yMDAgMTUwTDE1MCA5NUwyNTAgOTVMMjAwIDE1MFoiIGZpbGw9IiNEMUQ1REIiLz4KPGV4dCB4PSIyMDAiIHk9IjE5MCIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjE2IiBmaWxsPSIjNjU3Mzg5IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JbWFnZW4gbm8gZW5jb250cmFkYTwvdGV4dD4KPC9zdmc+';
         e.target.alt = 'Imagen no encontrada';
     };
 
@@ -70,14 +71,19 @@ export default function BlogPostClient({ post }) {
 
     return (
         <div className="blog-post-page">
+            <SEOHead datosSEOPersonalizados={{
+                titulo: "Cargando Artículo | Blog Tractodo",
+                descripcion: "Cargando artículo del blog...",
+                url: `/blog/${params.id}`
+            }} />
             <Navbar />
-            
+
             <main className="magazineMainContent">
                 <div className="magazineWrapper">
-                    
+
                     {/* Botón de regreso */}
                     <div className="magazineBackSection">
-                        <button 
+                        <button
                             onClick={() => router.push('/blog')}
                             className="magazineBackButton"
                         >
@@ -88,10 +94,10 @@ export default function BlogPostClient({ post }) {
 
                     {/* Contenedor del artículo estilo magazine */}
                     <article className="magazineArticle">
-                        
+
                         {/* Categoría discreta en esquina superior izquierda */}
                         <div className="magazineCategory">{post.category}</div>
-                        
+
                         {/* Título principal centrado */}
                         <header className="magazineHeader">
                             <h1 className="magazineTitle">{post.title}</h1>
@@ -99,7 +105,7 @@ export default function BlogPostClient({ post }) {
 
                         {/* Contenido principal con layout alternado */}
                         <div className="magazineContent">
-                            
+
                             {/* Meta información (autor y fecha) */}
                             <div className="magazineMeta">
                                 <div className="metaAuthor">
@@ -110,7 +116,7 @@ export default function BlogPostClient({ post }) {
                                     <FaCalendarAlt />
                                     <span>{formatDate(post.publishDate)}</span>
                                 </div>
-                                <button 
+                                <button
                                     onClick={handleShare}
                                     className="metaShare"
                                 >
@@ -142,10 +148,10 @@ export default function BlogPostClient({ post }) {
                                                         )}
                                                     </div>
                                                     <div className="contentTextContainer">
-                                                        <div 
+                                                        <div
                                                             className="contentText"
-                                                            dangerouslySetInnerHTML={{ 
-                                                                __html: formatParagraph(paragraph) 
+                                                            dangerouslySetInnerHTML={{
+                                                                __html: formatParagraph(paragraph)
                                                             }}
                                                         />
                                                     </div>
@@ -154,10 +160,10 @@ export default function BlogPostClient({ post }) {
                                                 // Texto izquierda, imagen derecha
                                                 <>
                                                     <div className="contentTextContainer">
-                                                        <div 
+                                                        <div
                                                             className="contentText"
-                                                            dangerouslySetInnerHTML={{ 
-                                                                __html: formatParagraph(paragraph) 
+                                                            dangerouslySetInnerHTML={{
+                                                                __html: formatParagraph(paragraph)
                                                             }}
                                                         />
                                                     </div>
@@ -198,15 +204,15 @@ export default function BlogPostClient({ post }) {
                         {/* Footer del artículo */}
                         <footer className="magazineFooter">
                             <div className="magazineActions">
-                                <button 
+                                <button
                                     onClick={handleShare}
                                     className="magazineAction share"
                                 >
                                     <FaShare />
                                     <span>Compartir artículo</span>
                                 </button>
-                                
-                                <button 
+
+                                <button
                                     onClick={() => router.push('/blog')}
                                     className="magazineAction blog"
                                 >

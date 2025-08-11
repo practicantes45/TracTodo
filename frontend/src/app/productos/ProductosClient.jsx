@@ -10,6 +10,7 @@ import { registrarVista } from '../../services/trackingService';
 import { useSearchParams, useRouter } from 'next/navigation';
 import AdminButtons from '../components/AdminButtons/AdminButtons';
 import { getProductSlug } from '../../utils/slugUtils';
+import SEOHead from '../components/SEOHead/SEOHead';
 
 // Constante para productos por página
 const PRODUCTOS_POR_PAGINA = 15;
@@ -295,6 +296,8 @@ export default function ProductosPage() {
 
   return (
     <div className="layout productos-page">
+      {/* COMPONENTE SEO AGREGADO */}
+      <SEOHead datosSEOPersonalizados={generarDatosSEOProductos()} />
       <Navbar />
 
       <main className="mainContent">

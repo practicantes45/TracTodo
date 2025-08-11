@@ -10,6 +10,7 @@ import ProductImageModal from '../../components/ProductImageModal/ProductImageMo
 import { obtenerProductoPorNombre } from '@/services/productoService';
 import { registrarVista } from '../../../services/trackingService';
 import { getProductSlug } from '../../../utils/slugUtils';
+import SEOHead from '../../components/SEOHead/SEOHead';
 
 export default function ProductoIndividualPage({ params }) { // CAMBIADO: recibir params como prop
     const router = useRouter();
@@ -484,6 +485,11 @@ export default function ProductoIndividualPage({ params }) { // CAMBIADO: recibi
     if (loading) {
         return (
             <div className="layout producto-individual-page">
+                 <SEOHead datosSEOPersonalizados={{
+                    titulo: "Cargando Producto | Tractodo",
+                    descripcion: "Cargando información del producto...",
+                    url: `/productos/${params.nombre}`
+                }} />
                 <Navbar />
                 <main className="mainContent">
                     <div className="loadingContainer">
