@@ -83,15 +83,18 @@ exports.getAllProductos = async (req, res) => {
     if (marca) {
       const marcaBuscada = normalizarTexto(marca);
       filtrados = filtrados.filter(p => {
-        const texto = normalizarTexto(`${p.nombre} ${p.descripcion}`);
-        if (marca === "Otros") {
-          return !MARCAS_PREDEFINIDAS.some(m =>
-            texto.includes(normalizarTexto(m))
-          );
-        }
-        return texto.includes(marcaBuscada);
-      });
+      const marcaProducto = normalizarTexto(p.marca || "");
+
+    if (marca === "Otros") {
+      // Productos cuya marca no está en MARCAS_PREDEFINIDAS
+      return !MARCAS_PREDEFINIDAS.some(m =>
+        marcaProducto.includes(normalizarTexto(m))
+      );
     }
+    return marcaProducto.includes(marcaBuscada);
+  });
+}
+
 
     // Orden alfabético (SOLO si no hay búsqueda por texto, para mantener prioridades)
     if (!q) {
