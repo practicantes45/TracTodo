@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { obtenerSEOProducto, obtenerSchemaProducto, generarMetaTags, insertarSchema } from '../../services/seoService';
+import { obtenerSEOProducto, obtenerSchemaProducto, generarMetaTags, insertarSchema } from '../../../services/seoService';
 
 export default function SEOHead({ productoId, datosSEOPersonalizados = null }) {
   const [datosSEO, setDatosSEO] = useState(null);
