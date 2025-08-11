@@ -5,8 +5,8 @@ const { guardarBackup } = require("./reversionController");
 // Función para normalizar texto y quitar acentos
 const normalizarTexto = (texto) => {
   return texto
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
+    .normalize("NFD") 
+    .replace(/[\u0300-\u036f]/g, "") 
     .toLowerCase();
 };
 
@@ -25,147 +25,321 @@ exports.getAllProductos = async (req, res) => {
 
     let filtrados = productos;
 
-    // Búsqueda por texto
+    // Búsqueda por texto CON PRIORIDADES CORREGIDAS
     if (q) {
       const queryNormalizado = normalizarTexto(q);
       console.log(`🔍 Búsqueda normalizada: "${queryNormalizado}"`);
-
+      
+      // Arrays para cada nivel de prioridad
       const prioridad1_numeroParte = [];
       const prioridad2_nombre = [];
       const prioridad3_descripcion = [];
-
+      
       productos.forEach(producto => {
         const numeroParte = normalizarTexto(producto.numeroParte || "");
         const nombre = normalizarTexto(producto.nombre || "");
         const descripcion = normalizarTexto(producto.descripcion || "");
-
+        
+        let coincidencia = false;
+        
+        // PRIORIDAD 1: Número de parte (exacta y parcial)
         if (numeroParte.includes(queryNormalizado)) {
           prioridad1_numeroParte.push(producto);
-        } else if (nombre.includes(queryNormalizado)) {
+          coincidencia = true;
+          console.log(`P1 (Número): ${producto.nombre} - ${producto.numeroParte}`);
+        }
+        // PRIORIDAD 2: Nombre (solo si no coincidió en número de parte)
+        else if (nombre.includes(queryNormalizado)) {
           prioridad2_nombre.push(producto);
-        } else if (descripcion.includes(queryNormalizado)) {
+          coincidencia = true;
+          console.log(`P2 (Nombre): ${producto.nombre}`);
+        }
+        // PRIORIDAD 3: Descripción (solo si no coincidió en anteriores)
+        else if (descripcion.includes(queryNormalizado)) {
           prioridad3_descripcion.push(producto);
+          coincidencia = true;
+          console.log(`P3 (Descripción): ${producto.nombre}`);
         }
       });
 
+      // Combinar resultados manteniendo el orden de prioridad
       filtrados = [
         ...prioridad1_numeroParte,
         ...prioridad2_nombre,
         ...prioridad3_descripcion
       ];
+
+      console.log(`Resultados de búsqueda para "${q}":`);
+      console.log(`   - Prioridad 1 (Número de parte): ${prioridad1_numeroParte.length} productos`);
+      console.log(`   - Prioridad 2 (Nombre): ${prioridad2_nombre.length} productos`);
+      console.log(`   - Prioridad 3 (Descripción): ${prioridad3_descripcion.length} productos`);
+      console.log(`   - Total: ${filtrados.length} productos`);
+      
+      // Mostrar los primeros 5 resultados para debug
+      console.log(`Primeros resultados:`, filtrados.slice(0, 5).map(p => `${p.nombre} (${p.numeroParte || 'Sin número'})`));
     }
 
-    // Filtro por marca
-    if (marca && marca !== "todas") {
-      const marcaNormalizada = normalizarTexto(marca);
-      filtrados = filtrados.filter(producto => {
-        const marcaProducto = normalizarTexto(producto.marca || "");
-        const nombreProducto = normalizarTexto(producto.nombre || "");
-        const descripcionProducto = normalizarTexto(producto.descripcion || "");
-        
+    // Filtro por marca (analiza también nombre y descripción)
+    if (marca) {
+      const marcaBuscada = normalizarTexto(marca);
+      filtrados = filtrados.filter(p => {
+        const texto = normalizarTexto(`${p.nombre} ${p.descripcion}`);
         if (marca === "Otros") {
-          const marcasPredefinidas = ["cummins", "navistar", "volvo", "mercedes benz", "detroit", "caterpillar"];
-          const texto = `${nombreProducto} ${descripcionProducto}`;
-          return !marcasPredefinidas.some(m => texto.includes(m));
+          return !MARCAS_PREDEFINIDAS.some(m =>
+            texto.includes(normalizarTexto(m))
+          );
         }
-        
-        return marcaProducto === marcaNormalizada || 
-               nombreProducto.includes(marcaNormalizada) || 
-               descripcionProducto.includes(marcaNormalizada);
+        return texto.includes(marcaBuscada);
       });
     }
 
-    // Ordenamiento (SOLO si no hay búsqueda para mantener prioridades)
+    // Orden alfabético (SOLO si no hay búsqueda por texto, para mantener prioridades)
     if (!q) {
-      if (orden === "asc" || orden === "A-Z") {
-        filtrados.sort((a, b) => (a.nombre || "").localeCompare(b.nombre || ""));
-      } else if (orden === "desc" || orden === "Z-A") {
-        filtrados.sort((a, b) => (b.nombre || "").localeCompare(a.nombre || ""));
-      } else {
-        // Por defecto A-Z cuando no hay orden especificado y no hay búsqueda
-        filtrados.sort((a, b) => (a.nombre || "").localeCompare(b.nombre || ""));
+      if (orden === "asc") {
+        filtrados.sort((a, b) => a.nombre?.localeCompare(b.nombre));
+      } else if (orden === "desc") {
+        filtrados.sort((a, b) => b.nombre?.localeCompare(a.nombre));
       }
+    } else {
+      console.log(`ℹManteniendo orden de prioridad de búsqueda (sin ordenamiento alfabético)`);
     }
 
     res.json(filtrados);
   } catch (error) {
     console.error("Error al obtener productos:", error.message);
-    res.status(500).json({ error: "Error interno del servidor" });
+    res.status(500).json({ error: "Error al obtener productos", detalles: error.message });
   }
 };
-// Obtener producto por ID
+
+// FUNCIÓN MEJORADA: obtener producto por NOMBRE con mejor coincidencia
+exports.getProductoByNombre = async (req, res) => {
+  const { nombre } = req.params;
+
+  try {
+    console.log(`🔍 Buscando producto por nombre: "${nombre}"`);
+    
+    // Normalizar el nombre buscado para comparación
+    const nombreNormalizado = normalizarTexto(nombre);
+    console.log(`🔍 Nombre normalizado: "${nombreNormalizado}"`);
+
+    // Obtener todos los productos
+    const snapshot = await db.ref("/").once("value");
+    const data = snapshot.val();
+
+    if (!data) {
+      return res.status(404).json({ error: "No hay productos en la base de datos" });
+    }
+
+    // MEJORADO: Buscar con múltiples estrategias
+    let productoEncontrado = null;
+    let idProducto = null;
+
+    // 1. Búsqueda exacta del nombre normalizado
+    for (const [id, producto] of Object.entries(data)) {
+      if (producto?.nombre) {
+        const nombreProductoNormalizado = normalizarTexto(producto.nombre);
+        
+        if (nombreProductoNormalizado === nombreNormalizado) {
+          productoEncontrado = producto;
+          idProducto = id;
+          console.log(`✅ Coincidencia exacta: "${producto.nombre}" con ID: ${id}`);
+          break;
+        }
+      }
+    }
+
+    // 2. Si no hay coincidencia exacta, buscar coincidencia parcial
+    if (!productoEncontrado) {
+      console.log(`ℹ️ No se encontró coincidencia exacta, buscando coincidencia parcial...`);
+      
+      for (const [id, producto] of Object.entries(data)) {
+        if (producto?.nombre) {
+          const nombreProductoNormalizado = normalizarTexto(producto.nombre);
+          
+          // Coincidencia parcial
+          if (nombreProductoNormalizado.includes(nombreNormalizado)) {
+            productoEncontrado = producto;
+            idProducto = id;
+            console.log(`✅ Coincidencia parcial: "${producto.nombre}" con ID: ${id}`);
+            break;
+          }
+        }
+      }
+    }
+
+    // 3. NUEVO: Si no hay coincidencia, buscar por palabras clave
+    if (!productoEncontrado) {
+      console.log(`ℹ️ Buscando por palabras clave individuales...`);
+      
+      const palabrasClave = nombreNormalizado.split(' ').filter(p => p.length > 2);
+      let mejorCoincidencia = null;
+      let mejorPuntaje = 0;
+      
+      for (const [id, producto] of Object.entries(data)) {
+        if (producto?.nombre) {
+          const nombreProductoNormalizado = normalizarTexto(producto.nombre);
+          let puntaje = 0;
+          
+          // Contar cuántas palabras clave coinciden
+          palabrasClave.forEach(palabra => {
+            if (nombreProductoNormalizado.includes(palabra)) {
+              puntaje++;
+            }
+          });
+          
+          if (puntaje > mejorPuntaje) {
+            mejorPuntaje = puntaje;
+            mejorCoincidencia = { id, producto };
+          }
+        }
+      }
+      
+      if (mejorCoincidencia && mejorPuntaje > 0) {
+        productoEncontrado = mejorCoincidencia.producto;
+        idProducto = mejorCoincidencia.id;
+        console.log(`✅ Coincidencia por palabras clave: "${productoEncontrado.nombre}" con puntaje ${mejorPuntaje}`);
+      }
+    }
+
+    if (!productoEncontrado) {
+      console.log(`❌ Producto no encontrado para: "${nombre}"`);
+      return res.status(404).json({ error: "Producto no encontrado" });
+    }
+
+    // ✅ SEO híbrido optimizado (usando el ID encontrado)
+    const { obtenerDatosSEOProducto } = require("../services/seoService");
+    const datosSEO = await obtenerDatosSEOProducto(idProducto, productoEncontrado);
+
+    // Obtener recomendaciones (optimizado)
+    const recoSnapshot = await db.ref(`/recomendaciones/${idProducto}`).once("value");
+    let idsRecomendados = recoSnapshot.val() || [];
+
+    if (idsRecomendados.length === 0) {
+      // ✅ Recomendaciones básicas optimizadas
+      const allSnapshot = await db.ref("/").limitToFirst(50).once("value");
+      const allData = allSnapshot.val() || {};
+      
+      const productosDisponibles = Object.entries(allData)
+        .filter(([pid, prod]) => pid !== idProducto && prod?.nombre)
+        .slice(0, 10);
+
+      idsRecomendados = productosDisponibles.slice(0, 6).map(([pid]) => pid);
+    }
+
+    // Obtener datos de recomendados (optimizado)
+    const recomendados = [];
+    for (const pid of idsRecomendados.slice(0, 6)) {
+      try {
+        const recSnapshot = await db.ref(`/${pid}`).once("value");
+        if (recSnapshot.exists()) {
+          recomendados.push({ id: pid, ...recSnapshot.val() });
+        }
+      } catch (error) {
+        console.warn(`Error obteniendo recomendado ${pid}:`, error.message);
+      }
+    }
+
+    console.log(`✅ Respuesta completa preparada para: "${productoEncontrado.nombre}"`);
+
+    res.json({
+      producto: { 
+        id: idProducto, 
+        ...productoEncontrado,
+        seo: datosSEO // ✅ SEO híbrido incluido
+      },
+      recomendados
+    });
+  } catch (error) {
+    console.error("Error obteniendo producto por nombre:", error.message);
+    res.status(500).json({ error: "Error obteniendo producto", detalles: error.message });
+  }
+};
+
+// MANTENER LA FUNCIÓN ORIGINAL POR COMPATIBILIDAD
 exports.getProductoById = async (req, res) => {
   const { id } = req.params;
 
   try {
     const snapshot = await db.ref(`/${id}`).once("value");
     if (!snapshot.exists()) {
-      return res.status(404).json({ mensaje: "Producto no encontrado" });
+      return res.status(404).json({ error: "Producto no encontrado" });
+    }
+    const producto = snapshot.val();
+
+    // ✅ SEO híbrido optimizado
+    const { obtenerDatosSEOProducto } = require("../services/seoService");
+    const datosSEO = await obtenerDatosSEOProducto(id, producto);
+
+    // Obtener recomendaciones (optimizado)
+    const recoSnapshot = await db.ref(`/recomendaciones/${id}`).once("value");
+    let idsRecomendados = recoSnapshot.val() || [];
+
+    if (idsRecomendados.length === 0) {
+      // ✅ Recomendaciones básicas optimizadas
+      const allSnapshot = await db.ref("/").limitToFirst(50).once("value");
+      const allData = allSnapshot.val() || {};
+      
+      const productosDisponibles = Object.entries(allData)
+        .filter(([pid, prod]) => pid !== id && prod?.nombre)
+        .slice(0, 10);
+
+      idsRecomendados = productosDisponibles.slice(0, 6).map(([pid]) => pid);
     }
 
-    const producto = { id, ...snapshot.val() };
-    res.json(producto);
-  } catch (error) {
-    console.error("Error al obtener producto por ID:", error.message);
-    res.status(500).json({ mensaje: "Error al obtener el producto", detalles: error.message });
-  }
-};
-
-// Obtener producto por nombre
-exports.getProductoByNombre = async (req, res) => {
-  const { nombre } = req.params;
-
-  try {
-    const nombreNormalizado = normalizarTexto(nombre.replace(/-/g, ' '));
-
-    const snapshot = await db.ref("/").once("value");
-    const data = snapshot.val();
-
-    if (!data) {
-      return res.status(404).json({ mensaje: "Producto no encontrado" });
+    // Obtener datos de recomendados (optimizado)
+    const recomendados = [];
+    for (const pid of idsRecomendados.slice(0, 6)) {
+      try {
+        const recSnapshot = await db.ref(`/${pid}`).once("value");
+        if (recSnapshot.exists()) {
+          recomendados.push({ id: pid, ...recSnapshot.val() });
+        }
+      } catch (error) {
+        console.warn(`Error obteniendo recomendado ${pid}:`, error.message);
+      }
     }
 
-    const producto = Object.entries(data).find(([id, prod]) => {
-      if (!prod?.nombre) return false;
-      const nombreProductoNormalizado = normalizarTexto(prod.nombre);
-      return nombreProductoNormalizado === nombreNormalizado;
+    res.json({
+      producto: { 
+        id, 
+        ...producto,
+        seo: datosSEO // ✅ SEO híbrido incluido
+      },
+      recomendados
     });
-
-    if (!producto) {
-      return res.status(404).json({ mensaje: "Producto no encontrado" });
-    }
-
-    const [id, data_producto] = producto;
-    res.json({ id, ...data_producto });
   } catch (error) {
-    console.error("Error al obtener producto por nombre:", error.message);
-    res.status(500).json({ mensaje: "Error al obtener el producto", detalles: error.message });
+    console.error("Error obteniendo producto:", error.message);
+    res.status(500).json({ error: "Error obteniendo producto", detalles: error.message });
   }
 };
 
-// Insertar un nuevo producto
+// Crea un nuevo producto
 exports.insertarProducto = async (req, res) => {
   const datos = req.body;
 
   try {
-    const nuevoProductoRef = db.ref("/").push();
-    const nuevoId = nuevoProductoRef.key;
+    // Validación básica (puedes expandirla según tus necesidades)
+    if (!datos.nombre || !datos.numeroParte || !datos.descripcion) {
+      return res.status(400).json({ mensaje: "Faltan campos obligatorios" });
+    }
 
-    await nuevoProductoRef.set(datos);
+    // Creamos un nuevo ID usando push
+    const nuevoRef = db.ref("/").push();
+    await nuevoRef.set(datos);
 
-    const productoCreado = { id: nuevoId, ...datos };
+    const nuevoId = nuevoRef.key;
 
     res.status(201).json({
       mensaje: "Producto creado correctamente",
-      producto: productoCreado
+      producto: { id: nuevoId, ...datos }
     });
   } catch (error) {
-    console.error("Error al crear producto:", error.message);
-    res.status(400).json({ mensaje: "Error al crear producto", detalles: error.message });
+    console.error("Error al insertar producto:", error.message);
+    res.status(500).json({ mensaje: "Error al insertar producto", detalles: error.message });
   }
 };
 
-// Borrar producto por ID
+// Elimina un producto por ID
 exports.borrarProductoPorId = async (req, res) => {
   const { id } = req.params;
 
@@ -178,7 +352,6 @@ exports.borrarProductoPorId = async (req, res) => {
     const datosProducto = snapshot.val();
     await guardarBackup("productos", id, datosProducto);
     await db.ref(`/${id}`).remove();
-    
     res.status(200).json({ mensaje: "Producto borrado correctamente" });
   } catch (error) {
     console.error("Error al borrar producto:", error.message);
@@ -186,7 +359,7 @@ exports.borrarProductoPorId = async (req, res) => {
   }
 };
 
-// Actualizar producto por ID
+// Actualiza un producto por ID
 exports.actualizarProductoPorId = async (req, res) => {
   const { id } = req.params;
   const datos = req.body;
@@ -200,13 +373,12 @@ exports.actualizarProductoPorId = async (req, res) => {
     const datosProducto = snapshot.val();
     await guardarBackup("productos", id, datosProducto);
     await db.ref(`/${id}`).update(datos);
-    
     const actualizadoSnapshot = await db.ref(`/${id}`).once("value");
     const productoActualizado = actualizadoSnapshot.val();
 
-    res.status(200).json({
-      mensaje: "Producto actualizado correctamente",
-      producto: { id, ...productoActualizado }
+    res.status(200).json({ 
+      mensaje: "Producto actualizado correctamente", 
+      producto: { id, ...productoActualizado } 
     });
   } catch (error) {
     console.error("Error al actualizar producto:", error.message);
@@ -214,9 +386,9 @@ exports.actualizarProductoPorId = async (req, res) => {
   }
 };
 
-// ==================================================================== Productos del mes ===================================================================
+// =============== PRODUCTOS DEL MES - SOLO ESTO CAMBIÓ ===============
 
-// TOTALMENTE CORREGIDO: SIN VALIDACIONES DE PRECIOMES
+// CORREGIDO: insertar productos del mes con nuevoPrecio
 exports.insertarProductosDelMes = async (req, res) => {
   const { productos } = req.body;
 
@@ -311,7 +483,7 @@ exports.insertarProductosDelMes = async (req, res) => {
   }
 };
 
-// Obtener productos del mes
+// obtener productos del mes - usa precio original
 exports.getProductosDelMes = async (req, res) => {
   try {
     const snapshot = await db.ref("/productosDelMes").once("value");
@@ -332,7 +504,7 @@ exports.getProductosDelMes = async (req, res) => {
       }))
       .filter(p => p && p.nombre);
 
-    console.log(`📦 Devolviendo ${destacados.length} productos del mes`);
+    console.log(`📦 Devolviendo ${destacados.length} productos del mes con precios originales`);
     res.json(destacados);
   } catch (error) {
     console.error("Error al obtener productos del mes:", error.message);
@@ -340,7 +512,7 @@ exports.getProductosDelMes = async (req, res) => {
   }
 };
 
-// Actualizar productos del mes
+// actualizar productos del mes
 exports.actualizarProductosDelMes = async (req, res) => {
   const { productos } = req.body;
 
@@ -402,7 +574,7 @@ exports.actualizarProductosDelMes = async (req, res) => {
   }
 };
 
-// Eliminar producto del mes
+// eliminar productos del mes
 exports.eliminarProductoDelMes = async (req, res) => {
   const { id } = req.body;
 
@@ -442,7 +614,7 @@ exports.eliminarProductoDelMes = async (req, res) => {
   }
 };
 
-// Actualizar precio del producto original
+// CORREGIDO: actualizar precio con nuevoPrecio
 exports.actualizarPrecioProductoDelMes = async (req, res) => {
   const { id } = req.params;
   const { nuevoPrecio } = req.body;
