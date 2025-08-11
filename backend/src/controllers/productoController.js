@@ -25,12 +25,11 @@ exports.getAllProductos = async (req, res) => {
 
     let filtrados = productos;
 
-    // Búsqueda por texto CON PRIORIDADES CORREGIDAS
+    // Búsqueda por texto
     if (q) {
       const queryNormalizado = normalizarTexto(q);
       console.log(`🔍 Búsqueda normalizada: "${queryNormalizado}"`);
 
-      // Arrays para cada nivel de prioridad
       const prioridad1_numeroParte = [];
       const prioridad2_nombre = [];
       const prioridad3_descripcion = [];
@@ -40,41 +39,20 @@ exports.getAllProductos = async (req, res) => {
         const nombre = normalizarTexto(producto.nombre || "");
         const descripcion = normalizarTexto(producto.descripcion || "");
 
-        let coincidencia = false;
-
-        // PRIORIDAD 1: Número de parte (exacta y parcial)
         if (numeroParte.includes(queryNormalizado)) {
           prioridad1_numeroParte.push(producto);
-          coincidencia = true;
-          console.log(`P1 (Número): ${producto.nombre}`);
-        }
-        // PRIORIDAD 2: Nombre (exacta y parcial)
-        else if (nombre.includes(queryNormalizado)) {
+        } else if (nombre.includes(queryNormalizado)) {
           prioridad2_nombre.push(producto);
-          coincidencia = true;
-          console.log(`P2 (Nombre): ${producto.nombre}`);
-        }
-        // PRIORIDAD 3: Descripción (exacta y parcial)
-        else if (descripcion.includes(queryNormalizado)) {
+        } else if (descripcion.includes(queryNormalizado)) {
           prioridad3_descripcion.push(producto);
-          coincidencia = true;
-          console.log(`P3 (Descripción): ${producto.nombre}`);
         }
       });
 
-      // Combinar por prioridades
       filtrados = [
         ...prioridad1_numeroParte,
         ...prioridad2_nombre,
         ...prioridad3_descripcion
       ];
-
-      console.log(`📊 Resultados por prioridad:`, {
-        numeroParte: prioridad1_numeroParte.length,
-        nombre: prioridad2_nombre.length,
-        descripcion: prioridad3_descripcion.length,
-        total: filtrados.length
-      });
     }
 
     // Filtro por marca
@@ -82,29 +60,30 @@ exports.getAllProductos = async (req, res) => {
       const marcaNormalizada = normalizarTexto(marca);
       filtrados = filtrados.filter(producto => {
         const marcaProducto = normalizarTexto(producto.marca || "");
-        return marcaProducto === marcaNormalizada;
+        const nombreProducto = normalizarTexto(producto.nombre || "");
+        const descripcionProducto = normalizarTexto(producto.descripcion || "");
+        
+        if (marca === "Otros") {
+          const marcasPredefinidas = ["cummins", "navistar", "volvo", "mercedes benz", "detroit", "caterpillar"];
+          const texto = `${nombreProducto} ${descripcionProducto}`;
+          return !marcasPredefinidas.some(m => texto.includes(m));
+        }
+        
+        return marcaProducto === marcaNormalizada || 
+               nombreProducto.includes(marcaNormalizada) || 
+               descripcionProducto.includes(marcaNormalizada);
       });
     }
 
-    // Ordenamiento
-    if (orden) {
-      switch (orden) {
-        case "precio_asc":
-          filtrados.sort((a, b) => (parseFloat(a.precioVentaSugerido) || 0) - (parseFloat(b.precioVentaSugerido) || 0));
-          break;
-        case "precio_desc":
-          filtrados.sort((a, b) => (parseFloat(b.precioVentaSugerido) || 0) - (parseFloat(a.precioVentaSugerido) || 0));
-          break;
-        case "nombre_asc":
-          filtrados.sort((a, b) => (a.nombre || "").localeCompare(b.nombre || ""));
-          break;
-        case "nombre_desc":
-          filtrados.sort((a, b) => (b.nombre || "").localeCompare(a.nombre || ""));
-          break;
-        case "relevancia":
-        default:
-          // Ya ordenado por relevancia debido a las prioridades
-          break;
+    // Ordenamiento (SOLO si no hay búsqueda para mantener prioridades)
+    if (!q) {
+      if (orden === "asc" || orden === "A-Z") {
+        filtrados.sort((a, b) => (a.nombre || "").localeCompare(b.nombre || ""));
+      } else if (orden === "desc" || orden === "Z-A") {
+        filtrados.sort((a, b) => (b.nombre || "").localeCompare(a.nombre || ""));
+      } else {
+        // Por defecto A-Z cuando no hay orden especificado y no hay búsqueda
+        filtrados.sort((a, b) => (a.nombre || "").localeCompare(b.nombre || ""));
       }
     }
 
@@ -114,7 +93,6 @@ exports.getAllProductos = async (req, res) => {
     res.status(500).json({ error: "Error interno del servidor" });
   }
 };
-
 // Obtener producto por ID
 exports.getProductoById = async (req, res) => {
   const { id } = req.params;
