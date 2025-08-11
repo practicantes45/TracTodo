@@ -151,7 +151,7 @@ export default function ProductoIndividualPage({ params }) { // CAMBIADO: recibi
             const otrasImagenes = Object.entries(producto.imagenesUrl)
                 .filter(([key, url]) => key !== 'frente' && url && url.trim() !== '')
                 .map(([key, url]) => url);
-            
+
             imagenes.push(...otrasImagenes);
             console.log('🖼️ Agregando otras imágenes:', otrasImagenes);
         }
@@ -250,7 +250,7 @@ export default function ProductoIndividualPage({ params }) { // CAMBIADO: recibi
             e.preventDefault();
             const newPanX = e.clientX - dragStart.x;
             const newPanY = e.clientY - dragStart.y;
-            
+
             // Limitar el movimiento para que no se salga demasiado
             const maxPan = (carouselZoom - 100) * 2;
             setCarouselPanX(Math.max(-maxPan, Math.min(maxPan, newPanX)));
@@ -280,7 +280,7 @@ export default function ProductoIndividualPage({ params }) { // CAMBIADO: recibi
             const touch = e.touches[0];
             const newPanX = touch.clientX - dragStart.x;
             const newPanY = touch.clientY - dragStart.y;
-            
+
             const maxPan = (carouselZoom - 100) * 2;
             setCarouselPanX(Math.max(-maxPan, Math.min(maxPan, newPanX)));
             setCarouselPanY(Math.max(-maxPan, Math.min(maxPan, newPanY)));
@@ -535,7 +535,7 @@ export default function ProductoIndividualPage({ params }) { // CAMBIADO: recibi
                                 <div
                                     className="productImageContainer"
                                     onClick={() => openModal(currentImageIndex)}
-                                    style={{ 
+                                    style={{
                                         cursor: imagenesProducto.length > 0 ? (carouselZoom > 100 ? 'grab' : 'pointer') : 'default',
                                         overflow: 'hidden'
                                     }}
@@ -678,9 +678,8 @@ export default function ProductoIndividualPage({ params }) { // CAMBIADO: recibi
                                     </button>
                                 </div>
                             </div>
-
                             <div className="productPrice">
-                                ${(producto.precioVentaSugerido || 0).toLocaleString()}
+                                ${parseFloat(producto.precioVentaSugerido || 0).toLocaleString()}
                             </div>
 
                             <div className="productMeta">

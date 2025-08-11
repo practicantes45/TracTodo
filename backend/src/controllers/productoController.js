@@ -5,8 +5,8 @@ const { guardarBackup } = require("./reversionController");
 // Función para normalizar texto y quitar acentos
 const normalizarTexto = (texto) => {
   return texto
-    .normalize("NFD") 
-    .replace(/[\u0300-\u036f]/g, "") 
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase();
 };
 
@@ -29,32 +29,32 @@ exports.getAllProductos = async (req, res) => {
     if (q) {
       const queryNormalizado = normalizarTexto(q);
       console.log(`🔍 Búsqueda normalizada: "${queryNormalizado}"`);
-      
+
       // Arrays para cada nivel de prioridad
       const prioridad1_numeroParte = [];
       const prioridad2_nombre = [];
       const prioridad3_descripcion = [];
-      
+
       productos.forEach(producto => {
         const numeroParte = normalizarTexto(producto.numeroParte || "");
         const nombre = normalizarTexto(producto.nombre || "");
         const descripcion = normalizarTexto(producto.descripcion || "");
-        
+
         let coincidencia = false;
-        
+
         // PRIORIDAD 1: Número de parte (exacta y parcial)
         if (numeroParte.includes(queryNormalizado)) {
           prioridad1_numeroParte.push(producto);
           coincidencia = true;
-          console.log(`P1 (Número): ${producto.nombre} - ${producto.numeroParte}`);
+          console.log(`P1 (Número): ${producto.nombre}`);
         }
-        // PRIORIDAD 2: Nombre (solo si no coincidió en número de parte)
+        // PRIORIDAD 2: Nombre (exacta y parcial)
         else if (nombre.includes(queryNormalizado)) {
           prioridad2_nombre.push(producto);
           coincidencia = true;
           console.log(`P2 (Nombre): ${producto.nombre}`);
         }
-        // PRIORIDAD 3: Descripción (solo si no coincidió en anteriores)
+        // PRIORIDAD 3: Descripción (exacta y parcial)
         else if (descripcion.includes(queryNormalizado)) {
           prioridad3_descripcion.push(producto);
           coincidencia = true;
@@ -62,284 +62,132 @@ exports.getAllProductos = async (req, res) => {
         }
       });
 
-      // Combinar resultados manteniendo el orden de prioridad
+      // Combinar por prioridades
       filtrados = [
         ...prioridad1_numeroParte,
         ...prioridad2_nombre,
         ...prioridad3_descripcion
       ];
 
-      console.log(`Resultados de búsqueda para "${q}":`);
-      console.log(`   - Prioridad 1 (Número de parte): ${prioridad1_numeroParte.length} productos`);
-      console.log(`   - Prioridad 2 (Nombre): ${prioridad2_nombre.length} productos`);
-      console.log(`   - Prioridad 3 (Descripción): ${prioridad3_descripcion.length} productos`);
-      console.log(`   - Total: ${filtrados.length} productos`);
-      
-      // Mostrar los primeros 5 resultados para debug
-      console.log(`Primeros resultados:`, filtrados.slice(0, 5).map(p => `${p.nombre} (${p.numeroParte || 'Sin número'})`));
-    }
-
-    // Filtro por marca (analiza también nombre y descripción)
-    if (marca) {
-      const marcaBuscada = normalizarTexto(marca);
-      filtrados = filtrados.filter(p => {
-        const texto = normalizarTexto(`${p.nombre} ${p.descripcion}`);
-        if (marca === "Otros") {
-          return !MARCAS_PREDEFINIDAS.some(m =>
-            texto.includes(normalizarTexto(m))
-          );
-        }
-        return texto.includes(marcaBuscada);
+      console.log(`📊 Resultados por prioridad:`, {
+        numeroParte: prioridad1_numeroParte.length,
+        nombre: prioridad2_nombre.length,
+        descripcion: prioridad3_descripcion.length,
+        total: filtrados.length
       });
     }
 
-    // Orden alfabético (SOLO si no hay búsqueda por texto, para mantener prioridades)
-    if (!q) {
-      if (orden === "asc") {
-        filtrados.sort((a, b) => a.nombre?.localeCompare(b.nombre));
-      } else if (orden === "desc") {
-        filtrados.sort((a, b) => b.nombre?.localeCompare(a.nombre));
+    // Filtro por marca
+    if (marca && marca !== "todas") {
+      const marcaNormalizada = normalizarTexto(marca);
+      filtrados = filtrados.filter(producto => {
+        const marcaProducto = normalizarTexto(producto.marca || "");
+        return marcaProducto === marcaNormalizada;
+      });
+    }
+
+    // Ordenamiento
+    if (orden) {
+      switch (orden) {
+        case "precio_asc":
+          filtrados.sort((a, b) => (parseFloat(a.precioVentaSugerido) || 0) - (parseFloat(b.precioVentaSugerido) || 0));
+          break;
+        case "precio_desc":
+          filtrados.sort((a, b) => (parseFloat(b.precioVentaSugerido) || 0) - (parseFloat(a.precioVentaSugerido) || 0));
+          break;
+        case "nombre_asc":
+          filtrados.sort((a, b) => (a.nombre || "").localeCompare(b.nombre || ""));
+          break;
+        case "nombre_desc":
+          filtrados.sort((a, b) => (b.nombre || "").localeCompare(a.nombre || ""));
+          break;
+        case "relevancia":
+        default:
+          // Ya ordenado por relevancia debido a las prioridades
+          break;
       }
-    } else {
-      console.log(`ℹManteniendo orden de prioridad de búsqueda (sin ordenamiento alfabético)`);
     }
 
     res.json(filtrados);
   } catch (error) {
     console.error("Error al obtener productos:", error.message);
-    res.status(500).json({ error: "Error al obtener productos", detalles: error.message });
+    res.status(500).json({ error: "Error interno del servidor" });
   }
 };
 
-// FUNCIÓN MEJORADA: obtener producto por NOMBRE con mejor coincidencia
-exports.getProductoByNombre = async (req, res) => {
-  const { nombre } = req.params;
-
-  try {
-    console.log(`🔍 Buscando producto por nombre: "${nombre}"`);
-    
-    // Normalizar el nombre buscado para comparación
-    const nombreNormalizado = normalizarTexto(nombre);
-    console.log(`🔍 Nombre normalizado: "${nombreNormalizado}"`);
-
-    // Obtener todos los productos
-    const snapshot = await db.ref("/").once("value");
-    const data = snapshot.val();
-
-    if (!data) {
-      return res.status(404).json({ error: "No hay productos en la base de datos" });
-    }
-
-    // MEJORADO: Buscar con múltiples estrategias
-    let productoEncontrado = null;
-    let idProducto = null;
-
-    // 1. Búsqueda exacta del nombre normalizado
-    for (const [id, producto] of Object.entries(data)) {
-      if (producto?.nombre) {
-        const nombreProductoNormalizado = normalizarTexto(producto.nombre);
-        
-        if (nombreProductoNormalizado === nombreNormalizado) {
-          productoEncontrado = producto;
-          idProducto = id;
-          console.log(`✅ Coincidencia exacta: "${producto.nombre}" con ID: ${id}`);
-          break;
-        }
-      }
-    }
-
-    // 2. Si no hay coincidencia exacta, buscar coincidencia parcial
-    if (!productoEncontrado) {
-      console.log(`ℹ️ No se encontró coincidencia exacta, buscando coincidencia parcial...`);
-      
-      for (const [id, producto] of Object.entries(data)) {
-        if (producto?.nombre) {
-          const nombreProductoNormalizado = normalizarTexto(producto.nombre);
-          
-          // Coincidencia parcial
-          if (nombreProductoNormalizado.includes(nombreNormalizado)) {
-            productoEncontrado = producto;
-            idProducto = id;
-            console.log(`✅ Coincidencia parcial: "${producto.nombre}" con ID: ${id}`);
-            break;
-          }
-        }
-      }
-    }
-
-    // 3. NUEVO: Si no hay coincidencia, buscar por palabras clave
-    if (!productoEncontrado) {
-      console.log(`ℹ️ Buscando por palabras clave individuales...`);
-      
-      const palabrasClave = nombreNormalizado.split(' ').filter(p => p.length > 2);
-      let mejorCoincidencia = null;
-      let mejorPuntaje = 0;
-      
-      for (const [id, producto] of Object.entries(data)) {
-        if (producto?.nombre) {
-          const nombreProductoNormalizado = normalizarTexto(producto.nombre);
-          let puntaje = 0;
-          
-          // Contar cuántas palabras clave coinciden
-          palabrasClave.forEach(palabra => {
-            if (nombreProductoNormalizado.includes(palabra)) {
-              puntaje++;
-            }
-          });
-          
-          if (puntaje > mejorPuntaje) {
-            mejorPuntaje = puntaje;
-            mejorCoincidencia = { id, producto };
-          }
-        }
-      }
-      
-      if (mejorCoincidencia && mejorPuntaje > 0) {
-        productoEncontrado = mejorCoincidencia.producto;
-        idProducto = mejorCoincidencia.id;
-        console.log(`✅ Coincidencia por palabras clave: "${productoEncontrado.nombre}" con puntaje ${mejorPuntaje}`);
-      }
-    }
-
-    if (!productoEncontrado) {
-      console.log(`❌ Producto no encontrado para: "${nombre}"`);
-      return res.status(404).json({ error: "Producto no encontrado" });
-    }
-
-    // ✅ SEO híbrido optimizado (usando el ID encontrado)
-    const { obtenerDatosSEOProducto } = require("../services/seoService");
-    const datosSEO = await obtenerDatosSEOProducto(idProducto, productoEncontrado);
-
-    // Obtener recomendaciones (optimizado)
-    const recoSnapshot = await db.ref(`/recomendaciones/${idProducto}`).once("value");
-    let idsRecomendados = recoSnapshot.val() || [];
-
-    if (idsRecomendados.length === 0) {
-      // ✅ Recomendaciones básicas optimizadas
-      const allSnapshot = await db.ref("/").limitToFirst(50).once("value");
-      const allData = allSnapshot.val() || {};
-      
-      const productosDisponibles = Object.entries(allData)
-        .filter(([pid, prod]) => pid !== idProducto && prod?.nombre)
-        .slice(0, 10);
-
-      idsRecomendados = productosDisponibles.slice(0, 6).map(([pid]) => pid);
-    }
-
-    // Obtener datos de recomendados (optimizado)
-    const recomendados = [];
-    for (const pid of idsRecomendados.slice(0, 6)) {
-      try {
-        const recSnapshot = await db.ref(`/${pid}`).once("value");
-        if (recSnapshot.exists()) {
-          recomendados.push({ id: pid, ...recSnapshot.val() });
-        }
-      } catch (error) {
-        console.warn(`Error obteniendo recomendado ${pid}:`, error.message);
-      }
-    }
-
-    console.log(`✅ Respuesta completa preparada para: "${productoEncontrado.nombre}"`);
-
-    res.json({
-      producto: { 
-        id: idProducto, 
-        ...productoEncontrado,
-        seo: datosSEO // ✅ SEO híbrido incluido
-      },
-      recomendados
-    });
-  } catch (error) {
-    console.error("Error obteniendo producto por nombre:", error.message);
-    res.status(500).json({ error: "Error obteniendo producto", detalles: error.message });
-  }
-};
-
-// MANTENER LA FUNCIÓN ORIGINAL POR COMPATIBILIDAD
+// Obtener producto por ID
 exports.getProductoById = async (req, res) => {
   const { id } = req.params;
 
   try {
     const snapshot = await db.ref(`/${id}`).once("value");
     if (!snapshot.exists()) {
-      return res.status(404).json({ error: "Producto no encontrado" });
-    }
-    const producto = snapshot.val();
-
-    // ✅ SEO híbrido optimizado
-    const { obtenerDatosSEOProducto } = require("../services/seoService");
-    const datosSEO = await obtenerDatosSEOProducto(id, producto);
-
-    // Obtener recomendaciones (optimizado)
-    const recoSnapshot = await db.ref(`/recomendaciones/${id}`).once("value");
-    let idsRecomendados = recoSnapshot.val() || [];
-
-    if (idsRecomendados.length === 0) {
-      // ✅ Recomendaciones básicas optimizadas
-      const allSnapshot = await db.ref("/").limitToFirst(50).once("value");
-      const allData = allSnapshot.val() || {};
-      
-      const productosDisponibles = Object.entries(allData)
-        .filter(([pid, prod]) => pid !== id && prod?.nombre)
-        .slice(0, 10);
-
-      idsRecomendados = productosDisponibles.slice(0, 6).map(([pid]) => pid);
+      return res.status(404).json({ mensaje: "Producto no encontrado" });
     }
 
-    // Obtener datos de recomendados (optimizado)
-    const recomendados = [];
-    for (const pid of idsRecomendados.slice(0, 6)) {
-      try {
-        const recSnapshot = await db.ref(`/${pid}`).once("value");
-        if (recSnapshot.exists()) {
-          recomendados.push({ id: pid, ...recSnapshot.val() });
-        }
-      } catch (error) {
-        console.warn(`Error obteniendo recomendado ${pid}:`, error.message);
-      }
-    }
-
-    res.json({
-      producto: { 
-        id, 
-        ...producto,
-        seo: datosSEO // ✅ SEO híbrido incluido
-      },
-      recomendados
-    });
+    const producto = { id, ...snapshot.val() };
+    res.json(producto);
   } catch (error) {
-    console.error("Error obteniendo producto:", error.message);
-    res.status(500).json({ error: "Error obteniendo producto", detalles: error.message });
+    console.error("Error al obtener producto por ID:", error.message);
+    res.status(500).json({ mensaje: "Error al obtener el producto", detalles: error.message });
   }
 };
 
-// Crea un nuevo producto
+// Obtener producto por nombre
+exports.getProductoByNombre = async (req, res) => {
+  const { nombre } = req.params;
+
+  try {
+    const nombreNormalizado = normalizarTexto(nombre.replace(/-/g, ' '));
+
+    const snapshot = await db.ref("/").once("value");
+    const data = snapshot.val();
+
+    if (!data) {
+      return res.status(404).json({ mensaje: "Producto no encontrado" });
+    }
+
+    const producto = Object.entries(data).find(([id, prod]) => {
+      if (!prod?.nombre) return false;
+      const nombreProductoNormalizado = normalizarTexto(prod.nombre);
+      return nombreProductoNormalizado === nombreNormalizado;
+    });
+
+    if (!producto) {
+      return res.status(404).json({ mensaje: "Producto no encontrado" });
+    }
+
+    const [id, data_producto] = producto;
+    res.json({ id, ...data_producto });
+  } catch (error) {
+    console.error("Error al obtener producto por nombre:", error.message);
+    res.status(500).json({ mensaje: "Error al obtener el producto", detalles: error.message });
+  }
+};
+
+// Insertar un nuevo producto
 exports.insertarProducto = async (req, res) => {
   const datos = req.body;
 
   try {
-    // Validación básica (puedes expandirla según tus necesidades)
-    if (!datos.nombre || !datos.numeroParte || !datos.descripcion) {
-      return res.status(400).json({ mensaje: "Faltan campos obligatorios" });
-    }
+    const nuevoProductoRef = db.ref("/").push();
+    const nuevoId = nuevoProductoRef.key;
 
-    // Creamos un nuevo ID usando push
-    const nuevoRef = db.ref("/").push();
-    await nuevoRef.set(datos);
+    await nuevoProductoRef.set(datos);
 
-    const nuevoId = nuevoRef.key;
+    const productoCreado = { id: nuevoId, ...datos };
 
     res.status(201).json({
       mensaje: "Producto creado correctamente",
-      producto: { id: nuevoId, ...datos }
+      producto: productoCreado
     });
   } catch (error) {
-    console.error("Error al insertar producto:", error.message);
-    res.status(500).json({ mensaje: "Error al insertar producto", detalles: error.message });
+    console.error("Error al crear producto:", error.message);
+    res.status(400).json({ mensaje: "Error al crear producto", detalles: error.message });
   }
 };
 
-// Elimina un producto por ID
+// Borrar producto por ID
 exports.borrarProductoPorId = async (req, res) => {
   const { id } = req.params;
 
@@ -350,11 +198,9 @@ exports.borrarProductoPorId = async (req, res) => {
     }
 
     const datosProducto = snapshot.val();
-
-    
-    await guardarBackup("productos", id, datosProducto); // Guardamos backup antes de borrar
-
+    await guardarBackup("productos", id, datosProducto);
     await db.ref(`/${id}`).remove();
+    
     res.status(200).json({ mensaje: "Producto borrado correctamente" });
   } catch (error) {
     console.error("Error al borrar producto:", error.message);
@@ -362,7 +208,7 @@ exports.borrarProductoPorId = async (req, res) => {
   }
 };
 
-// Actualiza un producto por ID
+// Actualizar producto por ID
 exports.actualizarProductoPorId = async (req, res) => {
   const { id } = req.params;
   const datos = req.body;
@@ -374,17 +220,15 @@ exports.actualizarProductoPorId = async (req, res) => {
     }
 
     const datosProducto = snapshot.val();
-
-  
-    await guardarBackup("productos", id, datosProducto);    // Guardamos backup antes de actualizar
-
+    await guardarBackup("productos", id, datosProducto);
     await db.ref(`/${id}`).update(datos);
+    
     const actualizadoSnapshot = await db.ref(`/${id}`).once("value");
     const productoActualizado = actualizadoSnapshot.val();
 
-    res.status(200).json({ 
-      mensaje: "Producto actualizado correctamente", 
-      producto: { id, ...productoActualizado } 
+    res.status(200).json({
+      mensaje: "Producto actualizado correctamente",
+      producto: { id, ...productoActualizado }
     });
   } catch (error) {
     console.error("Error al actualizar producto:", error.message);
@@ -394,66 +238,107 @@ exports.actualizarProductoPorId = async (req, res) => {
 
 // ==================================================================== Productos del mes ===================================================================
 
-//insertar productos del mes
+// TOTALMENTE CORREGIDO: SIN VALIDACIONES DE PRECIOMES
 exports.insertarProductosDelMes = async (req, res) => {
-  const { productos } = req.body; // Array de objetos {id, precioMes}
+  const { productos } = req.body;
+
+  console.log('📥 === INSERTANDO PRODUCTOS DEL MES - VERSION CORREGIDA ===');
+  console.log('📦 Productos recibidos:', productos);
 
   if (!Array.isArray(productos) || productos.length === 0) {
-    return res.status(400).json({ error: "Debes enviar un arreglo de productos con id y precioMes" });
+    return res.status(400).json({ error: "Debes enviar un arreglo válido de productos" });
   }
 
-  // Validar estructura de productos
+  // VALIDACIÓN LIMPIA: Solo ID y nuevoPrecio opcional
   for (const producto of productos) {
-    if (!producto.id || producto.precioMes === undefined) {
-      return res.status(400).json({ error: "Cada producto debe tener id y precioMes" });
+    console.log('🔍 Validando producto:', producto);
+    
+    if (!producto.id) {
+      return res.status(400).json({ error: "Cada producto debe tener un ID válido" });
+    }
+    
+    // Solo validar nuevoPrecio si existe
+    if (producto.nuevoPrecio !== undefined) {
+      const precio = parseFloat(producto.nuevoPrecio);
+      if (isNaN(precio) || precio <= 0) {
+        return res.status(400).json({ error: `El precio del producto ${producto.id} debe ser mayor que 0` });
+      }
     }
   }
 
   try {
-    // Obtener los productos actuales del mes
+    console.log('✅ Validaciones pasadas, procesando...');
+    
+    // Obtener productos actuales del mes
     const snapshot = await db.ref("/productosDelMes").once("value");
     const actuales = snapshot.val() || {};
 
-    // Agregar o actualizar productos
+    // Obtener todos los productos para validación
+    const allSnapshot = await db.ref("/").once("value");
+    const todosProductos = allSnapshot.val() || {};
+
+    // Procesar cada producto
     for (const producto of productos) {
+      console.log(`🔄 Procesando producto: ${producto.id}`);
+      
+      // Verificar que el producto existe
+      if (!todosProductos[producto.id]) {
+        return res.status(404).json({ error: `Producto con ID ${producto.id} no encontrado` });
+      }
+
+      // Si se especifica nuevo precio, actualizar el producto original
+      if (producto.nuevoPrecio !== undefined) {
+        const nuevoPrecio = parseFloat(producto.nuevoPrecio);
+        
+        console.log(`💰 Actualizando precio de ${producto.id}: $${nuevoPrecio}`);
+        
+        // Backup antes de modificar
+        await guardarBackup("productos", producto.id, todosProductos[producto.id]);
+
+        // Actualizar precio original
+        await db.ref(`/${producto.id}/precioVentaSugerido`).set(nuevoPrecio);
+      }
+
+      // Agregar a productos del mes
       actuales[producto.id] = {
         id: producto.id,
-        precioMes: parseFloat(producto.precioMes),
         fechaAgregado: new Date().toISOString()
       };
     }
 
-    // Guardar en Firebase
+    // Guardar lista actualizada
     await db.ref("/productosDelMes").set(actuales);
+    console.log('💾 Lista de productos del mes actualizada');
 
     // Obtener productos completos para respuesta
-    const allSnapshot = await db.ref("/").once("value");
-    const todosProductos = allSnapshot.val() || {};
-    
-    const productosCompletos = Object.values(actuales).map(prodMes => ({
-      ...todosProductos[prodMes.id],
-      id: prodMes.id,
-      precioMes: prodMes.precioMes,
-      fechaAgregado: prodMes.fechaAgregado
-    })).filter(p => p.nombre);
+    const updatedSnapshot = await db.ref("/").once("value");
+    const productosActualizados = updatedSnapshot.val() || {};
 
-    res.status(200).json({ 
-      mensaje: "Productos del mes agregados correctamente", 
-      productos: productosCompletos 
+    const productosCompletos = Object.values(actuales).map(prodMes => ({
+      ...productosActualizados[prodMes.id],
+      id: prodMes.id,
+      fechaAgregado: prodMes.fechaAgregado
+    })).filter(p => p && p.nombre);
+
+    console.log('✅ Productos del mes insertados exitosamente');
+    
+    res.status(200).json({
+      mensaje: "Productos del mes agregados correctamente",
+      productos: productosCompletos
     });
+    
   } catch (error) {
-    console.error("Error al insertar productos del mes:", error.message);
+    console.error("❌ Error al insertar productos del mes:", error.message);
     res.status(500).json({ error: "Error al insertar productos del mes", detalles: error.message });
   }
 };
 
-//obtener productos del mes
+// Obtener productos del mes
 exports.getProductosDelMes = async (req, res) => {
   try {
     const snapshot = await db.ref("/productosDelMes").once("value");
     const productosDelMes = snapshot.val() || {};
 
-    // Si no hay productos del mes, devolver array vacío
     if (Object.keys(productosDelMes).length === 0) {
       return res.json([]);
     }
@@ -465,12 +350,11 @@ exports.getProductosDelMes = async (req, res) => {
       .map(prodMes => ({
         ...todosProductos[prodMes.id],
         id: prodMes.id,
-        precioMes: prodMes.precioMes,
         fechaAgregado: prodMes.fechaAgregado
       }))
       .filter(p => p && p.nombre);
 
-    console.log(`📦 Devolviendo ${destacados.length} productos del mes con precios temporales`);
+    console.log(`📦 Devolviendo ${destacados.length} productos del mes`);
     res.json(destacados);
   } catch (error) {
     console.error("Error al obtener productos del mes:", error.message);
@@ -478,12 +362,12 @@ exports.getProductosDelMes = async (req, res) => {
   }
 };
 
-//actualizar productos del mes 
+// Actualizar productos del mes
 exports.actualizarProductosDelMes = async (req, res) => {
-  const { productos } = req.body; // Array de objetos {id, precioMes}
+  const { productos } = req.body;
 
   if (!Array.isArray(productos) || productos.length === 0) {
-    return res.status(400).json({ error: "Se requiere una lista válida de productos con precios" });
+    return res.status(400).json({ error: "Se requiere una lista válida de productos" });
   }
 
   try {
@@ -492,13 +376,28 @@ exports.actualizarProductosDelMes = async (req, res) => {
 
     await guardarBackup("productosDelMes", "listaCompleta", productosAntes);
 
-    // Crear nueva estructura
+    const allSnapshot = await db.ref("/").once("value");
+    const todosProductos = allSnapshot.val() || {};
+
     const nuevosProductos = {};
     for (const producto of productos) {
-      if (producto.id && producto.precioMes !== undefined) {
+      if (producto.id) {
+        if (!todosProductos[producto.id]) {
+          return res.status(404).json({ error: `Producto con ID ${producto.id} no encontrado` });
+        }
+
+        if (producto.nuevoPrecio !== undefined) {
+          const nuevoPrecio = parseFloat(producto.nuevoPrecio);
+          if (isNaN(nuevoPrecio) || nuevoPrecio <= 0) {
+            return res.status(400).json({ error: `El precio para el producto ${producto.id} debe ser válido` });
+          }
+
+          await guardarBackup("productos", producto.id, todosProductos[producto.id]);
+          await db.ref(`/${producto.id}/precioVentaSugerido`).set(nuevoPrecio);
+        }
+
         nuevosProductos[producto.id] = {
           id: producto.id,
-          precioMes: parseFloat(producto.precioMes),
           fechaAgregado: productosAntes[producto.id]?.fechaAgregado || new Date().toISOString()
         };
       }
@@ -506,16 +405,14 @@ exports.actualizarProductosDelMes = async (req, res) => {
 
     await db.ref("/productosDelMes").set(nuevosProductos);
 
-    // Obtener productos completos para respuesta
-    const allSnapshot = await db.ref("/").once("value");
-    const todosProductos = allSnapshot.val() || {};
-    
+    const updatedSnapshot = await db.ref("/").once("value");
+    const productosActualizados = updatedSnapshot.val() || {};
+
     const productosCompletos = Object.values(nuevosProductos).map(prodMes => ({
-      ...todosProductos[prodMes.id],
+      ...productosActualizados[prodMes.id],
       id: prodMes.id,
-      precioMes: prodMes.precioMes,
       fechaAgregado: prodMes.fechaAgregado
-    })).filter(p => p.nombre);
+    })).filter(p => p && p.nombre);
 
     res.status(200).json({
       mensaje: "Lista de productos del mes actualizada correctamente",
@@ -527,7 +424,7 @@ exports.actualizarProductosDelMes = async (req, res) => {
   }
 };
 
-//eliminar productos del mes 
+// Eliminar producto del mes
 exports.eliminarProductoDelMes = async (req, res) => {
   const { id } = req.body;
 
@@ -545,20 +442,17 @@ exports.eliminarProductoDelMes = async (req, res) => {
 
     await guardarBackup("productosDelMes", id, productos[id]);
 
-    // Eliminar el producto
     delete productos[id];
     await db.ref("/productosDelMes").set(productos);
 
-    // Obtener productos restantes completos
     const allSnapshot = await db.ref("/").once("value");
     const todosProductos = allSnapshot.val() || {};
-    
+
     const productosRestantes = Object.values(productos).map(prodMes => ({
       ...todosProductos[prodMes.id],
       id: prodMes.id,
-      precioMes: prodMes.precioMes,
       fechaAgregado: prodMes.fechaAgregado
-    })).filter(p => p.nombre);
+    })).filter(p => p && p.nombre);
 
     res.status(200).json({
       mensaje: "Producto eliminado de productos del mes",
@@ -570,44 +464,39 @@ exports.eliminarProductoDelMes = async (req, res) => {
   }
 };
 
-// Nueva función para actualizar solo el precio
+// Actualizar precio del producto original
 exports.actualizarPrecioProductoDelMes = async (req, res) => {
   const { id } = req.params;
-  const { precioMes } = req.body;
+  const { nuevoPrecio } = req.body;
 
-  if (!id || precioMes === undefined) {
-    return res.status(400).json({ error: "Faltan datos: ID del producto y precio" });
+  if (!id || nuevoPrecio === undefined) {
+    return res.status(400).json({ error: "Faltan datos: ID del producto y nuevo precio" });
   }
 
-  const precio = parseFloat(precioMes);
+  const precio = parseFloat(nuevoPrecio);
   if (isNaN(precio) || precio <= 0) {
     return res.status(400).json({ error: "El precio debe ser un número válido mayor que 0" });
   }
 
   try {
-    const snapshot = await db.ref(`/productosDelMes/${id}`).once("value");
-    
+    const snapshot = await db.ref(`/${id}`).once("value");
+
     if (!snapshot.exists()) {
-      return res.status(404).json({ error: "Producto no encontrado en productos del mes" });
+      return res.status(404).json({ error: "Producto no encontrado" });
     }
 
     const productoActual = snapshot.val();
-    
-    // Backup antes de actualizar
-    await guardarBackup("productosDelMes", id, productoActual);
+    await guardarBackup("productos", id, productoActual);
+    await db.ref(`/${id}/precioVentaSugerido`).set(precio);
 
-    // Actualizar precio
-    const productoActualizado = {
-      ...productoActual,
-      precioMes: precio,
-      fechaActualizacion: new Date().toISOString()
-    };
-
-    await db.ref(`/productosDelMes/${id}`).set(productoActualizado);
+    const mesSnapshot = await db.ref(`/productosDelMes/${id}`).once("value");
+    if (!mesSnapshot.exists()) {
+      return res.status(404).json({ error: "Producto no encontrado en productos del mes" });
+    }
 
     res.status(200).json({
-      mensaje: "Precio actualizado correctamente",
-      producto: productoActualizado
+      mensaje: "Precio del producto actualizado correctamente",
+      precio: precio
     });
   } catch (error) {
     console.error("Error al actualizar precio:", error.message);

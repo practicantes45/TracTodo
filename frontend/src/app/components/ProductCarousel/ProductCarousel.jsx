@@ -10,7 +10,7 @@ const ProductCarousel = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const { isAdmin } = useAuth(); // OBTENER ESTADO DE ADMIN
-  
+
   // Lista de contactos para WhatsApp
   const contactList = [
     {
@@ -44,25 +44,22 @@ const ProductCarousel = () => {
     try {
       setLoading(true);
       console.log('🔄 Cargando productos del mes...');
-      
+
       const productosDelMes = await obtenerProductosDelMes();
       console.log('📦 Productos del mes recibidos:', productosDelMes);
-      
-      // Transformar los datos para el formato del carrusel
+      // En la función cargarProductosDelMes:
       const productosFormateados = productosDelMes.map(producto => ({
         id: producto.id,
         name: producto.nombre,
-        price: `$${(producto.precioMes || producto.precioVentaSugerido || 0).toLocaleString()}`,
-        // Buscar imagen "frente" específicamente
+        price: `$${parseFloat(producto.precioVentaSugerido || 0).toLocaleString()}`,
         image: obtenerImagenFrente(producto),
         ctaText: "COMPRA AHORA",
-        // Datos adicionales para WhatsApp
-        precioNumerico: producto.precioMes || producto.precioVentaSugerido || 0
+        precioNumerico: parseFloat(producto.precioVentaSugerido || 0)
       }));
 
       setProducts(productosFormateados);
       console.log('✅ Productos formateados para carrusel:', productosFormateados.length);
-      
+
     } catch (error) {
       console.error('❌ Error al cargar productos del mes:', error);
       setError('No se pudieron cargar los productos del mes');
@@ -79,17 +76,17 @@ const ProductCarousel = () => {
     if (producto.imagenesUrl && producto.imagenesUrl.frente) {
       return producto.imagenesUrl.frente;
     }
-    
+
     // Fallback a imagenUrl si existe
     if (producto.imagenUrl) {
       return producto.imagenUrl;
     }
-    
+
     // Fallback a imagen antigua si existe
     if (producto.imagen) {
       return producto.imagen;
     }
-    
+
     // Sin imagen
     return null;
   };
@@ -150,23 +147,23 @@ const ProductCarousel = () => {
   const handleWhatsAppClick = (product) => {
     // Seleccionar contacto aleatorio
     const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
-    
+
     // Crear mensaje personalizado
     const message = randomContact.message
       .replace('{producto}', product.name)
       .replace('{precio}', product.precioNumerico.toLocaleString());
-    
+
     const encodedMessage = encodeURIComponent(message);
-    
+
     // Formatear número de teléfono
     const cleanPhoneNumber = randomContact.phoneNumber.replace(/\D/g, '');
-    const formattedNumber = cleanPhoneNumber.startsWith('52') 
-      ? cleanPhoneNumber 
+    const formattedNumber = cleanPhoneNumber.startsWith('52')
+      ? cleanPhoneNumber
       : `52${cleanPhoneNumber}`;
-    
+
     // Crear URL de WhatsApp
     const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodedMessage}`;
-    
+
     // Abrir en nueva ventana/pestaña
     window.open(whatsappUrl, '_blank');
   };
@@ -214,19 +211,19 @@ const ProductCarousel = () => {
       {/* Carrusel de productos con clase condicional */}
       <div className={`${styles.carouselContainer} ${isAdmin ? styles.adminMode : styles.userMode}`}>
         {products.length > 1 && (
-          <button 
-            className={`${styles.carouselButton} ${styles.prev}`} 
+          <button
+            className={`${styles.carouselButton} ${styles.prev}`}
             onClick={prevSlide}
             aria-label="Producto anterior"
           >
             &lt;
           </button>
         )}
-        
+
         <div className={styles.carouselSlides}>
           {products.map((product, index) => (
-            <div 
-              key={product.id} 
+            <div
+              key={product.id}
               className={`${styles.slide} ${index === currentSlide ? styles.active : ''}`}
               style={{
                 transform: `translateX(${100 * (index - currentSlide)}%)`,
@@ -235,9 +232,9 @@ const ProductCarousel = () => {
               <div className={styles.slideContent}>
                 <div className={styles.imageContainer}>
                   {product.image ? (
-                    <img 
-                      src={product.image} 
-                      alt={product.name} 
+                    <img
+                      src={product.image}
+                      alt={product.name}
                       className={styles.productImage}
                       onError={(e) => {
                         e.target.style.display = 'none';
@@ -245,7 +242,7 @@ const ProductCarousel = () => {
                       }}
                     />
                   ) : null}
-                  <div 
+                  <div
                     className={styles.imagePlaceholder}
                     style={{ display: product.image ? 'none' : 'flex' }}
                   >
@@ -256,7 +253,7 @@ const ProductCarousel = () => {
                 <div className={styles.productInfo}>
                   <h2 className={styles.productName}>{product.name}</h2>
                   <p className={styles.productPrice}>{product.price}</p>
-                  <button 
+                  <button
                     className={styles.ctaButton}
                     onClick={() => handleWhatsAppClick(product)}
                   >
@@ -267,17 +264,17 @@ const ProductCarousel = () => {
             </div>
           ))}
         </div>
-        
+
         {products.length > 1 && (
-          <button 
-            className={`${styles.carouselButton} ${styles.next}`} 
+          <button
+            className={`${styles.carouselButton} ${styles.next}`}
             onClick={nextSlide}
             aria-label="Siguiente producto"
           >
             &gt;
           </button>
         )}
-        
+
         {products.length > 1 && (
           <div className={styles.indicators}>
             {products.map((_, index) => (

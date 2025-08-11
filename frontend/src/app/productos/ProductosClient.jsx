@@ -42,7 +42,7 @@ export default function ProductosPage() {
   console.log('🏷️ Parámetro de marca:', marcaParam);
 
   // Lista de marcas predefinidas
-  const marcasPredefinidas = ["Cummins", "Navistar", "Volvo", "Mercedes Benz", "Detroit", "Caterpillar","Otros"];
+  const marcasPredefinidas = ["Cummins", "Navistar", "Volvo", "Mercedes Benz", "Detroit", "Caterpillar", "Otros"];
 
   // Lista de contactos
   const contactList = [
@@ -72,7 +72,7 @@ export default function ProductosPage() {
   useEffect(() => {
     const inicializarFiltrosYCargar = async () => {
       console.log('🔄 Inicializando filtros desde URL...');
-      
+
       // Inicializar marca si viene desde URL
       let marcasIniciales = [];
       if (marcaParam && marcasPredefinidas.includes(marcaParam)) {
@@ -109,10 +109,10 @@ export default function ProductosPage() {
     const inicio = 0;
     const fin = paginaActual * PRODUCTOS_POR_PAGINA;
     const nuevosProductosVisibles = productos.slice(inicio, fin);
-    
+
     setProductosVisibles(nuevosProductosVisibles);
     setHayMasProductos(fin < productos.length);
-    
+
     console.log(`📦 Mostrando ${nuevosProductosVisibles.length} de ${productos.length} productos (página ${paginaActual})`);
   };
 
@@ -173,13 +173,13 @@ export default function ProductosPage() {
   // Función para cargar más productos
   const cargarMasProductos = async () => {
     setCargandoMas(true);
-    
+
     // Simular pequeña carga para mejor UX
     await new Promise(resolve => setTimeout(resolve, 300));
-    
+
     setPaginaActual(prev => prev + 1);
     setCargandoMas(false);
-    
+
     console.log('📄 Cargando página:', paginaActual + 1);
   };
 
@@ -588,7 +588,7 @@ export default function ProductosPage() {
                           <h3 className="productoNombre">{producto.nombre}</h3>
                           <p className="productoDescripcion">{producto.descripcion}</p>
                           <div className="productoPrecio">
-                            ${(producto.precioVentaSugerido || producto.precio || 0).toLocaleString()}
+                            ${parseFloat(producto.precioVentaSugerido || 0).toLocaleString()}
                           </div>
                           <button
                             className="whatsappBtn"
@@ -601,7 +601,7 @@ export default function ProductosPage() {
                       </div>
                     );
                   })}
-                  
+
                   {/* Botón Ver más productos */}
                   {hayMasProductos && (
                     <div className="verMasContainer">

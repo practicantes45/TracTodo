@@ -55,6 +55,7 @@ router.get("/mes/destacados", getProductosDelMes);
 router.put("/mes/actualizar", actualizarProductosDelMes);
 router.put("/mes/agregar", insertarProductosDelMes);
 router.put("/mes/eliminar", eliminarProductoDelMes);
-router.put("/mes/precio/:id", actualizarPrecioProductoDelMes); // NUEVA RUTA
+// MODIFICADO: Cambiar el nombre del parámetro en la ruta para mayor claridad
+router.put("/mes/precio/:id", actualizarPrecioProductoDelMes);
 
 module.exports = router;
