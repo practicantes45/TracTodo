@@ -2,9 +2,27 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
 
 // Obtener todos los productos
-export const obtenerProductos = async () => {
+export const obtenerProductos = async (filtros = {}) => {
   try {
-    const response = await fetch(`${API_URL}/productos`, {
+    const queryParams = new URLSearchParams();
+
+    // Agregar filtros de marca
+    if (filtros.marcas && filtros.marcas.length > 0) {
+      queryParams.append('marca', filtros.marcas[0]);
+    }
+
+    // Agregar ordenamiento
+    if (filtros.orden) {
+      queryParams.append('orden', filtros.orden);
+    } else {
+      // Por defecto A-Z
+      queryParams.append('orden', 'A-Z');
+    }
+
+    const url = `${API_URL}/productos${queryParams.toString() ? '?' + queryParams.toString() : '?orden=A-Z'}`;
+    console.log('🔗 Solicitando productos con filtros:', url);
+
+    const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -18,11 +36,10 @@ export const obtenerProductos = async () => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error al obtener productos:', error);
+    console.error('Error en obtenerProductos:', error);
     throw error;
   }
 };
-
 // Obtener producto por ID
 export const obtenerProductoPorId = async (id) => {
   try {
