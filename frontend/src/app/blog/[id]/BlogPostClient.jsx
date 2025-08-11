@@ -71,11 +71,8 @@ export default function BlogPostClient({ post }) {
 
     return (
         <div className="blog-post-page">
-            <SEOHead datosSEOPersonalizados={{
-                titulo: "Cargando Artículo | Blog Tractodo",
-                descripcion: "Cargando artículo del blog...",
-                url: `/blog/${params.id}`
-            }} />
+            {/* SEO específico del post - usando el ID del post para que el backend genere el SEO dinámico */}
+            <SEOHead blogPostId={post.id} />
             <Navbar />
 
             <main className="magazineMainContent">

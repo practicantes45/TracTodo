@@ -52,6 +52,32 @@ export const obtenerRobots = async () => {
 };
 
 /**
+ * Obtener datos SEO de una página específica
+ */
+export const obtenerSEOPagina = async (nombrePagina) => {
+  try {
+    if (!nombrePagina) {
+      throw new Error('Nombre de página es requerido');
+    }
+
+    console.log(`🔍 Obteniendo SEO para página: ${nombrePagina}`);
+    
+    const respuesta = await api.get(`/seo/pagina/${nombrePagina}`);
+    
+    console.log('✅ Datos SEO de página obtenidos:', respuesta.data);
+    return respuesta.data;
+  } catch (error) {
+    console.error(`❌ Error al obtener SEO de página ${nombrePagina}:`, error);
+    
+    if (error.response?.status === 404) {
+      console.log('ℹ️ No se encontraron datos SEO para esta página');
+      return null;
+    }
+    
+    throw new Error(error.response?.data?.mensaje || error.message || 'Error al obtener datos SEO de la página');
+  }
+};
+/**
  * Obtener datos SEO de un producto específico
  */
 export const obtenerSEOProducto = async (productoId) => {

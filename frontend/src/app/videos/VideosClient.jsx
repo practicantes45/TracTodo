@@ -218,7 +218,7 @@ export default function VideosPage() {
         return (
             <div className="layout videos-page">
                 {/* COMPONENTE SEO AGREGADO */}
-            <SEOHead datosSEOPersonalizados={datosSEOVideos} />
+            <SEOHead pagina="videos" />
                 <Navbar />
                 <main className="mainContent">
                     <div className="heroSection">

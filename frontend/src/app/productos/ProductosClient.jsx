@@ -297,7 +297,7 @@ export default function ProductosPage() {
   return (
     <div className="layout productos-page">
       {/* COMPONENTE SEO AGREGADO */}
-      <SEOHead datosSEOPersonalizados={generarDatosSEOProductos()} />
+            <SEOHead pagina="productos" />
       <Navbar />
 
       <main className="mainContent">

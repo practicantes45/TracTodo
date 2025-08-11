@@ -12,7 +12,7 @@ export default function SobrePage() {
     return (
         <div className="layout sobre-page">
             {/* COMPONENTE SEO AGREGADO */}
-            <SEOHead datosSEOPersonalizados={datosSEOSobre} />
+            <SEOHead pagina="sobre" />
 
             {/* Navbar principal */}
             <Navbar />

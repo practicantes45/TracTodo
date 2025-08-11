@@ -37,7 +37,7 @@ export default function HomePage() {
     return (
         <div className="layout">
             {/* COMPONENTE SEO AGREGADO */}
-            <SEOHead datosSEOPersonalizados={datosSEOInicio} />
+            <SEOHead pagina="inicio" />
 
             {/* Navbar principal con estado activo */}
             <Navbar />

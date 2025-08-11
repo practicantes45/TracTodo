@@ -252,7 +252,7 @@ export default function BlogPage() {
         return (
             <div className="blog-page">
                 {/* COMPONENTE SEO AGREGADO */}
-                <SEOHead datosSEOPersonalizados={datosSEOBlog} />
+            <SEOHead pagina="blog" />
                 <Navbar />
                 <div className="heroSection">
                     <div className="heroOverlay">

@@ -485,11 +485,7 @@ export default function ProductoIndividualPage({ params }) { // CAMBIADO: recibi
     if (loading) {
         return (
             <div className="layout producto-individual-page">
-                 <SEOHead datosSEOPersonalizados={{
-                    titulo: "Cargando Producto | Tractodo",
-                    descripcion: "Cargando información del producto...",
-                    url: `/productos/${params.nombre}`
-                }} />
+                <SEOHead pagina="productos" />
                 <Navbar />
                 <main className="mainContent">
                     <div className="loadingContainer">

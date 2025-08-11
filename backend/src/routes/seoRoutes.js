@@ -71,6 +71,11 @@ router.get("/estadisticas", verificarAdmin, obtenerEstadisticasSEO);
  */
 router.put("/producto/:id/regenerar", verificarAdmin, regenerarSEOProducto);
 
+/**
+ * Obtener datos SEO de una página específica (público)
+ * GET /api/seo/pagina/:pagina
+ */
+router.get("/pagina/:pagina", obtenerSEOPagina);
 // ================================= RUTAS DE UTILIDADES =================================
 
 /**

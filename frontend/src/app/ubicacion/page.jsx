@@ -37,7 +37,7 @@ export default function UbicacionPage() {
 
     return (
         <div className="layout ubicacion-page">
-            <SEOHead datosSEOPersonalizados={datosSEOUbicacion} />
+            <SEOHead pagina="ubicacion" />
 
             <Navbar />
 

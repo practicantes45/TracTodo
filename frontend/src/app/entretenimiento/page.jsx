@@ -399,7 +399,7 @@ export default function EntretenimientoPage() {
     return (
         <div className="layout entretenimiento-page">
             {/* COMPONENTE SEO AGREGADO */}
-            <SEOHead datosSEOPersonalizados={datosSEOEntretenimiento} />
+            <SEOHead pagina="entretenimiento" />
             <Navbar />
 
             <main className="mainContent">

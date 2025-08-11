@@ -1,8 +1,8 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { obtenerSEOProducto, obtenerSchemaProducto, generarMetaTags, insertarSchema } from '../../../services/seoService';
+import { obtenerSEOProducto, obtenerSchemaProducto, obtenerSEOPagina, generarMetaTags, insertarSchema } from '../../services/seoService';
 
-export default function SEOHead({ productoId, datosSEOPersonalizados = null }) {
+export default function SEOHead({ productoId = null, pagina = null }) {
   const [datosSEO, setDatosSEO] = useState(null);
   const [schema, setSchema] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -12,24 +12,20 @@ export default function SEOHead({ productoId, datosSEOPersonalizados = null }) {
       try {
         setLoading(true);
 
-        // Si hay datos personalizados, usarlos
-        if (datosSEOPersonalizados) {
-          setDatosSEO(datosSEOPersonalizados);
-          setLoading(false);
-          return;
-        }
-
-        // Si hay ID de producto, obtener datos del backend
         if (productoId) {
+          // Para productos individuales
           console.log(`🔍 Cargando SEO para producto: ${productoId}`);
-          
           const [seoData, schemaData] = await Promise.all([
             obtenerSEOProducto(productoId),
             obtenerSchemaProducto(productoId)
           ]);
-          
           setDatosSEO(seoData);
           setSchema(schemaData);
+        } else if (pagina) {
+          // Para páginas estáticas
+          console.log(`🔍 Cargando SEO para página: ${pagina}`);
+          const seoData = await obtenerSEOPagina(pagina);
+          setDatosSEO(seoData);
         }
       } catch (error) {
         console.error('❌ Error cargando datos SEO:', error);
@@ -39,19 +35,17 @@ export default function SEOHead({ productoId, datosSEOPersonalizados = null }) {
     };
 
     cargarDatosSEO();
-  }, [productoId, datosSEOPersonalizados]);
+  }, [productoId, pagina]);
 
+  // Resto del código igual...
   useEffect(() => {
-    // Aplicar meta tags al document
     if (datosSEO && typeof window !== 'undefined') {
       const metaTags = generarMetaTags(datosSEO);
       
-      // Actualizar título
       if (datosSEO.titulo) {
         document.title = datosSEO.titulo;
       }
 
-      // Actualizar o crear meta tags
       metaTags.forEach(tag => {
         let element = null;
         
@@ -77,16 +71,10 @@ export default function SEOHead({ productoId, datosSEOPersonalizados = null }) {
   }, [datosSEO]);
 
   useEffect(() => {
-    // Insertar Schema.org
     if (schema) {
       insertarSchema(schema);
     }
   }, [schema]);
-
-  // Este componente no renderiza nada visible
-  if (loading) {
-    return null;
-  }
 
   return null;
 }
