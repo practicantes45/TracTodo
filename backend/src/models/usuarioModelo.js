@@ -2,7 +2,7 @@ const { db } = require("../config/firebase");
 const { v4: uuidv4 } = require("uuid");
 const crypto = require("crypto");
 
-const crearUsuario = async ({ username, email, password }) => {
+const crearUsuario = async ({ username, email, password, tipoUsuario = "usuario" }) => {
   const uid = uuidv4();
   const now = Date.now();
 
@@ -13,7 +13,7 @@ const crearUsuario = async ({ username, email, password }) => {
   const nuevoUsuario = {
     username,
     email,
-    tipoUsuario: "usuario",
+    tipoUsuario, // CAMBIO: Ahora acepta el parámetro
     password: hash,
     salt,
     //createdAt: now,
@@ -23,6 +23,22 @@ const crearUsuario = async ({ username, email, password }) => {
   await db.ref(`/usuarios/${uid}`).set(nuevoUsuario);
 
   return { uid, ...nuevoUsuario };
+};
+
+// NUEVA FUNCIÓN: Crear administrador específicamente
+const crearAdministrador = async ({ username, email, password }) => {
+  return await crearUsuario({ username, email, password, tipoUsuario: "admin" });
+};
+
+// NUEVA FUNCIÓN: Actualizar tipo de usuario existente
+const actualizarTipoUsuario = async (userId, nuevoTipo) => {
+  try {
+    await db.ref(`/usuarios/${userId}/tipoUsuario`).set(nuevoTipo);
+    return true;
+  } catch (error) {
+    console.error('Error al actualizar tipo de usuario:', error);
+    return false;
+  }
 };
 
 const obtenerUsuarioPorUsername = async (username) => {
@@ -39,8 +55,9 @@ const obtenerUsuarioPorId = async (id) => {
 };
 
 module.exports = {
-  
   crearUsuario,
+  crearAdministrador, // NUEVO
+  actualizarTipoUsuario, // NUEVO
   obtenerUsuarioPorUsername,
   obtenerUsuarioPorId,
 };
