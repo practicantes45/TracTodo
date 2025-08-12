@@ -157,11 +157,11 @@ exports.obtenerSEOProducto = async (req, res) => {
 };
 
 /**
- * Genera sitemap.xml dinámicamente
+ * Genera sitemap.xml dinámicamente con URLs amigables
  */
 exports.generarSitemap = async (req, res) => {
   try {
-    console.log("Generando sitemap.xml...");
+    console.log("Generando sitemap.xml con URLs amigables...");
     
     // Obtener todos los productos
     const productosSnapshot = await db.ref("/").once("value");
@@ -171,8 +171,11 @@ exports.generarSitemap = async (req, res) => {
     const blogSnapshot = await db.ref("/entretenimiento/blog").once("value");
     const posts = blogSnapshot.val() || {};
     
-    // URL base del sitio
-    const baseURL = process.env.FRONTEND_URL || "https://tractodo.com";
+    // URL base del sitio - SIEMPRE tractodo.com
+    const baseURL = "https://tractodo.com";
+    
+    // Función para generar slug único
+    const { generarSlug } = require("../services/seoService");
     
     // Generar XML del sitemap
     let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -200,7 +203,7 @@ exports.generarSitemap = async (req, res) => {
     <priority>0.8</priority>
   </url>
 
-    <url>
+  <url>
     <loc>${baseURL}/sobre</loc>
     <lastmod>${new Date().toISOString()}</lastmod>
     <changefreq>weekly</changefreq>
@@ -215,43 +218,122 @@ exports.generarSitemap = async (req, res) => {
   </url>
 `;
 
-    // Agregar productos al sitemap
+    // ✅ NUEVA LÓGICA: Generar slugs únicos para productos
+    console.log("Generando URLs amigables para productos...");
+    const productosConSlug = [];
+    const slugsUsados = new Set();
+    
     Object.entries(productos)
-      .filter(([id, producto]) => producto.nombre)
+      .filter(([id, producto]) => producto.nombre && producto.nombre.trim())
       .forEach(([id, producto]) => {
-        const lastmod = producto.fechaActualizacion || new Date().toISOString();
-        sitemap += `
-  <!-- Producto: ${producto.nombre} -->
+        let slug = generarSlug(producto.nombre);
+        let slugFinal = slug;
+        let contador = 1;
+        
+        // Asegurar que el slug sea único
+        while (slugsUsados.has(slugFinal)) {
+          slugFinal = `${slug}-${contador}`;
+          contador++;
+        }
+        
+        slugsUsados.add(slugFinal);
+        productosConSlug.push({
+          id,
+          slug: slugFinal,
+          nombre: producto.nombre,
+          lastmod: producto.fechaActualizacion || new Date().toISOString()
+        });
+      });
+
+    // Agregar productos al sitemap con URLs amigables
+    productosConSlug.forEach(({ slug, nombre, lastmod }) => {
+      sitemap += `
+  <!-- Producto: ${nombre} -->
   <url>
-    <loc>${baseURL}/productos/${id}</loc>
+    <loc>${baseURL}/productos/${slug}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>`;
-      });
+    });
     
-    // Agregar posts del blog
+    console.log(`✅ ${productosConSlug.length} productos agregados con URLs amigables`);
+
+    // ✅ NUEVA LÓGICA: Generar slugs únicos para posts del blog
+    console.log("Generando URLs amigables para blog...");
+    const postsConSlug = [];
+    const slugsBlogUsados = new Set();
+    
     Object.entries(posts)
-      .filter(([id, post]) => post.titulo)
+      .filter(([id, post]) => post.titulo && post.titulo.trim())
       .forEach(([id, post]) => {
-        const lastmod = post.fechaActualizacion || post.fechaPublicacion || new Date().toISOString();
-        sitemap += `
-  <!-- Blog: ${post.titulo} -->
+        let slug = generarSlug(post.titulo);
+        let slugFinal = slug;
+        let contador = 1;
+        
+        // Asegurar que el slug sea único
+        while (slugsBlogUsados.has(slugFinal)) {
+          slugFinal = `${slug}-${contador}`;
+          contador++;
+        }
+        
+        slugsBlogUsados.add(slugFinal);
+        postsConSlug.push({
+          id,
+          slug: slugFinal,
+          titulo: post.titulo,
+          lastmod: post.fechaActualizacion || post.fechaPublicacion || new Date().toISOString()
+        });
+      });
+
+    // Agregar posts del blog con URLs amigables
+    postsConSlug.forEach(({ slug, titulo, lastmod }) => {
+      sitemap += `
+  <!-- Blog: ${titulo} -->
   <url>
-    <loc>${baseURL}/blog/${id}</loc>
+    <loc>${baseURL}/blog/${slug}</loc>
     <lastmod>${lastmod}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>`;
-      });
+    });
     
-    // Agregar páginas de categorías/marcas principales
-    const marcas = ["cummins", "caterpillar", "detroit", "navistar", "volvo", "mercedes-benz"];
-    marcas.forEach(marca => {
+    console.log(`✅ ${postsConSlug.length} posts de blog agregados con URLs amigables`);
+    
+    // Agregar páginas de categorías/marcas principales con URLs amigables
+    const marcas = [
+      { nombre: "Cummins", slug: "cummins" },
+      { nombre: "Caterpillar", slug: "caterpillar" }, 
+      { nombre: "Detroit Diesel", slug: "detroit-diesel" },
+      { nombre: "Navistar", slug: "navistar" },
+      { nombre: "Volvo", slug: "volvo" },
+      { nombre: "Mercedes Benz", slug: "mercedes-benz" }
+    ];
+    
+    marcas.forEach(({ nombre, slug }) => {
       sitemap += `
-  <!-- Categoría: ${marca} -->
+  <!-- Categoría: ${nombre} -->
   <url>
-    <loc>${baseURL}/productos?marca=${marca}</loc>
+    <loc>${baseURL}/productos/marca/${slug}</loc>
+    <lastmod>${new Date().toISOString()}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>`;
+    });
+    
+    // Agregar páginas de tipos de productos
+    const tiposProductos = [
+      { nombre: "Turbos", slug: "turbos" },
+      { nombre: "Cabezas de Motor", slug: "cabezas-motor" },
+      { nombre: "Árboles de Levas", slug: "arboles-levas" },
+      { nombre: "Kits de Reparación", slug: "kits-reparacion" }
+    ];
+    
+    tiposProductos.forEach(({ nombre, slug }) => {
+      sitemap += `
+  <!-- Tipo: ${nombre} -->
+  <url>
+    <loc>${baseURL}/productos/tipo/${slug}</loc>
     <lastmod>${new Date().toISOString()}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -261,17 +343,44 @@ exports.generarSitemap = async (req, res) => {
     sitemap += `
 </urlset>`;
     
-    // Guardar sitemap en Firebase para cache
+    // Calcular total de URLs
+    const totalURLs = sitemap.split('<url>').length - 1;
+    
+    // ✅ NUEVO: Guardar mapeo de slugs para el frontend
+    const mapeoSlugs = {
+      productos: productosConSlug.reduce((acc, { id, slug }) => {
+        acc[slug] = id;
+        return acc;
+      }, {}),
+      blog: postsConSlug.reduce((acc, { id, slug }) => {
+        acc[slug] = id;
+        return acc;
+      }, {})
+    };
+    
+    // Guardar sitemap y mapeo en Firebase para cache
     await db.ref("/seo/sitemap").set({
       contenido: sitemap,
       fechaGeneracion: new Date().toISOString(),
-      totalURLs: sitemap.split('<url>').length - 1
+      totalURLs: totalURLs,
+      baseURL: baseURL
+    });
+    
+    // ✅ IMPORTANTE: Guardar mapeo de slugs para que el frontend pueda resolver URLs
+    await db.ref("/seo/slugs").set({
+      mapeo: mapeoSlugs,
+      fechaActualizacion: new Date().toISOString()
     });
     
     res.set('Content-Type', 'application/xml');
     res.send(sitemap);
     
-    console.log(`Sitemap generado con ${sitemap.split('<url>').length - 1} URLs`);
+    console.log(`✅ Sitemap generado con ${totalURLs} URLs amigables`);
+    console.log(`📝 URLs de ejemplo generadas:`);
+    console.log(`   - Productos: ${baseURL}/productos/${productosConSlug[0]?.slug || 'ejemplo'}`);
+    console.log(`   - Blog: ${baseURL}/blog/${postsConSlug[0]?.slug || 'ejemplo'}`);
+    console.log(`   - Marcas: ${baseURL}/productos/marca/cummins`);
+    console.log(`📊 Mapeo de slugs guardado en /seo/slugs`);
     
   } catch (error) {
     console.error("Error generando sitemap:", error.message);
