@@ -28,20 +28,34 @@ const iniciarSesion = async (req, res) => {
   }
 
   console.log('🍪 Configurando cookie para usuario:', username);
+  console.log('🌍 Entorno:', process.env.NODE_ENV);
+  console.log('🔒 Host:', req.get('host'));
 
-  // CONFIGURACIÓN MEJORADA DE COOKIES
+  // CONFIGURACIÓN MEJORADA DE COOKIES PARA PRODUCCIÓN
+  const isProduction = process.env.NODE_ENV === 'production';
+  const cookieOptions = {
+    httpOnly: true,
+    secure: isProduction, // HTTPS en producción
+    sameSite: isProduction ? 'None' : 'Lax', // None para cross-origin en producción
+    maxAge: 24 * 60 * 60 * 1000, // 24 horas
+    path: '/', // Disponible en toda la app
+  };
+
+  console.log('⚙️ Configuración de cookie:', cookieOptions);
+
   res
-    .cookie("token", respuesta.token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // Solo HTTPS en producción
-      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
-      maxAge: 24 * 60 * 60 * 1000, // 24 horas
-      path: '/', // Asegurar que esté disponible en toda la app
-    })
+    .cookie("token", respuesta.token, cookieOptions)
     .status(200)
     .json({ 
       mensaje: respuesta.mensajeUsuario,
-      user: username 
+      user: username,
+      // AGREGAR INFO DE DEBUG
+      debug: {
+        cookieSet: true,
+        environment: process.env.NODE_ENV,
+        secure: cookieOptions.secure,
+        sameSite: cookieOptions.sameSite
+      }
     });
 
   console.log('✅ Cookie configurada exitosamente');

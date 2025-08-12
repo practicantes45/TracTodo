@@ -1,67 +1,70 @@
-const { register, login } = require("../db/usuariosDB");
+import api from './api';
 
-const registrarUsuario = async (req, res) => {
-  const { username, email, password } = req.body;
-
-  if (!username || !email || !password) {
-    return res.status(400).json({ error: "Faltan campos requeridos" });
+// Registro de usuario
+export const registrarUsuario = async (datosUsuario) => {
+  try {
+    const respuesta = await api.post('/user/registro', datosUsuario);
+    return respuesta.data;
+  } catch (error) {
+    const mensajeError = error.response?.data?.error || error.message;
+    console.error("Error en registro:", mensajeError);
+    throw new Error(mensajeError);
   }
-
-  const respuesta = await register({ username, email, password });
-  if (respuesta.status !== 201) {
-    return res.status(respuesta.status).json({ error: respuesta.mensajeUsuario });
-  }
-
-  res.status(201).json({ mensaje: respuesta.mensajeUsuario, token: respuesta.token });
 };
 
-const iniciarSesion = async (req, res) => {
-  const { username, password } = req.body;
-
-  if (!username || !password) {
-    return res.status(400).json({ error: "Faltan campos requeridos" });
+// Inicio de sesión
+export const iniciarSesion = async (credenciales) => {
+  try {
+    const respuesta = await api.post('/user/inicioSesion', credenciales);
+    return respuesta.data;
+  } catch (error) {
+    const mensajeError = error.response?.data?.error || error.message;
+    console.error("Error en login:", mensajeError);
+    throw new Error(mensajeError);
   }
+};
 
-  const respuesta = await login({ username, password });
-  if (respuesta.status !== 200) {
-    return res.status(respuesta.status).json({ error: respuesta.mensajeUsuario });
-  }
-
-  console.log('🍪 Configurando cookie para usuario:', username);
-  console.log('🌍 Entorno:', process.env.NODE_ENV);
-  console.log('🔒 Host:', req.get('host'));
-
-  // CONFIGURACIÓN MEJORADA DE COOKIES PARA PRODUCCIÓN
-  const isProduction = process.env.NODE_ENV === 'production';
-  const cookieOptions = {
-    httpOnly: true,
-    secure: isProduction, // HTTPS en producción
-    sameSite: isProduction ? 'None' : 'Lax', // None para cross-origin en producción
-    maxAge: 24 * 60 * 60 * 1000, // 24 horas
-    path: '/', // Disponible en toda la app
-  };
-
-  console.log('⚙️ Configuración de cookie:', cookieOptions);
-
-  res
-    .cookie("token", respuesta.token, cookieOptions)
-    .status(200)
-    .json({ 
-      mensaje: respuesta.mensajeUsuario,
-      user: username,
-      // AGREGAR INFO DE DEBUG
-      debug: {
-        cookieSet: true,
-        environment: process.env.NODE_ENV,
-        secure: cookieOptions.secure,
-        sameSite: cookieOptions.sameSite
-      }
+// Verificar si es administrador - CORREGIDO
+export const verificarAdmin = async () => {
+  try {
+    console.log('🔄 Verificando admin con backend...');
+    const respuesta = await api.get('/user/administradores');
+    
+    console.log('📡 Respuesta completa del backend:', {
+      status: respuesta.status,
+      data: respuesta.data
     });
-
-  console.log('✅ Cookie configurada exitosamente');
+    
+    // El backend devuelve "Admin autorizado" cuando es admin
+    // y status 200 cuando es válido
+    if (respuesta.status === 200 && respuesta.data === "Admin autorizado") {
+      console.log('✅ Backend confirmó que es admin');
+      return { isAdmin: true };
+    } else {
+      console.log('❌ Backend dice que no es admin:', respuesta.data);
+      return { isAdmin: false };
+    }
+  } catch (error) {
+    console.error("❌ Error al verificar admin:", error.response?.status, error.response?.data);
+    
+    // Si es 403 (Admin no autorizado) o 401 (Token inválido), no es admin
+    if (error.response?.status === 403 || error.response?.status === 401) {
+      console.log('🚫 Backend rechazó admin - status:', error.response.status);
+      return { isAdmin: false };
+    }
+    
+    // Para otros errores (500, network, etc.), asumir no admin
+    return { isAdmin: false };
+  }
 };
 
-module.exports = {
-  registrarUsuario,
-  iniciarSesion,
+// Cerrar sesión
+export const cerrarSesion = async () => {
+  try {
+    const respuesta = await api.get('/user/cerrarSesion');
+    return respuesta.data;
+  } catch (error) {
+    console.error("Error al cerrar sesión:", error);
+    throw error;
+  }
 };
