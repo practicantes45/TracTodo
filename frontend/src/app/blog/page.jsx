@@ -11,7 +11,7 @@ import BlogPostModal from '../components/BlogPostModal/BlogPostModal';
 import SEOHead from '../components/SEOHead/SEOHead';
 import { useAuth } from '../../hooks/useAuth';
 import { obtenerPosts } from '../../services/blogService';
-import { useSEO } from '../hooks/useSEO';
+import { useSEO } from '../../hooks/useSEO';
 
 export default function BlogPage() {
     const router = useRouter();

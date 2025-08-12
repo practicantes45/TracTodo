@@ -11,7 +11,7 @@ import { registrarVista } from '../../services/trackingService';
 import { useSearchParams, useRouter } from 'next/navigation';
 import AdminButtons from '../components/AdminButtons/AdminButtons';
 import { getProductSlug } from '../../utils/slugUtils';
-import { useSEO } from '../hooks/useSEO';
+import { useSEO } from '../../hooks/useSEO';
 
 // Constante para productos por página
 const PRODUCTOS_POR_PAGINA = 15;

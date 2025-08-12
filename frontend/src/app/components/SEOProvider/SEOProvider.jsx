@@ -1,6 +1,7 @@
 // components/SEOProvider/SEOProvider.jsx
+'use client';
 import { createContext, useContext, useState, useEffect } from 'react';
-import { obtenerEstadisticasSEO } from '../../services/seoService';
+import { obtenerEstadisticasSEO } from '../../../services/seoService';
 
 const SEOContext = createContext();
 

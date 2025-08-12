@@ -8,7 +8,7 @@ import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
 import SEOHead from '../components/SEOHead/SEOHead';
 import { obtenerVideosSeleccionados } from '../../services/entretenimientoVideoService';
-import { useSEO } from '../hooks/useSEO';
+import { useSEO } from '../../hooks/useSEO';
 
 export default function VideosPage() {
     const router = useRouter();

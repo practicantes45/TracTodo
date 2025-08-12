@@ -13,7 +13,7 @@ import SEOHead from '../components/SEOHead/SEOHead';
 import { useAuth } from '../../hooks/useAuth';
 import { obtenerVideosSeleccionados } from '../../services/entretenimientoVideoService';
 import { obtenerArticulosSeleccionados } from '../../services/entretenimientoBlogService';
-import { useSEO } from '../hooks/useSEO';
+import { useSEO } from '../../hooks/useSEO';
 
 export default function EntretenimientoPage() {
     const router = useRouter();

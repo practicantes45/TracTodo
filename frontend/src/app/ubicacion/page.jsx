@@ -7,7 +7,7 @@ import ContactNumbers from '../components/ContactNumbers/ContactNumbers';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
 import SEOHead from '../components/SEOHead/SEOHead';
-import { useSEO } from '../hooks/useSEO';
+import { useSEO } from '../../hooks/useSEO';
 
 export default function UbicacionPage() {
     const [mapLoaded, setMapLoaded] = useState(false);
