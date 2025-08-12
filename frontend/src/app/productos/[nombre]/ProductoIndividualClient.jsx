@@ -10,8 +10,6 @@ import ProductImageModal from '../../components/ProductImageModal/ProductImageMo
 import { obtenerProductoPorNombre } from '@/services/productoService';
 import { registrarVista } from '../../../services/trackingService';
 import { getProductSlug } from '../../../utils/slugUtils';
-import SEOHead from '../../components/SEOHead/SEOHead';
-
 export default function ProductoIndividualPage({ params }) { // CAMBIADO: recibir params como prop
     const router = useRouter();
     const [producto, setProducto] = useState(null);
@@ -485,7 +483,6 @@ export default function ProductoIndividualPage({ params }) { // CAMBIADO: recibi
     if (loading) {
         return (
             <div className="layout producto-individual-page">
-                <SEOHead pagina="productos" />
                 <Navbar />
                 <main className="mainContent">
                     <div className="loadingContainer">

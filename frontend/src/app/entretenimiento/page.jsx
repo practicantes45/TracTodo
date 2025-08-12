@@ -12,7 +12,6 @@ import BlogPostModal from '../components/BlogPostModal/BlogPostModal';
 import { useAuth } from '../../hooks/useAuth';
 import { obtenerVideosSeleccionados } from '../../services/entretenimientoVideoService';
 import { obtenerArticulosSeleccionados } from '../../services/entretenimientoBlogService';
-import SEOHead from '../components/SEOHead/SEOHead';
 
 export default function EntretenimientoPage() {
     const router = useRouter();
@@ -398,10 +397,7 @@ export default function EntretenimientoPage() {
 
     return (
         <div className="layout entretenimiento-page">
-            {/* COMPONENTE SEO AGREGADO */}
-            <SEOHead pagina="entretenimiento" />
             <Navbar />
-
             <main className="mainContent">
                 {/* Hero Section */}
                 <div className="heroSection">

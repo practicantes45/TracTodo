@@ -10,7 +10,6 @@ import BlogManager from '../components/BlogManager/BlogManager';
 import BlogPostModal from '../components/BlogPostModal/BlogPostModal';
 import { useAuth } from '../../hooks/useAuth';
 import { obtenerPosts } from '../../services/blogService';
-import SEOHead from '../components/SEOHead/SEOHead';
 
 export default function BlogPage() {
     const router = useRouter();
@@ -251,8 +250,6 @@ export default function BlogPage() {
     if (loading) {
         return (
             <div className="blog-page">
-                {/* COMPONENTE SEO AGREGADO */}
-            <SEOHead pagina="blog" />
                 <Navbar />
                 <div className="heroSection">
                     <div className="heroOverlay">

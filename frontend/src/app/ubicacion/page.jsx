@@ -7,7 +7,6 @@ import ContactNumbers from '../components/ContactNumbers/ContactNumbers';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
 import VideoSection from '../components/VideoSection/VideoSection';
-import SEOHead from '../components/SEOHead/SEOHead';
 
 export default function UbicacionPage() {
     const [copiedItem, setCopiedItem] = useState('');
@@ -37,8 +36,6 @@ export default function UbicacionPage() {
 
     return (
         <div className="layout ubicacion-page">
-            <SEOHead pagina="ubicacion" />
-
             <Navbar />
 
             <main className="mainContent">

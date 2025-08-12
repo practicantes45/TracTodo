@@ -10,7 +10,6 @@ import AdminVideoButtons from '../components/AdminVideoButtons/AdminVideoButtons
 import VideoModal from '../components/VideoModal/VideoModal';
 import { useAuth } from '../../hooks/useAuth';
 import { obtenerVideos } from '../../services/videoService';
-import SEOHead from '../components/SEOHead/SEOHead';
 
 export default function VideosPage() {
     const router = useRouter();
@@ -217,8 +216,6 @@ export default function VideosPage() {
     if (loading) {
         return (
             <div className="layout videos-page">
-                {/* COMPONENTE SEO AGREGADO */}
-            <SEOHead pagina="videos" />
                 <Navbar />
                 <main className="mainContent">
                     <div className="heroSection">

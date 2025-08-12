@@ -5,7 +5,6 @@ import { FaArrowLeft, FaCalendarAlt, FaUser, FaShare } from 'react-icons/fa';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import ScrollToTop from '../../components/ScrollToTop/ScrollToTop';
-import SEOHead from '../../components/SEOHead/SEOHead';
 import './blog-post.css';
 
 export default function BlogPostClient({ post }) {
@@ -71,8 +70,6 @@ export default function BlogPostClient({ post }) {
 
     return (
         <div className="blog-post-page">
-            {/* SEO específico del post - usando el ID del post para que el backend genere el SEO dinámico */}
-            <SEOHead blogPostId={post.id} />
             <Navbar />
 
             <main className="magazineMainContent">
