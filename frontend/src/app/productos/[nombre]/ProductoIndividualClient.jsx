@@ -12,6 +12,7 @@ import { obtenerProductoPorNombre } from '@/services/productoService';
 import { registrarVista } from '../../../services/trackingService';
 import { getProductSlug } from '../../../utils/slugUtils';
 import { useProductSEO } from '../../../hooks/useSEO';
+import FormattedDescription from '../../components/FormattedDescription/FormattedDescription';
 
 export default function ProductoIndividualPage({ params }) {
     const router = useRouter();
@@ -745,7 +746,7 @@ export default function ProductoIndividualPage({ params }) {
                         <div className="descriptionContainer">
                             <h2>Descripción</h2>
                             <div className="descriptionContent">
-                                <p>{producto.descripcion}</p>
+                                <FormattedDescription description={producto.descripcion} />
                             </div>
                         </div>
                     </section>
