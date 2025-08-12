@@ -1,188 +1,52 @@
 'use client';
-import './videos.css';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { FaPlay, FaCalendarAlt, FaClock, FaEye, FaArrowLeft, FaShare } from "react-icons/fa";
+import './ubicacion.css';
+import { useState } from 'react';
+import { FaMapMarkerAlt, FaClock, FaPhoneAlt, FaEnvelope, FaWhatsapp } from "react-icons/fa";
 import Navbar from '../components/Navbar/Navbar';
+import ContactNumbers from '../components/ContactNumbers/ContactNumbers';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
 import SEOHead from '../components/SEOHead/SEOHead';
-import { obtenerVideosSeleccionados } from '../../services/entretenimientoVideoService';
 import { useSEO } from '../../hooks/useSEO';
 
-export default function VideosPage() {
-    const router = useRouter();
-    const [videos, setVideos] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [selectedVideo, setSelectedVideo] = useState(null);
+export default function UbicacionPage() {
+    const [mapLoaded, setMapLoaded] = useState(false);
+    
+    // Hook SEO para página de ubicación
+    const { seoData } = useSEO('ubicacion', { path: '/ubicacion' });
 
-    // Hook SEO para página de videos
-    const { seoData } = useSEO('videos', { path: '/videos' });
-
-    useEffect(() => {
-        cargarVideos();
-    }, []);
-
-    const cargarVideos = async () => {
-        try {
-            setLoading(true);
-            setError(null);
-            console.log('🎥 Cargando videos...');
-
-            const videosData = await obtenerVideosSeleccionados();
-            console.log('✅ Videos cargados:', videosData);
-
-            if (Array.isArray(videosData)) {
-                setVideos(videosData);
-            } else {
-                console.warn('⚠️ Formato de datos inesperado:', videosData);
-                setVideos([]);
-            }
-        } catch (err) {
-            console.error('❌ Error al cargar videos:', err);
-            setError(err.message);
-            setVideos([]);
-        } finally {
-            setLoading(false);
-        }
+    const contactInfo = {
+        direccion: "San Cayetano, Río Extoras 56, San Juan del Río, Querétaro",
+        telefono: "+52 427 XXX XXXX",
+        email: "contacto@tractodo.com",
+        horario: "Lunes a Viernes: 9:00 AM - 6:00 PM",
+        whatsapp: "+52 427 XXX XXXX"
     };
 
-    const handleVideoClick = (video) => {
-        setSelectedVideo(video);
-    };
-
-    const closeVideoModal = () => {
-        setSelectedVideo(null);
-    };
-
-    const formatDuration = (duration) => {
-        if (!duration) return '';
-
-        // Si viene en formato ISO 8601 (PT4M13S)
-        if (duration.startsWith('PT')) {
-            const match = duration.match(/PT(?:(\d+)M)?(?:(\d+)S)?/);
-            if (match) {
-                const minutes = parseInt(match[1] || 0);
-                const seconds = parseInt(match[2] || 0);
-                return `${minutes}:${seconds.toString().padStart(2, '0')}`;
-            }
-        }
-
-        return duration;
-    };
-
-    const formatViewCount = (viewCount) => {
-        if (!viewCount) return '0';
-
-        const count = parseInt(viewCount);
-        if (count >= 1000000) {
-            return `${(count / 1000000).toFixed(1)}M`;
-        } else if (count >= 1000) {
-            return `${(count / 1000).toFixed(1)}K`;
-        }
-        return count.toString();
-    };
-
-    const formatDate = (publishedAt) => {
-        if (!publishedAt) return '';
-
-        try {
-            const date = new Date(publishedAt);
-            return date.toLocaleDateString('es-MX', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-            });
-        } catch (error) {
-            console.error('Error formateando fecha:', error);
-            return '';
-        }
-    };
-
-    // Schema.org para la página de videos
-    const schemaVideoGallery = {
+    // Schema.org para LocalBusiness
+    const schemaLocalBusiness = {
         "@context": "https://schema.org",
-        "@type": "VideoGallery",
-        "name": "Videos Tractodo",
-        "description": "Videos educativos sobre tractocamiones: tutoriales, instalación de refacciones, mantenimiento preventivo y más",
-        "url": `${process.env.NEXT_PUBLIC_FRONTEND_URL}/videos`,
-        "publisher": {
-            "@type": "Organization",
-            "name": "Tractodo",
-            "url": "https://tractodo.com"
+        "@type": "AutoPartsStore",
+        "name": "Tractodo",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "San Cayetano, Río Extoras 56",
+            "addressLocality": "San Juan del Río",
+            "addressRegion": "Querétaro",
+            "postalCode": "",
+            "addressCountry": "MX"
         },
-        "video": videos.slice(0, 10).map(video => ({
-            "@type": "VideoObject",
-            "name": video.titulo,
-            "description": video.descripcion,
-            "thumbnailUrl": video.thumbnail,
-            "uploadDate": video.fechaPublicacion,
-            "duration": video.duracion,
-            "embedUrl": `https://www.youtube.com/embed/${video.videoId}`,
-            "publisher": {
-                "@type": "Organization",
-                "name": "Tractodo"
-            }
-        }))
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": "20.3881",
+            "longitude": "-99.9961"
+        },
+        "telephone": "+52-427-XXX-XXXX",
+        "email": "contacto@tractodo.com",
+        "url": "https://tractodo.com",
+        "openingHours": ["Mo-Fr 09:00-18:00"],
+        "description": "Refaccionaria especializada en partes y componentes para tractocamión en San Juan del Río, Querétaro"
     };
-
-    if (loading) {
-        return (
-            <>
-                {seoData && (
-                    <SEOHead
-                        title={seoData.title}
-                        description={seoData.description}
-                        keywords={seoData.keywords}
-                        canonicalUrl={seoData.canonicalUrl}
-                    />
-                )}
-                <div className="videos-page">
-                    <Navbar />
-                    <main className="mainContent">
-                        <div className="loadingContainer">
-                            <div className="loadingSpinner"></div>
-                            <p>Cargando videos...</p>
-                        </div>
-                    </main>
-                    <Footer />
-                </div>
-            </>
-        );
-    }
-
-    if (error) {
-        return (
-            <>
-                {seoData && (
-                    <SEOHead
-                        title={seoData.title}
-                        description={seoData.description}
-                        keywords={seoData.keywords}
-                        canonicalUrl={seoData.canonicalUrl}
-                    />
-                )}
-                <div className="videos-page">
-                    <Navbar />
-                    <main className="mainContent">
-                        <section className="videosMainSection">
-                            <div className="videosContainer">
-                                <div className="errorContainer">
-                                    <h2>Error al cargar videos</h2>
-                                    <p>{error}</p>
-                                    <button onClick={cargarVideos} className="retryButton">
-                                        Intentar de nuevo
-                                    </button>
-                                </div>
-                            </div>
-                        </section>
-                    </main>
-                    <Footer />
-                </div>
-            </>
-        );
-    }
 
     return (
         <>
@@ -197,189 +61,113 @@ export default function VideosPage() {
                     ogImage={seoData.ogImage}
                     ogUrl={seoData.ogUrl}
                     canonicalUrl={seoData.canonicalUrl}
-                    schema={schemaVideoGallery}
+                    schema={schemaLocalBusiness}
                 />
             )}
 
-            <div className="videos-page">
+            <div className="layout ubicacion-page">
+                {/* Navbar principal */}
                 <Navbar />
 
-                {/* Hero Section */}
-                <div className="heroSection">
-                    <div className="heroOverlay">
-                        <div className="heroContent">
-                            <h1>Videos Tractodo</h1>
-                            <p>Tutoriales técnicos y contenido educativo para tu tractocamión</p>
+                {/* Contenido principal */}
+                <main className="mainContent">
+                    {/* Hero Section */}
+                    <div className="heroSection">
+                        <div className="heroOverlay">
+                            <div className="heroContent">
+                                <h1>Nuestra Ubicación</h1>
+                                <p>Visítanos en San Juan del Río, Querétaro</p>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <main className="mainContent">
-                    <section className="videosMainSection">
-                        <div className="videosContainer">
+                    {/* Números de contacto */}
+                    <ContactNumbers pageContext="ubicacion" />
 
-                            {/* Botón de regreso */}
-                            <div className="backButtonContainer">
-                                <button
-                                    onClick={() => router.back()}
-                                    className="backButton"
-                                    aria-label="Regresar a la página anterior"
-                                >
-                                    <FaArrowLeft className="backIcon" />
-                                    Regresar a entretenimiento
-                                </button>
+                    {/* Información de contacto y mapa */}
+                    <section className="contactSection">
+                        <div className="contactContainer">
+                            <div className="contactInfo">
+                                <h2>Información de Contacto</h2>
+                                
+                                <div className="infoItem">
+                                    <FaMapMarkerAlt className="infoIcon" />
+                                    <div>
+                                        <h3>Dirección</h3>
+                                        <p>{contactInfo.direccion}</p>
+                                    </div>
+                                </div>
+
+                                <div className="infoItem">
+                                    <FaClock className="infoIcon" />
+                                    <div>
+                                        <h3>Horarios de Atención</h3>
+                                        <p>{contactInfo.horario}</p>
+                                        <p className="note">Sábados: 9:00 AM - 2:00 PM</p>
+                                    </div>
+                                </div>
+
+                                <div className="infoItem">
+                                    <FaPhoneAlt className="infoIcon" />
+                                    <div>
+                                        <h3>Teléfono</h3>
+                                        <p>{contactInfo.telefono}</p>
+                                    </div>
+                                </div>
+
+                                <div className="infoItem">
+                                    <FaEnvelope className="infoIcon" />
+                                    <div>
+                                        <h3>Email</h3>
+                                        <p>{contactInfo.email}</p>
+                                    </div>
+                                </div>
+
+                                <div className="infoItem">
+                                    <FaWhatsapp className="infoIcon whatsapp" />
+                                    <div>
+                                        <h3>WhatsApp</h3>
+                                        <p>{contactInfo.whatsapp}</p>
+                                        <a 
+                                            href={`https://wa.me/524272245923?text=Hola, me gustaría obtener información sobre sus refacciones para tractocamión`}
+                                            className="whatsappLink"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            Enviar mensaje
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
 
-                            {/* Header de videos */}
-                            <div className="videosHeader">
-                                <h2>Nuestros Videos</h2>
-                                <p>
-                                    {videos.length === 0
-                                        ? 'No hay videos disponibles'
-                                        : `${videos.length} video${videos.length !== 1 ? 's' : ''} disponible${videos.length !== 1 ? 's' : ''}`
-                                    }
-                                </p>
-                            </div>
-
-                            {/* Grid de videos */}
-                            {videos.length > 0 ? (
-                                <div className="videosGrid">
-                                    {videos.map((video) => (
-                                        <div key={video.videoId} className="videoCard">
-                                            <div
-                                                className="videoThumbnailContainer"
-                                                onClick={() => handleVideoClick(video)}
-                                            >
-                                                <img
-                                                    src={video.thumbnail}
-                                                    alt={`Thumbnail de ${video.titulo}`}
-                                                    className="videoThumbnail"
-                                                    loading="lazy"
-                                                />
-                                                <div className="playOverlay">
-                                                    <FaPlay className="playIcon" />
-                                                </div>
-
-                                                {video.duracion && (
-                                                    <div className="videoDuration">
-                                                        {formatDuration(video.duracion)}
-                                                    </div>
-                                                )}
-                                            </div>
-
-                                            <div className="videoInfo">
-                                                <h3
-                                                    className="videoTitle"
-                                                    onClick={() => handleVideoClick(video)}
-                                                >
-                                                    {video.titulo}
-                                                </h3>
-
-                                                {video.descripcion && (
-                                                    <p className="videoDescription">
-                                                        {video.descripcion.length > 120
-                                                            ? `${video.descripcion.substring(0, 120)}...`
-                                                            : video.descripcion
-                                                        }
-                                                    </p>
-                                                )}
-
-                                                <div className="videoMeta">
-                                                    {video.vistas && (
-                                                        <span className="videoViews">
-                                                            <FaEye />
-                                                            {formatViewCount(video.vistas)} vistas
-                                                        </span>
-                                                    )}
-
-                                                    {video.fechaPublicacion && (
-                                                        <span className="videoDate">
-                                                            <FaCalendarAlt />
-                                                            {formatDate(video.fechaPublicacion)}
-                                                        </span>
-                                                    )}
-                                                </div>
-
-                                                <div className="videoActions">
-                                                    <button
-                                                        onClick={() => handleVideoClick(video)}
-                                                        className="watchButton"
-                                                    >
-                                                        <FaPlay />
-                                                        Ver video
-                                                    </button>
-
-                                                    <button
-                                                        onClick={() => {
-                                                            const url = `https://www.youtube.com/watch?v=${video.videoId}`;
-                                                            window.open(url, '_blank');
-                                                        }}
-                                                        className="shareButton"
-                                                        title="Ver en YouTube"
-                                                    >
-                                                        <FaShare />
-                                                    </button>
-                                                </div>
-                                            </div>
+                            {/* Mapa */}
+                            <div className="mapContainer">
+                                <h2>Cómo llegar</h2>
+                                <div className="mapWrapper">
+                                    <iframe
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3742.567!2d-99.9961!3d20.3881!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjDCsDIzJzE3LjIiTiA5OcKwNTknNDYuMCJX!5e0!3m2!1ses!2smx!4v1620000000000!5m2!1ses!2smx"
+                                        width="100%"
+                                        height="400"
+                                        style={{ border: 0 }}
+                                        allowFullScreen=""
+                                        loading="lazy"
+                                        referrerPolicy="no-referrer-when-downgrade"
+                                        title="Ubicación de Tractodo en San Juan del Río, Querétaro"
+                                        onLoad={() => setMapLoaded(true)}
+                                    ></iframe>
+                                    {!mapLoaded && (
+                                        <div className="mapLoading">
+                                            Cargando mapa...
                                         </div>
-                                    ))}
+                                    )}
                                 </div>
-                            ) : (
-                                <div className="noVideos">
-                                    <h3>No hay videos disponibles</h3>
-                                    <p>No hay videos seleccionados para mostrar en este momento.</p>
-                                </div>
-                            )}
+                            </div>
                         </div>
                     </section>
                 </main>
 
                 <Footer />
                 <ScrollToTop />
-
-                {/* Modal para video */}
-                {selectedVideo && (
-                    <div className="videoModal" onClick={closeVideoModal}>
-                        <div className="videoModalContent" onClick={(e) => e.stopPropagation()}>
-                            <div className="videoModalHeader">
-                                <h3>{selectedVideo.titulo}</h3>
-                                <button
-                                    className="closeButton"
-                                    onClick={closeVideoModal}
-                                    aria-label="Cerrar video"
-                                >
-                                    ×
-                                </button>
-                            </div>
-
-                            <div className="videoPlayerContainer">
-                                <iframe
-                                    src={`https://www.youtube.com/embed/${selectedVideo.videoId}?autoplay=1`}
-                                    title={selectedVideo.titulo}
-                                    frameBorder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
-                                ></iframe>
-                            </div>
-
-                            {selectedVideo.descripcion && (
-                                <div className="videoModalDescription">
-                                    <p>{selectedVideo.descripcion}</p>
-                                </div>
-                            )}
-                            <div className="videoModalActions">
-                                <a
-                                    href={`https://www.youtube.com/watch?v=${selectedVideo.videoId}`}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="watchOnYouTubeButton"
-                                >
-                                    Ver en YouTube
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                )}
             </div>
         </>
     );
