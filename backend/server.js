@@ -2,7 +2,7 @@ require("dotenv").config();
 const app = require("./app");
 
 // Railway usa diferentes puertos, pero Railway asigna automáticamente
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 // CRÍTICO: Escuchar en todas las interfaces para Railway
 app.listen(PORT, '0.0.0.0', () => {
@@ -17,4 +17,3 @@ app.listen(PORT, '0.0.0.0', () => {
     console.log(`🚂 Listening on: 0.0.0.0:${PORT}`);
   }
 });
-

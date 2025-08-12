@@ -1,4 +1,3 @@
-
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
@@ -19,53 +18,32 @@ const app = express();
 
 // Middleware para log de conexiones
 app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path} - Origin: ${req.get('origin')} - IP: ${req.ip}`);
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path} - IP: ${req.ip}`);
   next();
 });
 
-// CONFIGURACIÓN CORREGIDA PARA TRACTODO.COM
-const allowedOrigins = [
+// CONFIGURACIÓN MEJORADA DE CORS PARA RAILWAY
+const corsOrigins = [
   "http://localhost:3001", 
   "http://127.0.0.1:3001",
-  "https://tractodo-production-3e8e.up.railway.app",
+  "https://tractodo-production-3e8e.up.railway.app", // Frontend Railway
   "https://tractodo-production.up.railway.app",
-  "https://tractodo.com",
-  "https://www.tractodo.com"
+  "https://tractodo.com" // Backend Railway (para health checks)
 ];
 
-console.log('🔒 CORS configurado para origins:', allowedOrigins);
+// Agregar dinámicamente el dominio de Railway si existe
+if (process.env.RAILWAY_PUBLIC_DOMAIN) {
+  corsOrigins.push(`https://${process.env.RAILWAY_PUBLIC_DOMAIN}`);
+}
+
+console.log('🔒 CORS configurado para:', corsOrigins);
 
 app.use(cors({
-  origin: function (origin, callback) {
-    console.log(`🔍 CORS - Origin recibido: "${origin}"`);
-    
-    // Permitir requests sin origin
-    if (!origin) {
-      console.log('✅ CORS - Sin origin, permitido');
-      return callback(null, true);
-    }
-    
-    // Verificar si el origin está permitido
-    if (allowedOrigins.includes(origin)) {
-      console.log('✅ CORS - Origin permitido:', origin);
-      callback(null, true);
-    } else {
-      console.log('❌ CORS - Origin NO permitido:', origin);
-      callback(new Error('No permitido por CORS'));
-    }
-  },
+  origin: corsOrigins,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: [
-    'Content-Type', 
-    'Authorization', 
-    'Cookie', 
-    'X-Requested-With',
-    'Accept',
-    'Origin'
-  ],
-  exposedHeaders: ['Set-Cookie'],
-  optionsSuccessStatus: 200
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
+  exposedHeaders: ['set-cookie']
 }));
 
 app.use(express.json());
@@ -74,13 +52,10 @@ app.use(cookieParser());
 // MIDDLEWARE PARA DEBUGGING DE COOKIES
 app.use((req, res, next) => {
   if (req.path.includes('/user/administradores')) {
-    console.log('🔍 === DEBUGGING ADMIN REQUEST ===');
-    console.log('🌐 Origin:', req.get('origin'));
-    console.log('🏠 Host:', req.get('host'));
-    console.log('🍪 Cookie Header:', req.get('cookie'));
-    console.log('📋 Parsed Cookies:', req.cookies);
-    console.log('🔐 Token específico:', req.cookies?.token);
-    console.log('========================================');
+    console.log(' === DEBUGGING ADMIN REQUEST ===');
+    console.log('Ruta:', req.path);
+    console.log('Cookies parseadas:', req.cookies);
+    console.log('Headers:', req.headers.cookie);
   }
   next();
 });
@@ -95,10 +70,12 @@ app.use("/api/reversion", reversionRoutes);
 app.use("/api/vistas", vistasRoutes);
 app.use("/api/seo", seoRoutes);
 
+// Log de inicio actualizado para Railway
 console.log("✅ Backend iniciado correctamente");
 console.log("🌐 Environment:", process.env.NODE_ENV || 'development');
-console.log("🔗 Frontend: https://tractodo.com");
-console.log("📡 Backend: https://tractodo-production.up.railway.app");
+console.log("🔗 Frontend URL: https://tractodo-production-3e8e.up.railway.app");
+console.log("📡 Backend URL: https://tractodo-production.up.railway.app");
+console.log("📦 Esperando conexiones...");
 
 // Programar tareas...
 cron.schedule("0 3 * * *", async () => {

@@ -13,7 +13,7 @@ export default function AdminLoginModal({ isOpen, onClose }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const { guardarSesion } = useAuth();
+  const { guardarSesion } = useAuth(); // USAR ESTO EN LUGAR DE setIsAdmin
 
   const handleChange = (e) => {
     setCredentials({
@@ -21,35 +21,6 @@ export default function AdminLoginModal({ isOpen, onClose }) {
       [e.target.name]: e.target.value
     });
     if (error) setError('');
-  };
-
-  // FUNCIÓN PARA VERIFICAR ADMIN CON REINTENTOS
-  const verificarAdminConReintentos = async (maxIntentos = 3) => {
-    for (let intento = 1; intento <= maxIntentos; intento++) {
-      console.log(`🔄 Intento ${intento}/${maxIntentos} - Verificando admin...`);
-      
-      try {
-        const respuestaAdmin = await verificarAdmin();
-        console.log(`📡 Respuesta admin intento ${intento}:`, respuestaAdmin);
-        
-        if (respuestaAdmin.isAdmin) {
-          console.log(`✅ Admin verificado en intento ${intento}`);
-          return respuestaAdmin;
-        }
-      } catch (error) {
-        console.log(`❌ Error en intento ${intento}:`, error.message);
-      }
-      
-      // Si no es el último intento, esperar antes del siguiente
-      if (intento < maxIntentos) {
-        const delay = intento * 2000; // 2s, 4s, 6s...
-        console.log(`⏰ Esperando ${delay/1000}s antes del siguiente intento...`);
-        await new Promise(resolve => setTimeout(resolve, delay));
-      }
-    }
-    
-    console.log('❌ Todos los intentos fallaron');
-    return { isAdmin: false };
   };
 
   const handleSubmit = async (e) => {
@@ -71,13 +42,10 @@ export default function AdminLoginModal({ isOpen, onClose }) {
       console.log('📡 Respuesta login modal:', respuestaLogin);
       
       if (respuestaLogin.mensaje === "Login exitoso") {
-        console.log('✅ Login exitoso - esperando propagación de cookies...');
+        console.log('✅ Login exitoso - verificando admin...');
         
-        // DELAY INICIAL MÁS LARGO PARA RAILWAY
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        console.log('⏰ Delay inicial completado - iniciando verificación con reintentos...');
-        
-        const respuestaAdmin = await verificarAdminConReintentos(3);
+        const respuestaAdmin = await verificarAdmin();
+        console.log('📡 Respuesta admin modal:', respuestaAdmin);
         
         if (respuestaAdmin.isAdmin) {
           const datosUsuario = {
@@ -92,8 +60,8 @@ export default function AdminLoginModal({ isOpen, onClose }) {
           console.log('✅ MODAL - Admin autenticado, cerrando modal');
           onClose();
         } else {
-          console.log('❌ MODAL - No es admin después de todos los intentos');
-          setError('No tienes permisos de administrador o error de conexión');
+          console.log('❌ MODAL - No es admin');
+          setError('No tienes permisos de administrador');
         }
       } else {
         console.log('❌ MODAL - Login falló');

@@ -1,4 +1,3 @@
-
 const { register, login } = require("../db/usuariosDB");
 
 const registrarUsuario = async (req, res) => {
@@ -28,50 +27,21 @@ const iniciarSesion = async (req, res) => {
     return res.status(respuesta.status).json({ error: respuesta.mensajeUsuario });
   }
 
-  const origin = req.get('origin') || '';
-  const host = req.get('host') || '';
-  
   console.log('🍪 Configurando cookie para usuario:', username);
-  console.log('🌐 Origin:', origin);
-  console.log('🏠 Host:', host);
 
-  // Detectar si es cross-domain
-  const esTractodoCom = origin.includes('tractodo.com');
-  const isProduction = process.env.NODE_ENV === 'production';
-
-  console.log('🔍 Es tractodo.com:', esTractodoCom);
-  console.log('🔍 Es producción:', isProduction);
-
-  // Configuración de cookie optimizada
-  const cookieOptions = {
-    httpOnly: true,
-    secure: isProduction,
-    sameSite: esTractodoCom ? 'None' : 'Lax',
-    maxAge: 24 * 60 * 60 * 1000,
-    path: '/'
-  };
-
-  console.log('⚙️ Configuración de cookie:', cookieOptions);
-
-  // Headers para cross-domain
-  if (esTractodoCom) {
-    res.set({
-      'Access-Control-Allow-Credentials': 'true',
-      'Access-Control-Allow-Origin': origin
-    });
-  }
-
+  // CONFIGURACIÓN MEJORADA DE COOKIES
   res
-    .cookie("token", respuesta.token, cookieOptions)
+    .cookie("token", respuesta.token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // Solo HTTPS en producción
+      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
+      maxAge: 24 * 60 * 60 * 1000, // 24 horas
+      path: '/', // Asegurar que esté disponible en toda la app
+    })
     .status(200)
     .json({ 
       mensaje: respuesta.mensajeUsuario,
-      user: username,
-      debug: {
-        cookieSet: true,
-        crossDomain: esTractodoCom,
-        cookieConfig: cookieOptions
-      }
+      user: username 
     });
 
   console.log('✅ Cookie configurada exitosamente');

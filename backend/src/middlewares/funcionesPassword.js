@@ -15,19 +15,13 @@ function validarPassword(password, salt, hash) {
 }
 
 function adminAutorizado(req) {
-  console.log('🔍 === VERIFICACIÓN DE ADMIN DETALLADA ===');
-  console.log('🌍 Entorno:', process.env.NODE_ENV);
-  console.log('🏠 Host:', req.get('host'));
-  console.log('🔗 Origin:', req.get('origin'));
-  console.log('🍪 Headers de cookies:', req.get('cookie'));
-  console.log('📋 Todas las cookies:', req.cookies);
-  console.log('🎯 Valor específico token:', req.cookies?.token);
+  console.log('🔍 === VERIFICACIÓN DE ADMIN ===');
+  console.log('🍪 Cookies recibidas:', req.cookies);
   
   const token = req.cookies?.token;
 
   if (!token) {
     console.log('❌ No se encontró token en cookies');
-    console.log('🔍 Headers completos:', JSON.stringify(req.headers, null, 2));
     return mensajes(400, "Token no proporcionado");
   }
 
@@ -36,14 +30,12 @@ function adminAutorizado(req) {
     console.log('🔍 Token decodificado exitosamente:', {
       username: decoded.username,
       tipoUsuario: decoded.tipoUsuario,
-      id: decoded.id,
-      exp: new Date(decoded.exp * 1000)
+      id: decoded.id
     });
 
-    // Verificar tipoUsuario
+    // CAMBIO: Verificar tipoUsuario en lugar de username específico
     if (decoded.tipoUsuario !== "admin") {
       console.log('❌ Usuario no tiene tipoUsuario admin:', decoded.tipoUsuario);
-      console.log('📝 Usuarios con tipo admin requerido, actual:', decoded.tipoUsuario);
       return mensajes(403, "Admin no autorizado");
     }
 
@@ -52,9 +44,6 @@ function adminAutorizado(req) {
     
   } catch (error) {
     console.log('❌ Error al verificar token:', error.message);
-    if (error.name === 'TokenExpiredError') {
-      console.log('⏰ Token expirado:', error.expiredAt);
-    }
     return mensajes(401, "Token inválido", error);
   }
 }
