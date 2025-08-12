@@ -243,4 +243,29 @@ router.get("/verificar-urls", async (req, res) => {
   }
 });
 
+/**
+ * Ruta de debugging para verificar datos de Firebase
+ * GET /api/seo/debug-firebase
+ */
+router.get("/debug-firebase", async (req, res) => {
+  try {
+    const { debugFirebaseData } = require("../utils/debugSitemap");
+    const resultado = await debugFirebaseData();
+    
+    res.json({
+      mensaje: "Debugging completado - revisa los logs del servidor",
+      resumen: resultado,
+      timestamp: new Date().toISOString(),
+      siguientePaso: "Accede a /api/seo/sitemap.xml para regenerar el sitemap"
+    });
+    
+  } catch (error) {
+    console.error("❌ Error en debugging:", error.message);
+    res.status(500).json({
+      error: "Error en debugging",
+      detalles: error.message
+    });
+  }
+});
+
 module.exports = router;
