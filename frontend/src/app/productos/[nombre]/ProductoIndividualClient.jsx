@@ -730,31 +730,6 @@ export default function ProductoIndividualPage({ params }) {
                                     </div>
                                 </div>
 
-                                {/* Información SEO específica si está disponible */}
-                                {producto.seo && (
-                                    <div className="seoInfo">
-                                        {producto.seo.descripcion && producto.seo.descripcion !== producto.descripcion && (
-                                            <div className="seoDescription">
-                                                <h4>Información Técnica</h4>
-                                                <p>{producto.seo.descripcion}</p>
-                                            </div>
-                                        )}
-                                        
-                                        {producto.seo.palabrasClave && producto.seo.palabrasClave.length > 0 && (
-                                            <div className="keywords">
-                                                <h4>Términos relacionados:</h4>
-                                                <div className="keywordTags">
-                                                    {producto.seo.palabrasClave.slice(0, 8).map((keyword, index) => (
-                                                        <span key={index} className="keywordTag">
-                                                            {keyword}
-                                                        </span>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
-                                )}
-
                                 <button
                                     className="whatsappButton"
                                     onClick={handleWhatsAppClick}

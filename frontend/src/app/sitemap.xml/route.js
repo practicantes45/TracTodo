@@ -1,45 +1,54 @@
 // app/sitemap.xml/route.js
 import { NextResponse } from 'next/server';
-export const dynamic = 'force-dynamic'; // Forzar que esta ruta sea dinámica
+
 export async function GET() {
   try {
     const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://tractodo-production.up.railway.app/api';
     
     console.log('🗺️ Solicitando sitemap desde:', `${backendUrl}/seo/sitemap.xml`);
     
-    // Hacer petición al backend para obtener el sitemap
-    const response = await fetch(`${backendUrl}
-        }`, {
+    // Hacer petición al backend para obtener el sitemap - CORREGIDO
+    const response = await fetch(`${backendUrl}/seo/sitemap.xml`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/xml',
+        'Accept': 'application/xml',
       },
       // Agregar timeout
-      signal: AbortSignal.timeout(10000) // 10 segundos
+      signal: AbortSignal.timeout(15000) // 15 segundos (más tiempo)
     });
 
     if (!response.ok) {
-      console.error('❌ Error obteniendo sitemap del backend:', response.status);
-      throw new Error(`Error del backend: ${response.status}`);
+      console.error('❌ Error obteniendo sitemap del backend:', response.status, response.statusText);
+      throw new Error(`Error del backend: ${response.status} ${response.statusText}`);
     }
 
     const sitemapContent = await response.text();
     
     console.log('✅ Sitemap obtenido exitosamente del backend');
+    console.log(`📊 Tamaño del sitemap: ${sitemapContent.length} caracteres`);
+    
+    // Verificar que el sitemap contenga productos
+    const productCount = (sitemapContent.match(/productos\//g) || []).length;
+    console.log(`📦 URLs de productos encontradas: ${productCount}`);
     
     return new NextResponse(sitemapContent, {
       status: 200,
       headers: {
         'Content-Type': 'application/xml; charset=utf-8',
-        'Cache-Control': 'public, max-age=3600, s-maxage=3600', // Cache por 1 hora
+        'Cache-Control': 'public, max-age=1800, s-maxage=1800', // Cache por 30 minutos
       },
     });
     
   } catch (error) {
-    console.error('❌ Error al obtener sitemap:', error);
+    console.error('❌ Error al obtener sitemap:', error.message);
+    console.error('❌ Stack trace:', error.stack);
     
-    // Sitemap de fallback si el backend no responde
+    // MEJORADO: Sitemap de fallback más informativo
     const fallbackSitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<!-- FALLBACK SITEMAP - El backend no respondió correctamente -->
+<!-- Error: ${error.message} -->
+<!-- Timestamp: ${new Date().toISOString()} -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://tractodo.com</loc>
@@ -89,7 +98,7 @@ export async function GET() {
       status: 200,
       headers: {
         'Content-Type': 'application/xml; charset=utf-8',
-        'Cache-Control': 'public, max-age=1800', // Cache por 30 minutos si es fallback
+        'Cache-Control': 'public, max-age=300', // Cache por solo 5 minutos si es fallback
       },
     });
   }
