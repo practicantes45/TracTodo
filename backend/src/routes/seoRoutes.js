@@ -11,6 +11,15 @@ const {
   obtenerSchemaProducto
 } = require("../controllers/seoController");
 
+// ✅ IMPORTACIÓN CORREGIDA
+const {
+  obtenerMapeoSlugs,
+  resolverSlug,
+  regenerarSlugs,
+  obtenerSlugPorId,
+  verificarIntegridadSlugs
+} = require("../controllers/slugController");
+
 // MIDDLEWARE PARA VERIFICAR ADMIN
 const verificarAdmin = async (req, res, next) => {
   try {
@@ -28,7 +37,7 @@ const verificarAdmin = async (req, res, next) => {
 // ================================= RUTAS PÚBLICAS =================================
 
 /**
- * Obtener sitemap.xml (público)
+ * Obtener sitemap.xml (público) - CON URLs AMIGABLES
  * GET /api/seo/sitemap.xml
  */
 router.get("/sitemap.xml", generarSitemap);
@@ -38,6 +47,26 @@ router.get("/sitemap.xml", generarSitemap);
  * GET /api/seo/robots.txt
  */
 router.get("/robots.txt", generarRobots);
+
+/**
+ * Obtener mapeo completo de slugs (público)
+ * GET /api/seo/slugs
+ */
+router.get("/slugs", obtenerMapeoSlugs);
+
+/**
+ * Resolver slug a ID (público)
+ * GET /api/seo/resolver/:tipo/:slug
+ * Ejemplo: /api/seo/resolver/productos/turbo-cummins-px8
+ */
+router.get("/resolver/:tipo/:slug", resolverSlug);
+
+/**
+ * Obtener slug por ID (público)
+ * GET /api/seo/slug-por-id/:tipo/:id
+ * Ejemplo: /api/seo/slug-por-id/productos/-OIGeD7XHqrBcXfwBSo
+ */
+router.get("/slug-por-id/:tipo/:id", obtenerSlugPorId);
 
 /**
  * Obtener datos SEO de un producto específico (público)
@@ -52,6 +81,18 @@ router.get("/producto/:id", obtenerSEOProducto);
 router.get("/schema/:id", obtenerSchemaProducto);
 
 // ================================= RUTAS DE ADMINISTRACIÓN =================================
+
+/**
+ * Verificar integridad del mapeo de slugs (solo admin)
+ * GET /api/seo/verificar-slugs
+ */
+router.get("/verificar-slugs", verificarAdmin, verificarIntegridadSlugs);
+
+/**
+ * Regenerar mapeo de slugs (solo admin)
+ * POST /api/seo/regenerar-slugs
+ */
+router.post("/regenerar-slugs", verificarAdmin, regenerarSlugs);
 
 /**
  * Generar SEO para todos los productos (solo admin)
@@ -80,102 +121,123 @@ router.put("/producto/:id/regenerar", verificarAdmin, regenerarSEOProducto);
 router.get("/health", (req, res) => {
   res.json({
     status: "OK",
-    mensaje: "Módulo SEO funcionando correctamente",
+    mensaje: "Módulo SEO funcionando correctamente con URLs amigables",
     timestamp: new Date().toISOString(),
     funciones: [
-      "Generación automática de títulos y descripciones SEO",
-      "Schema.org markup para productos",
-      "Sitemap.xml dinámico",
-      "Robots.txt optimizado",
-      "Palabras clave específicas del sector",
-      "Optimización para tractocamiones y refacciones"
-    ]
-  });
-});
-
-/**
- * Obtener palabras clave disponibles (solo admin)
- * GET /api/seo/palabras-clave
- */
-router.get("/palabras-clave", verificarAdmin, (req, res) => {
-  const { PALABRAS_CLAVE_SEO } = require("../services/seoService");
-  
-  res.json({
-    mensaje: "Palabras clave SEO organizadas por categorías",
-    categorias: {
-      generales: {
-        cantidad: PALABRAS_CLAVE_SEO.generales.length,
-        ejemplos: PALABRAS_CLAVE_SEO.generales.slice(0, 5)
-      },
-      longTail: {
-        cantidad: PALABRAS_CLAVE_SEO.longTail.length,
-        ejemplos: PALABRAS_CLAVE_SEO.longTail.slice(0, 5)
-      },
-      componentes: {
-        cantidad: PALABRAS_CLAVE_SEO.componentes.length,
-        ejemplos: PALABRAS_CLAVE_SEO.componentes.slice(0, 5)
-      },
-      marca: {
-        cantidad: PALABRAS_CLAVE_SEO.marca.length,
-        ejemplos: PALABRAS_CLAVE_SEO.marca.slice(0, 5)
-      },
-      mediasReparaciones: {
-        cantidad: PALABRAS_CLAVE_SEO.mediasReparaciones.length,
-        ejemplos: PALABRAS_CLAVE_SEO.mediasReparaciones.slice(0, 5)
-      }
-    },
-    totalPalabrasClave: Object.values(PALABRAS_CLAVE_SEO).reduce((acc, cat) => acc + cat.length, 0)
-  });
-});
-
-/**
- * Test de generación SEO para un producto específico (solo admin)
- * POST /api/seo/test-producto/:id
- */
-router.post("/test-producto/:id", verificarAdmin, async (req, res) => {
-  const { id } = req.params;
-  
-  try {
-    const { db } = require("../config/firebase");
-    const { 
-      generarTituloSEO, 
-      generarDescripcionSEO, 
-      generarPalabrasClaveProducto,
-      generarSchemaProducto 
-    } = require("../services/seoService");
-    
-    // Obtener producto
-    const snapshot = await db.ref(`/${id}`).once("value");
-    
-    if (!snapshot.exists()) {
-      return res.status(404).json({ error: "Producto no encontrado" });
+      "✅ Generación automática de títulos y descripciones SEO",
+      "✅ Schema.org markup para productos",
+      "✅ Sitemap.xml dinámico con URLs amigables",
+      "✅ Mapeo de slugs para resolución de URLs",
+      "✅ Verificación de integridad de slugs",
+      "✅ Robots.txt optimizado",
+      "✅ Palabras clave específicas del sector",
+      "✅ Optimización para tractocamiones y refacciones"
+    ],
+    endpoints: {
+      publicos: [
+        "GET /api/seo/slugs - Obtener mapeo completo",
+        "GET /api/seo/resolver/:tipo/:slug - Resolver slug a ID",
+        "GET /api/seo/slug-por-id/:tipo/:id - Obtener slug por ID"
+      ],
+      admin: [
+        "GET /api/seo/verificar-slugs - Verificar integridad",
+        "POST /api/seo/regenerar-slugs - Regenerar mapeo"
+      ]
     }
+  });
+});
+
+
+
+// ✅ AGREGAR ESTA RUTA AL ARCHIVO seoRoutes.js
+
+/**
+ * Limpiar cache y forzar regeneración del sitemap (solo admin)
+ * POST /api/seo/limpiar-cache
+ */
+router.post("/limpiar-cache", verificarAdmin, async (req, res) => {
+  try {
+    console.log("🧹 Limpiando cache de SEO...");
     
-    const producto = snapshot.val();
+    // Limpiar cache de sitemap
+    await db.ref("/seo/sitemap").remove();
+    console.log("✅ Cache de sitemap eliminado");
     
-    // Generar datos SEO de prueba (sin guardar)
-    const seoTest = {
-      titulo: generarTituloSEO(producto),
-      descripcion: generarDescripcionSEO(producto),
-      palabrasClave: generarPalabrasClaveProducto(producto),
-      schema: generarSchemaProducto({ id, ...producto })
-    };
+    // Limpiar cache de slugs
+    await db.ref("/seo/slugs").remove();
+    console.log("✅ Cache de slugs eliminado");
+    
+    // Limpiar cache de productos SEO (opcional)
+    await db.ref("/seo/productos").remove();
+    console.log("✅ Cache de productos SEO eliminado");
     
     res.json({
-      mensaje: "Test de generación SEO completado",
-      producto: {
-        id,
-        nombre: producto.nombre,
-        marca: producto.marca,
-        numeroParte: producto.numeroParte
-      },
-      seoGenerado: seoTest
+      mensaje: "Cache limpiado correctamente",
+      accion: "Cache de sitemap, slugs y productos SEO eliminado",
+      siguientePaso: "Accede a /api/seo/sitemap.xml para regenerar con tractodo.com",
+      timestamp: new Date().toISOString()
     });
     
   } catch (error) {
-    console.error(`Error en test SEO del producto ${id}:`, error.message);
+    console.error("❌ Error limpiando cache:", error.message);
     res.status(500).json({
-      error: "Error en test de SEO",
+      error: "Error al limpiar cache",
+      detalles: error.message
+    });
+  }
+});
+
+/**
+ * Verificar configuración de URLs (público)
+ * GET /api/seo/verificar-urls
+ */
+router.get("/verificar-urls", async (req, res) => {
+  try {
+    // Verificar variables de entorno
+    const variablesEntorno = {
+      FRONTEND_URL: process.env.FRONTEND_URL,
+      NODE_ENV: process.env.NODE_ENV,
+      RAILWAY_ENVIRONMENT: process.env.RAILWAY_ENVIRONMENT,
+      RAILWAY_PUBLIC_DOMAIN: process.env.RAILWAY_PUBLIC_DOMAIN
+    };
+    
+    // Verificar cache actual
+    const sitemapSnapshot = await db.ref("/seo/sitemap").once("value");
+    const sitemapCache = sitemapSnapshot.val();
+    
+    const slugsSnapshot = await db.ref("/seo/slugs").once("value");
+    const slugsCache = slugsSnapshot.val();
+    
+    res.json({
+      configuracion: {
+        urlForzada: "https://tractodo.com",
+        estado: "URL fija en código - NO depende de variables de entorno"
+      },
+      variablesEntorno,
+      cache: {
+        sitemap: {
+          existe: !!sitemapCache,
+          baseURL: sitemapCache?.baseURL,
+          fechaGeneracion: sitemapCache?.fechaGeneracion,
+          totalURLs: sitemapCache?.totalURLs,
+          forzadoTractodo: sitemapCache?.forzadoTractodo
+        },
+        slugs: {
+          existe: !!slugsCache,
+          baseURL: slugsCache?.baseURL,
+          fechaActualizacion: slugsCache?.fechaActualizacion
+        }
+      },
+      recomendacion: sitemapCache?.baseURL !== "https://tractodo.com" 
+        ? "⚠️ Cache tiene URL incorrecta - ejecutar POST /api/seo/limpiar-cache"
+        : "✅ Configuración correcta",
+      timestamp: new Date().toISOString()
+    });
+    
+  } catch (error) {
+    console.error("❌ Error verificando URLs:", error.message);
+    res.status(500).json({
+      error: "Error al verificar configuración",
       detalles: error.message
     });
   }

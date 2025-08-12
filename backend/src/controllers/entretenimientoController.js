@@ -1,5 +1,6 @@
 const { db } = require("../config/firebase");
 const { guardarBackup } = require("./reversionController");
+const { generarSlug } = require("../services/seoService"); // NUEVA IMPORTACIÓN
 
 // =============================================================== VIDEOS ==========================================================================
 
@@ -69,7 +70,7 @@ exports.eliminarVideo = async (req, res) => {
 // Obtener todos los posts del blog
 exports.obtenerPostsBlog = async (req, res) => {
   try {
-    console.log('📚 Obteniendo todos los posts del blog...');
+    console.log('Obteniendo todos los posts del blog...');
     const snapshot = await db.ref("/entretenimiento/blog").once("value");
     const data = snapshot.val() || {};
     const posts = Object.entries(data).map(([id, post]) => ({ id, ...post }));
@@ -77,36 +78,131 @@ exports.obtenerPostsBlog = async (req, res) => {
     // Ordenar por fecha (más recientes primero)
     posts.sort((a, b) => new Date(b.fechaPublicacion || b.fecha || 0) - new Date(a.fechaPublicacion || a.fecha || 0));
 
-    console.log(`✅ ${posts.length} posts obtenidos correctamente`);
+    console.log(`${posts.length} posts obtenidos correctamente`);
     res.json(posts);
   } catch (error) {
-    console.error('❌ Error al obtener posts:', error);
+    console.error('Error al obtener posts:', error);
     res.status(500).json({ mensaje: "Error al obtener los posts", detalles: error.message });
   }
 };
 
-// Obtener post por ID
+// Obtener post por ID específico de Firebase
 exports.obtenerPostPorId = async (req, res) => {
   const { id } = req.params;
+  
   try {
-    console.log(`📖 Obteniendo post con ID: ${id}`);
+    console.log(`Buscando post por ID de Firebase: ${id}`);
+    
     const snapshot = await db.ref(`/entretenimiento/blog/${id}`).once("value");
-
+    
     if (!snapshot.exists()) {
-      console.log(`❌ Post con ID ${id} no encontrado`);
+      console.log(`Post con ID ${id} no encontrado`);
       return res.status(404).json({ mensaje: "Post no encontrado" });
     }
 
     const post = { id, ...snapshot.val() };
-    console.log(`✅ Post obtenido:`, post);
+    console.log(`Post encontrado por ID: ${post.titulo}`);
     res.json(post);
+    
   } catch (error) {
-    console.error('❌ Error al obtener post por ID:', error);
+    console.error('Error al obtener post por ID:', error);
     res.status(500).json({ mensaje: "Error al obtener el post", detalles: error.message });
   }
 };
 
-// Agregar nuevo post al blog (solo admin) - CORREGIDO
+// NUEVA FUNCIÓN: Obtener post por slug/nombre
+exports.obtenerPostPorSlug = async (req, res) => {
+  const { slug } = req.params;
+  
+  try {
+    console.log(`Buscando post por slug: ${slug}`);
+    
+    const todosSnapshot = await db.ref("/entretenimiento/blog").once("value");
+    const todosPosts = todosSnapshot.val() || {};
+    
+    // PASO 1: Buscar por slug exacto
+    const postPorSlug = Object.entries(todosPosts).find(([postId, post]) => {
+      return post.slug === slug;
+    });
+    
+    if (postPorSlug) {
+      const [postId, postData] = postPorSlug;
+      const post = { id: postId, ...postData };
+      console.log(`Post encontrado por slug exacto: ${post.titulo}`);
+      return res.json(post);
+    }
+    
+    // PASO 2: Buscar por título similar (normalizado)
+    console.log(`No encontrado por slug exacto, buscando por título similar...`);
+    const slugBuscado = slug.toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/-/g, ' ')
+      .replace(/[^a-z0-9\s]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    
+    const postPorTitulo = Object.entries(todosPosts).find(([postId, post]) => {
+      if (!post.titulo) return false;
+      
+      const tituloNormalizado = post.titulo.toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^a-z0-9\s]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+      
+      return tituloNormalizado.includes(slugBuscado) || slugBuscado.includes(tituloNormalizado);
+    });
+    
+    if (postPorTitulo) {
+      const [postId, postData] = postPorTitulo;
+      const post = { id: postId, ...postData };
+      console.log(`Post encontrado por título similar: ${post.titulo}`);
+      return res.json(post);
+    }
+    
+    // PASO 3: Buscar por palabras clave del título
+    console.log(`Buscando por palabras clave del título...`);
+    const palabrasBuscadas = slugBuscado.split(' ').filter(palabra => palabra.length > 3);
+    
+    if (palabrasBuscadas.length > 0) {
+      const postPorPalabras = Object.entries(todosPosts).find(([postId, post]) => {
+        if (!post.titulo) return false;
+        
+        const tituloNormalizado = post.titulo.toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .replace(/[^a-z0-9\s]/g, " ")
+          .replace(/\s+/g, " ")
+          .trim();
+        
+        return palabrasBuscadas.some(palabra => tituloNormalizado.includes(palabra));
+      });
+      
+      if (postPorPalabras) {
+        const [postId, postData] = postPorPalabras;
+        const post = { id: postId, ...postData };
+        console.log(`Post encontrado por palabras clave: ${post.titulo}`);
+        return res.json(post);
+      }
+    }
+    
+    // No encontrado
+    console.log(`Post con slug '${slug}' no encontrado`);
+    return res.status(404).json({ 
+      mensaje: "Post no encontrado",
+      slug: slug,
+      intentos: ["slug exacto", "título similar", "palabras clave"]
+    });
+    
+  } catch (error) {
+    console.error('Error al obtener post por slug:', error);
+    res.status(500).json({ mensaje: "Error al obtener el post", detalles: error.message });
+  }
+};
+
+// Agregar nuevo post al blog con slug automático
 exports.agregarPostBlog = async (req, res) => {
   const { titulo, categoria, bloques } = req.body;
 
@@ -152,10 +248,32 @@ exports.agregarPostBlog = async (req, res) => {
     console.log('➕ Creando nuevo post del blog...');
 
     const fechaActual = new Date().toISOString();
+    
+    // Generar slug único
+    const slugBase = generarSlug(titulo.trim());
+    let slug = slugBase;
+    
+    // Verificar que el slug sea único
+    let contador = 1;
+    let slugExiste = true;
+    
+    while (slugExiste) {
+      const todosSnapshot = await db.ref("/entretenimiento/blog").once("value");
+      const todosPosts = todosSnapshot.val() || {};
+      
+      slugExiste = Object.values(todosPosts).some(post => post.slug === slug);
+      
+      if (slugExiste) {
+        slug = `${slugBase}-${contador}`;
+        contador++;
+      }
+    }
+    
+    console.log(`Slug generado: ${slug}`);
 
-    // GUARDAR SOLO LA ESTRUCTURA DE BLOQUES - SIN CONTENIDO CONCATENADO
     const postData = {
       titulo: titulo.trim(),
+      slug: slug,
       categoria: categoria,
       autor: 'TracTodo',
       fechaPublicacion: fechaActual,
@@ -166,7 +284,7 @@ exports.agregarPostBlog = async (req, res) => {
         bloque.texto && bloque.texto.trim() && 
         bloque.imagen && bloque.imagen.trim()
       ),
-      // Para compatibilidad con frontend antiguo - crear arrays separados
+      // Para compatibilidad con frontend antiguo
       imagenes: bloques
         .filter(bloque => bloque.imagen && bloque.imagen.trim())
         .map(bloque => bloque.imagen.trim()),
@@ -176,41 +294,42 @@ exports.agregarPostBlog = async (req, res) => {
         .join('\n\n')
     };
 
-    console.log('📤 Datos del nuevo post:', postData);
+    console.log('Datos del nuevo post:', postData);
 
     const nuevoPostRef = db.ref("/entretenimiento/blog").push();
     await nuevoPostRef.set(postData);
 
-    console.log(`✅ Post creado con ID: ${nuevoPostRef.key}`);
+    console.log(`Post creado con ID: ${nuevoPostRef.key} y slug: ${slug}`);
     res.status(201).json({
       mensaje: "Post agregado correctamente",
       id: nuevoPostRef.key,
+      slug: slug,
       post: { id: nuevoPostRef.key, ...postData }
     });
   } catch (error) {
-    console.error('❌ Error al crear post:', error);
+    console.error('Error al crear post:', error);
     res.status(400).json({ mensaje: "Error al agregar post", detalles: error.message });
   }
 };
 
-// Actualizar post del blog por ID (solo admin) - CORREGIDO
+// Actualizar post del blog (regenerar slug si cambia el título)
 exports.actualizarPostBlog = async (req, res) => {
   const { id } = req.params;
   const { titulo, categoria, bloques } = req.body;
 
   try {
-    console.log(`📝 Actualizando post ${id}...`);
+    console.log(`Actualizando post ${id}...`);
 
     const postRef = db.ref(`/entretenimiento/blog/${id}`);
     const snapshot = await postRef.once("value");
 
     if (!snapshot.exists()) {
-      console.log(`❌ Post con ID ${id} no encontrado para actualizar`);
+      console.log(`Post con ID ${id} no encontrado para actualizar`);
       return res.status(404).json({ mensaje: "Post no encontrado" });
     }
 
     const datosAnteriores = snapshot.val();
-    console.log('💾 Guardando backup del post antes de actualizar...');
+    console.log('Guardando backup del post antes de actualizar...');
     await guardarBackup("blogs", id, datosAnteriores);
 
     // Preparar datos actualizados
@@ -219,7 +338,37 @@ exports.actualizarPostBlog = async (req, res) => {
     };
 
     // Solo actualizar campos que se proporcionaron
-    if (titulo !== undefined) datosActualizados.titulo = titulo.trim();
+    if (titulo !== undefined) {
+      datosActualizados.titulo = titulo.trim();
+      
+      // Regenerar slug si el título cambió
+      if (titulo.trim() !== datosAnteriores.titulo) {
+        const slugBase = generarSlug(titulo.trim());
+        let nuevoSlug = slugBase;
+        
+        // Verificar que el nuevo slug sea único (excluyendo el post actual)
+        let contador = 1;
+        let slugExiste = true;
+        
+        while (slugExiste) {
+          const todosSnapshot = await db.ref("/entretenimiento/blog").once("value");
+          const todosPosts = todosSnapshot.val() || {};
+          
+          slugExiste = Object.entries(todosPosts).some(([postId, post]) => 
+            post.slug === nuevoSlug && postId !== id
+          );
+          
+          if (slugExiste) {
+            nuevoSlug = `${slugBase}-${contador}`;
+            contador++;
+          }
+        }
+        
+        datosActualizados.slug = nuevoSlug;
+        console.log(`Slug actualizado de '${datosAnteriores.slug}' a '${nuevoSlug}'`);
+      }
+    }
+    
     if (categoria !== undefined) datosActualizados.categoria = categoria;
     
     if (bloques !== undefined && Array.isArray(bloques)) {
@@ -241,14 +390,15 @@ exports.actualizarPostBlog = async (req, res) => {
 
     await postRef.update(datosActualizados);
 
-    console.log(`✅ Post ${id} actualizado correctamente`);
+    console.log(`Post ${id} actualizado correctamente`);
     res.status(200).json({
       mensaje: "Post actualizado correctamente",
       id: id,
+      slug: datosActualizados.slug || datosAnteriores.slug,
       datosActualizados: datosActualizados
     });
   } catch (error) {
-    console.error('❌ Error al actualizar post:', error);
+    console.error('Error al actualizar post:', error);
     res.status(400).json({ mensaje: "Error al actualizar post", detalles: error.message });
   }
 };
@@ -258,29 +408,29 @@ exports.eliminarPostBlog = async (req, res) => {
   const { id } = req.params;
 
   try {
-    console.log(`🗑️ Eliminando post con ID: ${id}`);
+    console.log(`Eliminando post con ID: ${id}`);
 
     const postRef = db.ref(`/entretenimiento/blog/${id}`);
     const snapshot = await postRef.once("value");
 
     if (!snapshot.exists()) {
-      console.log(`❌ Post con ID ${id} no encontrado para eliminar`);
+      console.log(`Post con ID ${id} no encontrado para eliminar`);
       return res.status(404).json({ mensaje: "Post no encontrado" });
     }
 
     const datosAnteriores = snapshot.val();
-    console.log('💾 Guardando backup del post antes de eliminar...');
+    console.log('Guardando backup del post antes de eliminar...');
     await guardarBackup("blogs", id, datosAnteriores);
 
     await postRef.remove();
 
-    console.log(`✅ Post ${id} eliminado correctamente`);
+    console.log(`Post ${id} eliminado correctamente`);
     res.status(200).json({
       mensaje: "Post eliminado correctamente",
       id: id
     });
   } catch (error) {
-    console.error('❌ Error al eliminar post:', error);
+    console.error('Error al eliminar post:', error);
     res.status(400).json({ mensaje: "Error al eliminar post", detalles: error.message });
   }
 };
@@ -390,247 +540,107 @@ exports.getVideosDisponibles = async (req, res) => {
   }
 };
 
-// =============================================================== ARTÍCULOS SELECCIONADOS PARA ENTRETENIMIENTO - CORREGIDO ==========================================================================
+// =============================================================== ARTÍCULOS SELECCIONADOS PARA ENTRETENIMIENTO ==========================================================================
 
 // Obtener artículos seleccionados para entretenimiento (máximo 3)
 exports.getArticulosSeleccionados = async (req, res) => {
   try {
-    console.log('📚 Backend: Obteniendo artículos seleccionados...');
-    
     // Obtener IDs de artículos seleccionados
     const snapshot = await db.ref("/entretenimiento/articulosSeleccionados").once("value");
     const articulosSeleccionadosIds = snapshot.val() || [];
-    
-    console.log('📚 Backend: IDs seleccionados:', articulosSeleccionadosIds);
 
     if (articulosSeleccionadosIds.length === 0) {
-      console.log('📚 Backend: No hay artículos seleccionados');
       return res.json([]);
     }
 
     // Obtener datos completos de los artículos seleccionados
     const articulosSnapshot = await db.ref("/entretenimiento/blog").once("value");
     const todosLosArticulos = articulosSnapshot.val() || {};
-    
-    console.log('📚 Backend: Total de artículos en DB:', Object.keys(todosLosArticulos).length);
 
     const articulosSeleccionados = articulosSeleccionadosIds
-      .map(id => {
-        if (todosLosArticulos[id]) {
-          return { id, ...todosLosArticulos[id] };
-        }
-        console.log(`⚠️ Backend: Artículo ${id} no encontrado en DB`);
-        return null;
-      })
-      .filter(articulo => articulo && articulo.titulo); // Solo artículos que existen
+      .map(id => ({ id, ...todosLosArticulos[id] }))
+      .filter(articulo => articulo.titulo); // Solo artículos que existen
 
-    console.log(`✅ Backend: ${articulosSeleccionados.length} artículos seleccionados encontrados`);
     res.json(articulosSeleccionados);
   } catch (error) {
-    console.error('❌ Backend: Error al obtener artículos seleccionados:', error);
     res.status(500).json({ mensaje: "Error al obtener artículos seleccionados", detalles: error.message });
   }
 };
 
-// Agregar artículo a seleccionados para entretenimiento - CORREGIDO
+// Agregar artículo a seleccionados para entretenimiento
 exports.agregarArticuloSeleccionado = async (req, res) => {
   const { articuloId } = req.body;
 
   try {
-    console.log('📚 Backend: Intentando agregar artículo:', articuloId);
-    
-    if (!articuloId) {
-      console.log('❌ Backend: ID de artículo no proporcionado');
-      return res.status(400).json({ mensaje: "ID del artículo es requerido" });
-    }
-
     // Verificar que el artículo existe
     const articuloSnapshot = await db.ref(`/entretenimiento/blog/${articuloId}`).once("value");
     if (!articuloSnapshot.exists()) {
-      console.log(`❌ Backend: Artículo ${articuloId} no encontrado en DB`);
       return res.status(404).json({ mensaje: "Artículo no encontrado" });
     }
 
     // Obtener lista actual de seleccionados
     const snapshot = await db.ref("/entretenimiento/articulosSeleccionados").once("value");
     const articulosSeleccionados = snapshot.val() || [];
-    
-    console.log('📚 Backend: Artículos actualmente seleccionados:', articulosSeleccionados);
-    console.log('📚 Backend: Cantidad actual:', articulosSeleccionados.length);
 
     // Verificar límite de 3 artículos
     if (articulosSeleccionados.length >= 3) {
-      console.log('❌ Backend: Límite de 3 artículos alcanzado');
       return res.status(400).json({ mensaje: "Máximo 3 artículos permitidos en entretenimiento" });
     }
 
     // Verificar que no esté ya seleccionado
     if (articulosSeleccionados.includes(articuloId)) {
-      console.log('❌ Backend: Artículo ya está seleccionado');
       return res.status(400).json({ mensaje: "Artículo ya está seleccionado" });
     }
 
     // Agregar a la lista
-    const nuevaLista = [...articulosSeleccionados, articuloId];
-    await db.ref("/entretenimiento/articulosSeleccionados").set(nuevaLista);
-    
-    console.log('✅ Backend: Artículo agregado correctamente. Nueva lista:', nuevaLista);
+    articulosSeleccionados.push(articuloId);
+    await db.ref("/entretenimiento/articulosSeleccionados").set(articulosSeleccionados);
 
-    res.status(200).json({ 
-      mensaje: "Artículo agregado a entretenimiento correctamente",
-      articuloId: articuloId,
-      totalSeleccionados: nuevaLista.length
-    });
+    res.status(200).json({ mensaje: "Artículo agregado a entretenimiento correctamente" });
   } catch (error) {
-    console.error('❌ Backend: Error al agregar artículo:', error);
-    res.status(500).json({ mensaje: "Error interno al agregar artículo", detalles: error.message });
+    res.status(400).json({ mensaje: "Error al agregar artículo", detalles: error.message });
   }
 };
 
-// Eliminar artículo de seleccionados para entretenimiento - CORREGIDO
+// Eliminar artículo de seleccionados para entretenimiento
 exports.eliminarArticuloSeleccionado = async (req, res) => {
   const { articuloId } = req.body;
 
   try {
-    console.log('📚 Backend: Intentando eliminar artículo:', articuloId);
-    
-    if (!articuloId) {
-      console.log('❌ Backend: ID de artículo no proporcionado');
-      return res.status(400).json({ mensaje: "ID del artículo es requerido" });
-    }
-
     // Obtener lista actual
     const snapshot = await db.ref("/entretenimiento/articulosSeleccionados").once("value");
-    const articulosSeleccionados = snapshot.val() || [];
-    
-    console.log('📚 Backend: Artículos actualmente seleccionados:', articulosSeleccionados);
-
-    // Verificar que el artículo esté en la lista
-    if (!articulosSeleccionados.includes(articuloId)) {
-      console.log('❌ Backend: Artículo no está en la lista de seleccionados');
-      return res.status(404).json({ mensaje: "Artículo no encontrado en entretenimiento" });
-    }
+    const articulosSeleccionados = snapshot.val() || {};
 
     // Filtrar el artículo a eliminar
     const nuevaLista = articulosSeleccionados.filter(id => id !== articuloId);
-    await db.ref("/entretenimiento/articulosSeleccionados").set(nuevaLista);
-    
-    console.log('✅ Backend: Artículo eliminado correctamente. Nueva lista:', nuevaLista);
 
-    res.status(200).json({ 
-      mensaje: "Artículo eliminado de entretenimiento correctamente",
-      articuloId: articuloId,
-      totalSeleccionados: nuevaLista.length
-    });
+    // Guardar nueva lista
+    await db.ref("/entretenimiento/articulosSeleccionados").set(nuevaLista);
+
+    res.status(200).json({ mensaje: "Artículo eliminado de entretenimiento correctamente" });
   } catch (error) {
-    console.error('❌ Backend: Error al eliminar artículo:', error);
-    res.status(500).json({ mensaje: "Error interno al eliminar artículo", detalles: error.message });
+    res.status(400).json({ mensaje: "Error al eliminar artículo", detalles: error.message });
   }
 };
 
-// Obtener artículos disponibles para seleccionar (todos menos los ya seleccionados) - CORREGIDO
+// Obtener artículos disponibles para seleccionar (todos menos los ya seleccionados)
 exports.getArticulosDisponibles = async (req, res) => {
   try {
-    console.log('📚 Backend: Obteniendo artículos disponibles...');
-    
     // Obtener artículos seleccionados
     const seleccionadosSnapshot = await db.ref("/entretenimiento/articulosSeleccionados").once("value");
     const articulosSeleccionados = seleccionadosSnapshot.val() || [];
-    
-    console.log('📚 Backend: Artículos seleccionados:', articulosSeleccionados);
 
     // Obtener todos los artículos
     const todosSnapshot = await db.ref("/entretenimiento/blog").once("value");
     const todosLosArticulos = todosSnapshot.val() || {};
-    
-    console.log('📚 Backend: Total de artículos en DB:', Object.keys(todosLosArticulos).length);
 
     // Filtrar artículos no seleccionados
     const articulosDisponibles = Object.entries(todosLosArticulos)
-      .filter(([id, articulo]) => {
-        const noEstaSeleccionado = !articulosSeleccionados.includes(id);
-        const tieneTitle = articulo && articulo.titulo;
-        return noEstaSeleccionado && tieneTitle;
-      })
+      .filter(([id, articulo]) => !articulosSeleccionados.includes(id) && articulo.titulo)
       .map(([id, articulo]) => ({ id, ...articulo }));
 
-    console.log(`✅ Backend: ${articulosDisponibles.length} artículos disponibles encontrados`);
     res.json(articulosDisponibles);
   } catch (error) {
-    console.error('❌ Backend: Error al obtener artículos disponibles:', error);
     res.status(500).json({ mensaje: "Error al obtener artículos disponibles", detalles: error.message });
-  }
-};
-
-// =============================================================== FUNCIONES DE DEPURACIÓN Y LIMPIEZA ==========================================================================
-
-// Función para limpiar/resetear artículos seleccionados (solo admin)
-exports.limpiarArticulosSeleccionados = async (req, res) => {
-  try {
-    console.log('🧹 Backend: Limpiando artículos seleccionados...');
-    
-    // Obtener estado actual
-    const snapshot = await db.ref("/entretenimiento/articulosSeleccionados").once("value");
-    const estadoAnterior = snapshot.val() || [];
-    
-    console.log('🧹 Backend: Estado anterior:', estadoAnterior);
-    
-    // Limpiar la lista
-    await db.ref("/entretenimiento/articulosSeleccionados").set([]);
-    
-    console.log('✅ Backend: Artículos seleccionados limpiados correctamente');
-    
-    res.status(200).json({ 
-      mensaje: "Artículos seleccionados limpiados correctamente",
-      estadoAnterior: estadoAnterior,
-      nuevoEstado: []
-    });
-  } catch (error) {
-    console.error('❌ Backend: Error al limpiar artículos seleccionados:', error);
-    res.status(500).json({ mensaje: "Error al limpiar artículos seleccionados", detalles: error.message });
-  }
-};
-
-// Función de debug para ver el estado completo de Firebase (solo admin)
-exports.debugEstadoFirebase = async (req, res) => {
-  try {
-    console.log('🔍 Backend: Debug - Obteniendo estado completo...');
-    
-    // Obtener artículos seleccionados
-    const seleccionadosSnapshot = await db.ref("/entretenimiento/articulosSeleccionados").once("value");
-    const articulosSeleccionados = seleccionadosSnapshot.val();
-    
-    // Obtener todos los artículos del blog
-    const blogSnapshot = await db.ref("/entretenimiento/blog").once("value");
-    const todosLosArticulos = blogSnapshot.val();
-    
-    // Obtener videos seleccionados para comparación
-    const videosSnapshot = await db.ref("/entretenimiento/videosSeleccionados").once("value");
-    const videosSeleccionados = videosSnapshot.val();
-    
-    const estadoCompleto = {
-      articulosSeleccionados: {
-        datos: articulosSeleccionados,
-        tipo: typeof articulosSeleccionados,
-        esArray: Array.isArray(articulosSeleccionados),
-        longitud: articulosSeleccionados ? (Array.isArray(articulosSeleccionados) ? articulosSeleccionados.length : Object.keys(articulosSeleccionados).length) : 0
-      },
-      totalArticulosEnBlog: {
-        datos: todosLosArticulos ? Object.keys(todosLosArticulos) : [],
-        cantidad: todosLosArticulos ? Object.keys(todosLosArticulos).length : 0
-      },
-      videosSeleccionados: {
-        datos: videosSeleccionados,
-        cantidad: videosSeleccionados ? (Array.isArray(videosSeleccionados) ? videosSeleccionados.length : Object.keys(videosSeleccionados).length) : 0
-      },
-      timestamp: new Date().toISOString()
-    };
-    
-    console.log('🔍 Backend: Estado completo:', JSON.stringify(estadoCompleto, null, 2));
-    
-    res.status(200).json(estadoCompleto);
-  } catch (error) {
-    console.error('❌ Backend: Error en debug:', error);
-    res.status(500).json({ mensaje: "Error en debug", detalles: error.message });
   }
 };

@@ -3,7 +3,7 @@ const router = express.Router();
 const { adminAutorizado } = require("../middlewares/funcionesPassword");
 const {
   getVideos, agregarVideo, actualizarVideo, eliminarVideo,
-  obtenerPostsBlog, obtenerPostPorId, agregarPostBlog, actualizarPostBlog, eliminarPostBlog,
+  obtenerPostsBlog, obtenerPostPorId, obtenerPostPorSlug, agregarPostBlog, actualizarPostBlog, eliminarPostBlog,
   getVideosSeleccionados, agregarVideoSeleccionado, eliminarVideoSeleccionado, getVideosDisponibles,
   getArticulosSeleccionados, agregarArticuloSeleccionado, eliminarArticuloSeleccionado, getArticulosDisponibles
 } = require("../controllers/entretenimientoController");
@@ -35,8 +35,9 @@ router.post("/videos-seleccionados", verificarAdmin, agregarVideoSeleccionado);
 router.delete("/videos-seleccionados", verificarAdmin, eliminarVideoSeleccionado);
 
 // BLOGS - Lectura pública, escritura solo admin
-router.get("/blogs", obtenerPostsBlog);  // Público
-router.get("/blogs/:id", obtenerPostPorId);  // Público - AGREGADA RUTA FALTANTE
+router.get("/blogs", obtenerPostsBlog);  // Público - obtener todos
+router.get("/blogs/:id", obtenerPostPorId);  // Público - obtener por ID específico de Firebase
+router.get("/blogs/por-nombre/:slug", obtenerPostPorSlug);  // NUEVA RUTA - obtener por slug/nombre
 router.post("/blogs", verificarAdmin, agregarPostBlog);  // Solo admin
 router.put("/blogs/:id", verificarAdmin, actualizarPostBlog);  // Solo admin
 router.delete("/blogs/:id", verificarAdmin, eliminarPostBlog);  // Solo admin
@@ -46,4 +47,5 @@ router.get("/articulos-seleccionados", getArticulosSeleccionados);
 router.get("/articulos-disponibles", verificarAdmin, getArticulosDisponibles);
 router.post("/articulos-seleccionados", verificarAdmin, agregarArticuloSeleccionado);
 router.delete("/articulos-seleccionados", verificarAdmin, eliminarArticuloSeleccionado);
+
 module.exports = router;

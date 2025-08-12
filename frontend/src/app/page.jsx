@@ -14,7 +14,7 @@ import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import AdminPanel from './components/AdminPanel/AdminPanel';
 import ManageProductsButton from './components/ManageProductsButton/ManageProductsButton';
 import SEOHead from './components/SEOHead/SEOHead';
-import { useSEO } from '../hooks/useSEO';
+import { useSEO } from './../hooks/useSEO';
 
 export default function HomePage() {
     const [searchQuery, setSearchQuery] = useState('');
