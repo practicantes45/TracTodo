@@ -1,6 +1,11 @@
-// src/app/productos/page.jsx
 import { Suspense } from 'react';
-import ProductosClient from './ProductosClient'; // El archivo que acabas de crear
+import { generatePageMetadata } from '../../utils/metadataUtils';
+import ProductosClient from './ProductosClient';
+
+// AGREGAR METADATA SERVER-SIDE
+export async function generateMetadata() {
+  return generatePageMetadata('productos', { path: '/productos' });
+}
 
 export default function ProductosPageWrapper() {
   return (

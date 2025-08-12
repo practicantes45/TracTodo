@@ -1,34 +1,62 @@
-// app/layout.js
 import { Inter, Ubuntu, Montserrat } from 'next/font/google';
-import { AuthProvider } from '../contexts/AuthContext';
-import { SEOProvider } from '../contexts/SEOContext';
+import SEOProvider from './components/SEOProvider/SEOProvider';
+import { AuthProvider } from '../hooks/useAuth';
+import './styles/global.css';
 
-const inter = Inter({
+const inter = Inter({ 
   subsets: ['latin'],
-  variable: '--font-inter',
-  display: 'swap',
+  variable: '--font-inter'
 });
 
-const ubuntu = Ubuntu({
-  subsets: ['latin'],
+const ubuntu = Ubuntu({ 
   weight: ['300', '400', '500', '700'],
-  variable: '--font-ubuntu',
-  display: 'swap',
-});
-
-const montserrat = Montserrat({
   subsets: ['latin'],
-  variable: '--font-montserrat',
-  display: 'swap',
+  variable: '--font-ubuntu'
 });
 
-// REMOVIDO: export const metadata = { ... } 
-// La metadata ahora se maneja dinámicamente en cada página
+const montserrat = Montserrat({ 
+  weight: ['300', '400', '500', '600', '700'],
+  subsets: ['latin'],
+  variable: '--font-montserrat'
+});
 
-export const viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  themeColor: '#002a5c',
+// METADATA GENÉRICA - será sobrescrita por cada página
+export const metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_FRONTEND_URL || 'https://tractodo.com'),
+  
+  // Metadata por defecto muy genérica
+  title: {
+    template: '%s | Tractodo',
+    default: 'Tractodo - Refacciones para Tractocamión'
+  },
+  
+  description: 'Refaccionaria especializada en partes y componentes para tractocamión.',
+  
+  verification: {
+    google: 'google-site-verification-code', // Reemplazar con código real
+  },
+  
+  // Icons y manifest
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
+  
+  manifest: '/site.webmanifest',
+  
+  // Configuración básica
+  robots: {
+    index: true,
+    follow: true,
+  },
+  
+  // Configuración de viewport movida aquí desde el export separado
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    themeColor: '#002a5c',
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -38,12 +66,6 @@ export default function RootLayout({ children }) {
         {/* Preconnect para mejorar rendimiento */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        
-        {/* Favicon y iconos */}
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <link rel="manifest" href="/site.webmanifest" />
         
         {/* Meta tags adicionales */}
         <meta name="msapplication-TileColor" content="#002a5c" />

@@ -1,35 +1,43 @@
 // services/seoService.js
-import { API_URL } from '../config/constants';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
 
 /**
- * Obtiene datos SEO específicos para un producto desde el backend
+ * Obtiene datos SEO de un producto específico
  */
 export const obtenerSEOProducto = async (id) => {
   try {
     const response = await fetch(`${API_URL}/seo/producto/${id}`, {
-      credentials: 'include',
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
 
     if (!response.ok) {
-      console.warn(`No se encontraron datos SEO para producto ${id}`);
-      return null;
+      if (response.status === 404) {
+        return null; // Producto sin SEO específico
+      }
+      throw new Error(`Error al obtener SEO del producto: ${response.status}`);
     }
 
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error obteniendo SEO del producto:', error);
-    return null;
+    console.error('Error en obtenerSEOProducto:', error);
+    return null; // Retorna null en caso de error para usar SEO por defecto
   }
 };
 
 /**
- * Obtiene schema markup para un producto específico
+ * Obtiene Schema markup de un producto específico
  */
 export const obtenerSchemaProducto = async (id) => {
   try {
-    const response = await fetch(`${API_URL}/seo/producto/${id}/schema`, {
-      credentials: 'include',
+    const response = await fetch(`${API_URL}/seo/schema/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
 
     if (!response.ok) {
@@ -39,17 +47,42 @@ export const obtenerSchemaProducto = async (id) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error('Error obteniendo schema del producto:', error);
+    console.error('Error en obtenerSchemaProducto:', error);
     return null;
   }
 };
 
 /**
- * Genera SEO automático para productos masivamente (admin)
+ * Obtiene estadísticas SEO (solo admin)
+ */
+export const obtenerEstadisticasSEO = async () => {
+  try {
+    const response = await fetch(`${API_URL}/seo/estadisticas`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error al obtener estadísticas SEO: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error en obtenerEstadisticasSEO:', error);
+    throw error;
+  }
+};
+
+/**
+ * Genera SEO para todos los productos (solo admin)
  */
 export const generarSEOProductos = async () => {
   try {
-    const response = await fetch(`${API_URL}/seo/productos/generar`, {
+    const response = await fetch(`${API_URL}/seo/generar-productos`, {
       method: 'POST',
       credentials: 'include',
       headers: {
