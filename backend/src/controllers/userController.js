@@ -1,3 +1,4 @@
+
 const { register, login } = require("../db/usuariosDB");
 
 const registrarUsuario = async (req, res) => {
@@ -27,42 +28,45 @@ const iniciarSesion = async (req, res) => {
     return res.status(respuesta.status).json({ error: respuesta.mensajeUsuario });
   }
 
-  console.log('🍪 Configurando cookie para usuario:', username);
-  console.log('🌍 Entorno:', process.env.NODE_ENV);
-  console.log('🔒 Host:', req.get('host'));
-  console.log('🔗 Origin:', req.get('origin'));
-
-  // CONFIGURACIÓN OPTIMIZADA PARA RAILWAY
-  const isProduction = process.env.NODE_ENV === 'production';
   const origin = req.get('origin') || '';
+  const host = req.get('host') || '';
   
-  // Detectar si es Railway
-  const isRailway = req.get('host')?.includes('railway.app') || 
-                   origin.includes('railway.app') || 
-                   process.env.RAILWAY_ENVIRONMENT;
+  console.log('🍪 === CONFIGURACIÓN DE COOKIE CROSS-DOMAIN ===');
+  console.log('🌐 Origin:', origin);
+  console.log('🏠 Host:', host);
+  console.log('👤 Usuario:', username);
 
-  console.log('🚂 Es Railway:', isRailway);
+  // DETECTAR SI ES TRACTODO.COM
+  const esTractodoCom = origin.includes('tractodo.com');
+  const esRailway = host.includes('railway.app');
+  const isProduction = process.env.NODE_ENV === 'production';
 
+  console.log('🔍 Análisis de dominio:');
+  console.log('- Es tractodo.com:', esTractodoCom);
+  console.log('- Es Railway:', esRailway);
+  console.log('- Es producción:', isProduction);
+
+  // CONFIGURACIÓN ESPECÍFICA PARA CROSS-DOMAIN
   const cookieOptions = {
     httpOnly: true,
-    secure: isProduction,
-    sameSite: isProduction ? (isRailway ? 'Lax' : 'None') : 'Lax', // LAX para Railway
+    secure: isProduction, // HTTPS obligatorio en producción
+    sameSite: esTractodoCom ? 'None' : 'Lax', // None para cross-domain
     maxAge: 24 * 60 * 60 * 1000, // 24 horas
     path: '/',
-    // AGREGAR DOMAIN ESPECÍFICO PARA RAILWAY
-    ...(isRailway && { domain: '.railway.app' })
+    // NO ESPECIFICAR DOMAIN PARA CROSS-DOMAIN - dejar que el browser lo maneje
   };
 
-  console.log('⚙️ Configuración de cookie optimizada:', cookieOptions);
+  console.log('⚙️ Configuración final de cookie:', cookieOptions);
 
-  // CONFIGURAR HEADERS ADICIONALES PARA RAILWAY
+  // HEADERS ESPECÍFICOS PARA CROSS-DOMAIN
   res.set({
     'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Allow-Origin': origin, // Específico para el origin actual
     'Access-Control-Expose-Headers': 'Set-Cookie',
-    // AGREGAR CACHE CONTROL PARA EVITAR PROBLEMAS DE CACHE
-    'Cache-Control': 'no-cache, no-store, must-revalidate',
-    'Pragma': 'no-cache',
-    'Expires': '0'
+    'Vary': 'Origin', // Importante para caching
+    // HEADERS ADICIONALES PARA CROSS-DOMAIN COOKIES
+    'Cross-Origin-Resource-Policy': 'cross-origin',
+    'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
   });
 
   res
@@ -73,13 +77,14 @@ const iniciarSesion = async (req, res) => {
       user: username,
       debug: {
         cookieSet: true,
-        environment: process.env.NODE_ENV,
-        isRailway,
+        crossDomain: esTractodoCom,
+        origin,
+        host,
         cookieConfig: cookieOptions
       }
     });
 
-  console.log('✅ Cookie configurada exitosamente para Railway');
+  console.log('✅ Cookie cross-domain configurada exitosamente');
 };
 
 module.exports = {
