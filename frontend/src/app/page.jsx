@@ -19,7 +19,7 @@ import { useSEO } from './../hooks/useSEO';
 export default function HomePage() {
     const [searchQuery, setSearchQuery] = useState('');
     const router = useRouter();
-    
+
     // Hook SEO para página de inicio
     const { seoData } = useSEO('inicio');
 
@@ -43,11 +43,39 @@ export default function HomePage() {
     const schemaOrganization = {
         "@context": "https://schema.org",
         "@type": "AutoPartsStore",
-        "name": "Tractodo",
-        "description": "Refaccionaria especializada en partes y componentes para tractocamión",
+        "name": "Refacciones para Tractocamión en San Juan del Río | Tractodo - Calidad y Garantía",
+        "description": "Compra refacciones para tractocamión de las mejores marcas en Tractodo, San Juan del Río. Envíos a todo México, precios competitivos y atención personalizada.",
         "url": "https://tractodo.com",
-        "telephone": "+52-427-XXX-XXXX",
-        "email": "contacto@tractodo.com",
+        "contactPoint": [
+            {
+                "@type": "ContactPoint",
+                "telephone": "+524272245923",
+                "contactType": "customer service",
+                "areaServed": "MX",
+                "availableLanguage": ["Spanish", "English"],
+                "contactOption": "TollFree"
+            },
+            {
+                "@type": "ContactPoint",
+                "telephone": "+524272033515",
+                "contactType": "sales",
+                "areaServed": "MX",
+                "availableLanguage": ["Spanish"]
+            },
+            {
+                "@type": "ContactPoint",
+                "telephone": "+524272032672",
+                "contactType": "technical support",
+                "areaServed": "MX"
+            },
+            {
+                "@type": "ContactPoint",
+                "telephone": "+524424128926",
+                "contactType": "billing",
+                "areaServed": "MX"
+            }
+        ],
+        "email": "tractodo62@gmail.com",
         "address": {
             "@type": "PostalAddress",
             "streetAddress": "San Cayetano, Río Extoras 56",

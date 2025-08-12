@@ -12,6 +12,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import AdminButtons from '../components/AdminButtons/AdminButtons';
 import { getProductSlug } from '../../utils/slugUtils';
 import { useSEO } from '../../hooks/useSEO';
+import { getPreviewDescription } from '../../utils/textUtils';
 
 // Constante para productos por página
 const PRODUCTOS_POR_PAGINA = 15;
@@ -678,8 +679,9 @@ export default function ProductosPage() {
 
                           <div className="productoInfo">
                             <h3 className="productoNombre">{producto.nombre}</h3>
-                            <p className="productoDescripcion">{producto.descripcion}</p>
-                            <div className="productoPrecio">
+                            <p className="productoDescripcion">
+                              {getPreviewDescription(producto.descripcion, 120)}
+                            </p>                            <div className="productoPrecio">
                               ${parseFloat(producto.precioVentaSugerido || 0).toLocaleString()}
                             </div>
                             <button

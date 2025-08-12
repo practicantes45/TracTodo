@@ -939,6 +939,7 @@
   width: 100%;
 }
 
+/* REEMPLAZAR la sección .productoDescripcion existente con: */
 .productoDescripcion {
   color: #666;
   font-size: 1rem;
@@ -949,6 +950,14 @@
   transition: all 0.4s ease 0.05s;
   transform: translateY(0);
   opacity: 0.8;
+    display: -webkit-box;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-height: 4.5em; /* Altura para exactamente 3 líneas */
+  min-height: 3em; /* Altura mínima para consistencia */
+  word-wrap: break-word;
+  hyphens: auto;
 }
 
 .productoCard:hover .productoDescripcion {
