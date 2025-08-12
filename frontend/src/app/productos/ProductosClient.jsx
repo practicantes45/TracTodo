@@ -6,7 +6,7 @@ import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
 import SEOHead from '../components/SEOHead/SEOHead';
-import { obtenerProductosConSEO, buscarProductos } from '../../services/productoService';
+import { obtenerProductos, buscarProductos } from '../../services/productoService';
 import { registrarVista } from '../../services/trackingService';
 import { useSearchParams, useRouter } from 'next/navigation';
 import AdminButtons from '../components/AdminButtons/AdminButtons';
@@ -121,7 +121,7 @@ export default function ProductosPage() {
     console.log(`📦 Mostrando ${nuevosProductosVisibles.length} de ${productos.length} productos (página ${paginaActual})`);
   };
 
-  // MODIFICADO: Función principal para cargar productos con filtros (acepta parámetros directos)
+  // REVERTIDO: Función principal para cargar productos con filtros (usando servicios originales)
   const cargarProductosConFiltros = async (marcas = selectedMarcas, orden = selectedOrden, busqueda = busquedaParam) => {
     try {
       setLoading(true);
@@ -146,8 +146,7 @@ export default function ProductosPage() {
         resultados = await buscarProductos({
           q: busqueda,
           marcas: marcas,
-          orden: orden,
-          incluirSEO: true
+          orden: orden
         });
       } else {
         console.log('📦 Cargando productos con filtros:', {
@@ -155,7 +154,7 @@ export default function ProductosPage() {
           orden: orden
         });
 
-        resultados = await obtenerProductosConSEO({
+        resultados = await obtenerProductos({
           marcas: marcas,
           orden: orden
         });
