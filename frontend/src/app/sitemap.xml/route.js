@@ -8,7 +8,8 @@ export async function GET() {
     console.log('🗺️ Solicitando sitemap desde:', `${backendUrl}/seo/sitemap.xml`);
     
     // Hacer petición al backend para obtener el sitemap
-    const response = await fetch(`${backendUrl}/seo/sitemap.xml`, {
+    const response = await fetch(`${backendUrl}
+        }`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/xml',
