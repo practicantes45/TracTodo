@@ -13,7 +13,7 @@ export default function AdminLoginModal({ isOpen, onClose }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const { guardarSesion } = useAuth(); // USAR ESTO EN LUGAR DE setIsAdmin
+  const { guardarSesion } = useAuth();
 
   const handleChange = (e) => {
     setCredentials({
@@ -42,7 +42,11 @@ export default function AdminLoginModal({ isOpen, onClose }) {
       console.log('📡 Respuesta login modal:', respuestaLogin);
       
       if (respuestaLogin.mensaje === "Login exitoso") {
-        console.log('✅ Login exitoso - verificando admin...');
+        console.log('✅ Login exitoso - esperando propagación de cookies...');
+        
+        // SOLUCIÓN: Esperar a que la cookie se propague
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        console.log('⏰ Delay completado - verificando admin...');
         
         const respuestaAdmin = await verificarAdmin();
         console.log('📡 Respuesta admin modal:', respuestaAdmin);
