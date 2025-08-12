@@ -6,17 +6,16 @@ import { FaCalendarCheck, FaMapMarkedAlt, FaFilter, FaWhatsapp, FaSortAlphaDown,
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
+import SEOHead from '../components/SEOHead/SEOHead';
 import AdminVideoButtons from '../components/AdminVideoButtons/AdminVideoButtons';
 import VideoModal from '../components/VideoModal/VideoModal';
 import { useAuth } from '../../hooks/useAuth';
-import { obtenerVideos } from '../../services/videoService';
 import { useSEO } from '../../hooks/useSEO';
+import { obtenerVideos } from '../../services/videoService';
 
 export default function VideosPage() {
     const router = useRouter();
     const { isAdmin } = useAuth();
-    const [videos, setVideos] = useState([]);
-
     const [selectedCategory, setSelectedCategory] = useState('todos');
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedVideo, setSelectedVideo] = useState(null);
@@ -24,9 +23,10 @@ export default function VideosPage() {
     const [allShorts, setAllShorts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
+    
     // Estados para el modal de agregar video
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
     // Hook SEO para página de videos
     const { seoData } = useSEO('videos', { path: '/videos' });
 
@@ -47,10 +47,10 @@ export default function VideosPage() {
             setLoading(true);
             setError(null);
             console.log('🎬 Cargando videos del backend...');
-
+            
             const videos = await obtenerVideos();
             console.log('✅ Videos cargados:', videos);
-
+            
             // Transformar datos si es necesario para compatibilidad
             const videosFormateados = videos.map(video => ({
                 id: video.id,
@@ -59,7 +59,7 @@ export default function VideosPage() {
                 category: video.categoria || video.category,
                 fecha: video.fecha
             }));
-
+            
             setAllShorts(videosFormateados);
         } catch (error) {
             console.error('❌ Error al cargar videos:', error);
@@ -85,7 +85,7 @@ export default function VideosPage() {
                     fecha: new Date().toISOString()
                 };
 
-                await import('../../services/videoService').then(({ agregarVideo }) =>
+                await import('../../services/videoService').then(({ agregarVideo }) => 
                     agregarVideo(datosBackend)
                 );
                 console.log('✅ Video agregado al backend');
@@ -98,14 +98,14 @@ export default function VideosPage() {
                     categoria: videoData.category
                 };
 
-                await import('../../services/videoService').then(({ actualizarVideo }) =>
+                await import('../../services/videoService').then(({ actualizarVideo }) => 
                     actualizarVideo(videoData.id, datosBackend)
                 );
                 console.log('✅ Video editado en backend');
 
             } else if (action === 'delete') {
                 // Eliminar video
-                await import('../../services/videoService').then(({ eliminarVideo }) =>
+                await import('../../services/videoService').then(({ eliminarVideo }) => 
                     eliminarVideo(videoData)
                 );
                 console.log('✅ Video eliminado del backend');
@@ -217,7 +217,6 @@ export default function VideosPage() {
         window.open('https://www.tiktok.com/@tractodo4', '_blank');
     };
 
-
     // Schema.org para la página de videos
     const schemaVideoGallery = {
         "@context": "https://schema.org",
@@ -230,14 +229,13 @@ export default function VideosPage() {
             "name": "Tractodo",
             "url": "https://tractodo.com"
         },
-        "video": videos.slice(0, 10).map(video => ({
+        "video": allShorts.slice(0, 10).map(video => ({
             "@type": "VideoObject",
-            "name": video.titulo,
-            "description": video.descripcion,
-            "thumbnailUrl": video.thumbnail,
-            "uploadDate": video.fechaPublicacion,
-            "duration": video.duracion,
-            "embedUrl": `https://www.youtube.com/embed/${video.videoId}`,
+            "name": video.title,
+            "description": video.title,
+            "thumbnailUrl": getYouTubeThumbnail(video.youtubeLink),
+            "uploadDate": video.fecha,
+            "embedUrl": `https://www.youtube.com/embed/${extractYouTubeId(video.youtubeLink)}`,
             "publisher": {
                 "@type": "Organization",
                 "name": "Tractodo"
@@ -249,6 +247,7 @@ export default function VideosPage() {
     if (loading) {
         return (
             <>
+                {/* SEO Head para estado de loading */}
                 {seoData && (
                     <SEOHead
                         title={seoData.title}
@@ -286,6 +285,7 @@ export default function VideosPage() {
     if (error) {
         return (
             <>
+                {/* SEO Head para estado de error */}
                 {seoData && (
                     <SEOHead
                         title={seoData.title}
@@ -338,6 +338,7 @@ export default function VideosPage() {
                     schema={schemaVideoGallery}
                 />
             )}
+
             <div className="layout videos-page">
                 <Navbar />
 
@@ -373,7 +374,7 @@ export default function VideosPage() {
                                     <h2>¡Arranca el motor y vamos a ver!</h2>
                                     <p>{filteredShorts.length} shorts encontrados</p>
                                 </div>
-
+                                
                                 {/* BOTÓN DE AGREGAR VIDEO INTEGRADO - SOLO SI ES ADMIN */}
                                 {isAdmin && (
                                     <div className="adminActionsContainer">
