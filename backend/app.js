@@ -23,16 +23,14 @@ app.use((req, res, next) => {
   next();
 });
 
-// CONFIGURACIÓN ESPECÍFICA PARA TRACTODO.COM + RAILWAY
+// CONFIGURACIÓN CORREGIDA PARA TRACTODO.COM
 const allowedOrigins = [
   "http://localhost:3001", 
   "http://127.0.0.1:3001",
   "https://tractodo-production-3e8e.up.railway.app",
   "https://tractodo-production.up.railway.app",
-  "https://tractodo.com",           // ← DOMINIO PRINCIPAL
-  "https://www.tractodo.com",       // ← CON WWW
-  "http://tractodo.com",            // ← HTTP (por si acaso)
-  "http://www.tractodo.com"         // ← HTTP CON WWW
+  "https://tractodo.com",
+  "https://www.tractodo.com"
 ];
 
 console.log('🔒 CORS configurado para origins:', allowedOrigins);
@@ -41,7 +39,7 @@ app.use(cors({
   origin: function (origin, callback) {
     console.log(`🔍 CORS - Origin recibido: "${origin}"`);
     
-    // Permitir requests sin origin (mobile apps, Postman, etc.)
+    // Permitir requests sin origin
     if (!origin) {
       console.log('✅ CORS - Sin origin, permitido');
       return callback(null, true);
@@ -53,11 +51,10 @@ app.use(cors({
       callback(null, true);
     } else {
       console.log('❌ CORS - Origin NO permitido:', origin);
-      console.log('📋 Origins permitidos:', allowedOrigins);
       callback(new Error('No permitido por CORS'));
     }
   },
-  credentials: true, // CRÍTICO para cookies cross-domain
+  credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: [
     'Content-Type', 
@@ -65,47 +62,25 @@ app.use(cors({
     'Cookie', 
     'X-Requested-With',
     'Accept',
-    'Origin',
-    'Access-Control-Request-Method',
-    'Access-Control-Request-Headers'
+    'Origin'
   ],
   exposedHeaders: ['Set-Cookie'],
-  optionsSuccessStatus: 200,
-  preflightContinue: false
+  optionsSuccessStatus: 200
 }));
-
-// MIDDLEWARE ESPECÍFICO PARA TRACTODO.COM
-app.use((req, res, next) => {
-  const origin = req.get('origin');
-  
-  if (origin && origin.includes('tractodo.com')) {
-    console.log('🌐 Petición desde tractodo.com - configurando headers cross-domain');
-    res.set({
-      'Access-Control-Allow-Origin': origin,
-      'Access-Control-Allow-Credentials': 'true',
-      'Vary': 'Origin'
-    });
-  }
-  
-  next();
-});
 
 app.use(express.json());
 app.use(cookieParser()); 
 
-// MIDDLEWARE PARA DEBUGGING DE COOKIES CROSS-DOMAIN
+// MIDDLEWARE PARA DEBUGGING DE COOKIES
 app.use((req, res, next) => {
   if (req.path.includes('/user/administradores')) {
-    console.log('🔍 === DEBUGGING ADMIN REQUEST CROSS-DOMAIN ===');
+    console.log('🔍 === DEBUGGING ADMIN REQUEST ===');
     console.log('🌐 Origin:', req.get('origin'));
     console.log('🏠 Host:', req.get('host'));
-    console.log('🔗 Referer:', req.get('referer'));
     console.log('🍪 Cookie Header:', req.get('cookie'));
-    console.log('📋 Parsed Cookies:', JSON.stringify(req.cookies, null, 2));
+    console.log('📋 Parsed Cookies:', req.cookies);
     console.log('🔐 Token específico:', req.cookies?.token);
-    console.log('🚪 Sec-Fetch-Site:', req.get('sec-fetch-site'));
-    console.log('🔒 Sec-Fetch-Mode:', req.get('sec-fetch-mode'));
-    console.log('===============================================');
+    console.log('========================================');
   }
   next();
 });
@@ -120,7 +95,7 @@ app.use("/api/reversion", reversionRoutes);
 app.use("/api/vistas", vistasRoutes);
 app.use("/api/seo", seoRoutes);
 
-console.log("✅ Backend iniciado - Configurado para tractodo.com");
+console.log("✅ Backend iniciado correctamente");
 console.log("🌐 Environment:", process.env.NODE_ENV || 'development');
 console.log("🔗 Frontend: https://tractodo.com");
 console.log("📡 Backend: https://tractodo-production.up.railway.app");

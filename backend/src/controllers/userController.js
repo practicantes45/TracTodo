@@ -31,43 +31,35 @@ const iniciarSesion = async (req, res) => {
   const origin = req.get('origin') || '';
   const host = req.get('host') || '';
   
-  console.log('🍪 === CONFIGURACIÓN DE COOKIE CROSS-DOMAIN ===');
+  console.log('🍪 Configurando cookie para usuario:', username);
   console.log('🌐 Origin:', origin);
   console.log('🏠 Host:', host);
-  console.log('👤 Usuario:', username);
 
-  // DETECTAR SI ES TRACTODO.COM
+  // Detectar si es cross-domain
   const esTractodoCom = origin.includes('tractodo.com');
-  const esRailway = host.includes('railway.app');
   const isProduction = process.env.NODE_ENV === 'production';
 
-  console.log('🔍 Análisis de dominio:');
-  console.log('- Es tractodo.com:', esTractodoCom);
-  console.log('- Es Railway:', esRailway);
-  console.log('- Es producción:', isProduction);
+  console.log('🔍 Es tractodo.com:', esTractodoCom);
+  console.log('🔍 Es producción:', isProduction);
 
-  // CONFIGURACIÓN ESPECÍFICA PARA CROSS-DOMAIN
+  // Configuración de cookie optimizada
   const cookieOptions = {
     httpOnly: true,
-    secure: isProduction, // HTTPS obligatorio en producción
-    sameSite: esTractodoCom ? 'None' : 'Lax', // None para cross-domain
-    maxAge: 24 * 60 * 60 * 1000, // 24 horas
-    path: '/',
-    // NO ESPECIFICAR DOMAIN PARA CROSS-DOMAIN - dejar que el browser lo maneje
+    secure: isProduction,
+    sameSite: esTractodoCom ? 'None' : 'Lax',
+    maxAge: 24 * 60 * 60 * 1000,
+    path: '/'
   };
 
-  console.log('⚙️ Configuración final de cookie:', cookieOptions);
+  console.log('⚙️ Configuración de cookie:', cookieOptions);
 
-  // HEADERS ESPECÍFICOS PARA CROSS-DOMAIN
-  res.set({
-    'Access-Control-Allow-Credentials': 'true',
-    'Access-Control-Allow-Origin': origin, // Específico para el origin actual
-    'Access-Control-Expose-Headers': 'Set-Cookie',
-    'Vary': 'Origin', // Importante para caching
-    // HEADERS ADICIONALES PARA CROSS-DOMAIN COOKIES
-    'Cross-Origin-Resource-Policy': 'cross-origin',
-    'Cross-Origin-Opener-Policy': 'same-origin-allow-popups',
-  });
+  // Headers para cross-domain
+  if (esTractodoCom) {
+    res.set({
+      'Access-Control-Allow-Credentials': 'true',
+      'Access-Control-Allow-Origin': origin
+    });
+  }
 
   res
     .cookie("token", respuesta.token, cookieOptions)
@@ -78,13 +70,11 @@ const iniciarSesion = async (req, res) => {
       debug: {
         cookieSet: true,
         crossDomain: esTractodoCom,
-        origin,
-        host,
         cookieConfig: cookieOptions
       }
     });
 
-  console.log('✅ Cookie cross-domain configurada exitosamente');
+  console.log('✅ Cookie configurada exitosamente');
 };
 
 module.exports = {
