@@ -12,7 +12,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import AdminButtons from '../components/AdminButtons/AdminButtons';
 import { getProductSlug } from '../../utils/slugUtils';
 import { useSEO } from '../../hooks/useSEO';
-import { getPreviewDescription } from '../../utils/textUtils';
+import { getPreviewDescription, getShortPreviewDescription } from '../../utils/textUtils';
 
 // Constante para productos por página
 const PRODUCTOS_POR_PAGINA = 15;
