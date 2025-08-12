@@ -1,5 +1,6 @@
 import { Inter, Ubuntu, Montserrat } from 'next/font/google';
 import SEOProvider from './components/SEOProvider/SEOProvider';
+import { AuthProvider } from '../hooks/useAuth';
 import './styles/global.css';
 
 const inter = Inter({ 
@@ -20,16 +21,16 @@ const montserrat = Montserrat({
 });
 
 export const metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_FRONTEND_URL || 'https://tractodo.com'),
   title: 'Tractodo - Refaccionaria para Tractocamión | Querétaro',
   description: 'Refaccionaria especializada en partes y componentes para tractocamión. Venta de cabezas de motor, turbos, árboles de levas y kits de media reparación para motores Cummins, Caterpillar, Detroit y más.',
   keywords: ['refacciones tractocamión', 'partes motor diésel', 'turbos', 'cabezas motor', 'Querétaro', 'Cummins', 'Caterpillar', 'Detroit'],
   authors: [{ name: 'Tractodo' }],
-  viewport: 'width=device-width, initial-scale=1',
   robots: 'index, follow',
   openGraph: {
     title: 'Tractodo - Refaccionaria para Tractocamión | Querétaro',
     description: 'Refaccionaria especializada en partes y componentes para tractocamión. Venta de cabezas de motor, turbos, árboles de levas y kits de media reparación.',
-    url: 'https://tractodo.com',
+    url: '/',
     siteName: 'Tractodo',
     images: [
       {
@@ -53,8 +54,14 @@ export const metadata = {
     google: 'google-site-verification-code', // Reemplazar con código real
   },
   alternates: {
-    canonical: 'https://tractodo.com',
+    canonical: '/',
   },
+};
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  themeColor: '#002a5c',
 };
 
 export default function RootLayout({ children }) {
@@ -72,7 +79,6 @@ export default function RootLayout({ children }) {
         <link rel="manifest" href="/site.webmanifest" />
         
         {/* Meta tags adicionales */}
-        <meta name="theme-color" content="#002a5c" />
         <meta name="msapplication-TileColor" content="#002a5c" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
         
@@ -83,9 +89,11 @@ export default function RootLayout({ children }) {
         <link rel="preload" href="/images/tractodo-logo.jpg" as="image" />
       </head>
       <body>
-        <SEOProvider>
-          {children}
-        </SEOProvider>
+        <AuthProvider>
+          <SEOProvider>
+            {children}
+          </SEOProvider>
+        </AuthProvider>
       </body>
     </html>
   );
