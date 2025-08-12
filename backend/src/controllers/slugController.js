@@ -4,7 +4,7 @@ const { db } = require("../config/firebase");
  * Obtener mapeo de slugs para resolución de URLs
  * GET /api/seo/slugs
  */
-exports.obtenerMapeoSlugs = async (req, res) => {
+const obtenerMapeoSlugs = async (req, res) => {
   try {
     const snapshot = await db.ref("/seo/slugs").once("value");
     const mapeoData = snapshot.val();
@@ -36,7 +36,7 @@ exports.obtenerMapeoSlugs = async (req, res) => {
  * Resolver slug a ID (para el frontend)
  * GET /api/seo/resolver/:tipo/:slug
  */
-exports.resolverSlug = async (req, res) => {
+const resolverSlug = async (req, res) => {
   const { tipo, slug } = req.params;
   
   if (!['productos', 'blog'].includes(tipo)) {
@@ -78,7 +78,7 @@ exports.resolverSlug = async (req, res) => {
  * Regenerar todos los slugs
  * POST /api/seo/regenerar-slugs
  */
-exports.regenerarSlugs = async (req, res) => {
+const regenerarSlugs = async (req, res) => {
   try {
     console.log("Regenerando mapeo de slugs...");
     
@@ -161,8 +161,131 @@ exports.regenerarSlugs = async (req, res) => {
   }
 };
 
+/**
+ * Obtener slug por ID (útil para generar URLs)
+ * GET /api/seo/slug-por-id/:tipo/:id
+ */
+const obtenerSlugPorId = async (req, res) => {
+  const { tipo, id } = req.params;
+  
+  if (!['productos', 'blog'].includes(tipo)) {
+    return res.status(400).json({
+      error: "Tipo inválido",
+      tiposPermitidos: ['productos', 'blog']
+    });
+  }
+  
+  try {
+    const snapshot = await db.ref(`/seo/slugs/mapeo/${tipo}`).once("value");
+    const mapeo = snapshot.val() || {};
+    
+    // Buscar el slug que corresponde al ID
+    const slug = Object.keys(mapeo).find(key => mapeo[key] === id);
+    
+    if (!slug) {
+      return res.status(404).json({
+        error: "ID no encontrado en el mapeo",
+        id: id,
+        tipo: tipo
+      });
+    }
+    
+    res.json({
+      id: id,
+      slug: slug,
+      tipo: tipo,
+      url: `https://tractodo.com/${tipo}/${slug}`
+    });
+    
+  } catch (error) {
+    console.error("Error obteniendo slug por ID:", error.message);
+    res.status(500).json({
+      error: "Error al obtener slug",
+      detalles: error.message
+    });
+  }
+};
+
+/**
+ * Verificar integridad del mapeo de slugs
+ * GET /api/seo/verificar-slugs
+ */
+const verificarIntegridadSlugs = async (req, res) => {
+  try {
+    console.log("Verificando integridad del mapeo de slugs...");
+    
+    // Obtener mapeo actual
+    const mapeoSnapshot = await db.ref("/seo/slugs/mapeo").once("value");
+    const mapeo = mapeoSnapshot.val() || { productos: {}, blog: {} };
+    
+    // Obtener datos reales
+    const productosSnapshot = await db.ref("/").once("value");
+    const productos = productosSnapshot.val() || {};
+    
+    const blogSnapshot = await db.ref("/entretenimiento/blog").once("value");
+    const posts = blogSnapshot.val() || {};
+    
+    // Verificar productos
+    const productosReales = Object.keys(productos).filter(id => productos[id]?.nombre);
+    const productosEnMapeo = Object.values(mapeo.productos || {});
+    
+    const productosHuerfanos = productosReales.filter(id => !productosEnMapeo.includes(id));
+    const slugsHuerfanos = Object.keys(mapeo.productos || {}).filter(slug => !productosReales.includes(mapeo.productos[slug]));
+    
+    // Verificar blog
+    const postsReales = Object.keys(posts).filter(id => posts[id]?.titulo);
+    const postsEnMapeo = Object.values(mapeo.blog || {});
+    
+    const postsHuerfanos = postsReales.filter(id => !postsEnMapeo.includes(id));
+    const slugsBlogHuerfanos = Object.keys(mapeo.blog || {}).filter(slug => !postsReales.includes(mapeo.blog[slug]));
+    
+    const resultado = {
+      estado: "verificado",
+      productos: {
+        total: productosReales.length,
+        enMapeo: productosEnMapeo.length,
+        huerfanos: productosHuerfanos.length,
+        slugsRotos: slugsHuerfanos.length
+      },
+      blog: {
+        total: postsReales.length,
+        enMapeo: postsEnMapeo.length,
+        huerfanos: postsHuerfanos.length,
+        slugsRotos: slugsBlogHuerfanos.length
+      },
+      problemas: {
+        productosHuerfanos,
+        slugsHuerfanos,
+        postsHuerfanos,
+        slugsBlogHuerfanos
+      },
+      fechaVerificacion: new Date().toISOString()
+    };
+    
+    // Determinar si hay problemas
+    const hayProblemas = productosHuerfanos.length > 0 || slugsHuerfanos.length > 0 || 
+                        postsHuerfanos.length > 0 || slugsBlogHuerfanos.length > 0;
+    
+    if (hayProblemas) {
+      resultado.estado = "problemas_detectados";
+      resultado.recomendacion = "Ejecutar POST /api/seo/regenerar-slugs para corregir problemas";
+    }
+    
+    res.json(resultado);
+    
+  } catch (error) {
+    console.error("Error verificando integridad:", error.message);
+    res.status(500).json({
+      error: "Error al verificar integridad",
+      detalles: error.message
+    });
+  }
+};
+
 module.exports = {
   obtenerMapeoSlugs,
   resolverSlug,
-  regenerarSlugs
+  regenerarSlugs,
+  obtenerSlugPorId,
+  verificarIntegridadSlugs
 };

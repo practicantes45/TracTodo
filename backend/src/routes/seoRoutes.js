@@ -11,11 +11,13 @@ const {
   obtenerSchemaProducto
 } = require("../controllers/seoController");
 
-// ✅ NUEVAS RUTAS PARA SLUGS
+// ✅ IMPORTACIÓN CORREGIDA
 const {
   obtenerMapeoSlugs,
   resolverSlug,
-  regenerarSlugs
+  regenerarSlugs,
+  obtenerSlugPorId,
+  verificarIntegridadSlugs
 } = require("../controllers/slugController");
 
 // MIDDLEWARE PARA VERIFICAR ADMIN
@@ -35,7 +37,7 @@ const verificarAdmin = async (req, res, next) => {
 // ================================= RUTAS PÚBLICAS =================================
 
 /**
- * Obtener sitemap.xml (público) - ACTUALIZADO CON URLs AMIGABLES
+ * Obtener sitemap.xml (público) - CON URLs AMIGABLES
  * GET /api/seo/sitemap.xml
  */
 router.get("/sitemap.xml", generarSitemap);
@@ -47,16 +49,24 @@ router.get("/sitemap.xml", generarSitemap);
 router.get("/robots.txt", generarRobots);
 
 /**
- * Obtener mapeo de slugs (público) - NUEVO
+ * Obtener mapeo completo de slugs (público)
  * GET /api/seo/slugs
  */
 router.get("/slugs", obtenerMapeoSlugs);
 
 /**
- * Resolver slug a ID (público) - NUEVO
+ * Resolver slug a ID (público)
  * GET /api/seo/resolver/:tipo/:slug
+ * Ejemplo: /api/seo/resolver/productos/turbo-cummins-px8
  */
 router.get("/resolver/:tipo/:slug", resolverSlug);
+
+/**
+ * Obtener slug por ID (público)
+ * GET /api/seo/slug-por-id/:tipo/:id
+ * Ejemplo: /api/seo/slug-por-id/productos/-OIGeD7XHqrBcXfwBSo
+ */
+router.get("/slug-por-id/:tipo/:id", obtenerSlugPorId);
 
 /**
  * Obtener datos SEO de un producto específico (público)
@@ -73,7 +83,13 @@ router.get("/schema/:id", obtenerSchemaProducto);
 // ================================= RUTAS DE ADMINISTRACIÓN =================================
 
 /**
- * Regenerar mapeo de slugs (solo admin) - NUEVO
+ * Verificar integridad del mapeo de slugs (solo admin)
+ * GET /api/seo/verificar-slugs
+ */
+router.get("/verificar-slugs", verificarAdmin, verificarIntegridadSlugs);
+
+/**
+ * Regenerar mapeo de slugs (solo admin)
  * POST /api/seo/regenerar-slugs
  */
 router.post("/regenerar-slugs", verificarAdmin, regenerarSlugs);
@@ -96,7 +112,7 @@ router.get("/estadisticas", verificarAdmin, obtenerEstadisticasSEO);
  */
 router.put("/producto/:id/regenerar", verificarAdmin, regenerarSEOProducto);
 
-// ================================= RESTO DE RUTAS (sin cambios) =================================
+// ================================= RUTAS DE UTILIDADES =================================
 
 /**
  * Health check para SEO
@@ -108,17 +124,27 @@ router.get("/health", (req, res) => {
     mensaje: "Módulo SEO funcionando correctamente con URLs amigables",
     timestamp: new Date().toISOString(),
     funciones: [
-      "Generación automática de títulos y descripciones SEO",
-      "Schema.org markup para productos",
-      "Sitemap.xml dinámico con URLs amigables",
-      "Mapeo de slugs para resolución de URLs",
-      "Robots.txt optimizado",
-      "Palabras clave específicas del sector",
-      "Optimización para tractocamiones y refacciones"
-    ]
+      "✅ Generación automática de títulos y descripciones SEO",
+      "✅ Schema.org markup para productos",
+      "✅ Sitemap.xml dinámico con URLs amigables",
+      "✅ Mapeo de slugs para resolución de URLs",
+      "✅ Verificación de integridad de slugs",
+      "✅ Robots.txt optimizado",
+      "✅ Palabras clave específicas del sector",
+      "✅ Optimización para tractocamiones y refacciones"
+    ],
+    endpoints: {
+      publicos: [
+        "GET /api/seo/slugs - Obtener mapeo completo",
+        "GET /api/seo/resolver/:tipo/:slug - Resolver slug a ID",
+        "GET /api/seo/slug-por-id/:tipo/:id - Obtener slug por ID"
+      ],
+      admin: [
+        "GET /api/seo/verificar-slugs - Verificar integridad",
+        "POST /api/seo/regenerar-slugs - Regenerar mapeo"
+      ]
+    }
   });
 });
-
-// ... resto de rutas sin cambios
 
 module.exports = router;
