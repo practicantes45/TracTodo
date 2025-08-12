@@ -147,4 +147,100 @@ router.get("/health", (req, res) => {
   });
 });
 
+
+
+// ✅ AGREGAR ESTA RUTA AL ARCHIVO seoRoutes.js
+
+/**
+ * Limpiar cache y forzar regeneración del sitemap (solo admin)
+ * POST /api/seo/limpiar-cache
+ */
+router.post("/limpiar-cache", verificarAdmin, async (req, res) => {
+  try {
+    console.log("🧹 Limpiando cache de SEO...");
+    
+    // Limpiar cache de sitemap
+    await db.ref("/seo/sitemap").remove();
+    console.log("✅ Cache de sitemap eliminado");
+    
+    // Limpiar cache de slugs
+    await db.ref("/seo/slugs").remove();
+    console.log("✅ Cache de slugs eliminado");
+    
+    // Limpiar cache de productos SEO (opcional)
+    await db.ref("/seo/productos").remove();
+    console.log("✅ Cache de productos SEO eliminado");
+    
+    res.json({
+      mensaje: "Cache limpiado correctamente",
+      accion: "Cache de sitemap, slugs y productos SEO eliminado",
+      siguientePaso: "Accede a /api/seo/sitemap.xml para regenerar con tractodo.com",
+      timestamp: new Date().toISOString()
+    });
+    
+  } catch (error) {
+    console.error("❌ Error limpiando cache:", error.message);
+    res.status(500).json({
+      error: "Error al limpiar cache",
+      detalles: error.message
+    });
+  }
+});
+
+/**
+ * Verificar configuración de URLs (público)
+ * GET /api/seo/verificar-urls
+ */
+router.get("/verificar-urls", async (req, res) => {
+  try {
+    // Verificar variables de entorno
+    const variablesEntorno = {
+      FRONTEND_URL: process.env.FRONTEND_URL,
+      NODE_ENV: process.env.NODE_ENV,
+      RAILWAY_ENVIRONMENT: process.env.RAILWAY_ENVIRONMENT,
+      RAILWAY_PUBLIC_DOMAIN: process.env.RAILWAY_PUBLIC_DOMAIN
+    };
+    
+    // Verificar cache actual
+    const sitemapSnapshot = await db.ref("/seo/sitemap").once("value");
+    const sitemapCache = sitemapSnapshot.val();
+    
+    const slugsSnapshot = await db.ref("/seo/slugs").once("value");
+    const slugsCache = slugsSnapshot.val();
+    
+    res.json({
+      configuracion: {
+        urlForzada: "https://tractodo.com",
+        estado: "URL fija en código - NO depende de variables de entorno"
+      },
+      variablesEntorno,
+      cache: {
+        sitemap: {
+          existe: !!sitemapCache,
+          baseURL: sitemapCache?.baseURL,
+          fechaGeneracion: sitemapCache?.fechaGeneracion,
+          totalURLs: sitemapCache?.totalURLs,
+          forzadoTractodo: sitemapCache?.forzadoTractodo
+        },
+        slugs: {
+          existe: !!slugsCache,
+          baseURL: slugsCache?.baseURL,
+          fechaActualizacion: slugsCache?.fechaActualizacion
+        }
+      },
+      recomendacion: sitemapCache?.baseURL !== "https://tractodo.com" 
+        ? "⚠️ Cache tiene URL incorrecta - ejecutar POST /api/seo/limpiar-cache"
+        : "✅ Configuración correcta",
+      timestamp: new Date().toISOString()
+    });
+    
+  } catch (error) {
+    console.error("❌ Error verificando URLs:", error.message);
+    res.status(500).json({
+      error: "Error al verificar configuración",
+      detalles: error.message
+    });
+  }
+});
+
 module.exports = router;
