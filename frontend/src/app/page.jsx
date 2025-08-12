@@ -12,12 +12,16 @@ import BenefitsSection from './components/BenefitsSection/BenefitsSection';
 import Footer from './components/Footer/Footer';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import AdminPanel from './components/AdminPanel/AdminPanel';
-import ManageProductsButton from './components/ManageProductsButton/ManageProductsButton'; // AGREGADO
-import { useSEO } from '@/hooks/useSEO';
+import ManageProductsButton from './components/ManageProductsButton/ManageProductsButton';
+import SEOHead from './components/SEOHead/SEOHead';
+import { useSEO } from './../hooks/useSEO';
 
 export default function HomePage() {
     const [searchQuery, setSearchQuery] = useState('');
     const router = useRouter();
+    
+    // Hook SEO para página de inicio
+    const { seoData } = useSEO('inicio');
 
     // Función para manejar clic en marca
     const handleMarcaClick = (marca) => {
@@ -57,6 +61,7 @@ export default function HomePage() {
         "paymentAccepted": ["Cash", "Credit Card"],
         "priceRange": "$$"
     };
+
     return (
         <>
             {/* SEO Head */}
@@ -73,135 +78,136 @@ export default function HomePage() {
                     schema={schemaOrganization}
                 />
             )}
-        <div className="layout">
-            {/* Navbar principal con estado activo */}
-            <Navbar />
 
-            {/* Contenido principal */}
-            <main className="mainContent">
-                {/* Hero Section con logo y slogan centrados */}
-                <HeroSection />
+            <div className="layout">
+                {/* Navbar principal con estado activo */}
+                <Navbar />
 
-                {/* Números de contacto*/}
-                <ContactNumbers pageContext="home" />
+                {/* Contenido principal */}
+                <main className="mainContent">
+                    {/* Hero Section con logo y slogan centrados */}
+                    <HeroSection />
 
-                <section className="carouselSection">
-                    <ProductCarousel />
-                    <ManageProductsButton />
-                </section>
+                    {/* Números de contacto*/}
+                    <ContactNumbers pageContext="home" />
 
-                {/* Sección de marcas destacadas */}
-                <section className="brandSection">
-                    <h2>MARCAS DESTACADAS</h2>
+                    <section className="carouselSection">
+                        <ProductCarousel />
+                        <ManageProductsButton />
+                    </section>
 
-                    {/* Contenedor de fondo que abarca todo el ancho */}
-                    <div className="brandBackgroundContainer">
-                        <img src="https://i.postimg.cc/zfgsfzFh/croquis2.png" className="fondoCroquis" alt="Patrón de fondo" />
-                    </div>
+                    {/* Sección de marcas destacadas */}
+                    <section className="brandSection">
+                        <h2>MARCAS DESTACADAS</h2>
 
-                    {/* Contenedor de tarjetas centrado y controlado */}
-                    <div className="brandCardsContainer">
-                        <div className="brandGrid">
-                            <div
-                                className="brandCard clickable"
-                                onClick={() => handleMarcaClick(marcaMapping['Volvo'])}
-                                role="button"
-                                tabIndex={0}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                        e.preventDefault();
-                                        handleMarcaClick(marcaMapping['Volvo']);
-                                    }
-                                }}
-                            >
-                                <img src="https://i.postimg.cc/CdpYFRWz/volvo.png" alt="Volvo" className="brandLogo large" />
-                            </div>
-                            <div
-                                className="brandCard clickable"
-                                onClick={() => handleMarcaClick(marcaMapping['Detroit'])}
-                                role="button"
-                                tabIndex={0}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                        e.preventDefault();
-                                        handleMarcaClick(marcaMapping['Detroit']);
-                                    }
-                                }}
-                            >
-                                <img src="https://i.postimg.cc/q7JJhCgK/detroit.png" alt="Detroit" className="brandLogo large" />
-                            </div>
-                            <div
-                                className="brandCard clickable"
-                                onClick={() => handleMarcaClick('Caterpillar')}
-                                role="button"
-                                tabIndex={0}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                        e.preventDefault();
-                                        handleMarcaClick('Caterpillar');
-                                    }
-                                }}
-                            >
-                                <img src="https://i.postimg.cc/B6tJN9TQ/caterpillar.png" alt="Caterpillar" className="brandLogo large" />
-                            </div>
-                            <div
-                                className="brandCard clickable"
-                                onClick={() => handleMarcaClick(marcaMapping['Mercedes-Benz'])}
-                                role="button"
-                                tabIndex={0}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                        e.preventDefault();
-                                        handleMarcaClick(marcaMapping['Mercedes-Benz']);
-                                    }
-                                }}
-                            >
-                                <img src="https://i.postimg.cc/RhH457pk/mercedes.png" alt="Mercedes-Benz" className="brandLogo extraLarge" />
-                            </div>
-                            <div
-                                className="brandCard clickable"
-                                onClick={() => handleMarcaClick(marcaMapping['Cummins'])}
-                                role="button"
-                                tabIndex={0}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                        e.preventDefault();
-                                        handleMarcaClick(marcaMapping['Cummins']);
-                                    }
-                                }}
-                            >
-                                <img src="https://i.postimg.cc/SKgyWNzv/cummins.png" alt="Cummins" className="brandLogo large" />
-                            </div>
-                            <div
-                                className="brandCard clickable"
-                                onClick={() => handleMarcaClick(marcaMapping['Navistar'])}
-                                role="button"
-                                tabIndex={0}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                        e.preventDefault();
-                                        handleMarcaClick(marcaMapping['Navistar']);
-                                    }
-                                }}
-                            >
-                                <img src="https://i.postimg.cc/QtPhy4mg/navistar.png" alt="Navistar" className="brandLogo large" />
+                        {/* Contenedor de fondo que abarca todo el ancho */}
+                        <div className="brandBackgroundContainer">
+                            <img src="https://i.postimg.cc/zfgsfzFh/croquis2.png" className="fondoCroquis" alt="Patrón de fondo" />
+                        </div>
+
+                        {/* Contenedor de tarjetas centrado y controlado */}
+                        <div className="brandCardsContainer">
+                            <div className="brandGrid">
+                                <div
+                                    className="brandCard clickable"
+                                    onClick={() => handleMarcaClick(marcaMapping['Volvo'])}
+                                    role="button"
+                                    tabIndex={0}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' || e.key === ' ') {
+                                            e.preventDefault();
+                                            handleMarcaClick(marcaMapping['Volvo']);
+                                        }
+                                    }}
+                                >
+                                    <img src="https://i.postimg.cc/CdpYFRWz/volvo.png" alt="Volvo" className="brandLogo large" />
+                                </div>
+                                <div
+                                    className="brandCard clickable"
+                                    onClick={() => handleMarcaClick(marcaMapping['Detroit'])}
+                                    role="button"
+                                    tabIndex={0}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' || e.key === ' ') {
+                                            e.preventDefault();
+                                            handleMarcaClick(marcaMapping['Detroit']);
+                                        }
+                                    }}
+                                >
+                                    <img src="https://i.postimg.cc/q7JJhCgK/detroit.png" alt="Detroit" className="brandLogo large" />
+                                </div>
+                                <div
+                                    className="brandCard clickable"
+                                    onClick={() => handleMarcaClick('Caterpillar')}
+                                    role="button"
+                                    tabIndex={0}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' || e.key === ' ') {
+                                            e.preventDefault();
+                                            handleMarcaClick('Caterpillar');
+                                        }
+                                    }}
+                                >
+                                    <img src="https://i.postimg.cc/B6tJN9TQ/caterpillar.png" alt="Caterpillar" className="brandLogo large" />
+                                </div>
+                                <div
+                                    className="brandCard clickable"
+                                    onClick={() => handleMarcaClick(marcaMapping['Mercedes-Benz'])}
+                                    role="button"
+                                    tabIndex={0}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' || e.key === ' ') {
+                                            e.preventDefault();
+                                            handleMarcaClick(marcaMapping['Mercedes-Benz']);
+                                        }
+                                    }}
+                                >
+                                    <img src="https://i.postimg.cc/RhH457pk/mercedes.png" alt="Mercedes-Benz" className="brandLogo extraLarge" />
+                                </div>
+                                <div
+                                    className="brandCard clickable"
+                                    onClick={() => handleMarcaClick(marcaMapping['Cummins'])}
+                                    role="button"
+                                    tabIndex={0}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' || e.key === ' ') {
+                                            e.preventDefault();
+                                            handleMarcaClick(marcaMapping['Cummins']);
+                                        }
+                                    }}
+                                >
+                                    <img src="https://i.postimg.cc/SKgyWNzv/cummins.png" alt="Cummins" className="brandLogo large" />
+                                </div>
+                                <div
+                                    className="brandCard clickable"
+                                    onClick={() => handleMarcaClick(marcaMapping['Navistar'])}
+                                    role="button"
+                                    tabIndex={0}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter' || e.key === ' ') {
+                                            e.preventDefault();
+                                            handleMarcaClick(marcaMapping['Navistar']);
+                                        }
+                                    }}
+                                >
+                                    <img src="https://i.postimg.cc/QtPhy4mg/navistar.png" alt="Navistar" className="brandLogo large" />
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <VerMarcas />
-                </section>
+                        <VerMarcas />
+                    </section>
 
-                {/* Sección de beneficios/ventajas */}
-                <BenefitsSection />
-            </main>
+                    {/* Sección de beneficios/ventajas */}
+                    <BenefitsSection />
+                </main>
 
-            {/* Footer con estado activo */}
-            <Footer />
-            <AdminPanel />
-            {/* Botón ScrollToTop */}
-            <ScrollToTop />
-        </div>
+                {/* Footer con estado activo */}
+                <Footer />
+                <AdminPanel />
+                {/* Botón ScrollToTop */}
+                <ScrollToTop />
+            </div>
         </>
     );
 }

@@ -1,6 +1,6 @@
 // app/sitemap.xml/route.js
 import { NextResponse } from 'next/server';
-
+export const dynamic = 'force-dynamic'; // Forzar que esta ruta sea dinámica
 export async function GET() {
   try {
     const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://tractodo-production.up.railway.app/api';
