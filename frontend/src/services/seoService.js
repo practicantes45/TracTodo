@@ -135,44 +135,44 @@ export const SEO_DEFAULTS = {
   baseUrl: process.env.NEXT_PUBLIC_FRONTEND_URL || "https://tractodo.com",
   defaultImage: "/images/tractodo-logo.jpg",
   twitterHandle: "@tractodo",
-  
+
   pages: {
     inicio: {
-      title: "Tractodo - Refaccionaria para Tractocamión | Querétaro",
-      description: "Refaccionaria especializada en partes y componentes para tractocamión. Venta de cabezas de motor, turbos, árboles de levas y kits de media reparación para motores Cummins, Caterpillar, Detroit y más.",
+      title: "Refacciones para Tractocamión en San Juan del Río | Tractodo - Calidad y Garantía",
+      description: "Compra refacciones para tractocamión de las mejores marcas en Tractodo, San Juan del Río. Envíos a todo México, precios competitivos y atención personalizada.",
       keywords: ["refacciones tractocamión", "partes motor diésel", "turbos", "cabezas motor", "Querétaro", "Cummins", "Caterpillar", "Detroit"]
     },
-    
+
     ubicacion: {
-      title: "Ubicación y Contacto | Tractodo Querétaro",
-      description: "Visítanos en San Juan del Río, Querétaro. Refaccionaria especializada en tractocamiones. Horarios, dirección y formas de contacto para consultas y cotizaciones.",
+      title: "Ubicación — Tractodo Refacciones en San Juan del Río",
+      description: "Visítanos en San Juan del Río. Tractodo ofrece refacciones para tractocamión, asesoría técnica y envíos a todo México. Consulta horarios y localización exacta.",
       keywords: ["ubicación Tractodo", "San Juan del Río", "Querétaro", "refaccionaria", "contacto", "dirección"]
     },
-    
+
     sobre: {
-      title: "Sobre Nosotros | Tractodo - Historia y Experiencia",
-      description: "Conoce la historia de Tractodo. Más de 15 años especializándose en refacciones para tractocamión en Querétaro. Nuestra experiencia y compromiso con la calidad.",
+      title: "Sobre Tractodo | Expertos en Refacciones para Tractocamión en San Juan del Río",
+      description: "Conoce la historia de Tractodo, líderes en venta de refacciones para tractocamión en San Juan del Río. Experiencia, calidad y servicio que respaldan tu camino.",
       keywords: ["historia Tractodo", "experiencia", "refacciones tractocamión", "Querétaro", "especialistas motor diésel"]
     },
-    
+
     entretenimiento: {
-      title: "Entretenimiento | Videos y Blog Tractodo",
-      description: "Contenido educativo sobre tractocamiones: tutoriales, consejos de mantenimiento, casos de éxito y más. Videos técnicos y artículos especializados.",
+      title: "Consejos y Noticias para Transportistas | Tractodo San Juan del Río",
+      description: "Disfruta artículos, videos y tips sobre mantenimiento de motores diésel, novedades del transporte y consejos prácticos para el tractocamión.",
       keywords: ["videos tractocamión", "tutoriales motor", "mantenimiento diésel", "consejos técnicos", "blog automotriz"]
     },
-    
+
     productos: {
-      title: "Productos | Refacciones para Tractocamión | Tractodo",
-      description: "Amplio catálogo de refacciones para tractocamión: turbos, cabezas de motor, árboles de levas, kits de reparación y más. Marcas Cummins, Caterpillar, Detroit, Volvo.",
+      title: "Catálogo de Refacciones para Tractocamión | Tractodo San Juan del Río",
+      description: "Explora nuestro catálogo con más de 500 refacciones para tractocamión: cabezas de motor, medias reparaciones, componentes y más. Disponibles para envío inmediato.",
       keywords: ["catálogo refacciones", "turbos tractocamión", "cabezas motor", "árboles levas", "kits reparación", "Cummins", "Caterpillar"]
     },
-    
+
     blog: {
-      title: "Blog Tractodo | Consejos y Tutoriales para Tractocamión",
-      description: "Artículos especializados sobre mantenimiento de tractocamiones, consejos técnicos, casos de éxito y promociones especiales. Contenido de expertos.",
+      title: "Blog de Mantenimiento y Refacciones para Tractocamión | Tractodo San Juan del Río",
+      description: "Lee guías, tutoriales y noticias del sector transporte. Aprende cómo optimizar el rendimiento de tu motor diésel y cuidar tu tractocamión.",
       keywords: ["blog tractocamión", "consejos mantenimiento", "tutoriales técnicos", "casos éxito", "promociones refacciones"]
     },
-    
+
     videos: {
       title: "Videos Tractodo | Tutoriales y Contenido Técnico",
       description: "Videos educativos sobre tractocamiones: instalación de refacciones, mantenimiento preventivo, diagnósticos y más. Contenido técnico especializado.",
@@ -186,7 +186,7 @@ export const SEO_DEFAULTS = {
  */
 export const generarMetaTags = (pageKey, customData = {}) => {
   const defaultData = SEO_DEFAULTS.pages[pageKey] || SEO_DEFAULTS.pages.inicio;
-  
+
   return {
     title: customData.title || defaultData.title,
     description: customData.description || defaultData.description,
