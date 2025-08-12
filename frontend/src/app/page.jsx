@@ -12,11 +12,16 @@ import BenefitsSection from './components/BenefitsSection/BenefitsSection';
 import Footer from './components/Footer/Footer';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import AdminPanel from './components/AdminPanel/AdminPanel';
-import ManageProductsButton from './components/ManageProductsButton/ManageProductsButton'; // AGREGADO
+import ManageProductsButton from './components/ManageProductsButton/ManageProductsButton';
+import SEOHead from './components/SEOHead/SEOHead';
+import { useSEO } from './hooks/useSEO';
 
 export default function HomePage() {
     const [searchQuery, setSearchQuery] = useState('');
     const router = useRouter();
+    
+    // Hook SEO para página de inicio
+    const { seoData } = useSEO('inicio');
 
     // Función para manejar clic en marca
     const handleMarcaClick = (marca) => {
@@ -34,138 +39,82 @@ export default function HomePage() {
         'Navistar': 'Navistar'
     };
 
+    // Schema.org para la página de inicio
+    const schemaOrganization = {
+        "@context": "https://schema.org",
+        "@type": "AutoPartsStore",
+        "name": "Tractodo",
+        "description": "Refaccionaria especializada en partes y componentes para tractocamión",
+        "url": "https://tractodo.com",
+        "telephone": "+52-427-XXX-XXXX",
+        "email": "contacto@tractodo.com",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "San Cayetano, Río Extoras 56",
+            "addressLocality": "San Juan del Río",
+            "addressRegion": "Querétaro",
+            "addressCountry": "MX"
+        },
+        "openingHours": "Mo-Fr 09:00-18:00",
+        "areaServed": "Mexico",
+        "currenciesAccepted": "MXN",
+        "paymentAccepted": ["Cash", "Credit Card"],
+        "priceRange": "$$"
+    };
+
     return (
-        <div className="layout">
-            {/* COMPONENTE SEO AGREGADO */}
-            <SEOHead pagina="inicio" />
+        <>
+            {/* SEO Head */}
+            {seoData && (
+                <SEOHead
+                    title={seoData.title}
+                    description={seoData.description}
+                    keywords={seoData.keywords}
+                    ogTitle={seoData.ogTitle}
+                    ogDescription={seoData.ogDescription}
+                    ogImage={seoData.ogImage}
+                    ogUrl={seoData.ogUrl}
+                    canonicalUrl={seoData.canonicalUrl}
+                    schema={schemaOrganization}
+                />
+            )}
 
-            {/* Navbar principal con estado activo */}
-            <Navbar />
+            <div className="layout">
+                {/* Navbar principal con estado activo */}
+                <Navbar />
 
-            {/* Contenido principal */}
-            <main className="mainContent">
-                {/* Hero Section con logo y slogan centrados */}
-                <HeroSection />
+                {/* Contenido principal */}
+                <main className="mainContent">
+                    {/* Hero Section con logo y slogan centrados */}
+                    <HeroSection />
 
-                {/* Números de contacto*/}
-                <ContactNumbers pageContext="home" />
+                    {/* Números de contacto*/}
+                    <ContactNumbers pageContext="home" />
 
-                <section className="carouselSection">
-                    <ProductCarousel />
+                    <section className="carouselSection">
+                        <ProductCarousel />
+                    </section>
+
+                    {/* Sección Ver Marcas con mapeo correcto */}
+                    <VerMarcas 
+                        onMarcaClick={handleMarcaClick}
+                        marcaMapping={marcaMapping}
+                    />
+
+                    {/* Sección de beneficios y características */}
+                    <BenefitsSection />
+
+                    {/* Panel de administración (solo visible para admins) */}
+                    <AdminPanel />
                     <ManageProductsButton />
-                </section>
+                </main>
 
-                {/* Sección de marcas destacadas */}
-                <section className="brandSection">
-                    <h2>MARCAS DESTACADAS</h2>
+                {/* Footer con información de contacto y enlaces */}
+                <Footer />
 
-                    {/* Contenedor de fondo que abarca todo el ancho */}
-                    <div className="brandBackgroundContainer">
-                        <img src="https://i.postimg.cc/zfgsfzFh/croquis2.png" className="fondoCroquis" alt="Patrón de fondo" />
-                    </div>
-
-                    {/* Contenedor de tarjetas centrado y controlado */}
-                    <div className="brandCardsContainer">
-                        <div className="brandGrid">
-                            <div
-                                className="brandCard clickable"
-                                onClick={() => handleMarcaClick(marcaMapping['Volvo'])}
-                                role="button"
-                                tabIndex={0}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                        e.preventDefault();
-                                        handleMarcaClick(marcaMapping['Volvo']);
-                                    }
-                                }}
-                            >
-                                <img src="https://i.postimg.cc/CdpYFRWz/volvo.png" alt="Volvo" className="brandLogo large" />
-                            </div>
-                            <div
-                                className="brandCard clickable"
-                                onClick={() => handleMarcaClick(marcaMapping['Detroit'])}
-                                role="button"
-                                tabIndex={0}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                        e.preventDefault();
-                                        handleMarcaClick(marcaMapping['Detroit']);
-                                    }
-                                }}
-                            >
-                                <img src="https://i.postimg.cc/q7JJhCgK/detroit.png" alt="Detroit" className="brandLogo large" />
-                            </div>
-                            <div
-                                className="brandCard clickable"
-                                onClick={() => handleMarcaClick('Caterpillar')}
-                                role="button"
-                                tabIndex={0}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                        e.preventDefault();
-                                        handleMarcaClick('Caterpillar');
-                                    }
-                                }}
-                            >
-                                <img src="https://i.postimg.cc/B6tJN9TQ/caterpillar.png" alt="Caterpillar" className="brandLogo large" />
-                            </div>
-                            <div
-                                className="brandCard clickable"
-                                onClick={() => handleMarcaClick(marcaMapping['Mercedes-Benz'])}
-                                role="button"
-                                tabIndex={0}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                        e.preventDefault();
-                                        handleMarcaClick(marcaMapping['Mercedes-Benz']);
-                                    }
-                                }}
-                            >
-                                <img src="https://i.postimg.cc/RhH457pk/mercedes.png" alt="Mercedes-Benz" className="brandLogo extraLarge" />
-                            </div>
-                            <div
-                                className="brandCard clickable"
-                                onClick={() => handleMarcaClick(marcaMapping['Cummins'])}
-                                role="button"
-                                tabIndex={0}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                        e.preventDefault();
-                                        handleMarcaClick(marcaMapping['Cummins']);
-                                    }
-                                }}
-                            >
-                                <img src="https://i.postimg.cc/SKgyWNzv/cummins.png" alt="Cummins" className="brandLogo large" />
-                            </div>
-                            <div
-                                className="brandCard clickable"
-                                onClick={() => handleMarcaClick(marcaMapping['Navistar'])}
-                                role="button"
-                                tabIndex={0}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                        e.preventDefault();
-                                        handleMarcaClick(marcaMapping['Navistar']);
-                                    }
-                                }}
-                            >
-                                <img src="https://i.postimg.cc/QtPhy4mg/navistar.png" alt="Navistar" className="brandLogo large" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <VerMarcas />
-                </section>
-
-                {/* Sección de beneficios/ventajas */}
-                <BenefitsSection />
-            </main>
-
-            {/* Footer con estado activo */}
-            <Footer />
-            <AdminPanel />
-            {/* Botón ScrollToTop */}
-            <ScrollToTop />
-        </div>
+                {/* Botón scroll to top */}
+                <ScrollToTop />
+            </div>
+        </>
     );
 }

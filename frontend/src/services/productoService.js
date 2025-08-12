@@ -306,3 +306,62 @@ export const obtenerProductoPorNombre = async (nombre) => {
     throw error;
   }
 };
+
+// Agregar al final del archivo services/productoService.js
+
+/**
+ * Obtiene productos con datos SEO incluidos
+ */
+export const obtenerProductosConSEO = async (filtros = {}) => {
+  try {
+    // Agregar parámetro para incluir SEO
+    const queryParams = new URLSearchParams(filtros);
+    queryParams.append('incluirSEO', 'true');
+
+    const url = `${API_URL}/productos?${queryParams.toString()}`;
+    console.log('🔗 Solicitando productos con SEO:', url);
+
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error al obtener productos con SEO: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error en obtenerProductosConSEO:', error);
+    // Fallback a productos normales si falla
+    return await obtenerProductos(filtros);
+  }
+};
+
+/**
+ * Obtiene un producto por ID con datos SEO incluidos
+ */
+export const obtenerProductoPorIdConSEO = async (id) => {
+  try {
+    const response = await fetch(`${API_URL}/productos/${id}?incluirSEO=true`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error al obtener producto con SEO: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error al obtener producto por ID con SEO:', error);
+    // Fallback a producto normal si falla
+    return await obtenerProductoPorId(id);
+  }
+};
