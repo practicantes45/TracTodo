@@ -1,62 +1,29 @@
+// app/layout.js
 import { Inter, Ubuntu, Montserrat } from 'next/font/google';
-import SEOProvider from './components/SEOProvider/SEOProvider';
-import { AuthProvider } from '../hooks/useAuth';
-import './styles/global.css';
+import { AuthProvider } from '../contexts/AuthContext';
+import { SEOProvider } from '../contexts/SEOContext';
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ['latin'],
-  variable: '--font-inter'
+  variable: '--font-inter',
+  display: 'swap',
 });
 
-const ubuntu = Ubuntu({ 
+const ubuntu = Ubuntu({
+  subsets: ['latin'],
   weight: ['300', '400', '500', '700'],
-  subsets: ['latin'],
-  variable: '--font-ubuntu'
+  variable: '--font-ubuntu',
+  display: 'swap',
 });
 
-const montserrat = Montserrat({ 
-  weight: ['300', '400', '500', '600', '700'],
+const montserrat = Montserrat({
   subsets: ['latin'],
-  variable: '--font-montserrat'
+  variable: '--font-montserrat',
+  display: 'swap',
 });
 
-export const metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_FRONTEND_URL || 'https://tractodo.com'),
-  title: 'Tractodo - Refaccionaria para Tractocamión | Querétaro',
-  description: 'Refaccionaria especializada en partes y componentes para tractocamión. Venta de cabezas de motor, turbos, árboles de levas y kits de media reparación para motores Cummins, Caterpillar, Detroit y más.',
-  keywords: ['refacciones tractocamión', 'partes motor diésel', 'turbos', 'cabezas motor', 'Querétaro', 'Cummins', 'Caterpillar', 'Detroit'],
-  authors: [{ name: 'Tractodo' }],
-  robots: 'index, follow',
-  openGraph: {
-    title: 'Tractodo - Refaccionaria para Tractocamión | Querétaro',
-    description: 'Refaccionaria especializada en partes y componentes para tractocamión. Venta de cabezas de motor, turbos, árboles de levas y kits de media reparación.',
-    url: '/',
-    siteName: 'Tractodo',
-    images: [
-      {
-        url: '/images/tractodo-logo.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Tractodo - Refaccionaria para Tractocamión',
-      },
-    ],
-    locale: 'es_MX',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Tractodo - Refaccionaria para Tractocamión | Querétaro',
-    description: 'Refaccionaria especializada en partes y componentes para tractocamión.',
-    images: ['/images/tractodo-logo.jpg'],
-    site: '@tractodo',
-  },
-  verification: {
-    google: 'google-site-verification-code', // Reemplazar con código real
-  },
-  alternates: {
-    canonical: '/',
-  },
-};
+// REMOVIDO: export const metadata = { ... } 
+// La metadata ahora se maneja dinámicamente en cada página
 
 export const viewport = {
   width: 'device-width',
