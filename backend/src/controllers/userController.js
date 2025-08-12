@@ -30,18 +30,40 @@ const iniciarSesion = async (req, res) => {
   console.log('🍪 Configurando cookie para usuario:', username);
   console.log('🌍 Entorno:', process.env.NODE_ENV);
   console.log('🔒 Host:', req.get('host'));
+  console.log('🔗 Origin:', req.get('origin'));
 
-  // CONFIGURACIÓN MEJORADA DE COOKIES PARA PRODUCCIÓN
+  // CONFIGURACIÓN OPTIMIZADA PARA RAILWAY
   const isProduction = process.env.NODE_ENV === 'production';
+  const origin = req.get('origin') || '';
+  
+  // Detectar si es Railway
+  const isRailway = req.get('host')?.includes('railway.app') || 
+                   origin.includes('railway.app') || 
+                   process.env.RAILWAY_ENVIRONMENT;
+
+  console.log('🚂 Es Railway:', isRailway);
+
   const cookieOptions = {
     httpOnly: true,
-    secure: isProduction, // HTTPS en producción
-    sameSite: isProduction ? 'None' : 'Lax', // None para cross-origin en producción
+    secure: isProduction,
+    sameSite: isProduction ? (isRailway ? 'Lax' : 'None') : 'Lax', // LAX para Railway
     maxAge: 24 * 60 * 60 * 1000, // 24 horas
-    path: '/', // Disponible en toda la app
+    path: '/',
+    // AGREGAR DOMAIN ESPECÍFICO PARA RAILWAY
+    ...(isRailway && { domain: '.railway.app' })
   };
 
-  console.log('⚙️ Configuración de cookie:', cookieOptions);
+  console.log('⚙️ Configuración de cookie optimizada:', cookieOptions);
+
+  // CONFIGURAR HEADERS ADICIONALES PARA RAILWAY
+  res.set({
+    'Access-Control-Allow-Credentials': 'true',
+    'Access-Control-Expose-Headers': 'Set-Cookie',
+    // AGREGAR CACHE CONTROL PARA EVITAR PROBLEMAS DE CACHE
+    'Cache-Control': 'no-cache, no-store, must-revalidate',
+    'Pragma': 'no-cache',
+    'Expires': '0'
+  });
 
   res
     .cookie("token", respuesta.token, cookieOptions)
@@ -49,16 +71,15 @@ const iniciarSesion = async (req, res) => {
     .json({ 
       mensaje: respuesta.mensajeUsuario,
       user: username,
-      // AGREGAR INFO DE DEBUG
       debug: {
         cookieSet: true,
         environment: process.env.NODE_ENV,
-        secure: cookieOptions.secure,
-        sameSite: cookieOptions.sameSite
+        isRailway,
+        cookieConfig: cookieOptions
       }
     });
 
-  console.log('✅ Cookie configurada exitosamente');
+  console.log('✅ Cookie configurada exitosamente para Railway');
 };
 
 module.exports = {
