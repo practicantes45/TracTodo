@@ -776,566 +776,6 @@
   color: white;
 }
 
-/* ===== RESPONSIVE DESIGN MEJORADO ===== */
-
-/* Tablet Grande (1200px+) */
-@media (max-width: 1199px) {
-  .locationContainer {
-    gap: 40px;
-  }
-
-  .videoSection {
-    flex: 0 0 400px;
-    padding: 35px;
-  }
-
-  .videoSection h2,
-  .mapSection h2 {
-    font-size: 2.3rem;
-  }
-
-  .referenceImageContainer {
-    height: 180px;
-  }
-
-  /* Modal responsive */
-  .image-modal {
-    max-width: 95vw;
-    max-height: 95vh;
-  }
-
-  .video-modal {
-    width: 95vw;
-    height: 85vh;
-  }
-}
-
-/* Tablet (1024px) */
-@media (max-width: 1024px) {
-  .locationMainSection {
-    padding: 15px 15px 70px 15px;
-    margin-top: -50px;
-  }
-
-  .locationContainer {
-    flex-direction: column;
-    gap: 40px;
-    align-items: center;
-  }
-
-  .videoSection {
-    flex: none;
-    max-width: 600px;
-    width: 100%;
-  }
-
-  .mapSection {
-    width: 100%;
-  }
-
-  .addressInfo {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
-  .youtubeVideoContainer {
-    max-width: 100%;
-    border-radius: 15px;
-  }
-
-  .referenceImageContainer {
-    height: 160px;
-  }
-
-  /* Modal responsive */
-  .modal-overlay {
-    padding: 15px;
-  }
-
-  .video-modal {
-    width: 95vw;
-    height: 80vh;
-  }
-}
-
-/* Tablet (992px) - AJUSTES CRÍTICOS PARA UBICACIÓN */
-@media (max-width: 992px) {
-  .ubicacion-page .heroSection {
-    height: 540px;
-    /* ALTURA CONSISTENTE */
-    background-position: center center;
-    /* CORREGIDO: posición idéntica */
-  }
-
-  .ubicacion-page .mainContent {
-    padding-top: 540px;
-    /* AJUSTADO UNIFICADO */
-  }
-
-  .heroContent h1 {
-    margin-top: -120px;
-    font-size: 2.8rem;
-  }
-
-  .referencesGrid {
-    grid-template-columns: 1fr;
-    gap: 25px;
-  }
-
-  .locationMainSection {
-    margin-top: -60px;
-    /* AJUSTE RESPONSIVE */
-  }
-
-  .referenceImageContainer {
-    height: 150px;
-  }
-
-  /* Modal responsive */
-  .video-modal {
-    width: 95vw;
-    height: 75vh;
-  }
-
-  .modal-close {
-    width: 40px;
-    height: 40px;
-    font-size: 1.3rem;
-  }
-}
-
-/* Móvil (768px) - OCULTAR TÍTULO */
-@media (max-width: 768px) {
-  .ubicacion-page .heroSection {
-    height: 420px;
-    /* ALTURA CONSISTENTE */
-    top: 60px;
-    background-position: center center;
-    /* CORREGIDO: posición idéntica */
-  }
-
-  /* OCULTAR TÍTULO EN MÓVIL */
-  .heroContent h1 {
-    display: none !important;
-  }
-
-  .ubicacion-page .mainContent {
-    padding-top: 480px;
-    /* CONSISTENTE */
-  }
-
-  .locationMainSection {
-    margin-top: -20px;
-  }
-
-  .locationContainer {
-    flex-direction: column;
-    gap: 30px;
-    padding: 0 10px;
-  }
-
-  .videoSection {
-    flex: none;
-    width: 100%;
-    max-width: none;
-    padding: 25px 20px;
-    border-radius: 20px;
-  }
-
-  .videoSection h2 {
-    font-size: 2rem;
-    margin-bottom: 15px;
-  }
-
-  .videoDescription {
-    font-size: 1rem;
-    margin-bottom: 20px;
-  }
-
-  .youtubeVideoContainer {
-    max-width: 100%;
-    border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 42, 92, 0.15);
-  }
-
-  .playButton {
-    width: 60px;
-    height: 60px;
-    font-size: 1.5rem;
-  }
-
-  .mapSection h2 {
-    font-size: 2rem;
-    margin-bottom: 25px;
-  }
-
-  .mapSection h2::after {
-    width: 80px;
-    margin: 15px 0 0 0;
-  }
-
-  .addressInfo {
-    grid-template-columns: 1fr;
-    gap: 15px;
-    margin-bottom: 25px;
-  }
-
-  .addressCard,
-  .scheduleCard {
-    padding: 20px 15px;
-  }
-
-  .scheduleNote {
-    padding: 8px 10px;
-    font-size: 0.85rem;
-  }
-
-  .mapContainer {
-    padding-bottom: 70%;
-    margin-bottom: 20px;
-  }
-
-  .actionButtons {
-    margin-top: 20px;
-  }
-
-  .actionButton {
-    padding: 12px 20px;
-    font-size: 1rem;
-  }
-
-  .referencesSection {
-    padding: 60px 15px;
-  }
-
-  .referencesContainer h2 {
-    font-size: 2.2rem;
-  }
-
-  .referencesGrid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
-  .referenceCard {
-    padding: 25px 20px;
-  }
-
-  .referenceImageContainer {
-    height: 140px;
-  }
-
-  /* Modal responsive móvil */
-  .modal-overlay {
-    padding: 10px;
-  }
-
-  .image-modal {
-    max-width: 98vw;
-    max-height: 95vh;
-    border-radius: 10px;
-  }
-
-  .video-modal {
-    width: 98vw;
-    height: 70vh;
-    border-radius: 10px;
-  }
-
-  .modal-close {
-    width: 35px;
-    height: 35px;
-    font-size: 1.2rem;
-    top: 10px;
-    right: 10px;
-  }
-
-  .modal-title {
-    padding: 15px 20px 10px;
-    font-size: 1rem;
-  }
-}
-
-/* Móvil pequeño (480px) - MANTENER TÍTULO OCULTO */
-@media (max-width: 480px) {
-  .ubicacion-page .heroSection {
-    height: 380px;
-    /* ALTURA CONSISTENTE */
-    top: 60px;
-    background-position: center center;
-    /* CORREGIDO: posición idéntica */
-  }
-
-  .ubicacion-page .mainContent {
-    padding-top: 430px;
-    /* CONSISTENTE */
-  }
-
-  /* CONFIRMAR QUE EL TÍTULO SIGUE OCULTO */
-  .ubicacion-page .heroContent h1 {
-    display: none !important;
-  }
-
-  .locationMainSection {
-    margin-top: -60px;
-    /* AJUSTE RESPONSIVE */
-    padding: 20px 5px 50px 5px;
-  }
-
-  .videoSection {
-    padding: 20px 15px;
-  }
-
-  .videoSection h2,
-  .mapSection h2 {
-    font-size: 1.8rem;
-  }
-
-  .youtubeVideoContainer {
-    border-radius: 10px;
-    margin: 0 auto;
-  }
-
-  .playButton {
-    width: 50px;
-    height: 50px;
-    font-size: 1.2rem;
-  }
-
-  .addressCard,
-  .scheduleCard {
-    padding: 15px 12px;
-  }
-
-  .addressCard h3,
-  .scheduleCard h3 {
-    font-size: 1.2rem;
-  }
-
-  .scheduleNote {
-    padding: 6px 8px;
-    font-size: 0.8rem;
-  }
-
-  .scheduleNote .noteIcon {
-    font-size: 0.9rem;
-  }
-
-  .mapContainer {
-    padding-bottom: 80%;
-    border-radius: 10px;
-  }
-
-  .actionButton {
-    padding: 10px 16px;
-    font-size: 0.9rem;
-  }
-
-  .referencesContainer h2 {
-    font-size: 1.8rem;
-  }
-
-  .referenceCard {
-    padding: 20px 15px;
-  }
-
-  .referenceImageContainer {
-    height: 120px;
-  }
-
-  .referenceIcon {
-    width: 45px;
-    height: 45px;
-  }
-
-  .referenceIcon svg {
-    font-size: 1.3rem;
-  }
-
-  .referenceCard h4 {
-    font-size: 1.2rem;
-  }
-
-  /* Modal responsive móvil pequeño */
-  .video-modal {
-    width: 98vw;
-    height: 60vh;
-  }
-
-  .modal-close {
-    width: 30px;
-    height: 30px;
-    font-size: 1rem;
-  }
-
-  .modal-title {
-    padding: 10px 15px 8px;
-    font-size: 0.9rem;
-  }
-}
-
-/* Ajustes para pantallas muy pequeñas (360px) - MANTENER TÍTULO OCULTO */
-@media (max-width: 360px) {
-  .ubicacion-page .heroSection {
-    height: 350px;
-    /* ALTURA CONSISTENTE */
-    top: 60px;
-    background-position: center center;
-    /* CORREGIDO: posición idéntica */
-  }
-
-  .ubicacion-page .mainContent {
-    padding-top: 400px;
-    /* CONSISTENTE */
-  }
-
-  /* CONFIRMAR QUE EL TÍTULO SIGUE OCULTO */
-  .ubicacion-page .heroContent h1 {
-    display: none !important;
-  }
-
-  .locationMainSection {
-    margin-top: -40px;
-    /* AJUSTE RESPONSIVE */
-    padding: 10px 3px 40px 3px;
-  }
-
-  .locationContainer {
-    padding: 0 5px;
-  }
-
-  .videoSection {
-    padding: 15px 10px;
-    border-radius: 15px;
-  }
-
-  .videoSection h2,
-  .mapSection h2 {
-    font-size: 1.6rem;
-    margin-bottom: 12px;
-  }
-
-  .videoDescription {
-    font-size: 0.85rem;
-    margin-bottom: 15px;
-  }
-
-  .youtubeVideoContainer {
-    border-radius: 8px;
-  }
-
-  .playButton {
-    width: 40px;
-    height: 40px;
-    font-size: 1rem;
-  }
-
-  .addressCard,
-  .scheduleCard {
-    padding: 12px 8px;
-  }
-
-  .addressCard h3,
-  .scheduleCard h3 {
-    font-size: 1.1rem;
-  }
-
-  .clickableAddress {
-    font-size: 0.95rem;
-    padding: 8px;
-  }
-
-  .scheduleItem {
-    padding: 6px 8px;
-    font-size: 0.85rem;
-  }
-
-  .scheduleNote {
-    padding: 5px 6px;
-    font-size: 0.75rem;
-  }
-
-  .scheduleNote .noteIcon {
-    font-size: 0.8rem;
-  }
-
-  .mapContainer {
-    padding-bottom: 85%;
-    border-radius: 8px;
-    margin-bottom: 15px;
-  }
-
-  .actionButton {
-    padding: 8px 12px;
-    font-size: 0.8rem;
-    gap: 6px;
-  }
-
-  .actionButton svg {
-    font-size: 1rem;
-  }
-
-  .referencesSection {
-    padding: 40px 8px;
-  }
-
-  .referencesContainer h2 {
-    font-size: 1.6rem;
-    margin-bottom: 30px;
-  }
-
-  .referenceCard {
-    padding: 15px 10px;
-  }
-
-  .referenceImageContainer {
-    height: 100px;
-    margin-bottom: 15px;
-  }
-
-  .referenceIcon {
-    width: 40px;
-    height: 40px;
-    margin-bottom: 10px;
-  }
-
-  .referenceIcon svg {
-    font-size: 1.1rem;
-  }
-
-  .referenceCard h4 {
-    font-size: 1.1rem;
-    margin-bottom: 10px;
-  }
-
-  .referenceCard p {
-    font-size: 0.85rem;
-    line-height: 1.4;
-  }
-
-  /* Modal responsive pantallas muy pequeñas */
-  .modal-overlay {
-    padding: 5px;
-  }
-
-  .video-modal {
-    width: 98vw;
-    height: 55vh;
-  }
-
-  .modal-close {
-    width: 28px;
-    height: 28px;
-    font-size: 0.9rem;
-    top: 8px;
-    right: 8px;
-  }
-
-  .modal-title {
-    padding: 8px 12px 6px;
-    font-size: 0.8rem;
-  }
-}
 
 /* ===== OPTIMIZACIONES PARA YOUTUBE ===== */
 .youtubeVideoContainer:focus-within {
@@ -1499,28 +939,6 @@
   }
 }
 
-/* Evitar scroll horizontal en cualquier dispositivo */
-@media (max-width: 768px) {
-  body {
-    overflow-x: hidden;
-  }
-
-  .ubicacion-page {
-    overflow-x: hidden;
-  }
-
-  .locationContainer,
-  .referencesContainer {
-    overflow-x: hidden;
-  }
-
-  /* Evitar que los modales causen scroll */
-  body.modal-open {
-    overflow: hidden;
-    position: fixed;
-    width: 100%;
-  }
-}
 /* ===== CONTENEDOR DE VIDEOS ===== */
 .videosContainer {
   display: flex;
@@ -1542,9 +960,10 @@
   z-index: 2;
 }
 
-/* Remover estilos antiguos de videoSection ya que ahora está en el componente */
+/* ===== RESPONSIVE DESIGN MEJORADO ===== */
+/* ===== RESPONSIVE DESIGN ===== */
 
-/* ===== RESPONSIVE PARA EL NUEVO LAYOUT ===== */
+/* Tablet Grande (1200px+) */
 @media (max-width: 1199px) {
   .videosContainer {
     flex: 0 0 400px;
@@ -1556,6 +975,7 @@
   }
 }
 
+/* Tablet (1024px) */
 @media (max-width: 1024px) {
   .locationContainer {
     flex-direction: column;
@@ -1575,26 +995,425 @@
   }
 }
 
+/* Tablet (992px) */
+@media (max-width: 992px) {
+  .ubicacion-page .heroSection {
+    height: 540px;
+    background-position: center center;
+  }
+
+  .ubicacion-page .mainContent {
+    padding-top: 540px;
+  }
+
+  .heroContent h1 {
+    margin-top: -120px;
+    font-size: 2.8rem;
+  }
+
+  .referencesGrid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .locationMainSection {
+    margin-top: -60px;
+  }
+
+  .referenceImageContainer {
+    height: 150px;
+  }
+
+  .video-modal {
+    width: 95vw;
+    height: 75vh;
+  }
+
+  .modal-close {
+    width: 40px;
+    height: 40px;
+    font-size: 1.3rem;
+  }
+}
+
+/* Móvil (768px) */
 @media (max-width: 768px) {
+  .ubicacion-page .heroSection {
+    height: 420px;
+    top: 60px;
+    background-position: center center;
+  }
+
+  .heroContent h1 {
+    display: none !important;
+  }
+
+  .ubicacion-page .mainContent {
+    padding-top: 480px;
+  }
+
+  .locationMainSection {
+    margin-top: -20px;
+  }
+
+  .locationContainer {
+    flex-direction: column;
+    gap: 30px;
+    padding: 0 10px;
+  }
+
   .videosContainer {
     max-width: 100%;
     gap: 25px;
   }
-  
-  .locationContainer {
-    gap: 30px;
-    padding: 0 10px;
+
+  .videoSection {
+    flex: none;
+    width: 100%;
+    max-width: none;
+    padding: 25px 20px;
+    border-radius: 20px;
+  }
+
+  .videoSection h2 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+  }
+
+  .videoDescription {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+
+  .youtubeVideoContainer {
+    max-width: 100%;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 42, 92, 0.15);
+  }
+
+  .playButton {
+    width: 60px;
+    height: 60px;
+    font-size: 1.5rem;
+  }
+
+  .mapSection h2 {
+    font-size: 2rem;
+    margin-bottom: 25px;
+  }
+
+  .mapSection h2::after {
+    width: 80px;
+    margin: 15px 0 0 0;
+  }
+
+  .addressInfo {
+    grid-template-columns: 1fr;
+    gap: 15px;
+    margin-bottom: 25px;
+  }
+
+  .addressCard,
+  .scheduleCard {
+    padding: 20px 15px;
+  }
+
+  .scheduleNote {
+    padding: 8px 10px;
+    font-size: 0.85rem;
+  }
+
+  .mapContainer {
+    padding-bottom: 70%;
+    margin-bottom: 20px;
+  }
+
+  .actionButtons {
+    margin-top: 20px;
+  }
+
+  .actionButton {
+    padding: 12px 20px;
+    font-size: 1rem;
+  }
+
+  .referencesSection {
+    padding: 60px 15px;
+  }
+
+  .referencesContainer h2 {
+    font-size: 2.2rem;
+  }
+
+  .referencesGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .referenceCard {
+    padding: 25px 20px;
+  }
+
+  .referenceImageContainer {
+    height: 140px;
+  }
+
+  .modal-overlay {
+    padding: 10px;
+  }
+
+  .image-modal {
+    max-width: 98vw;
+    max-height: 95vh;
+    border-radius: 10px;
+  }
+
+  .video-modal {
+    width: 98vw;
+    height: 70vh;
+    border-radius: 10px;
+  }
+
+  .modal-close {
+    width: 35px;
+    height: 35px;
+    font-size: 1.2rem;
+    top: 10px;
+    right: 10px;
+  }
+
+  .modal-title {
+    padding: 15px 20px 10px;
+    font-size: 1rem;
   }
 }
 
+/* Móvil pequeño (480px) */
 @media (max-width: 480px) {
   .videosContainer {
     gap: 20px;
   }
+
+  .ubicacion-page .heroSection {
+    height: 380px;
+    top: 60px;
+    background-position: center center;
+  }
+
+  .ubicacion-page .mainContent {
+    padding-top: 430px;
+  }
+
+  .ubicacion-page .heroContent h1 {
+    display: none !important;
+  }
+
+  .locationMainSection {
+    margin-top: -60px;
+    padding: 20px 5px 50px 5px;
+  }
+
+  .videoSection {
+    padding: 20px 15px;
+  }
+
+  .videoSection h2,
+  .mapSection h2 {
+    font-size: 1.8rem;
+  }
+
+  .youtubeVideoContainer {
+    border-radius: 10px;
+    margin: 0 auto;
+  }
+
+  .playButton {
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+  }
+
+  .addressCard,
+  .scheduleCard {
+    padding: 15px 12px;
+  }
+
+  .addressCard h3,
+  .scheduleCard h3 {
+    font-size: 1.2rem;
+  }
+
+  .scheduleNote {
+    padding: 6px 8px;
+    font-size: 0.8rem;
+  }
+
+  .scheduleNote .noteIcon {
+    font-size: 0.9rem;
+  }
+
+  .mapContainer {
+    padding-bottom: 80%;
+    border-radius: 10px;
+  }
+
+  .actionButton {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+
+  .referencesContainer h2 {
+    font-size: 1.8rem;
+  }
+
+  .referenceCard {
+    padding: 20px 15px;
+  }
+
+  .referenceImageContainer {
+    height: 120px;
+  }
+
+  .referenceIcon {
+    width: 45px;
+    height: 45px;
+  }
+
+  .referenceIcon svg {
+    font-size: 1.3rem;
+  }
+
+  .referenceCard h4 {
+    font-size: 1.2rem;
+  }
+
+  .video-modal {
+    width: 98vw;
+    height: 60vh;
+  }
+
+  .modal-close {
+    width: 30px;
+    height: 30px;
+    font-size: 1rem;
+  }
+
+  .modal-title {
+    padding: 10px 15px 8px;
+    font-size: 0.9rem;
+  }
 }
 
+/* Pantallas muy pequeñas (360px) */
 @media (max-width: 360px) {
   .videosContainer {
     gap: 15px;
+  }
+
+  .ubicacion-page .heroSection {
+    height: 350px;
+    top: 60px;
+    background-position: center center;
+  }
+
+  .ubicacion-page .mainContent {
+    padding-top: 400px;
+  }
+
+  .ubicacion-page .heroContent h1 {
+    display: none !important;
+  }
+
+  .locationMainSection {
+    margin-top: -40px;
+    padding: 10px 3px 40px 3px;
+  }
+
+  .locationContainer {
+    padding: 0 5px;
+  }
+
+  .videoSection {
+    padding: 15px 10px;
+    border-radius: 15px;
+  }
+
+  .videoSection h2,
+  .mapSection h2 {
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+  }
+
+  .videoDescription {
+    font-size: 0.85rem;
+    margin-bottom: 15px;
+  }
+
+  .youtubeVideoContainer {
+    border-radius: 8px;
+  }
+
+  .playButton {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .addressCard,
+  .scheduleCard {
+    padding: 12px 8px;
+  }
+
+  .addressCard h3,
+  .scheduleCard h3 {
+    font-size: 1.1rem;
+  }
+
+  .clickableAddress {
+    font-size: 0.95rem;
+    padding: 8px;
+  }
+
+  .scheduleItem {
+    padding: 6px 8px;
+    font-size: 0.85rem;
+  }
+
+  .scheduleNote {
+    padding: 5px 6px;
+    font-size: 0.75rem;
+  }
+
+  .scheduleNote .noteIcon {
+    font-size: 0.8rem;
+  }
+
+  .mapContainer {
+    padding-bottom: 85%;
+    border-radius: 8px;
+    margin-bottom: 15px;
+  }
+
+  .actionButton {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    gap: 6px;
+  }
+
+  .actionButton svg {
+    font-size: 1rem;
+  }
+
+  .referencesSection {
+    padding: 40px 8px;
+  }
+
+  .referencesContainer h2 {
+    font-size: 1.6rem;
+    margin-bottom: 30px;
+  }
+
+  .referenceCard {
+    padding: 15px 10px;
   }
 }

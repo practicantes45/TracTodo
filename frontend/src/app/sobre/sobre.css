@@ -470,7 +470,6 @@
   .aboutSection {
     padding: 15px 15px 70px 15px;
     margin-top: -60px;
-    /* AJUSTE RESPONSIVE */
   }
 
   .aboutContentWithImage {
@@ -482,13 +481,11 @@
 
   .aboutTextContent {
     order: 1;
-    /* TEXTO PRIMERO */
   }
 
   .aboutImageContent {
     flex: none;
     order: 2;
-    /* IMAGEN DESPUÉS */
   }
 
   .aboutTextContent h2 {
@@ -508,7 +505,6 @@
   .aboutTextContent p {
     padding-left: 0;
     text-align: justify;
-    /* MANTENER TEXTO JUSTIFICADO */
   }
 
   .aboutTextContent p::before {
@@ -520,14 +516,11 @@
 @media (max-width: 992px) {
   .sobre-page .heroSection {
     height: 540px;
-    /* ALTURA CONSISTENTE */
     background-position: center center;
-    /* CORREGIDO: posición idéntica */
   }
 
   .sobre-page .mainContent {
     padding-top: 540px;
-    /* AJUSTADO UNIFICADO */
   }
 
   .heroContent h1 {
@@ -541,7 +534,6 @@
 
   .aboutSection {
     margin-top: -60px;
-    /* AJUSTE RESPONSIVE */
   }
 
   .missionVisionContainer {
@@ -564,28 +556,22 @@
 @media (max-width: 768px) {
   .sobre-page .heroSection {
     height: 420px;
-    /* ALTURA CONSISTENTE */
     top: 60px;
     background-position: center center;
-    /* CORREGIDO: posición idéntica */
   }
 
-  /* OCULTAR TÍTULO EN MÓVIL */
   .heroContent h1 {
     display: none !important;
   }
 
   .sobre-page .mainContent {
     padding-top: 480px;
-    /* CONSISTENTE */
   }
 
   .aboutSection {
     margin-top: -20px;
-    /* AJUSTE RESPONSIVE */
   }
 
-  /* Layout móvil: TEXTO PRIMERO, imagen después */
   .aboutContentWithImage {
     flex-direction: column;
     gap: 30px;
@@ -596,12 +582,10 @@
 
   .aboutTextContent {
     order: 1;
-    /* TEXTO PRIMERO */
   }
 
   .aboutImageContent {
     order: 2;
-    /* IMAGEN DESPUÉS */
     flex: none;
   }
 
@@ -619,7 +603,6 @@
   .aboutTextContent p {
     padding-left: 0;
     text-align: justify;
-    /* TEXTO JUSTIFICADO EN MÓVIL */
     font-size: 1.1rem;
   }
 
@@ -657,29 +640,24 @@
   }
 }
 
-/* Móvil pequeño (480px) - MANTENER TÍTULO OCULTO */
+/* Móvil pequeño (480px) */
 @media (max-width: 480px) {
   .sobre-page .heroSection {
     height: 380px;
-    /* ALTURA CONSISTENTE */
     top: 60px;
     background-position: center center;
-    /* CORREGIDO: posición idéntica */
   }
 
-  /* CONFIRMAR QUE EL TÍTULO SIGUE OCULTO */
   .heroContent h1 {
     display: none !important;
   }
 
   .sobre-page .mainContent {
     padding-top: 430px;
-    /* CONSISTENTE */
   }
 
   .aboutSection {
     margin-top: -60px;
-    /* AJUSTE RESPONSIVE */
     padding: 20px 10px;
   }
 
@@ -721,29 +699,24 @@
   }
 }
 
-/* Ajustes para pantallas muy pequeñas (360px) - MANTENER TÍTULO OCULTO */
+/* Ajustes para pantallas muy pequeñas (360px) */
 @media (max-width: 360px) {
   .sobre-page .heroSection {
     height: 350px;
-    /* ALTURA CONSISTENTE */
     top: 60px;
     background-position: center center;
-    /* CORREGIDO: posición idéntica */
   }
 
   .sobre-page .mainContent {
     padding-top: 400px;
-    /* CONSISTENTE */
   }
 
-  /* CONFIRMAR QUE EL TÍTULO SIGUE OCULTO */
   .sobre-page .heroContent h1 {
     display: none !important;
   }
 
   .aboutSection {
     margin-top: -40px;
-    /* AJUSTE RESPONSIVE */
     padding: 10px 3px;
   }
 }

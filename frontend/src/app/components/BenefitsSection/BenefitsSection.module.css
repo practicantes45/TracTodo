@@ -166,6 +166,9 @@
 /* =============================================
    PANTALLAS EXTRA GRANDES (1400px+)
    ============================================= */
+/* ===== RESPONSIVE DESIGN MEJORADO ===== */
+
+/* Pantallas extra grandes (1400px+) */
 @media (min-width: 1400px) {
   .benefitsContainer {
     grid-template-columns: repeat(4, 1fr);
@@ -179,9 +182,7 @@
   }
 }
 
-/* =============================================
-   PANTALLAS GRANDES (1200px - 1399px)
-   ============================================= */
+/* Pantallas grandes (1200px - 1399px) */
 @media (min-width: 1200px) and (max-width: 1399px) {
   .benefitsContainer {
     grid-template-columns: repeat(4, 1fr);
@@ -195,17 +196,13 @@
   }
 }
 
-/* =============================================
-   PANTALLAS MEDIANAS GRANDES (993px - 1199px)
-   SOLUCIÓN AL PROBLEMA PRINCIPAL
-   ============================================= */
+/* Pantallas medianas grandes (993px - 1199px) */
 @media (min-width: 993px) and (max-width: 1199px) {
   .benefitsSection {
     padding: 70px 15px;
   }
   
   .benefitsContainer {
-    /* CAMBIO CLAVE: 3 columnas en lugar de 4 */
     grid-template-columns: repeat(3, 1fr);
     max-width: 1000px;
     gap: 25px;
@@ -217,7 +214,6 @@
     height: 280px;
   }
   
-  /* Ajustar contenido para que quepa mejor */
   .frontContent .benefitTitle {
     font-size: 22px;
   }
@@ -230,15 +226,12 @@
     font-size: 16px;
   }
 
-  /* Título responsivo */
   .sectionTitle {
     font-size: 2.5rem;
   }
 }
 
-/* =============================================
-   TABLET (769px - 992px)
-   ============================================= */
+/* Tablet (769px - 992px) */
 @media (min-width: 769px) and (max-width: 992px) {
   .benefitsSection {
     padding: 60px 15px;
@@ -260,9 +253,7 @@
   }
 }
 
-/* =============================================
-   MÓVIL GRANDE (481px - 768px)
-   ============================================= */
+/* Móvil grande (481px - 768px) */
 @media (min-width: 481px) and (max-width: 768px) {
   .benefitsSection {
     padding: 50px 15px;
@@ -310,9 +301,7 @@
   }
 }
 
-/* =============================================
-   MÓVIL PEQUEÑO (hasta 480px)
-   ============================================= */
+/* Móvil pequeño (hasta 480px) */
 @media (max-width: 480px) {
   .benefitsSection {
     padding: 40px 10px;
@@ -363,9 +352,7 @@
   }
 }
 
-/* =============================================
-   MÓVILES MUY PEQUEÑOS (hasta 360px)
-   ============================================= */
+/* Móviles muy pequeños (hasta 360px) */
 @media (max-width: 360px) {
   .benefitsSection {
     padding: 35px 8px;
@@ -393,9 +380,7 @@
   }
 }
 
-/* =============================================
-   LANDSCAPE MÓVIL
-   ============================================= */
+/* Landscape móvil */
 @media (max-width: 768px) and (orientation: landscape) {
   .benefitsContainer {
     grid-template-columns: repeat(2, 1fr);

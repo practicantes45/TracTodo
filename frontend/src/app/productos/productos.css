@@ -1171,394 +1171,6 @@
     0 1px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* ===== RESPONSIVE DESIGN - MEDIA QUERIES ===== */
-
-/* ===== TABLET GRANDE (1200px+) ===== */
-@media (max-width: 1199px) {
-  .productosContainer {
-    padding: 0 20px 0 320px;
-    /* Ajustar padding para sidebar más pequeño */
-  }
-
-  .filtrosSidebar {
-    width: 280px;
-    padding: 25px;
-  }
-
-  .productosGrid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 25px;
-  }
-
-  .productoCard {
-    max-width: 320px;
-    min-width: 280px;
-  }
-}
-
-/* ===== PUNTO CRÍTICO 992px - CAMBIO A MÓVIL ===== */
-@media (max-width: 992px) {
-  .productos-page .heroSection {
-    height: 540px;
-    background-position: center center;
-  }
-
-  .productos-page .mainContent {
-    padding-top: 540px;
-  }
-
-  .heroContent h1 {
-    font-size: 2.8rem;
-  }
-
-  .productosMainSection {
-    margin-top: -60px;
-    padding: 0px 15px 70px 15px;
-    /* Sin padding top para mejor transición */
-  }
-
-  .productosContainer {
-    padding: 0 15px;
-    /* Sin padding izquierdo */
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    /* AUMENTADO: más espacio entre filtro y grid */
-  }
-
-  /* OCULTAR sidebar desktop desde 992px */
-  .filtrosSidebar {
-    display: none !important;
-  }
-
-  /* MOSTRAR botón filtrar móvil desde 992px */
-  .mobileFilterToggle {
-    display: block;
-    margin: 0 0 20px 0;
-    /* AGREGADO: margen inferior */
-    padding: 15px 20px;
-    background: linear-gradient(145deg, #f0f8ff 0%, #e6f3ff 30%, #ffffff 70%, #f8f9fa 100%);
-    border-bottom: 1px solid rgba(0, 180, 216, 0.1);
-    margin-top: -220px;
-  }
-
-  .productosGrid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 25px;
-    justify-items: center;
-    margin-top: 40px;
-  }
-
-  .productoCard {
-    max-width: 320px;
-    min-width: 280px;
-  }
-}
-
-/* ===== TABLET PEQUEÑO (768px) ===== */
-@media (max-width: 768px) {
-  .productos-page .heroSection {
-    height: 420px;
-    top: 60px;
-    background-position: center center;
-  }
-
-  /* OCULTAR TÍTULO EN MÓVIL */
-  .heroContent h1 {
-    display: none !important;
-  }
-
-  .productos-page .mainContent {
-    padding-top: 480px;
-  }
-
-  .productosMainSection {
-    margin-top: -20px;
-    padding: 0px 10px 60px 10px;
-  }
-
-  .productosContainer {
-    padding: 0 10px;
-    gap: 25px;
-    /* AUMENTADO: más espacio para móvil */
-  }
-
-  .mobileFilterToggle {
-    margin: 0 0 15px 0;
-    /* AGREGADO: margen inferior para móvil */
-    padding: 15px 20px;
-    margin-top: -250px;
-  }
-
-  .productosGrid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-    justify-items: center;
-    margin-top: 10px;
-  }
-
-  .productoCard {
-    width: 100%;
-    max-width: 400px;
-    min-width: 320px;
-    margin: 0 auto;
-  }
-
-  .productoInfo {
-    padding: 20px;
-  }
-
-  .productoNombre {
-    font-size: 1.2rem;
-  }
-
-  .productoPrecio {
-    font-size: 1.8rem;
-  }
-
-  .whatsappBtn {
-    padding: 12px;
-    font-size: 1rem;
-  }
-
-  .productoImageContainer {
-    height: 200px;
-  }
-}
-
-/* ===== MÓVIL PEQUEÑO (480px) ===== */
-@media (max-width: 480px) {
-  .productos-page .heroSection {
-    height: 380px;
-    top: 60px;
-    background-position: center center;
-  }
-
-  .productos-page .mainContent {
-    padding-top: 430px;
-  }
-
-  .productosMainSection {
-    margin-top: -20px;
-    padding: 0px 5px 50px 5px;
-  }
-
-  .productosContainer {
-    padding: 0 5px;
-    gap: 20px;
-    /* AUMENTADO: más espacio para móvil pequeño */
-  }
-
-  .mobileFilterToggle {
-    margin: 0 0 12px 0;
-    /* AGREGADO: margen inferior */
-    padding: 12px 15px;
-    margin-top: -300px;
-  }
-
-  .mobileFilterButton {
-    padding: 10px 16px;
-    font-size: 0.9rem;
-  }
-
-  .mobileFilterMenu {
-    max-height: 85vh;
-  }
-
-  .mobileFilterHeader {
-    padding: 15px 20px;
-  }
-
-  .mobileFilterHeader h3 {
-    font-size: 1.3rem;
-  }
-
-  .mobileFilterContent {
-    padding: 0 20px 20px 20px;
-  }
-
-  .mobileFilterGroup h4 {
-    font-size: 1.2rem;
-  }
-
-  .mobileMarcaCheckbox,
-  .mobileOrdenamientoRadio {
-    font-size: 1rem;
-    padding: 10px 0px 10px 40px;
-  }
-
-  .mobileFilterActions {
-    gap: 10px;
-    margin-top: 25px;
-  }
-
-  .clearMobileFilters,
-  .applyMobileFilters {
-    padding: 10px 16px;
-    font-size: 0.9rem;
-  }
-
-  .productoCard {
-    width: 100%;
-    max-width: 350px;
-    min-width: 280px;
-    margin: 0 auto;
-  }
-
-  .productoImageContainer {
-    height: 180px;
-  }
-
-  .productoInfo {
-    padding: 15px;
-  }
-
-  .productoNombre {
-    font-size: 1.1rem;
-  }
-
-  .productoDescripcion {
-    font-size: 0.9rem;
-  }
-
-  .productoPrecio {
-    font-size: 1.6rem;
-  }
-
-  .whatsappBtn {
-    padding: 10px;
-    font-size: 0.9rem;
-    gap: 6px;
-  }
-
-  .productosGrid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-    justify-items: center;
-    margin-top: 10px;
-  }
-}
-
-/* ===== MÓVILES MUY PEQUEÑOS (360px) ===== */
-@media (max-width: 360px) {
-  .productos-page .heroSection {
-    height: 350px;
-    top: 60px;
-    background-position: center center;
-  }
-
-  .productos-page .mainContent {
-    padding-top: 400px;
-  }
-
-  .productosMainSection {
-    margin-top: -40px;
-    padding: 0px 3px 40px 3px;
-  }
-
-  .productosContainer {
-    padding: 0 3px;
-    gap: 18px;
-    margin-top: 30px;
-    /* AUMENTADO: más espacio para móvil muy pequeño */
-  }
-
-  .mobileFilterToggle {
-    margin: 0 0 10px 0;
-    /* AGREGADO: margen inferior */
-    padding: 10px 12px;
-    margin-top: -150px;
-  }
-
-  .mobileFilterButton {
-    padding: 8px 14px;
-    font-size: 0.85rem;
-  }
-
-  .mobileFilterHeader {
-    padding: 12px 15px;
-  }
-
-  .mobileFilterHeader h3 {
-    font-size: 1.2rem;
-  }
-
-  .closeMobileFilter {
-    width: 35px;
-    height: 35px;
-    font-size: 1.3rem;
-  }
-
-  .mobileFilterContent {
-    padding: 0 15px 15px 15px;
-  }
-
-  .mobileFilterGroup {
-    margin-bottom: 25px;
-  }
-
-  .mobileFilterGroup h4 {
-    font-size: 1.1rem;
-  }
-
-  .mobileMarcaCheckbox,
-  .mobileOrdenamientoRadio {
-    font-size: 0.9rem;
-    padding: 8px 0px 8px 40px;
-
-  }
-
-  .mobileFilterActions {
-    gap: 8px;
-    margin-top: 20px;
-  }
-
-  .clearMobileFilters,
-  .applyMobileFilters {
-    padding: 8px 12px;
-    font-size: 0.8rem;
-  }
-
-  .productoCard {
-    width: 100%;
-    max-width: 320px;
-    min-width: 260px;
-    margin: 0 auto;
-  }
-
-  .productoImageContainer {
-    height: 160px;
-  }
-
-  .productoInfo {
-    padding: 12px;
-  }
-
-  .productoNombre {
-    font-size: 1rem;
-    margin-bottom: 8px;
-  }
-
-  .productoDescripcion {
-    font-size: 0.85rem;
-    margin-bottom: 15px;
-  }
-
-  .productoPrecio {
-    font-size: 1.4rem;
-    margin-bottom: 15px;
-  }
-
-  .whatsappBtn {
-    padding: 8px;
-    font-size: 0.8rem;
-    gap: 4px;
-  }
-
-  .productosGrid {
-    padding: 0 5px;
-  }
-}
 
 /* ===== ANIMACIONES Y EFECTOS ADICIONALES ===== */
 .productoCard {
@@ -1740,51 +1352,6 @@
     transform: scale(0.98);
   }
 }
-
-/* Evitar scroll horizontal */
-@media (max-width: 992px) {
-  body {
-    overflow-x: hidden;
-  }
-
-  .productos-page {
-    overflow-x: hidden;
-  }
-
-  /* Prevenir scroll cuando el filtro móvil está abierto */
-  body.filter-menu-open {
-    overflow: hidden;
-  }
-}
-
-/* ===== OPTIMIZACIONES ADICIONALES ===== */
-/* Mejor rendimiento en dispositivos móviles */
-@media (max-width: 1024px) {
-  .heroSection {
-    background-attachment: scroll;
-  }
-}
-
-/* Dispositivos con pantallas anchas pero cortas (landscape tablets) */
-@media (max-width: 1024px) and (orientation: landscape) and (max-height: 600px) {
-  .heroSection {
-    background-size: cover;
-    background-position: center 40%;
-  }
-
-  .mobileFilterMenu {
-    max-height: 70vh;
-  }
-}
-
-/* Optimización para pantallas de alta densidad */
-@media (max-width: 992px) and (-webkit-min-device-pixel-ratio: 2) {
-  .heroSection {
-    background-size: cover;
-    background-position: center 30%;
-  }
-}
-
 /* Mejoras para navegación por teclado */
 .mobileFilterButton:focus,
 .clearMobileFilters:focus,
@@ -1902,28 +1469,6 @@
   color: #555;
 }
 
-/* ===== RESPONSIVE PARA IMAGEN NO ENCONTRADA ===== */
-@media (max-width: 768px) {
-  .noImageIcon {
-    font-size: 2.5rem;
-    margin-bottom: 0.6rem;
-  }
-
-  .imageNotFound p {
-    font-size: 0.9rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .noImageIcon {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .imageNotFound p {
-    font-size: 0.8rem;
-  }
-}
 
 /* ===== CORRECCIONES PARA IMÁGENES CORTADAS ===== */
 .productoImageContainer {
@@ -2203,80 +1748,6 @@
   font-size: 1rem;
 }
 
-/* ===== RESPONSIVE PARA NUEVOS ELEMENTOS ===== */
-@media (max-width: 768px) {
-  .searchIndicator {
-    font-size: 1rem;
-    margin-top: 12px;
-    padding: 10px 18px;
-  }
-
-  .clearSearchSection {
-    padding: 15px;
-    margin-bottom: 20px;
-  }
-
-  .clearSearchButton {
-    padding: 10px 14px;
-    font-size: 0.9rem;
-    gap: 6px;
-  }
-
-  .searchTermDisplay {
-    font-size: 0.85rem;
-    padding: 6px 10px;
-  }
-
-  .clearSearchButtonMobile {
-    padding: 12px 16px;
-    font-size: 1rem;
-    gap: 8px;
-  }
-}
-
-@media (max-width: 480px) {
-  .searchIndicator {
-    font-size: 0.9rem;
-    padding: 8px 15px;
-  }
-
-  .clearSearchSection {
-    padding: 12px;
-  }
-
-  .clearSearchButton {
-    padding: 8px 12px;
-    font-size: 0.85rem;
-  }
-
-  .searchTermDisplay {
-    font-size: 0.8rem;
-    padding: 5px 8px;
-  }
-
-  .clearSearchButtonMobile {
-    padding: 10px 14px;
-    font-size: 0.95rem;
-  }
-}
-
-@media (max-width: 360px) {
-  .searchIndicator {
-    font-size: 0.8rem;
-    padding: 6px 12px;
-  }
-
-  .clearSearchButton {
-    padding: 6px 10px;
-    font-size: 0.8rem;
-  }
-
-  .clearSearchButtonMobile {
-    padding: 8px 12px;
-    font-size: 0.9rem;
-  }
-}
-
 /* ===== INFORMACIÓN DE PRIORIDAD DE BÚSQUEDA ===== */
 .searchPriorityInfo {
   background: linear-gradient(135deg, rgba(0, 180, 216, 0.15) 0%, rgba(0, 42, 92, 0.2) 100%);
@@ -2364,83 +1835,6 @@
 .mobileFilterContent .searchPriorityInfo li strong {
   color: white;
   font-weight: 600;
-}
-
-/* ===== RESPONSIVE PARA INFORMACIÓN DE PRIORIDAD ===== */
-@media (max-width: 768px) {
-  .searchPriorityInfo {
-    padding: 15px;
-    margin-bottom: 15px;
-  }
-
-  .searchPriorityInfo h3 {
-    font-size: 1.2rem;
-    margin-bottom: 12px;
-  }
-
-  .searchPriorityInfo p {
-    font-size: 0.9rem;
-    margin-bottom: 10px;
-  }
-
-  .searchPriorityInfo ol {
-    padding-left: 18px;
-  }
-
-  .searchPriorityInfo li {
-    font-size: 0.85rem;
-    margin-bottom: 6px;
-  }
-
-  .mobileFilterContent .searchPriorityInfo {
-    padding: 15px;
-  }
-
-  .mobileFilterContent .searchPriorityInfo h3 {
-    font-size: 1.1rem;
-  }
-
-  .mobileFilterContent .searchPriorityInfo p {
-    font-size: 0.85rem;
-  }
-
-  .mobileFilterContent .searchPriorityInfo li {
-    font-size: 0.8rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .searchPriorityInfo {
-    padding: 12px;
-  }
-
-  .searchPriorityInfo h3 {
-    font-size: 1.1rem;
-  }
-
-  .searchPriorityInfo p {
-    font-size: 0.85rem;
-  }
-
-  .searchPriorityInfo li {
-    font-size: 0.8rem;
-  }
-
-  .mobileFilterContent .searchPriorityInfo {
-    padding: 12px;
-  }
-
-  .mobileFilterContent .searchPriorityInfo h3 {
-    font-size: 1rem;
-  }
-
-  .mobileFilterContent .searchPriorityInfo p {
-    font-size: 0.8rem;
-  }
-
-  .mobileFilterContent .searchPriorityInfo li {
-    font-size: 0.75rem;
-  }
 }
 
 /* ===== PAGINACIÓN - BOTÓN VER MÁS PRODUCTOS ===== */
@@ -2572,93 +1966,6 @@
   font-size: 1.1rem;
 }
 
-/* ===== RESPONSIVE PARA PAGINACIÓN ===== */
-@media (max-width: 768px) {
-  .verMasContainer {
-    margin-top: 30px;
-    margin-bottom: 15px;
-    gap: 15px;
-  }
-
-  .verMasBtn {
-    padding: 16px 32px;
-    font-size: 1.1rem;
-    min-width: 220px;
-    gap: 10px;
-  }
-
-  .verMasBtn svg {
-    font-size: 1rem;
-  }
-
-  .paginacionInfo {
-    font-size: 0.9rem;
-    padding: 10px 20px;
-  }
-
-  .paginacionInfo::before {
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .verMasContainer {
-    margin-top: 25px;
-    margin-bottom: 12px;
-    gap: 12px;
-  }
-
-  .verMasBtn {
-    padding: 14px 28px;
-    font-size: 1rem;
-    min-width: 200px;
-    gap: 8px;
-    letter-spacing: 0.5px;
-  }
-
-  .verMasBtn svg {
-    font-size: 0.9rem;
-  }
-
-  .paginacionInfo {
-    font-size: 0.85rem;
-    padding: 8px 16px;
-  }
-
-  .paginacionInfo::before {
-    font-size: 0.9rem;
-    margin-right: 6px;
-  }
-}
-
-@media (max-width: 360px) {
-  .verMasContainer {
-    margin-top: 20px;
-    margin-bottom: 10px;
-    gap: 10px;
-  }
-
-  .verMasBtn {
-    padding: 12px 24px;
-    font-size: 0.9rem;
-    min-width: 180px;
-    gap: 6px;
-  }
-
-  .verMasBtn svg {
-    font-size: 0.8rem;
-  }
-
-  .paginacionInfo {
-    font-size: 0.8rem;
-    padding: 6px 12px;
-  }
-
-  .paginacionInfo::before {
-    font-size: 0.8rem;
-    margin-right: 4px;
-  }
-}
 
 /* ===== ANIMACIONES ADICIONALES PARA PAGINACIÓN ===== */
 .verMasBtn {
@@ -2807,3 +2114,682 @@
   }
 }
 
+/* ===== RESPONSIVE DESIGN - MEDIA QUERIES ===== */
+
+/* ===== RESPONSIVE DESIGN - MEDIA QUERIES ===== */
+
+/* ===== TABLET GRANDE (1200px+) ===== */
+@media (max-width: 1199px) {
+  .productosContainer {
+    padding: 0 20px 0 320px;
+    /* Ajustar padding para sidebar más pequeño */
+  }
+
+  .filtrosSidebar {
+    width: 280px;
+    padding: 25px;
+  }
+
+  .productosGrid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+  }
+
+  .productoCard {
+    max-width: 320px;
+    min-width: 280px;
+  }
+}
+
+/* ===== PUNTO CRÍTICO 992px - CAMBIO A MÓVIL ===== */
+@media (max-width: 992px) {
+  .productos-page .heroSection {
+    height: 540px;
+    background-position: center center;
+  }
+
+  .productos-page .mainContent {
+    padding-top: 540px;
+  }
+
+  .heroContent h1 {
+    font-size: 2.8rem;
+  }
+
+  .productosMainSection {
+    margin-top: -60px;
+    padding: 0px 15px 70px 15px;
+    /* Sin padding top para mejor transición */
+  }
+
+  .productosContainer {
+    padding: 0 15px;
+    /* Sin padding izquierdo */
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    /* AUMENTADO: más espacio entre filtro y grid */
+  }
+
+  /* OCULTAR sidebar desktop desde 992px */
+  .filtrosSidebar {
+    display: none !important;
+  }
+
+  /* MOSTRAR botón filtrar móvil desde 992px */
+  .mobileFilterToggle {
+    display: block;
+    margin: 0 0 20px 0;
+    /* AGREGADO: margen inferior */
+    padding: 15px 20px;
+    background: linear-gradient(145deg, #f0f8ff 0%, #e6f3ff 30%, #ffffff 70%, #f8f9fa 100%);
+    border-bottom: 1px solid rgba(0, 180, 216, 0.1);
+    margin-top: -220px;
+  }
+
+  .productosGrid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    justify-items: center;
+    margin-top: 40px;
+  }
+
+  .productoCard {
+    max-width: 320px;
+    min-width: 280px;
+  }
+
+  /* Evitar scroll horizontal */
+  body {
+    overflow-x: hidden;
+  }
+
+  .productos-page {
+    overflow-x: hidden;
+  }
+
+  /* Prevenir scroll cuando el filtro móvil está abierto */
+  body.filter-menu-open {
+    overflow: hidden;
+  }
+}
+
+/* ===== TABLET PEQUEÑO (768px) ===== */
+@media (max-width: 768px) {
+  .productos-page .heroSection {
+    height: 420px;
+    top: 60px;
+    background-position: center center;
+  }
+
+  /* OCULTAR TÍTULO EN MÓVIL */
+  .heroContent h1 {
+    display: none !important;
+  }
+
+  .productos-page .mainContent {
+    padding-top: 480px;
+  }
+
+  .productosMainSection {
+    margin-top: -20px;
+    padding: 0px 10px 60px 10px;
+  }
+
+  .productosContainer {
+    padding: 0 10px;
+    gap: 25px;
+    /* AUMENTADO: más espacio para móvil */
+  }
+
+  .mobileFilterToggle {
+    margin: 0 0 15px 0;
+    /* AGREGADO: margen inferior para móvil */
+    padding: 15px 20px;
+    margin-top: -250px;
+  }
+
+  .productosGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    justify-items: center;
+    margin-top: 10px;
+  }
+
+  .productoCard {
+    width: 100%;
+    max-width: 400px;
+    min-width: 320px;
+    margin: 0 auto;
+  }
+
+  .productoInfo {
+    padding: 20px;
+  }
+
+  .productoNombre {
+    font-size: 1.2rem;
+  }
+
+  .productoPrecio {
+    font-size: 1.8rem;
+  }
+
+  .whatsappBtn {
+    padding: 12px;
+    font-size: 1rem;
+  }
+
+  .productoImageContainer {
+    height: 200px;
+  }
+
+  /* ===== RESPONSIVE PARA IMAGEN NO ENCONTRADA ===== */
+  .noImageIcon {
+    font-size: 2.5rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .imageNotFound p {
+    font-size: 0.9rem;
+  }
+
+  /* ===== RESPONSIVE PARA NUEVOS ELEMENTOS ===== */
+  .searchIndicator {
+    font-size: 1rem;
+    margin-top: 12px;
+    padding: 10px 18px;
+  }
+
+  .clearSearchSection {
+    padding: 15px;
+    margin-bottom: 20px;
+  }
+
+  .clearSearchButton {
+    padding: 10px 14px;
+    font-size: 0.9rem;
+    gap: 6px;
+  }
+
+  .searchTermDisplay {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+  }
+
+  .clearSearchButtonMobile {
+    padding: 12px 16px;
+    font-size: 1rem;
+    gap: 8px;
+  }
+
+  /* ===== RESPONSIVE PARA INFORMACIÓN DE PRIORIDAD ===== */
+  .searchPriorityInfo {
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+
+  .searchPriorityInfo h3 {
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+  }
+
+  .searchPriorityInfo p {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+  }
+
+  .searchPriorityInfo ol {
+    padding-left: 18px;
+  }
+
+  .searchPriorityInfo li {
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+  }
+
+  .mobileFilterContent .searchPriorityInfo {
+    padding: 15px;
+  }
+
+  .mobileFilterContent .searchPriorityInfo h3 {
+    font-size: 1.1rem;
+  }
+
+  .mobileFilterContent .searchPriorityInfo p {
+    font-size: 0.85rem;
+  }
+
+  .mobileFilterContent .searchPriorityInfo li {
+    font-size: 0.8rem;
+  }
+
+  /* ===== RESPONSIVE PARA PAGINACIÓN ===== */
+  .verMasContainer {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    gap: 15px;
+  }
+
+  .verMasBtn {
+    padding: 16px 32px;
+    font-size: 1.1rem;
+    min-width: 220px;
+    gap: 10px;
+  }
+
+  .verMasBtn svg {
+    font-size: 1rem;
+  }
+
+  .paginacionInfo {
+    font-size: 0.9rem;
+    padding: 10px 20px;
+  }
+
+  .paginacionInfo::before {
+    font-size: 1rem;
+  }
+}
+
+/* ===== MÓVIL PEQUEÑO (480px) ===== */
+@media (max-width: 480px) {
+  .productos-page .heroSection {
+    height: 380px;
+    top: 60px;
+    background-position: center center;
+  }
+
+  .productos-page .mainContent {
+    padding-top: 430px;
+  }
+
+  .productosMainSection {
+    margin-top: -20px;
+    padding: 0px 5px 50px 5px;
+  }
+
+  .productosContainer {
+    padding: 0 5px;
+    gap: 20px;
+    /* AUMENTADO: más espacio para móvil pequeño */
+  }
+
+  .mobileFilterToggle {
+    margin: 0 0 12px 0;
+    /* AGREGADO: margen inferior */
+    padding: 12px 15px;
+    margin-top: -300px;
+  }
+
+  .mobileFilterButton {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+
+  .mobileFilterMenu {
+    max-height: 85vh;
+  }
+
+  .mobileFilterHeader {
+    padding: 15px 20px;
+  }
+
+  .mobileFilterHeader h3 {
+    font-size: 1.3rem;
+  }
+
+  .mobileFilterContent {
+    padding: 0 20px 20px 20px;
+  }
+
+  .mobileFilterGroup h4 {
+    font-size: 1.2rem;
+  }
+
+  .mobileMarcaCheckbox,
+  .mobileOrdenamientoRadio {
+    font-size: 1rem;
+    padding: 10px 0px 10px 40px;
+  }
+
+  .mobileFilterActions {
+    gap: 10px;
+    margin-top: 25px;
+  }
+
+  .clearMobileFilters,
+  .applyMobileFilters {
+    padding: 10px 16px;
+    font-size: 0.9rem;
+  }
+
+  .productoCard {
+    width: 100%;
+    max-width: 350px;
+    min-width: 280px;
+    margin: 0 auto;
+  }
+
+  .productoImageContainer {
+    height: 180px;
+  }
+
+  .productoInfo {
+    padding: 15px;
+  }
+
+  .productoNombre {
+    font-size: 1.1rem;
+  }
+
+  .productoDescripcion {
+    font-size: 0.9rem;
+  }
+
+  .productoPrecio {
+    font-size: 1.6rem;
+  }
+
+  .whatsappBtn {
+    padding: 10px;
+    font-size: 0.9rem;
+    gap: 6px;
+  }
+
+  .productosGrid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    justify-items: center;
+    margin-top: 10px;
+  }
+
+  /* ===== RESPONSIVE PARA IMAGEN NO ENCONTRADA ===== */
+  .noImageIcon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .imageNotFound p {
+    font-size: 0.8rem;
+  }
+
+  /* ===== RESPONSIVE PARA NUEVOS ELEMENTOS ===== */
+  .searchIndicator {
+    font-size: 0.9rem;
+    padding: 8px 15px;
+  }
+
+  .clearSearchSection {
+    padding: 12px;
+  }
+
+  .clearSearchButton {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+  }
+
+  .searchTermDisplay {
+    font-size: 0.8rem;
+    padding: 5px 8px;
+  }
+
+  .clearSearchButtonMobile {
+    padding: 10px 14px;
+    font-size: 0.95rem;
+  }
+
+  /* ===== RESPONSIVE PARA INFORMACIÓN DE PRIORIDAD ===== */
+  .searchPriorityInfo {
+    padding: 12px;
+  }
+
+  .searchPriorityInfo h3 {
+    font-size: 1.1rem;
+  }
+
+  .searchPriorityInfo p {
+    font-size: 0.85rem;
+  }
+
+  .searchPriorityInfo li {
+    font-size: 0.8rem;
+  }
+
+  .mobileFilterContent .searchPriorityInfo {
+    padding: 12px;
+  }
+
+  .mobileFilterContent .searchPriorityInfo h3 {
+    font-size: 1rem;
+  }
+
+  .mobileFilterContent .searchPriorityInfo p {
+    font-size: 0.8rem;
+  }
+
+  .mobileFilterContent .searchPriorityInfo li {
+    font-size: 0.75rem;
+  }
+
+  /* ===== RESPONSIVE PARA PAGINACIÓN ===== */
+  .verMasContainer {
+    margin-top: 25px;
+    margin-bottom: 12px;
+    gap: 12px;
+  }
+
+  .verMasBtn {
+    padding: 14px 28px;
+    font-size: 1rem;
+    min-width: 200px;
+    gap: 8px;
+    letter-spacing: 0.5px;
+  }
+
+  .verMasBtn svg {
+    font-size: 0.9rem;
+  }
+
+  .paginacionInfo {
+    font-size: 0.85rem;
+    padding: 8px 16px;
+  }
+
+  .paginacionInfo::before {
+    font-size: 0.9rem;
+    margin-right: 6px;
+  }
+}
+
+/* ===== MÓVILES MUY PEQUEÑOS (360px) ===== */
+@media (max-width: 360px) {
+  .productos-page .heroSection {
+    height: 350px;
+    top: 60px;
+    background-position: center center;
+  }
+
+  .productos-page .mainContent {
+    padding-top: 400px;
+  }
+
+  .productosMainSection {
+    margin-top: -40px;
+    padding: 0px 3px 40px 3px;
+  }
+
+  .productosContainer {
+    padding: 0 3px;
+    gap: 18px;
+    margin-top: 30px;
+    /* AUMENTADO: más espacio para móvil muy pequeño */
+  }
+
+  .mobileFilterToggle {
+    margin: 0 0 10px 0;
+    /* AGREGADO: margen inferior */
+    padding: 10px 12px;
+    margin-top: -150px;
+  }
+
+  .mobileFilterButton {
+    padding: 8px 14px;
+    font-size: 0.85rem;
+  }
+
+  .mobileFilterHeader {
+    padding: 12px 15px;
+  }
+
+  .mobileFilterHeader h3 {
+    font-size: 1.2rem;
+  }
+
+  .closeMobileFilter {
+    width: 35px;
+    height: 35px;
+    font-size: 1.3rem;
+  }
+
+  .mobileFilterContent {
+    padding: 0 15px 15px 15px;
+  }
+
+  .mobileFilterGroup {
+    margin-bottom: 25px;
+  }
+
+  .mobileFilterGroup h4 {
+    font-size: 1.1rem;
+  }
+
+  .mobileMarcaCheckbox,
+  .mobileOrdenamientoRadio {
+    font-size: 0.9rem;
+    padding: 8px 0px 8px 40px;
+  }
+
+  .mobileFilterActions {
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  .clearMobileFilters,
+  .applyMobileFilters {
+    padding: 8px 12px;
+    font-size: 0.8rem;
+  }
+
+  .productoCard {
+    width: 100%;
+    max-width: 320px;
+    min-width: 260px;
+    margin: 0 auto;
+  }
+
+  .productoImageContainer {
+    height: 160px;
+  }
+
+  .productoInfo {
+    padding: 12px;
+  }
+
+  .productoNombre {
+    font-size: 1rem;
+    margin-bottom: 8px;
+  }
+
+  .productoDescripcion {
+    font-size: 0.85rem;
+    margin-bottom: 15px;
+  }
+
+  .productoPrecio {
+    font-size: 1.4rem;
+    margin-bottom: 15px;
+  }
+
+  .whatsappBtn {
+    padding: 8px;
+    font-size: 0.8rem;
+    gap: 4px;
+  }
+
+  .productosGrid {
+    padding: 0 5px;
+  }
+
+  /* ===== RESPONSIVE PARA NUEVOS ELEMENTOS ===== */
+  .searchIndicator {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
+
+  .clearSearchButton {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  .clearSearchButtonMobile {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+  }
+
+  /* ===== RESPONSIVE PARA PAGINACIÓN ===== */
+  .verMasContainer {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    gap: 10px;
+  }
+
+  .verMasBtn {
+    padding: 12px 24px;
+    font-size: 0.9rem;
+    min-width: 180px;
+    gap: 6px;
+  }
+
+  .verMasBtn svg {
+    font-size: 0.8rem;
+  }
+
+  .paginacionInfo {
+    font-size: 0.8rem;
+    padding: 6px 12px;
+  }
+
+  .paginacionInfo::before {
+    font-size: 0.8rem;
+    margin-right: 4px;
+  }
+}
+
+/* ===== OPTIMIZACIONES ADICIONALES ===== */
+/* Mejor rendimiento en dispositivos móviles */
+@media (max-width: 1024px) {
+  .heroSection {
+    background-attachment: scroll;
+  }
+}
+
+/* Dispositivos con pantallas anchas pero cortas (landscape tablets) */
+@media (max-width: 1024px) and (orientation: landscape) and (max-height: 600px) {
+  .heroSection {
+    background-size: cover;
+    background-position: center 40%;
+  }
+
+  .mobileFilterMenu {
+    max-height: 70vh;
+  }
+}
+
+/* Optimización para pantallas de alta densidad */
+@media (max-width: 992px) and (-webkit-min-device-pixel-ratio: 2) {
+  .heroSection {
+    background-size: cover;
+    background-position: center 30%;
+  }
+}
