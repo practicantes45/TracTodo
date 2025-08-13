@@ -1,15 +1,19 @@
-// components/ProductCarousel/ProductCarousel.jsx
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../../hooks/useAuth'; // IMPORTAR useAuth
-import styles from './ProductCarousel.module.css';
+'use client';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '../../../hooks/useAuth';
 import { obtenerProductosDelMes } from '../../../services/productoService';
+import { registrarVista } from '../../../services/trackingService';
+import { getProductSlug } from '../../../utils/slugUtils';
+import styles from './ProductCarousel.module.css';
 
-const ProductCarousel = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
+export default function ProductCarousel() {
   const [products, setProducts] = useState([]);
+  const [currentSlide, setCurrentSlide] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const { isAdmin } = useAuth(); // OBTENER ESTADO DE ADMIN
+  const { isAdmin } = useAuth();
+  const router = useRouter();
 
   // Lista de contactos para WhatsApp
   const contactList = [
@@ -47,14 +51,15 @@ const ProductCarousel = () => {
 
       const productosDelMes = await obtenerProductosDelMes();
       console.log('📦 Productos del mes recibidos:', productosDelMes);
-      // En la función cargarProductosDelMes:
+      
       const productosFormateados = productosDelMes.map(producto => ({
         id: producto.id,
         name: producto.nombre,
         price: `$${parseFloat(producto.precioVentaSugerido || 0).toLocaleString()}`,
         image: obtenerImagenFrente(producto),
         ctaText: "COMPRA AHORA",
-        precioNumerico: parseFloat(producto.precioVentaSugerido || 0)
+        precioNumerico: parseFloat(producto.precioVentaSugerido || 0),
+        productoCompleto: producto // Agregamos el producto completo para poder navegarlo
       }));
 
       setProducts(productosFormateados);
@@ -99,7 +104,8 @@ const ProductCarousel = () => {
       price: "$3,999",
       image: null,
       ctaText: "COMPRA AHORA",
-      precioNumerico: 3999
+      precioNumerico: 3999,
+      productoCompleto: { id: 'ejemplo-1', nombre: 'CABEZA DE MOTOR' }
     },
     {
       id: 'ejemplo-2',
@@ -107,7 +113,8 @@ const ProductCarousel = () => {
       price: "$2,499",
       image: null,
       ctaText: "COMPRA AHORA",
-      precioNumerico: 2499
+      precioNumerico: 2499,
+      productoCompleto: { id: 'ejemplo-2', nombre: 'SISTEMA DE INYECCIÓN' }
     },
     {
       id: 'ejemplo-3',
@@ -115,7 +122,8 @@ const ProductCarousel = () => {
       price: "$1,899",
       image: null,
       ctaText: "COMPRA AHORA",
-      precioNumerico: 1899
+      precioNumerico: 1899,
+      productoCompleto: { id: 'ejemplo-3', nombre: 'PISTONES HD' }
     }
   ];
 
@@ -166,6 +174,34 @@ const ProductCarousel = () => {
 
     // Abrir en nueva ventana/pestaña
     window.open(whatsappUrl, '_blank');
+  };
+
+  // Nueva función para ir al producto individual
+  const handleGoToProduct = async (product) => {
+    // Evitar navegación si es un producto de ejemplo
+    if (product.id.startsWith('ejemplo')) {
+      console.log('🚫 Producto de ejemplo, no se puede navegar');
+      return;
+    }
+
+    try {
+      // Registrar vista del producto
+      await registrarVista(product.id);
+      
+      // Obtener slug del producto
+      const slug = getProductSlug(product.productoCompleto);
+      
+      console.log('🔗 Navegando a producto desde carrusel:', { 
+        nombre: product.name, 
+        slug,
+        id: product.id 
+      });
+
+      // Navegar a la página del producto
+      router.push(`/productos/${slug}`);
+    } catch (error) {
+      console.error('❌ Error al navegar al producto:', error);
+    }
   };
 
   // Mostrar loading
@@ -241,24 +277,34 @@ const ProductCarousel = () => {
                         e.target.nextElementSibling.style.display = 'flex';
                       }}
                     />
-                  ) : null}
-                  <div
-                    className={styles.imagePlaceholder}
-                    style={{ display: product.image ? 'none' : 'flex' }}
-                  >
-                    <div className={styles.noImageIcon}>📷</div>
-                    <p>Imagen no disponible</p>
-                  </div>
+                  ) : (
+                    <div className={styles.imagePlaceholder}>
+                        <div className={styles.noImageIcon}>📷</div>
+                        <p>Imagen no disponible</p>
+                    </div>
+                  )}
                 </div>
                 <div className={styles.productInfo}>
                   <h2 className={styles.productName}>{product.name}</h2>
                   <p className={styles.productPrice}>{product.price}</p>
-                  <button
-                    className={styles.ctaButton}
-                    onClick={() => handleWhatsAppClick(product)}
-                  >
-                    {product.ctaText}
-                  </button>
+                  
+                  {/* Contenedor de botones */}
+                  <div className={styles.buttonsContainer}>
+                    <button
+                      className={styles.ctaButton}
+                      onClick={() => handleWhatsAppClick(product)}
+                    >
+                      {product.ctaText}
+                    </button>
+                    
+                    <button
+                      className={styles.viewProductButton}
+                      onClick={() => handleGoToProduct(product)}
+                      disabled={product.id.startsWith('ejemplo')}
+                    >
+                      IR AL PRODUCTO
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -291,5 +337,3 @@ const ProductCarousel = () => {
     </section>
   );
 };
-
-export default ProductCarousel;

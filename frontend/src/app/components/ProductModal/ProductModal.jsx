@@ -10,12 +10,8 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
     marca: '',
     nombre: '',
     numeroParte: '',
-    precioCompra: 0,
     precioVentaSugerido: 0,
     tipoProducto: '',
-    ubicacion: '',
-    existencias: 0,
-    esMediaReparacion: false,
     imagenesUrl: {}
   });
   const [imagenesFormulario, setImagenesFormulario] = useState([]);
@@ -36,12 +32,8 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
         marca: producto.marca || '',
         nombre: producto.nombre || '',
         numeroParte: producto.numeroParte || '',
-        precioCompra: producto.precioCompra || 0,
         precioVentaSugerido: producto.precioVentaSugerido || 0,
         tipoProducto: producto.tipoProducto || '',
-        ubicacion: producto.ubicacion || '',
-        existencias: producto.existencias || 0,
-        esMediaReparacion: producto.esMediaReparacion || false,
         imagenesUrl: producto.imagenesUrl || {}
       });
 
@@ -51,9 +43,15 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
           .filter(([key, url]) => url && url.trim() !== '')
           .map(([key, url]) => ({ clave: key, url: url }));
         
+        // Asegurar que siempre haya una imagen "frente"
+        const tieneFrente = imagenesArray.some(img => img.clave === 'frente');
+        if (!tieneFrente) {
+          imagenesArray.unshift({ clave: 'frente', url: '' });
+        }
+        
         setImagenesFormulario(imagenesArray);
       } else {
-        setImagenesFormulario([]);
+        setImagenesFormulario([{ clave: 'frente', url: '' }]);
       }
     } else {
       // Modo crear - inicializar con imagen frente por defecto
@@ -62,12 +60,8 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
         marca: '',
         nombre: '',
         numeroParte: '',
-        precioCompra: 0,
         precioVentaSugerido: 0,
         tipoProducto: '',
-        ubicacion: '',
-        existencias: 0,
-        esMediaReparacion: false,
         imagenesUrl: {}
       });
       setImagenesFormulario([{ clave: 'frente', url: '' }]);
@@ -107,6 +101,14 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
   };
 
   const eliminarCampoImagen = (index) => {
+    const imagenAEliminar = imagenesFormulario[index];
+    
+    // No permitir eliminar si es la imagen "frente" 
+    if (imagenAEliminar.clave === 'frente') {
+      return;
+    }
+    
+    // No permitir eliminar si solo queda una imagen
     if (imagenesFormulario.length > 1) {
       const nuevasImagenes = imagenesFormulario.filter((_, i) => i !== index);
       setImagenesFormulario(nuevasImagenes);
@@ -216,18 +218,6 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
             </div>
 
             <div className={styles.field}>
-              <label>Precio de Compra</label>
-              <input
-                type="number"
-                name="precioCompra"
-                value={formData.precioCompra}
-                onChange={handleChange}
-                min="0"
-                step="0.01"
-              />
-            </div>
-
-            <div className={styles.field}>
               <label>Precio de Venta Sugerido</label>
               <input
                 type="number"
@@ -238,27 +228,6 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
                 step="0.01"
               />
             </div>
-
-            <div className={styles.field}>
-              <label>Existencias</label>
-              <input
-                type="number"
-                name="existencias"
-                value={formData.existencias}
-                onChange={handleChange}
-                min="0"
-              />
-            </div>
-
-            <div className={styles.field}>
-              <label>Ubicación</label>
-              <input
-                type="text"
-                name="ubicacion"
-                value={formData.ubicacion}
-                onChange={handleChange}
-              />
-            </div>
           </div>
 
           <div className={styles.fullWidth}>
@@ -267,21 +236,9 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
               name="descripcion"
               value={formData.descripcion}
               onChange={handleChange}
-              rows="4"
+              rows="8"
               placeholder="Descripción del producto..."
             />
-          </div>
-
-          <div className={styles.checkboxField}>
-            <label>
-              <input
-                type="checkbox"
-                name="esMediaReparacion"
-                checked={formData.esMediaReparacion}
-                onChange={handleChange}
-              />
-              Es media reparación
-            </label>
           </div>
 
           <div className={styles.imagesSection}>
@@ -306,7 +263,8 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
                         type="text"
                         value={imagen.clave}
                         onChange={(e) => handleImagenChange(index, 'clave', e.target.value)}
-                        placeholder="ej: frente, atras, ladoi..."
+                        placeholder="ej: frente, atras, lado..."
+                        disabled={imagen.clave === 'frente'}
                       />
                     </div>
                     <div className={styles.field}>
@@ -319,7 +277,7 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
                       />
                     </div>
                   </div>
-                  {imagenesFormulario.length > 1 && (
+                  {(imagenesFormulario.length > 1 && imagen.clave !== 'frente') && (
                     <button
                       type="button"
                       className={styles.removeImageButton}
@@ -333,7 +291,7 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
             </div>
 
             <div className={styles.imageHelp}>
-              <p><strong>Recomendación:</strong> Incluye siempre una imagen con el nombre "frente" para que aparezca primero en la vista de productos.</p>
+              <p><strong>Advertencia:</strong> Siempre se incluye una imagen con el nombre "frente" para que aparezca primero en la vista de productos.</p>
             </div>
           </div>
 

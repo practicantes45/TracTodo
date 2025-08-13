@@ -184,6 +184,7 @@
   width: 100%;
   height: 100%;
   position: relative;
+  margin-top: 10px;
 }
 
 .slide {
@@ -524,17 +525,71 @@
   font-weight: 500;
 }
 
+/* ===== CONTENEDOR DE BOTONES ===== */
+.buttonsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  align-items: center;
+}
+
+/* ===== BOTÓN VER PRODUCTO (AZUL) ===== */
+.viewProductButton {
+  background: linear-gradient(135deg, #00b4d8 0%, #0096c7 50%, #0077b6 100%);
+  color: white;
+  border: none;
+  padding: 15px 35px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+  max-width: 350px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  box-shadow: 0 6px 20px rgba(0, 180, 216, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.viewProductButton:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 180, 216, 0.4);
+  background: linear-gradient(135deg, #0096c7 0%, #0077b6 50%, #023e8a 100%);
+}
+
+.viewProductButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  background: #6b7280;
+}
+
+/* ===== AJUSTES AL BOTÓN CTA EXISTENTE ===== */
+.ctaButton {
+  width: 100%;
+  max-width: 350px;
+}
+
 /* =============================================
    RESPONSIVE DESIGN
    ============================================= */
 
+/* =============================================
+   RESPONSIVE DESIGN - ORGANIZADO
+   ============================================= */
+
+/* ===== PANTALLA EXTRA GRANDE ===== */
 @media (max-width: 1234px) {
   .offerBanner {
     margin-top: -85px;
   }
 }
 
-/* ===== TABLET (992px) ===== */
+/* ===== TABLET GRANDE ===== */
 @media (max-width: 992px) {
   .offerBanner {
     padding: 20px 15px;
@@ -582,6 +637,15 @@
     font-size: 1.2rem;
   }
 
+  .viewProductButton {
+    padding: 12px 28px;
+    font-size: 1rem;
+  }
+
+  .buttonsContainer {
+    gap: 12px;
+  }
+
   .carouselButton {
     width: 55px;
     height: 55px;
@@ -597,7 +661,7 @@
   }
 }
 
-/* ===== MÓVIL (768px) ===== */
+/* ===== TABLET ===== */
 @media (max-width: 768px) {
   .offerBanner {
     padding: 20px 15px;
@@ -641,6 +705,16 @@
     font-size: 1.1rem;
   }
 
+  .viewProductButton {
+    margin-bottom: 25px;
+    padding: 10px 24px;
+    font-size: 0.95rem;
+  }
+
+  .buttonsContainer {
+    gap: 10px;
+  }
+
   .carouselButton {
     width: 50px;
     height: 50px;
@@ -666,7 +740,7 @@
   }
 }
 
-/* ===== MÓVIL MEDIANO (660px) ===== */
+/* ===== MÓVIL MEDIANO ===== */
 @media (max-width: 660px) {
   .offerBanner {
     padding: 15px 10px;
@@ -697,7 +771,7 @@
   }
 }
 
-/* ===== MÓVIL PEQUEÑO (480px) ===== */
+/* ===== MÓVIL ===== */
 @media (max-width: 480px) {
   .offerBanner {
     padding: 15px 10px;
@@ -721,6 +795,7 @@
   }
 
   .imageContainer {
+    margin-top: 10px;
     height: 160px;
     padding: 12px;
   }
@@ -743,6 +818,16 @@
     padding: 12px 24px;
     font-size: 1rem;
     max-width: 280px;
+  }
+
+  .viewProductButton {
+    padding: 8px 20px;
+    font-size: 0.9rem;
+    max-width: 280px;
+  }
+
+  .buttonsContainer {
+    gap: 8px;
   }
 
   .carouselButton {
@@ -768,7 +853,7 @@
   }
 }
 
-/* ===== MÓVIL MUY PEQUEÑO (360px) ===== */
+/* ===== MÓVIL PEQUEÑO ===== */
 @media (max-width: 360px) {
   .offerBanner {
     padding: 12px 8px;
@@ -811,6 +896,12 @@
     max-width: 250px;
   }
 
+  .viewProductButton {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    max-width: 250px;
+  }
+
   .carouselButton {
     width: 40px;
     height: 40px;
@@ -842,121 +933,5 @@
 
   .imagePlaceholder p {
     font-size: 0.9rem;
-  }
-}
-
-/* ===== LANDSCAPE MÓVIL ===== */
-@media (max-width: 768px) and (orientation: landscape) {
-  .offerBanner {
-    padding: 15px 10px;
-    margin-bottom: 20px;
-    margin-top: 150px;
-  }
-
-  .offerBanner h2 {
-    font-size: 1.8rem;
-  }
-
-  .carouselContainer {
-    height: 380px;
-  }
-
-  .slideContent {
-    flex-direction: row;
-    padding: 20px;
-    gap: 20px;
-  }
-
-  .imageContainer {
-    height: 100%;
-    flex: 0 0 40%;
-  }
-
-  .productInfo {
-    flex: 1;
-    padding: 20px;
-  }
-
-  .productName {
-    font-size: 1.8rem;
-    margin-bottom: 15px;
-  }
-
-  .productPrice {
-    font-size: 2.2rem;
-    margin-bottom: 20px;
-  }
-}
-
-/* Respeto por preferencias de movimiento reducido */
-@media (prefers-reduced-motion: reduce) {
-
-  .carouselContainer,
-  .productImage,
-  .carouselButton,
-  .indicator,
-  .ctaButton,
-  .slide {
-    animation: none !important;
-    transition: opacity 0.2s ease, transform 0.2s ease !important;
-  }
-
-  .slide:hover .productImage,
-  .carouselButton:hover,
-  .ctaButton:hover {
-    transform: none !important;
-  }
-}
-
-/* Modo de alto contraste */
-@media (prefers-contrast: high) {
-  .carouselContainer {
-    background: #ffffff;
-    border: 2px solid #000000;
-  }
-
-  .productName {
-    color: #000000;
-  }
-
-  .ctaButton {
-    background: #000000;
-    border: 2px solid #ffffff;
-  }
-
-  .carouselButton {
-    background: #ffffff;
-    color: #000000;
-    border: 2px solid #000000;
-  }
-
-  .indicator {
-    background: #ffffff;
-    border: 2px solid #000000;
-  }
-
-  .indicator.active {
-    background: #000000;
-    border-color: #ffffff;
-  }
-}
-
-/* Optimización para dispositivos táctiles */
-@media (hover: none) and (pointer: coarse) {
-
-  .slide:hover .productImage,
-  .slide:hover .productName,
-  .slide:hover .productPrice,
-  .carouselButton:hover,
-  .ctaButton:hover {
-    transform: none;
-  }
-
-  .ctaButton:active {
-    transform: scale(0.98);
-  }
-
-  .carouselButton:active {
-    transform: translateY(-50%) scale(0.95);
   }
 }
