@@ -20,35 +20,23 @@ export default function SEOHead({
 
   return (
     <Head>
-      {/* Meta tags básicos */}
-      <title>{title}</title>
-      <meta name="description" content={description} />
+      {/* 
+        ELIMINADO: Meta title y description básicos 
+        (ahora se manejan server-side para evitar duplicación)
+      */}
+      
+      {/* Keywords solo si no están en server-side */}
       {keywordsString && <meta name="keywords" content={keywordsString} />}
       
-      {/* Meta tags de robots */}
-      <meta name="robots" content={noIndex ? "noindex, nofollow" : "index, follow"} />
-      <meta name="googlebot" content={noIndex ? "noindex, nofollow" : "index, follow"} />
+      {/* Meta tags de robots - solo si es noIndex */}
+      {noIndex && (
+        <>
+          <meta name="robots" content="noindex, nofollow" />
+          <meta name="googlebot" content="noindex, nofollow" />
+        </>
+      )}
       
-      {/* Canonical URL */}
-      {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
-      
-      {/* Open Graph */}
-      <meta property="og:type" content="website" />
-      <meta property="og:site_name" content="Tractodo" />
-      <meta property="og:title" content={ogTitle || title} />
-      <meta property="og:description" content={ogDescription || description} />
-      {ogImage && <meta property="og:image" content={ogImage} />}
-      {ogUrl && <meta property="og:url" content={ogUrl} />}
-      <meta property="og:locale" content="es_MX" />
-      
-      {/* Twitter Cards */}
-      <meta name="twitter:card" content={twitterCard} />
-      <meta name="twitter:site" content={twitterSite} />
-      <meta name="twitter:title" content={ogTitle || title} />
-      <meta name="twitter:description" content={ogDescription || description} />
-      {ogImage && <meta name="twitter:image" content={ogImage} />}
-      
-      {/* Schema.org markup */}
+      {/* Schema.org markup - MANTENER (no se duplica) */}
       {schema && (
         <script 
           type="application/ld+json"
@@ -56,19 +44,21 @@ export default function SEOHead({
         />
       )}
       
-      {/* Meta tags adicionales */}
+      {/* Meta tags adicionales específicos */}
       <meta name="author" content="Tractodo" />
       <meta name="copyright" content="Tractodo" />
       <meta name="language" content="Spanish" />
       <meta name="revisit-after" content="7 days" />
       
-      {/* Viewport y otros */}
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+      {/* Datos específicos para análisis */}
+      <meta name="geo.region" content="MX-QRO" />
+      <meta name="geo.placename" content="San Juan del Río" />
+      <meta name="geo.position" content="20.3881;-99.9968" />
+      <meta name="ICBM" content="20.3881, -99.9968" />
       
-      {/* Favicon */}
-      <link rel="icon" href="/favicon.ico" />
-      <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+      {/* Preload de recursos críticos */}
+      <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+      <link rel="dns-prefetch" href="//www.google-analytics.com" />
       
       {children}
     </Head>
