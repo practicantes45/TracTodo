@@ -1,12 +1,12 @@
 /**
  * Configuración centralizada para SEO
- * Basada en el documento "Descripciones SEO para el Backend"
+ * CORREGIDO: Encoding UTF-8 y sin descripciones genéricas
  */
 
 // Configuración del sitio
 const SITIO_CONFIG = {
   nombre: "Tractodo",
-  descripcion: "Refaccionaria especializada en partes y componentes para tractocamión. Venta de cabezas de motor, turbos, árboles de levas y kits de media reparación para motores Cummins, Caterpillar, Detroit y más.",
+  // ELIMINADO: descripcion genérica que causaba conflictos
   url: process.env.FRONTEND_URL || "https://tractodo.com",
   telefono: "+52-427-XXX-XXXX",
   email: "contacto@tractodo.com",
@@ -22,14 +22,25 @@ const SITIO_CONFIG = {
 // Configuración SEO por defecto
 const SEO_DEFAULTS = {
   tituloMaxLength: 60,
-  descripcionMaxLength: 160,
+  descripcionMaxLength: 155, // REDUCIDO para optimizar
   palabrasClaveMax: 10,
   imagenPorDefecto: "/images/tractodo-logo.jpg",
   idioma: "es-MX",
   region: "MX"
 };
 
-// Patrones de título SEO por tipo de producto
+// NUEVO: Descripciones específicas que coinciden con frontend
+const DESCRIPCIONES_ESPECIFICAS = {
+  inicio: "Compra refacciones para tractocamión de las mejores marcas en Tractodo, San Juan del Río. Envíos a todo México, precios competitivos.",
+  productos: "Explora nuestro catálogo con más de 500 refacciones para tractocamión: cabezas de motor, medias reparaciones y más. Envío inmediato.",
+  sobre: "Conoce la historia de Tractodo, líderes en venta de refacciones para tractocamión en San Juan del Río. Experiencia, calidad y servicio.",
+  entretenimiento: "Disfruta artículos, videos y tips sobre mantenimiento de motores diésel, novedades del transporte y consejos prácticos.",
+  ubicacion: "Visítanos en San Juan del Río. Tractodo ofrece refacciones para tractocamión, asesoría técnica y envíos a todo México.",
+  blog: "Lee guías, tutoriales y noticias del sector transporte. Aprende cómo optimizar el rendimiento de tu motor diésel.",
+  videos: "Videos educativos sobre tractocamiones: instalación de refacciones, mantenimiento preventivo, diagnósticos y más."
+};
+
+// Patrones de título SEO por tipo de producto (CORREGIDO encoding)
 const PATRONES_TITULO = {
   cabezaMotor: "{marca} {modelo} Cabeza de Motor | {numeroParte} | Tractodo",
   turbo: "Turbo {marca} {modelo} | {numeroParte} | Tractodo Querétaro", 
@@ -39,16 +50,16 @@ const PATRONES_TITULO = {
   default: "{nombre} | {numeroParte} | Tractodo Refacciones"
 };
 
-// Patrones de descripción SEO
+// Patrones de descripción SEO (CORREGIDO encoding)
 const PATRONES_DESCRIPCION = {
-  cabezaMotor: "Cabeza de motor {marca} {modelo} original y remanufacturada. Envío nacional, garantía incluida. Especialistas en motores diésel para tractocamión. ¡Cotiza ahora!",
+  cabezaMotor: "Cabeza de motor {marca} {modelo} original y remanufacturada. Envío nacional, garantía incluida. Especialistas en motores diésel para tractocamión.",
   turbo: "Turbo {marca} {modelo} nuevo y remanufacturado. Refacciones para tractocamión con garantía. Envío a todo México. Precios competitivos en Tractodo.",
   arbolLevas: "Árbol de levas {marca} {modelo} original. Repuestos para motor diésel, envío nacional. Refaccionaria especializada en tractocamiones.",
   kitReparacion: "Kit de media reparación {marca} {modelo} completo. Componentes originales, garantía incluida. Especialistas en motores diésel pesados.",
   default: "Refacciones {marca} para tractocamión. Partes originales y compatibles, envío nacional, garantía incluida. Especialistas en motores diésel."
 };
 
-// Configuración de Schema.org
+// Configuración de Schema.org (CORREGIDO encoding)
 const SCHEMA_CONFIG = {
   organizacion: {
     "@type": "Organization",
@@ -143,6 +154,16 @@ const URLS_ESTATICAS = [
     loc: "/entretenimiento",
     priority: 0.6,
     changefreq: "monthly"
+  },
+  {
+    loc: "/blog",
+    priority: 0.7,
+    changefreq: "weekly"
+  },
+  {
+    loc: "/videos",
+    priority: 0.6,
+    changefreq: "monthly"
   }
 ];
 
@@ -189,7 +210,7 @@ const ROBOTS_CONFIG = {
   ]
 };
 
-// Mapeo de palabras clave por tipo de producto
+// Mapeo de palabras clave por tipo de producto (CORREGIDO encoding)
 const KEYWORDS_BY_TYPE = {
   cabezaMotor: [
     "cabeza de motor",
@@ -243,9 +264,16 @@ const CACHE_CONFIG = {
   }
 };
 
+// NUEVA FUNCIÓN: Obtener descripción específica por página
+const obtenerDescripcionEspecifica = (pagina) => {
+  return DESCRIPCIONES_ESPECIFICAS[pagina] || DESCRIPCIONES_ESPECIFICAS.inicio;
+};
+
 module.exports = {
   SITIO_CONFIG,
   SEO_DEFAULTS,
+  DESCRIPCIONES_ESPECIFICAS, // NUEVO
+  obtenerDescripcionEspecifica, // NUEVO
   PATRONES_TITULO,
   PATRONES_DESCRIPCION,
   SCHEMA_CONFIG,

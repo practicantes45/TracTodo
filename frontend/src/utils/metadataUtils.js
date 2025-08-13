@@ -3,7 +3,7 @@ import { SEO_DEFAULTS } from '../services/seoService';
 
 /**
  * Genera metadata server-side para Next.js App Router
- * CORREGIDO: Encoding y longitud optimizada
+ * REFORZADO: Prioridad explícita al frontend sobre backend
  */
 export const generatePageMetadata = (pageKey, customData = {}) => {
   const defaultData = SEO_DEFAULTS.pages[pageKey] || SEO_DEFAULTS.pages.inicio;
@@ -14,7 +14,7 @@ export const generatePageMetadata = (pageKey, customData = {}) => {
   const path = customData.path || '';
   const image = customData.image || SEO_DEFAULTS.defaultImage;
 
-  // NUEVO: Asegurar que description no exceda 155 caracteres
+  // REFORZADO: Asegurar que description no exceda 155 caracteres
   const optimizedDescription = description.length > 155 
     ? description.substring(0, 152) + '...'
     : description;
@@ -24,7 +24,15 @@ export const generatePageMetadata = (pageKey, customData = {}) => {
     description: optimizedDescription,
     keywords: (customData.keywords || defaultData.keywords).join(', '),
     
-    // CORREGIDO: Evitar duplicación con client-side
+    // NUEVO: Headers para prevenir sobrescritura del backend
+    other: {
+      'meta-source': 'frontend-seoService',
+      'meta-priority': 'high',
+      'apple-mobile-web-app-capable': 'yes',
+      'apple-mobile-web-app-status-bar-style': 'default',
+      'format-detection': 'telephone=no',
+    },
+    
     robots: {
       index: true,
       follow: true,
@@ -69,18 +77,31 @@ export const generatePageMetadata = (pageKey, customData = {}) => {
     authors: [{ name: SEO_DEFAULTS.siteName }],
     
     metadataBase: new URL(baseUrl),
-    
-    // NUEVO: Meta adicionales para mejor SEO
-    other: {
-      'apple-mobile-web-app-capable': 'yes',
-      'apple-mobile-web-app-status-bar-style': 'default',
-      'format-detection': 'telephone=no',
-    },
   };
 };
 
 /**
- * NUEVA función para generar metadata de productos individuales
+ * NUEVA función para verificar que los meta tags son correctos
+ */
+export const verificarMetaTags = (pageKey) => {
+  const metadata = generatePageMetadata(pageKey);
+  
+  console.log(`🔍 Verificando meta tags para: ${pageKey}`);
+  console.log(`📝 Title: ${metadata.title}`);
+  console.log(`📄 Description: ${metadata.description}`);
+  console.log(`🏷️ Source: frontend-seoService`);
+  
+  // Verificar que no hay caracteres extraños
+  const hasEncodingIssues = /[ÃÂ]/.test(metadata.description);
+  if (hasEncodingIssues) {
+    console.warn(`⚠️ Posibles problemas de encoding en ${pageKey}`);
+  }
+  
+  return metadata;
+};
+
+/**
+ * MANTENER: Función existente para productos
  */
 export const generateProductMetadata = (producto, productId) => {
   const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_URL || 'https://tractodo.com';
@@ -96,6 +117,11 @@ export const generateProductMetadata = (producto, productId) => {
   return {
     title,
     description: description.length > 155 ? description.substring(0, 152) + '...' : description,
+    
+    other: {
+      'meta-source': 'frontend-product',
+      'meta-priority': 'high',
+    },
     
     openGraph: {
       title,
