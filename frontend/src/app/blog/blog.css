@@ -437,7 +437,7 @@
   padding: 8px 0 8px 15px;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  -webkit--clamp: 2;
   overflow: hidden;
 }
 
@@ -1159,6 +1159,86 @@
   transform: none;
 }
 
+/* ===== BARRA DE BÚSQUEDA ESPECÍFICA DEL BLOG ===== */
+.blogSearchContainer {
+  display: flex;
+  align-items: center;
+  position: relative;
+  justify-content: center;
+  margin-bottom: 30px;
+  width: 100%;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.blogSearchInput {
+  width: 100%;
+  padding: 15px 20px 15px 40px;
+  border: 2px solid rgba(0, 180, 216, 0.3);
+  border-radius: 30px;
+  font-size: 1rem;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  background: rgba(255, 255, 255, 0.95);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 42, 92, 0.1);
+  outline: none;
+  margin-top: 5px;
+}
+
+.blogSearchInput:focus {
+  border-color: var(--accent-color);
+  box-shadow: 0 0 0 3px rgba(0, 180, 216, 0.1), 0 8px 25px rgba(0, 42, 92, 0.15);
+  background: rgba(255, 255, 255, 1);
+  transform: translateY(-1px);
+}
+
+.blogSearchInput::placeholder {
+  color: #94a3b8;
+  font-style: italic;
+}
+
+.blogSearchIcon {
+  position: absolute;
+  left: 18px;
+  color: var(--accent-color);
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.blogSearchContainer:focus-within .blogSearchIcon {
+  color: var(--primary-color);
+  transform: scale(1.1);
+}
+
+/* Efecto de onda en el input al enfocar */
+.blogSearchInput:focus::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 30px;
+  background: linear-gradient(45deg, 
+    rgba(0, 180, 216, 0.1) 0%, 
+    rgba(0, 42, 92, 0.05) 50%, 
+    rgba(0, 180, 216, 0.1) 100%);
+  animation: searchPulse 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes searchPulse {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width:992px){
   .blog-page .heroSection {
@@ -1369,6 +1449,24 @@
   .imageHelp, .contentHelp {
     font-size: 0.75rem;
   }
+
+    .blogSearchContainer {
+    max-width: 100%;
+    margin-bottom: 25px;
+    padding: 0 10px;
+  }
+
+  .blogSearchInput {
+    padding: 12px 18px 12px 45px;
+    font-size: 0.95rem;
+    border-radius: 25px;
+    margin-top: 10px;
+  }
+
+  .blogSearchIcon {
+    left: 15px;
+    font-size: 1rem;
+  }
 }
 
 /* Móvil pequeño (480px y menores) */
@@ -1460,6 +1558,17 @@
   
   .modalHeader h3 {
     font-size: 1.3rem;
+  }
+
+    .blogSearchInput {
+    padding: 10px 15px 10px 40px;
+    font-size: 0.9rem;
+    border-radius: 20px;
+  }
+
+  .blogSearchIcon {
+    left: 12px;
+    font-size: 0.9rem;
   }
 }
 

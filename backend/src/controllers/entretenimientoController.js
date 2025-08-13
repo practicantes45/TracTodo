@@ -219,7 +219,7 @@ exports.agregarPostBlog = async (req, res) => {
   const categoriasPermitidas = [
     'Tracto-Consejos',
     'Tracto-Promociones',
-    'Tracto-Casos de Éxito',
+    'Tracto-Clientes Satisfechos',
     'Tracto-Preguntas Frecuentes'
   ];
 

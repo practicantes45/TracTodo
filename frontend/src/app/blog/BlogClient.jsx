@@ -33,7 +33,7 @@ export default function BlogClient() {
         { id: 'todos', label: 'Todos los Artículos' },
         { id: 'Tracto-Consejos', label: 'Tracto-Consejos' },
         { id: 'Tracto-Promociones', label: 'Tracto-Promociones' },
-        { id: 'Tracto-Casos de Éxito', label: 'Tracto-Casos de Éxito' },
+        { id: 'Tracto-Clientes Satisfechos', label: 'Tracto-Clientes Satisfechos' },
         { id: 'Tracto-Preguntas Frecuentes', label: 'Tracto-Preguntas Frecuentes' }
     ];
 
@@ -172,7 +172,7 @@ export default function BlogClient() {
         try {
             setLoading(true);
             setError(null);
-            console.log('📚 Cargando posts del blog desde la base de datos...');
+            console.log('🔚 Cargando posts del blog desde la base de datos...');
             
             const posts = await obtenerPosts();
             console.log('✅ Posts cargados:', posts);
@@ -451,15 +451,15 @@ export default function BlogClient() {
                                 )}
                             </div>
 
-                            {/* Barra de búsqueda */}
-                            <div className="searchContainer">
-                                <FaSearch className="searchIcon" />
+                            {/* Barra de búsqueda ESPECÍFICA DEL BLOG */}
+                            <div className="blogSearchContainer">
+                                <FaSearch className="blogSearchIcon" />
                                 <input
                                     type="text"
                                     placeholder="Buscar artículos..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="searchInput"
+                                    className="blogSearchInput"
                                 />
                             </div>
 
@@ -514,12 +514,7 @@ export default function BlogClient() {
                                                     <span className="postDate">
                                                         <FaCalendarAlt /> {formatDate(post.publishDate)}
                                                     </span>
-                                                    <span className="postReadTime">
-                                                        <FaClock /> {post.readTime}
-                                                    </span>
-                                                    <span className="postViews">
-                                                        <FaEye /> {post.views}
-                                                    </span>
+                                            
                                                 </div>
                                                 <div className="postTags">
                                                     {post.tags.map((tag, index) => (

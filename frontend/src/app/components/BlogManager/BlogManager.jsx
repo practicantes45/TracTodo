@@ -27,7 +27,7 @@ const BlogManager = ({ onClose, onUpdate }) => {
     const categorias = [
         'Tracto-Consejos',
         'Tracto-Promociones',
-        'Tracto-Casos de Éxito',
+        'Tracto-Clientes Satisfechos',
         'Tracto-Preguntas Frecuentes'
     ];
 

@@ -77,6 +77,37 @@ export const generarMetaTags = (pageKey, customData = {}) => {
 };
 
 /**
+ * NUEVO: Obtener estadísticas SEO desde el backend
+ * GET /api/seo/estadisticas (solo admin)
+ */
+export const obtenerEstadisticasSEO = async () => {
+  try {
+    const response = await fetch(`${API_URL}/seo/estadisticas`, {
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      if (response.status === 401) {
+        throw new Error('No autorizado - Se requieren permisos de administrador');
+      }
+      if (response.status === 404) {
+        throw new Error('Endpoint de estadísticas no encontrado');
+      }
+      throw new Error(`Error al obtener estadísticas: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Error en obtenerEstadisticasSEO:', error);
+    throw error;
+  }
+};
+
+/**
  * MANTENER: Funciones existentes para productos
  */
 export const obtenerSEOProducto = async (id) => {
@@ -124,9 +155,13 @@ export const obtenerSchemaProducto = async (id) => {
   }
 };
 
+/**
+ * CORREGIDO: Generar SEO para todos los productos
+ * Ruta corregida: POST /api/seo/generar-productos
+ */
 export const generarSEOProductos = async () => {
   try {
-    const response = await fetch(`${API_URL}/seo/generar`, {
+    const response = await fetch(`${API_URL}/seo/generar-productos`, {
       method: 'POST',
       credentials: 'include',
       headers: {
@@ -146,6 +181,10 @@ export const generarSEOProductos = async () => {
   }
 };
 
+/**
+ * MANTENER: Regenerar SEO para un producto específico
+ * Ruta ya correcta: PUT /api/seo/producto/:id/regenerar
+ */
 export const regenerarSEOProducto = async (id) => {
   try {
     const response = await fetch(`${API_URL}/seo/producto/${id}/regenerar`, {
