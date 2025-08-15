@@ -218,10 +218,10 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
             </div>
 
             <div className={styles.field}>
-              <label>Precio de Venta Sugerido</label>
+              <label>Precio de Venta Sugerido *</label>
               <input
                 type="number"
-                name="precioVentaSugerido *"
+                name="precioVentaSugerido"
                 value={formData.precioVentaSugerido}
                 onChange={handleChange}
                 min="0"
@@ -231,9 +231,9 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
           </div>
 
           <div className={styles.fullWidth}>
-            <label>Descripción</label>
+            <label>Descripción *</label>
             <textarea
-              name="descripcion *"
+              name="descripcion"
               value={formData.descripcion}
               onChange={handleChange}
               rows="8"
