@@ -226,6 +226,7 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
                 onChange={handleChange}
                 min="0"
                 step="0.01"
+                required
               />
             </div>
           </div>
@@ -238,6 +239,7 @@ export default function ProductModal({ isOpen, mode, producto, onClose, onSaved 
               onChange={handleChange}
               rows="8"
               placeholder="Descripción del producto..."
+              required
             />
           </div>
 
