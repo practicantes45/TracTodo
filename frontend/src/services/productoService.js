@@ -78,7 +78,6 @@ export const buscarProductos = async (params) => {
   }
 };
 
-// ... resto de funciones sin cambios
 export const obtenerProductoPorId = async (id) => {
   try {
     const response = await fetch(`${API_URL}/productos/${id}`, {
@@ -100,72 +99,126 @@ export const obtenerProductoPorId = async (id) => {
   }
 };
 
+// CORREGIDO: Agregar credentials y mejor manejo de errores
 export const crearProducto = async (productoData) => {
   try {
+    console.log('📤 Enviando datos para crear producto:', productoData);
+
     const response = await fetch(`${API_URL}/productos`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include', // ← AGREGADO: Enviar cookies de autenticación
       body: JSON.stringify(productoData),
     });
 
+    console.log('📡 Respuesta del servidor:', response.status);
+
     if (!response.ok) {
-      throw new Error(`Error al crear producto: ${response.status}`);
+      const errorData = await response.text();
+      console.error('❌ Error del servidor:', errorData);
+      
+      if (response.status === 401) {
+        throw new Error('No autorizado - Debes iniciar sesión como administrador');
+      } else if (response.status === 403) {
+        throw new Error('Prohibido - No tienes permisos para crear productos');
+      } else if (response.status === 400) {
+        throw new Error('Datos inválidos - Revisa que todos los campos requeridos estén completos');
+      } else {
+        throw new Error(`Error al crear producto: ${response.status}`);
+      }
     }
 
     const data = await response.json();
+    console.log('✅ Producto creado exitosamente:', data);
     return data;
   } catch (error) {
-    console.error('Error al crear producto:', error);
+    console.error('❌ Error al crear producto:', error);
     throw error;
   }
 };
 
+// CORREGIDO: Agregar credentials
 export const actualizarProducto = async (id, productoData) => {
   try {
+    console.log('📤 Actualizando producto:', id, productoData);
+
     const response = await fetch(`${API_URL}/productos/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include', // ← AGREGADO: Enviar cookies de autenticación
       body: JSON.stringify(productoData),
     });
 
+    console.log('📡 Respuesta del servidor:', response.status);
+
     if (!response.ok) {
-      throw new Error(`Error al actualizar producto: ${response.status}`);
+      const errorData = await response.text();
+      console.error('❌ Error del servidor:', errorData);
+
+      if (response.status === 401) {
+        throw new Error('No autorizado - Debes iniciar sesión como administrador');
+      } else if (response.status === 403) {
+        throw new Error('Prohibido - No tienes permisos para actualizar productos');
+      } else if (response.status === 400) {
+        throw new Error('Datos inválidos - Revisa que todos los campos estén correctos');
+      } else {
+        throw new Error(`Error al actualizar producto: ${response.status}`);
+      }
     }
 
     const data = await response.json();
+    console.log('✅ Producto actualizado exitosamente:', data);
     return data;
   } catch (error) {
-    console.error('Error al actualizar producto:', error);
+    console.error('❌ Error al actualizar producto:', error);
     throw error;
   }
 };
 
+// CORREGIDO: Agregar credentials
 export const eliminarProducto = async (id) => {
   try {
+    console.log('🗑️ Eliminando producto:', id);
+
     const response = await fetch(`${API_URL}/productos/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
       },
+      credentials: 'include', // ← AGREGADO: Enviar cookies de autenticación
     });
 
+    console.log('📡 Respuesta del servidor:', response.status);
+
     if (!response.ok) {
-      throw new Error(`Error al eliminar producto: ${response.status}`);
+      const errorData = await response.text();
+      console.error('❌ Error del servidor:', errorData);
+
+      if (response.status === 401) {
+        throw new Error('No autorizado - Debes iniciar sesión como administrador');
+      } else if (response.status === 403) {
+        throw new Error('Prohibido - No tienes permisos para eliminar productos');
+      } else if (response.status === 404) {
+        throw new Error('Producto no encontrado');
+      } else {
+        throw new Error(`Error al eliminar producto: ${response.status}`);
+      }
     }
 
     const data = await response.json();
+    console.log('✅ Producto eliminado exitosamente:', data);
     return data;
   } catch (error) {
-    console.error('Error al eliminar producto:', error);
+    console.error('❌ Error al eliminar producto:', error);
     throw error;
   }
 };
 
-// ============= PRODUCTOS DEL MES - SOLO ESTO CAMBIÓ =============
+// ============= PRODUCTOS DEL MES - MANTENER IGUAL =============
 
 // Obtener productos del mes
 export const obtenerProductosDelMes = async () => {
@@ -192,7 +245,7 @@ export const obtenerProductosDelMes = async () => {
 // CORREGIDO: Agregar productos al mes con nuevoPrecio
 export const agregarProductosDelMes = async (productos) => {
   try {
-    console.log('🔄 Enviando productos al backend:', productos);
+    console.log('📄 Enviando productos al backend:', productos);
 
     const response = await fetch(`${API_URL}/productos/mes/agregar`, {
       method: 'PUT',
