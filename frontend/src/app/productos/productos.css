@@ -2114,11 +2114,6 @@
   }
 }
 
-/* ===== RESPONSIVE DESIGN - MEDIA QUERIES ===== */
-
-/* ===== RESPONSIVE DESIGN - MEDIA QUERIES ===== */
-
-/* ===== TABLET GRANDE (1200px+) ===== */
 @media (max-width: 1199px) {
   .productosContainer {
     padding: 0 20px 0 320px;
@@ -2140,7 +2135,6 @@
     min-width: 280px;
   }
 }
-
 /* ===== PUNTO CRÍTICO 992px - CAMBIO A MÓVIL ===== */
 @media (max-width: 992px) {
   .productos-page .heroSection {
@@ -2213,7 +2207,6 @@
     overflow: hidden;
   }
 }
-
 /* ===== TABLET PEQUEÑO (768px) ===== */
 @media (max-width: 768px) {
   .productos-page .heroSection {
@@ -2391,7 +2384,6 @@
     font-size: 1rem;
   }
 }
-
 /* ===== MÓVIL PEQUEÑO (480px) ===== */
 @media (max-width: 480px) {
   .productos-page .heroSection {
@@ -2601,7 +2593,6 @@
     margin-right: 6px;
   }
 }
-
 /* ===== MÓVILES MUY PEQUEÑOS (360px) ===== */
 @media (max-width: 360px) {
   .productos-page .heroSection {

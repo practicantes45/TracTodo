@@ -1,6 +1,7 @@
 import { Inter, Ubuntu, Montserrat } from 'next/font/google';
 import SEOProvider from './components/SEOProvider/SEOProvider';
 import { AuthProvider } from '../hooks/useAuth';
+import CookieConsent from './components/CookieConsent/CookieConsent'; 
 import './styles/global.css';
 
 const inter = Inter({ 
@@ -33,7 +34,7 @@ export const metadata = {
   description: 'Refaccionaria especializada en partes y componentes para tractocamión.',
   
   verification: {
-    google: 'google-site-verification-code', // Reemplazar con código real
+    google: 'google-site-verification-code',
   },
   
   // Icons y manifest
@@ -51,7 +52,7 @@ export const metadata = {
     follow: true,
   },
   
-  // Configuración de viewport movida aquí desde el export separado
+  // Configuración de viewport
   viewport: {
     width: 'device-width',
     initialScale: 1,
@@ -81,6 +82,7 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <SEOProvider>
             {children}
+            <CookieConsent />
           </SEOProvider>
         </AuthProvider>
       </body>

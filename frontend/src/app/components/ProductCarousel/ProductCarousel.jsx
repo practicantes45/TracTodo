@@ -48,10 +48,9 @@ export default function ProductCarousel() {
     try {
       setLoading(true);
       console.log('🔄 Cargando productos del mes...');
-
       const productosDelMes = await obtenerProductosDelMes();
       console.log('📦 Productos del mes recibidos:', productosDelMes);
-      
+    
       const productosFormateados = productosDelMes.map(producto => ({
         id: producto.id,
         name: producto.nombre,
@@ -61,10 +60,8 @@ export default function ProductCarousel() {
         precioNumerico: parseFloat(producto.precioVentaSugerido || 0),
         productoCompleto: producto // Agregamos el producto completo para poder navegarlo
       }));
-
       setProducts(productosFormateados);
       console.log('✅ Productos formateados para carrusel:', productosFormateados.length);
-
     } catch (error) {
       console.error('❌ Error al cargar productos del mes:', error);
       setError('No se pudieron cargar los productos del mes');
