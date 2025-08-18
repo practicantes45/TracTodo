@@ -1,19 +1,15 @@
 const express = require("express");
 const router = express.Router();
-
-const { getAllProductos, getProductoById, getProductoByNombre, borrarProductoPorId,actualizarProductoPorId,insertarProducto,getProductosDelMes,actualizarProductosDelMes,insertarProductosDelMes, eliminarProductoDelMes, actualizarPrecioProductoDelMes} = require("../controllers/productoController");
+const { getAllProductos, getProductoById, getProductoByNombre, borrarProductoPorId,actualizarProductoPorId,insertarProducto,getProductosDelMes,
+actualizarProductosDelMes,insertarProductosDelMes, eliminarProductoDelMes, actualizarPrecioProductoDelMes} = require("../controllers/productoController");
 
 const { generarRecomendaciones } = require("../services/productoRecomendado");
-
 // Obtener todos los productos
 router.get("/", getAllProductos);
-
 // NUEVA RUTA: Obtener un producto por NOMBRE (patrón específico)
 router.get("/nombre/:nombre", getProductoByNombre);
-
 // Obtener un producto por ID (mantenida por compatibilidad)
 router.get("/id/:id", getProductoById);
-
 // RUTA GENÉRICA: Detectar automáticamente si es ID o nombre
 router.get("/:slug", async (req, res) => {
   const { slug } = req.params;
@@ -29,20 +25,16 @@ router.get("/:slug", async (req, res) => {
     return require("../controllers/productoController").getProductoByNombre(req, res);
   }
 });
-
 //Crear un nuevo producto
 router.post("/", insertarProducto);
-
 // Actualizar un producto por ID
 router.put("/:id", actualizarProductoPorId);
-
 // Eliminar un producto por ID
 router.delete("/:id", borrarProductoPorId);
-
 // NUEVA RUTA PARA TESTING DE RECOMENDACIONES
 router.post("/generar-recomendaciones", async (req, res) => {
   try {
-    console.log("🔧 Generación manual de recomendaciones solicitada");
+    console.log("Generación manual de recomendaciones solicitada");
     await generarRecomendaciones();
     res.json({ mensaje: "Recomendaciones generadas exitosamente" });
   } catch (error) {

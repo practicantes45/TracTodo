@@ -31,12 +31,12 @@ const cargarContador = () => {
       
       // NUEVO: Verificar si debe reiniciarse por nuevo día
       if (debeReiniciar()) {
-        console.log(`🔄 Nuevo día detectado - Reiniciando contador desde ${contadorVistas} a 0`);
+        console.log(`Nuevo día detectado - Reiniciando contador desde ${contadorVistas} a 0`);
         contadorVistas = 0;
         fechaUltimoReinicio = obtenerFechaActual();
         guardarContador();
       } else {
-        console.log(`📊 Contador cargado: ${contadorVistas} vistas (fecha: ${fechaUltimoReinicio})`);
+        console.log(`Contador cargado: ${contadorVistas} vistas (fecha: ${fechaUltimoReinicio})`);
       }
     } catch (e) {
       console.error("Error al leer contador:", e);
@@ -44,7 +44,7 @@ const cargarContador = () => {
       fechaUltimoReinicio = obtenerFechaActual();
     }
   } else {
-    console.log("📄 Archivo contador no existe, iniciando en 0");
+    console.log("Archivo contador no existe, iniciando en 0");
     contadorVistas = 0;
     fechaUltimoReinicio = obtenerFechaActual();
   }
@@ -59,7 +59,7 @@ const guardarContador = () => {
       ultimaActualizacion: new Date().toISOString()
     };
     fs.writeFileSync(rutaArchivoContador, JSON.stringify(data, null, 2));
-    console.log(`💾 Contador guardado: ${contadorVistas} (fecha: ${fechaUltimoReinicio})`);
+    console.log(`Contador guardado: ${contadorVistas} (fecha: ${fechaUltimoReinicio})`);
   } catch (e) {
     console.error("Error al guardar contador:", e);
   }
@@ -72,7 +72,7 @@ cargarContador();
 exports.registrarVista = (req, res) => {
   // NUEVO: Verificar reinicio diario antes de procesar
   if (debeReiniciar()) {
-    console.log(`🔄 Nuevo día detectado durante registro - Reiniciando contador desde ${contadorVistas} a 0`);
+    console.log(`Nuevo día detectado durante registro - Reiniciando contador desde ${contadorVistas} a 0`);
     contadorVistas = 0;
     fechaUltimoReinicio = obtenerFechaActual();
   }
@@ -82,7 +82,7 @@ exports.registrarVista = (req, res) => {
 
   // Evitar registros duplicados muy rápidos
   if (ultimaVista && (ahora - ultimaVista) < tiempoMinimo) {
-    console.log(`🚫 Vista ignorada - muy rápida (${ahora - ultimaVista}ms)`);
+    console.log(`Vista ignorada - muy rápida (${ahora - ultimaVista}ms)`);
     return res.status(200).json({
       mensaje: "Vista ya registrada recientemente",
       vistasTotales: contadorVistas,
@@ -93,7 +93,7 @@ exports.registrarVista = (req, res) => {
   ultimaVista = ahora;
   guardarContador();
   
-  console.log(`✅ Vista registrada #${contadorVistas} (fecha: ${fechaUltimoReinicio})`);
+  console.log(`Vista registrada #${contadorVistas} (fecha: ${fechaUltimoReinicio})`);
 
   res.status(200).json({
     mensaje: "Vista registrada correctamente",
@@ -105,13 +105,13 @@ exports.registrarVista = (req, res) => {
 exports.obtenerContador = (req, res) => {
   // NUEVO: Verificar reinicio diario antes de devolver contador
   if (debeReiniciar()) {
-    console.log(`🔄 Nuevo día detectado durante consulta - Reiniciando contador desde ${contadorVistas} a 0`);
+    console.log(`Nuevo día detectado durante consulta - Reiniciando contador desde ${contadorVistas} a 0`);
     contadorVistas = 0;
     fechaUltimoReinicio = obtenerFechaActual();
     guardarContador();
   }
 
-  console.log(`📈 Contador consultado: ${contadorVistas} (fecha: ${fechaUltimoReinicio})`);
+  console.log(`Contador consultado: ${contadorVistas} (fecha: ${fechaUltimoReinicio})`);
   res.status(200).json({
     vistasTotales: contadorVistas,
     fechaReinicio: fechaUltimoReinicio

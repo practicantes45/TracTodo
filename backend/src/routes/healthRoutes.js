@@ -20,7 +20,7 @@ router.get("/health", (req, res) => {
 // Ruta adicional para testing
 router.get("/", (req, res) => {
   res.status(200).json({
-    message: "🚀 Tractodo Backend API - Railway Deployment",
+    message: "Tractodo Backend API - Railway Deployment",
     status: "RUNNING",
     timestamp: new Date().toISOString(),
     endpoints: {

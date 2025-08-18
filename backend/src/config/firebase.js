@@ -21,21 +21,25 @@ try {
   });
 
   const db = admin.database();
+  const auth = admin.auth(); //  NUEVO: Firebase Authentication
 
-  //  Verificación opcional de conexión con productos
+  // Verificación de conexión con productos
   db.ref("/").limitToFirst(1).once("value")
     .then(snapshot => {
       if (snapshot.exists()) {
-        console.log("Conectado y datos recibidos desde Firebase.");
+        console.log("Conectado a Realtime Database - datos recibidos desde Firebase.");
       } else {
-        console.log("Conectado, pero no se encontraron productos.");
+        console.log("Conectado a Realtime Database, pero no se encontraron productos.");
       }
     })
     .catch(err => {
       console.error("Error al leer desde Firebase:", err.message);
     });
 
-  module.exports = { admin, db };
+  // NUEVO: Verificación de Firebase Authentication
+  console.log("Firebase Authentication configurado correctamente");
+
+  module.exports = { admin, db, auth }; // NUEVO: Exportar auth
 
 } catch (error) {
   console.error('Error al conectar con Firebase:', error.message);

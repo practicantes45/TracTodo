@@ -228,7 +228,7 @@ const obtenerDatosSEOProducto = async (id, producto = null) => {
     }
   }
 
-  // ✅ PASO 1: Buscar por número de parte específico
+  // PASO 1: Buscar por número de parte específico
   const numeroParte = producto.numeroParte?.trim();
   if (numeroParte && PRODUCTOS_ESPECIFICOS[numeroParte]) {
     const seoEspecifico = PRODUCTOS_ESPECIFICOS[numeroParte];
@@ -245,11 +245,11 @@ const obtenerDatosSEOProducto = async (id, producto = null) => {
     
     // Guardar en caché
     seoCache.set(cacheKey, { data: datosSEO, timestamp: Date.now() });
-    console.log(`✅ SEO específico encontrado por número de parte: ${numeroParte}`);
+    console.log(`SEO específico encontrado por número de parte: ${numeroParte}`);
     return datosSEO;
   }
 
-  // ✅ PASO 2: Buscar por texto en nombre/descripción
+  // PASO 2: Buscar por texto en nombre/descripción
   const textoCompleto = `${producto.nombre || ''} ${producto.descripcion || ''}`.toLowerCase();
   
   for (const [patron, numeroParteEspecifico] of Object.entries(MAPEO_POR_TEXTO)) {
@@ -273,14 +273,14 @@ const obtenerDatosSEOProducto = async (id, producto = null) => {
         };
         
         seoCache.set(cacheKey, { data: datosSEO, timestamp: Date.now() });
-        console.log(`✅ SEO específico encontrado por texto: ${patron}`);
+        console.log(`SEO específico encontrado por texto: ${patron}`);
         return datosSEO;
       }
     }
   }
 
-  // ✅ PASO 3: Usar sistema dinámico como respaldo
-  console.log(`ℹ️ Usando SEO dinámico para producto: ${id}`);
+  // PASO 3: Usar sistema dinámico como respaldo
+  console.log(`ℹUsando SEO dinámico para producto: ${id}`);
   const datosSEO = generarSEODinamico(producto, id);
   seoCache.set(cacheKey, { data: datosSEO, timestamp: Date.now() });
   return datosSEO;

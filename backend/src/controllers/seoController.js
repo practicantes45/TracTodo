@@ -161,29 +161,29 @@ exports.obtenerSEOProducto = async (req, res) => {
  */
 exports.generarSitemap = async (req, res) => {
   try {
-    console.log("🔄 Generando sitemap.xml con URLs amigables - VERSIÓN CORREGIDA...");
+    console.log("Generando sitemap.xml con URLs amigables - VERSIÓN CORREGIDA...");
     
-    // ✅ FORZAR URL BASE - NO usar variables de entorno
+    //  FORZAR URL BASE - NO usar variables de entorno
     const baseURL = "https://tractodo.com";
-    console.log(`🌐 URL base forzada: ${baseURL}`);
+    console.log(`URL base forzada: ${baseURL}`);
     
-    // ✅ LIMPIAR CACHE ANTERIOR si existe
+    // LIMPIAR CACHE ANTERIOR si existe
     try {
       await db.ref("/seo/sitemap").remove();
-      console.log("🗑️ Cache de sitemap anterior eliminado");
+      console.log(" Cache de sitemap anterior eliminado");
     } catch (error) {
-      console.log("ℹ️ No había cache anterior de sitemap");
+      console.log(" No había cache anterior de sitemap");
     }
     
     // DEBUGGING: Verificar conexión a Firebase
-    console.log("🔍 Verificando conexión a Firebase...");
+    console.log(" Verificando conexión a Firebase...");
     
     // Obtener todos los productos con debugging mejorado
-    console.log("📦 Obteniendo productos desde Firebase...");
+    console.log(" Obteniendo productos desde Firebase...");
     const productosSnapshot = await db.ref("/").once("value");
     const todosLosDatos = productosSnapshot.val() || {};
     
-    console.log(`📊 Total de nodos en raíz de Firebase: ${Object.keys(todosLosDatos).length}`);
+    console.log(` Total de nodos en raíz de Firebase: ${Object.keys(todosLosDatos).length}`);
     
     // Filtrar solo productos válidos (que tengan nombre)
     const productos = {};
@@ -204,18 +204,18 @@ exports.generarSitemap = async (req, res) => {
                  !id.startsWith('recomendaciones') &&
                  !id.startsWith('productosDelMes')) {
         productosSinNombre++;
-        console.log(`⚠️ Producto sin nombre válido encontrado - ID: ${id}, datos:`, datos);
+        console.log(`Producto sin nombre válido encontrado - ID: ${id}, datos:`, datos);
       }
     });
     
-    console.log(`✅ Productos válidos encontrados: ${productosConNombre}`);
-    console.log(`⚠️ Productos sin nombre válido: ${productosSinNombre}`);
+    console.log(`Productos válidos encontrados: ${productosConNombre}`);
+    console.log(`Productos sin nombre válido: ${productosSinNombre}`);
     
     // Obtener posts del blog con debugging
-    console.log("📝 Obteniendo posts del blog...");
+    console.log("Obteniendo posts del blog...");
     const blogSnapshot = await db.ref("/entretenimiento/blog").once("value");
     const posts = blogSnapshot.val() || {};
-    console.log(`📖 Posts de blog encontrados: ${Object.keys(posts).length}`);
+    console.log(`Posts de blog encontrados: ${Object.keys(posts).length}`);
     
     // Función para generar slug único
     const { generarSlug } = require("../services/seoService");
@@ -275,8 +275,8 @@ exports.generarSitemap = async (req, res) => {
   </url>
 `;
 
-    // ✅ Generar slugs únicos para productos - MEJORADO
-    console.log("🔧 Generando URLs amigables para productos...");
+    // Generar slugs únicos para productos - MEJORADO
+    console.log("Generando URLs amigables para productos...");
     const productosConSlug = [];
     const slugsUsados = new Set();
     
@@ -301,9 +301,9 @@ exports.generarSitemap = async (req, res) => {
             lastmod: producto.fechaActualizacion || new Date().toISOString()
           });
           
-          console.log(`✅ Producto agregado: ${producto.nombre} -> ${slugFinal}`);
+          console.log(`Producto agregado: ${producto.nombre} -> ${slugFinal}`);
         } catch (error) {
-          console.error(`❌ Error procesando producto ${id}:`, error.message);
+          console.error(` Error procesando producto ${id}:`, error.message);
         }
       });
 
@@ -319,13 +319,13 @@ exports.generarSitemap = async (req, res) => {
   </url>`;
       });
       
-      console.log(`✅ ${productosConSlug.length} productos agregados al sitemap con URLs amigables`);
+      console.log(` ${productosConSlug.length} productos agregados al sitemap con URLs amigables`);
     } else {
-      console.log("⚠️ No se encontraron productos válidos para agregar al sitemap");
+      console.log(" No se encontraron productos válidos para agregar al sitemap");
     }
 
-    // ✅ Generar slugs únicos para posts del blog - MEJORADO
-    console.log("📝 Generando URLs amigables para blog...");
+    // Generar slugs únicos para posts del blog - MEJORADO
+    console.log("Generando URLs amigables para blog...");
     const postsConSlug = [];
     const slugsBlogUsados = new Set();
     
@@ -352,9 +352,9 @@ exports.generarSitemap = async (req, res) => {
               lastmod: post.fechaActualizacion || post.fechaPublicacion || new Date().toISOString()
             });
             
-            console.log(`✅ Post agregado: ${post.titulo} -> ${slugFinal}`);
+            console.log(` Post agregado: ${post.titulo} -> ${slugFinal}`);
           } catch (error) {
-            console.error(`❌ Error procesando post ${id}:`, error.message);
+            console.error(` Error procesando post ${id}:`, error.message);
           }
         });
 
@@ -370,9 +370,9 @@ exports.generarSitemap = async (req, res) => {
   </url>`;
       });
       
-      console.log(`✅ ${postsConSlug.length} posts de blog agregados al sitemap con URLs amigables`);
+      console.log(` ${postsConSlug.length} posts de blog agregados al sitemap con URLs amigables`);
     } else {
-      console.log("⚠️ No se encontraron posts de blog para agregar al sitemap");
+      console.log(" No se encontraron posts de blog para agregar al sitemap");
     }
     
     // Agregar páginas de categorías/marcas principales con URLs amigables
@@ -421,7 +421,7 @@ exports.generarSitemap = async (req, res) => {
     // Calcular total de URLs
     const totalURLs = sitemap.split('<url>').length - 1;
     
-    // ✅ Guardar mapeo de slugs para el frontend (solo si hay productos/posts)
+    // Guardar mapeo de slugs para el frontend (solo si hay productos/posts)
     const mapeoSlugs = {
       productos: productosConSlug.reduce((acc, { id, slug }) => {
         acc[slug] = id;
@@ -433,7 +433,7 @@ exports.generarSitemap = async (req, res) => {
       }, {})
     };
     
-    // ✅ Guardar sitemap NUEVO en Firebase
+    // Guardar sitemap NUEVO en Firebase
     await db.ref("/seo/sitemap").set({
       contenido: sitemap,
       fechaGeneracion: new Date().toISOString(),
@@ -449,14 +449,14 @@ exports.generarSitemap = async (req, res) => {
       }
     });
     
-    // ✅ Guardar mapeo de slugs para que el frontend pueda resolver URLs
+    // Guardar mapeo de slugs para que el frontend pueda resolver URLs
     await db.ref("/seo/slugs").set({
       mapeo: mapeoSlugs,
       fechaActualizacion: new Date().toISOString(),
       baseURL: baseURL
     });
     
-    // ✅ HEADERS CORRECTOS PARA XML
+    // HEADERS CORRECTOS PARA XML
     res.set({
       'Content-Type': 'application/xml; charset=utf-8',
       'Cache-Control': 'no-cache, no-store, must-revalidate',
@@ -466,30 +466,30 @@ exports.generarSitemap = async (req, res) => {
     
     res.send(sitemap);
     
-    console.log(`🎉 SITEMAP GENERADO EXITOSAMENTE:`);
-    console.log(`   📊 Total URLs: ${totalURLs}`);
-    console.log(`   🌐 Base URL: ${baseURL}`);
-    console.log(`   📝 Productos: ${productosConSlug.length}`);
-    console.log(`   📖 Posts blog: ${postsConSlug.length}`);
-    console.log(`   🏷️ Categorías: ${marcas.length + tiposProductos.length}`);
-    console.log(`   📅 Generado: ${new Date().toISOString()}`);
+    console.log(` SITEMAP GENERADO EXITOSAMENTE:`);
+    console.log(`   Total URLs: ${totalURLs}`);
+    console.log(`   Base URL: ${baseURL}`);
+    console.log(`   Productos: ${productosConSlug.length}`);
+    console.log(`   Posts blog: ${postsConSlug.length}`);
+    console.log(`   Categorías: ${marcas.length + tiposProductos.length}`);
+    console.log(`   Generado: ${new Date().toISOString()}`);
     
-    // ✅ Log de ejemplos de URLs generadas
+    //  Log de ejemplos de URLs generadas
     if (productosConSlug.length > 0) {
-      console.log(`   🔗 Ejemplo producto: ${baseURL}/productos/${productosConSlug[0].slug}`);
+      console.log(`    Ejemplo producto: ${baseURL}/productos/${productosConSlug[0].slug}`);
     } else {
-      console.log(`   ⚠️ No se generaron URLs de productos`);
+      console.log(`    No se generaron URLs de productos`);
     }
     
     if (postsConSlug.length > 0) {
-      console.log(`   🔗 Ejemplo blog: ${baseURL}/blog/${postsConSlug[0].slug}`);
+      console.log(`    Ejemplo blog: ${baseURL}/blog/${postsConSlug[0].slug}`);
     } else {
-      console.log(`   ⚠️ No se generaron URLs de blog`);
+      console.log(`    No se generaron URLs de blog`);
     }
     
   } catch (error) {
-    console.error("❌ Error generando sitemap:", error.message);
-    console.error("❌ Stack trace completo:", error.stack);
+    console.error("Error generando sitemap:", error.message);
+    console.error("Stack trace completo:", error.stack);
     res.status(500).json({
       error: "Error al generar sitemap",
       detalles: error.message

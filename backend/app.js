@@ -1,6 +1,5 @@
 require("dotenv").config();
-const express = require("express");
-const cors = require("cors");
+
 const cron = require("node-cron");
 const productoRoutes = require("./src/routes/productoRoutes.js"); 
 const trackingRoutes = require("./src/routes/trackingRoutes");
@@ -14,6 +13,9 @@ const healthRoutes = require("./src/routes/healthRoutes.js");
 const seoRoutes = require("./src/routes/seoRoutes.js");
 const cookieParser = require("cookie-parser");
 
+// Configuración inicial del servidor
+const express = require("express");
+const cors = require("cors");
 const app = express();
 
 // Middleware para log de conexiones
@@ -24,11 +26,11 @@ app.use((req, res, next) => {
 
 // CONFIGURACIÓN MEJORADA DE CORS PARA RAILWAY
 const corsOrigins = [
-  "http://localhost:3001", 
-  "http://127.0.0.1:3001",
+  "http://localhost:3001", // Desarrollo local
+  "http://127.0.0.1:3001", // Desarrollo local
   "https://tractodo-production-3e8e.up.railway.app", // Frontend Railway
-  "https://tractodo-production.up.railway.app",
-  "https://tractodo.com" // Backend Railway (para health checks)
+  "https://tractodo-production.up.railway.app", // Backend Railway
+  "https://tractodo.com"  // Dominio final
 ];
 
 // Agregar dinámicamente el dominio de Railway si existe
@@ -60,15 +62,16 @@ app.use((req, res, next) => {
   next();
 });
 
-// Rutas
-app.use("/api/health", healthRoutes);
-app.use("/api/productos", productoRoutes); 
-app.use("/api/tracking", trackingRoutes);
-app.use("/api/user", userRoutes);
-app.use("/api/entretenimiento", entretenimientoRoutes);
-app.use("/api/reversion", reversionRoutes);
-app.use("/api/vistas", vistasRoutes);
-app.use("/api/seo", seoRoutes);
+
+// Rutas principales planificadas
+app.use("/api/health", healthRoutes); // Health checks
+app.use("/api/productos", productoRoutes); // Gestión de productos
+app.use("/api/tracking", trackingRoutes); // Analytics
+app.use("/api/user", userRoutes); // Autenticación
+app.use("/api/entretenimiento", entretenimientoRoutes); // Blog/Videos
+//app.use("/api/reversion", reversionRoutes);
+app.use("/api/vistas", vistasRoutes); // Contador de vistas
+app.use("/api/seo", seoRoutes); // SEO automático
 
 // Log de inicio actualizado para Railway
 console.log("✅ Backend iniciado correctamente");

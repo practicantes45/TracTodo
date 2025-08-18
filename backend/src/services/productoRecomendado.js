@@ -90,6 +90,27 @@ const limpiarTracking = async () => {
     // Opción 1: Borrar todo el tracking
     await db.ref("/tracking").remove();
     console.log("Tracking limpiado completamente");
+    //////
+
+  } catch (error) {
+    console.error("Error al limpiar tracking:", error.message);
+  }
+};
+
+// Función para ejecutar manualmente (para testing)
+const ejecutarRecomendacionesManual = async () => {
+  console.log("Ejecutando recomendaciones manualmente...");
+  await generarRecomendaciones();
+};
+
+
+module.exports = { 
+  generarRecomendaciones,
+  limpiarTracking,
+  ejecutarRecomendacionesManual
+};
+
+
     
     // Opción 2: Si prefieres mantener tracking reciente (últimas 6 horas)
     // const SEIS_HORAS_MS = 6 * 60 * 60 * 1000;
@@ -109,21 +130,3 @@ const limpiarTracking = async () => {
     //     }
     //   }
     // }
-
-  } catch (error) {
-    console.error("Error al limpiar tracking:", error.message);
-  }
-};
-
-// Función para ejecutar manualmente (para testing)
-const ejecutarRecomendacionesManual = async () => {
-  console.log("Ejecutando recomendaciones manualmente...");
-  await generarRecomendaciones();
-};
-
-
-module.exports = { 
-  generarRecomendaciones,
-  limpiarTracking,
-  ejecutarRecomendacionesManual
-};

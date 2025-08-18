@@ -1,0 +1,17 @@
+{
+  "fechaMigracion": "2025-08-18T17:04:13.179Z",
+  "usuariosConEmail": [
+    {
+      "username": "lola",
+      "email": "lola@mail.com",
+      "tipoUsuario": "usuario",
+      "nota": "Debe re-registrarse con email en el nuevo sistema"
+    }
+  ],
+  "usuariosSinEmail": [],
+  "instrucciones": {
+    "paraUsuarios": "Los usuarios deben registrarse nuevamente usando POST /api/user/registro con { email, password, username }",
+    "paraAdmins": "Los administradores han sido migrados automáticamente",
+    "passwordDefecto": "Los usuarios deben crear nuevas contraseñas"
+  }
+}
