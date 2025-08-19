@@ -7,13 +7,13 @@ import styles from './AdminLoginModal.module.css';
 
 export default function AdminLoginModal({ isOpen, onClose }) {
   const [credentials, setCredentials] = useState({
-    username: '',
+    email: '', // CAMBIO: username -> email
     password: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const { guardarSesion } = useAuth(); // USAR ESTO EN LUGAR DE setIsAdmin
+  const { guardarSesion } = useAuth();
 
   const handleChange = (e) => {
     setCredentials({
@@ -26,8 +26,14 @@ export default function AdminLoginModal({ isOpen, onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!credentials.username.trim() || !credentials.password.trim()) {
+    if (!credentials.email.trim() || !credentials.password.trim()) {
       setError('Faltan campos requeridos');
+      return;
+    }
+
+    // NUEVO: Validación básica de email
+    if (!credentials.email.includes('@')) {
+      setError('Por favor ingresa un email válido');
       return;
     }
 
@@ -36,7 +42,7 @@ export default function AdminLoginModal({ isOpen, onClose }) {
 
     try {
       console.log('🔐 === MODAL LOGIN - INICIANDO ===');
-      console.log('👤 Usuario:', credentials.username);
+      console.log('📧 Email:', credentials.email); // CAMBIO: mostrar email
 
       const respuestaLogin = await iniciarSesion(credentials);
       console.log('📡 Respuesta login modal:', respuestaLogin);
@@ -49,7 +55,8 @@ export default function AdminLoginModal({ isOpen, onClose }) {
         
         if (respuestaAdmin.isAdmin) {
           const datosUsuario = {
-            username: credentials.username,
+            email: credentials.email, // CAMBIO: guardar email en lugar de username
+            username: respuestaLogin.email?.split('@')[0] || 'admin', // NUEVO: generar username desde email
             isAdmin: true,
             loginTime: new Date().toISOString()
           };
@@ -97,13 +104,14 @@ export default function AdminLoginModal({ isOpen, onClose }) {
             <div className={styles.inputBox}>
               <input 
                 className={styles.input}
-                type="text"
-                name="username"
-                value={credentials.username}
+                type="email" // CAMBIO: type="text" -> type="email"
+                name="email" // CAMBIO: name="username" -> name="email"
+                value={credentials.email} // CAMBIO: credentials.username -> credentials.email
                 onChange={handleChange}
                 required
+                autoComplete="email" // NUEVO: mejor UX
               />
-              <label className={styles.label}>Usuario</label>
+              <label className={styles.label}>Email</label> {/* CAMBIO: "Usuario" -> "Email" */}
             </div>
             
             <div className={styles.inputBox}>
@@ -114,6 +122,7 @@ export default function AdminLoginModal({ isOpen, onClose }) {
                 value={credentials.password}
                 onChange={handleChange}
                 required
+                autoComplete="current-password" // NUEVO: mejor UX
               />
               <label className={styles.label}>Password</label>
               <button

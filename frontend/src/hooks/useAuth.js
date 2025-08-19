@@ -16,7 +16,7 @@ export function AuthProvider({ children }) {
     }
     setUsuario(null);
     setIsAdmin(false);
-    console.log('ðŸ§¹ SesiÃ³n limpiada');
+    console.log('🧹 Sesión limpiada');
   }, []);
 
   const verificarSesionInicial = useCallback(async () => {
@@ -27,12 +27,12 @@ export function AuthProvider({ children }) {
     }
 
     try {
-      console.log('ðŸ” === VERIFICACIÃ“N DE SESIÃ“N INICIAL ===');
+      console.log('🔍 === VERIFICACIÓN DE SESIÓN INICIAL ===');
       
       const sesionGuardada = localStorage.getItem('adminSession');
       const tiempoSesion = localStorage.getItem('adminSessionTime');
       
-      console.log('ðŸ“± Datos en localStorage:', {
+      console.log('📱 Datos en localStorage:', {
         tieneSession: !!sesionGuardada,
         tiempoSesion: tiempoSesion
       });
@@ -44,38 +44,39 @@ export function AuthProvider({ children }) {
         const tiempoTranscurrido = ahora - tiempoGuardado;
         
         if (tiempoTranscurrido < DURACION_SESION) {
-          console.log('ðŸ“± SesiÃ³n encontrada y no expirada, verificando con backend...');
+          console.log('📱 Sesión encontrada y no expirada, verificando con backend...');
           
           try {
             const respuestaAdmin = await verificarAdmin();
-            console.log('ðŸ“¡ Resultado de verificaciÃ³n backend:', respuestaAdmin);
+            console.log('📡 Resultado de verificación backend:', respuestaAdmin);
             
             if (respuestaAdmin.isAdmin) {
               const datosUsuario = JSON.parse(sesionGuardada);
               setUsuario(datosUsuario);
               setIsAdmin(true);
-              console.log('âœ… SESIÃ“N DE ADMINISTRADOR RESTAURADA EXITOSAMENTE');
+              console.log('✅ SESIÓN DE ADMINISTRADOR RESTAURADA EXITOSAMENTE');
+              console.log('📧 Usuario:', datosUsuario.email || datosUsuario.username); // CAMBIO: mostrar email preferentemente
             } else {
-              console.log('âŒ Backend rechazÃ³ la sesiÃ³n de admin');
+              console.log('❌ Backend rechazó la sesión de admin');
               limpiarSesion();
             }
           } catch (backendError) {
-            console.log('ðŸ”Œ Error verificando admin con backend:', backendError.message);
+            console.log('🔌 Error verificando admin con backend:', backendError.message);
             limpiarSesion();
           }
         } else {
-          console.log('â° SesiÃ³n de admin expirada por tiempo');
+          console.log('⏰ Sesión de admin expirada por tiempo');
           limpiarSesion();
         }
       } else {
-        console.log('ðŸ‘¤ No hay sesiÃ³n de admin guardada - iniciando como usuario normal');
+        console.log('👤 No hay sesión de admin guardada - iniciando como usuario normal');
       }
     } catch (error) {
-      console.error('ðŸ’¥ Error en verificaciÃ³n de sesiÃ³n:', error);
+      console.error('💥 Error en verificación de sesión:', error);
       limpiarSesion();
     } finally {
       setLoading(false);
-      console.log('ðŸ VerificaciÃ³n de sesiÃ³n completada');
+      console.log('🏁 Verificación de sesión completada');
     }
   }, [limpiarSesion]);
 
@@ -97,32 +98,41 @@ export function AuthProvider({ children }) {
     if (typeof window === 'undefined') return;
 
     try {
-      console.log('ðŸ’¾ === GUARDANDO SESIÃ“N DE ADMIN ===');
-      const jsonData = JSON.stringify(datosUsuario);
+      console.log('💾 === GUARDANDO SESIÓN DE ADMIN ===');
+      
+      // NUEVO: Asegurar que tenemos email y username
+      const usuarioCompleto = {
+        ...datosUsuario,
+        email: datosUsuario.email || datosUsuario.username, // fallback
+        username: datosUsuario.username || datosUsuario.email?.split('@')[0] || 'admin' // generar username si no existe
+      };
+      
+      const jsonData = JSON.stringify(usuarioCompleto);
       const timestamp = Date.now().toString();
       
       localStorage.setItem('adminSession', jsonData);
       localStorage.setItem('adminSessionTime', timestamp);
       
-      setUsuario(datosUsuario);
+      setUsuario(usuarioCompleto);
       setIsAdmin(true);
-      console.log('ðŸ’¾ === SESIÃ“N GUARDADA EXITOSAMENTE ===');
+      console.log('💾 === SESIÓN GUARDADA EXITOSAMENTE ===');
+      console.log('📧 Email:', usuarioCompleto.email);
     } catch (error) {
-      console.error('âŒ ERROR al guardar sesiÃ³n:', error);
+      console.error('❌ ERROR al guardar sesión:', error);
     }
   }, []);
 
   const cerrarSesion = useCallback(async () => {
     try {
-      console.log('ðŸ‘‹ Cerrando sesiÃ³n de admin...');
+      console.log('👋 Cerrando sesión de admin...');
       const { cerrarSesion: cerrarSesionBackend } = require('../services/userService');
       await cerrarSesionBackend();
-      console.log('ðŸ”Œ SesiÃ³n cerrada en backend');
+      console.log('🔌 Sesión cerrada en backend');
     } catch (error) {
-      console.error('âš ï¸ Error al cerrar sesiÃ³n en backend:', error);
+      console.error('⚠️ Error al cerrar sesión en backend:', error);
     } finally {
       limpiarSesion();
-      console.log('âœ… SesiÃ³n de admin cerrada completamente');
+      console.log('✅ Sesión de admin cerrada completamente');
     }
   }, [limpiarSesion]);
 

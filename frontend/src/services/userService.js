@@ -1,8 +1,13 @@
 import api from './api';
 
-// Registro de usuario
+// Registro de usuario - ACTUALIZADO: ahora usa email
 export const registrarUsuario = async (datosUsuario) => {
   try {
+    // NUEVO: Validación de email
+    if (!datosUsuario.email || !datosUsuario.email.includes('@')) {
+      throw new Error('Email válido es requerido');
+    }
+    
     const respuesta = await api.post('/user/registro', datosUsuario);
     return respuesta.data;
   } catch (error) {
@@ -12,9 +17,15 @@ export const registrarUsuario = async (datosUsuario) => {
   }
 };
 
-// Inicio de sesión
+// Inicio de sesión - ACTUALIZADO: ahora usa email
 export const iniciarSesion = async (credenciales) => {
   try {
+    // NUEVO: Validación de email
+    if (!credenciales.email || !credenciales.email.includes('@')) {
+      throw new Error('Email válido es requerido');
+    }
+    
+    console.log('📧 Iniciando sesión con email:', credenciales.email);
     const respuesta = await api.post('/user/inicioSesion', credenciales);
     return respuesta.data;
   } catch (error) {
@@ -24,7 +35,7 @@ export const iniciarSesion = async (credenciales) => {
   }
 };
 
-// Verificar si es administrador - CORREGIDO
+// Verificar si es administrador - MANTENIDO
 export const verificarAdmin = async () => {
   try {
     console.log('🔄 Verificando admin con backend...');
@@ -58,7 +69,7 @@ export const verificarAdmin = async () => {
   }
 };
 
-// Cerrar sesión
+// Cerrar sesión - MANTENIDO
 export const cerrarSesion = async () => {
   try {
     const respuesta = await api.get('/user/cerrarSesion');
