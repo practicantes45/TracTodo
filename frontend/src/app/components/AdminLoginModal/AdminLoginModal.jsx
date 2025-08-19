@@ -1,150 +1,153 @@
 'use client';
-import { useState } from 'react';
-import { useAuth } from '../../../hooks/useAuth';
-import { iniciarSesion, verificarAdmin } from '../../../services/userService';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import styles from './AdminLoginModal.module.css';
+import { useState, useEffect, useContext, createContext, useCallback } from 'react';
+import { verificarAdmin } from '../services/userService';
 
-export default function AdminLoginModal({ isOpen, onClose }) {
-  const [credentials, setCredentials] = useState({
-    username: '',
-    password: ''
-  });
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const { guardarSesion } = useAuth(); // USAR ESTO EN LUGAR DE setIsAdmin
+const AuthContext = createContext();
 
-  const handleChange = (e) => {
-    setCredentials({
-      ...credentials,
-      [e.target.name]: e.target.value
-    });
-    if (error) setError('');
-  };
+export function AuthProvider({ children }) {
+  const [usuario, setUsuario] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    if (!credentials.username.trim() || !credentials.password.trim()) {
-      setError('Faltan campos requeridos');
+  const limpiarSesion = useCallback(() => {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('adminSession');
+      localStorage.removeItem('adminSessionTime');
+    }
+    setUsuario(null);
+    setIsAdmin(false);
+    console.log('🧹 Sesión limpiada');
+  }, []);
+
+  const verificarSesionInicial = useCallback(async () => {
+    // Solo ejecutar en el cliente
+    if (typeof window === 'undefined') {
+      setLoading(false);
       return;
     }
 
-    setLoading(true);
-    setError('');
-
     try {
-      console.log('🔐 === MODAL LOGIN - INICIANDO ===');
-      console.log('👤 Usuario:', credentials.username);
-
-      const respuestaLogin = await iniciarSesion(credentials);
-      console.log('📡 Respuesta login modal:', respuestaLogin);
+      console.log('🔍 === VERIFICACIÓN DE SESIÓN INICIAL ===');
       
-      if (respuestaLogin.mensaje === "Login exitoso") {
-        console.log('✅ Login exitoso - verificando admin...');
+      const sesionGuardada = localStorage.getItem('adminSession');
+      const tiempoSesion = localStorage.getItem('adminSessionTime');
+      
+      console.log('📱 Datos en localStorage:', {
+        tieneSession: !!sesionGuardada,
+        tiempoSesion: tiempoSesion
+      });
+      
+      if (sesionGuardada && tiempoSesion) {
+        const ahora = Date.now();
+        const tiempoGuardado = parseInt(tiempoSesion);
+        const DURACION_SESION = 24 * 60 * 60 * 1000; // 24 horas
+        const tiempoTranscurrido = ahora - tiempoGuardado;
         
-        const respuestaAdmin = await verificarAdmin();
-        console.log('📡 Respuesta admin modal:', respuestaAdmin);
-        
-        if (respuestaAdmin.isAdmin) {
-          const datosUsuario = {
-            username: credentials.username,
-            isAdmin: true,
-            loginTime: new Date().toISOString()
-          };
+        if (tiempoTranscurrido < DURACION_SESION) {
+          console.log('📱 Sesión encontrada y no expirada, verificando con backend...');
           
-          console.log('💾 MODAL - Guardando sesión admin:', datosUsuario);
-          guardarSesion(datosUsuario);
-          
-          console.log('✅ MODAL - Admin autenticado, cerrando modal');
-          onClose();
+          try {
+            const respuestaAdmin = await verificarAdmin();
+            console.log('📡 Resultado de verificación backend:', respuestaAdmin);
+            
+            if (respuestaAdmin.isAdmin) {
+              const datosUsuario = JSON.parse(sesionGuardada);
+              setUsuario(datosUsuario);
+              setIsAdmin(true);
+              console.log('✅ SESIÓN DE ADMINISTRADOR RESTAURADA EXITOSAMENTE');
+            } else {
+              console.log('❌ Backend rechazó la sesión de admin');
+              limpiarSesion();
+            }
+          } catch (backendError) {
+            console.log('🔌 Error verificando admin con backend:', backendError.message);
+            limpiarSesion();
+          }
         } else {
-          console.log('❌ MODAL - No es admin');
-          setError('No tienes permisos de administrador');
+          console.log('⏰ Sesión de admin expirada por tiempo');
+          limpiarSesion();
         }
       } else {
-        console.log('❌ MODAL - Login falló');
-        setError('Credenciales incorrectas');
+        console.log('👤 No hay sesión de admin guardada - iniciando como usuario normal');
       }
     } catch (error) {
-      console.error('❌ MODAL - Error login:', error);
-      setError(error.message || 'Error al iniciar sesión');
+      console.error('💥 Error en verificación de sesión:', error);
+      limpiarSesion();
     } finally {
       setLoading(false);
-      console.log('🏁 MODAL - Proceso terminado');
+      console.log('🏁 Verificación de sesión completada');
     }
+  }, [limpiarSesion]);
+
+  useEffect(() => {
+    verificarSesionInicial();
+  }, [verificarSesionInicial]);
+
+  const verificarUsuario = useCallback(async () => {
+    try {
+      const respuesta = await verificarAdmin();
+      return respuesta.isAdmin;
+    } catch (error) {
+      console.error('Error al verificar usuario:', error);
+      return false;
+    }
+  }, []);
+
+  const guardarSesion = useCallback((datosUsuario) => {
+    if (typeof window === 'undefined') return;
+
+    try {
+      console.log('💾 === GUARDANDO SESIÓN DE ADMIN ===');
+      const jsonData = JSON.stringify(datosUsuario);
+      const timestamp = Date.now().toString();
+      
+      localStorage.setItem('adminSession', jsonData);
+      localStorage.setItem('adminSessionTime', timestamp);
+      
+      setUsuario(datosUsuario);
+      setIsAdmin(true);
+      console.log('💾 === SESIÓN GUARDADA EXITOSAMENTE ===');
+    } catch (error) {
+      console.error('❌ ERROR al guardar sesión:', error);
+    }
+  }, []);
+
+  const cerrarSesion = useCallback(async () => {
+    try {
+      console.log('👋 Cerrando sesión de admin...');
+      const { cerrarSesion: cerrarSesionBackend } = require('../services/userService');
+      await cerrarSesionBackend();
+      console.log('🔌 Sesión cerrada en backend');
+    } catch (error) {
+      console.error('⚠️ Error al cerrar sesión en backend:', error);
+    } finally {
+      limpiarSesion();
+      console.log('✅ Sesión de admin cerrada completamente');
+    }
+  }, [limpiarSesion]);
+
+  const value = {
+    usuario,
+    setUsuario,
+    isAdmin,
+    setIsAdmin,
+    loading,
+    verificarUsuario,
+    guardarSesion,
+    cerrarSesion
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div className={styles.overlay}>
-      <div className={styles.container}>
-        <div className={styles.loginBox}>
-          <div className={styles.header}>
-            <button 
-              className={styles.backButton}
-              onClick={onClose}
-              type="button"
-            >
-              ←
-            </button>
-            <h2 className={styles.title}>Exclusivo</h2>
-          </div>
-          
-          <form className={styles.form} onSubmit={handleSubmit}>
-            <div className={styles.inputBox}>
-              <input 
-                className={styles.input}
-                type="text"
-                name="username"
-                value={credentials.username}
-                onChange={handleChange}
-                required
-              />
-              <label className={styles.label}>Usuario</label>
-            </div>
-            
-            <div className={styles.inputBox}>
-              <input 
-                className={styles.input}
-                type={showPassword ? "text" : "password"}
-                name="password"
-                value={credentials.password}
-                onChange={handleChange}
-                required
-              />
-              <label className={styles.label}>Password</label>
-              <button
-                type="button"
-                className={styles.togglePassword}
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
-              </button>
-            </div>
-            
-            {error && (
-              <div className={styles.errorMessage}>
-                {error}
-              </div>
-            )}
-            
-            <button 
-              className={styles.btn} 
-              type="submit" 
-              disabled={loading}
-            >
-              {loading ? 'Verificando...' : 'Login'}
-            </button>
-          </form>
-        </div>
-        
-        {[...Array(50)].map((_, i) => (
-          <span key={i} style={{'--i': i}} />
-        ))}
-      </div>
-    </div>
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
   );
+}
+
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth debe usarse dentro de AuthProvider');
+  }
+  return context;
 }
