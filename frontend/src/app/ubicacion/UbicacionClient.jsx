@@ -114,7 +114,7 @@ export default function UbicacionClient() {
                                     title="EMBARQUES"
                                     description="Tractodo asegura todo: envíos de refacciones a toda la República Mexicana con rapidez y confianza."
                                     videoId="mUFtQqSt0bA" // Cambiar por el ID real del video de envíos
-                                    thumbnailUrl="https://youtu.be/mUFtQqSt0bA?si=HQSIVjgxpmuTt2U7" // Cambiar por el thumbnail real
+                                    thumbnailUrl="https://youtu.be/tBnKNwgzQ-c?si=Xu_aJNKYexh_gjBP" // Cambiar por el thumbnail real
                                     className="envios"
                                 />
                             </div>

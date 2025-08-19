@@ -1,7 +1,7 @@
 'use client';
 import './producto-individual.css';
 import { useState, useEffect, useRef } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import { FaArrowLeft, FaWhatsapp, FaShare, FaCopy, FaCheckCircle, FaChevronLeft, FaChevronRight, FaSearchPlus, FaSearchMinus, FaRedo } from "react-icons/fa";
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
@@ -17,6 +17,7 @@ import { formatearPrecio, formatearPrecioWhatsApp } from '../../../utils/priceUt
 
 export default function ProductoIndividualPage({ params }) {
     const router = useRouter();
+    const searchParams = useSearchParams();
     const [producto, setProducto] = useState(null);
     const [productosRelacionados, setProductosRelacionados] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -315,47 +316,47 @@ export default function ProductoIndividualPage({ params }) {
         };
     }, [isDragging, dragStart, carouselZoom]);
 
- const handleWhatsAppClick = (producto, e) => {
-  e.preventDefault();
-  e.stopPropagation();
+    const handleWhatsAppClick = (producto, e) => {
+        e.preventDefault();
+        e.stopPropagation();
 
-  const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
-  const precio = producto.precioVentaSugerido || producto.precio || 0;
-  const personalizedMessage = randomContact.message
-    .replace('{producto}', producto.nombre)
-    .replace('{precio}', formatearPrecioWhatsApp(precio));
+        const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
+        const precio = producto.precioVentaSugerido || producto.precio || 0;
+        const personalizedMessage = randomContact.message
+            .replace('{producto}', producto.nombre)
+            .replace('{precio}', formatearPrecioWhatsApp(precio));
 
-  const cleanPhoneNumber = randomContact.phoneNumber.replace(/\D/g, '');
-  const formattedNumber = cleanPhoneNumber.startsWith('52')
-    ? cleanPhoneNumber
-    : `52${cleanPhoneNumber}`;
+        const cleanPhoneNumber = randomContact.phoneNumber.replace(/\D/g, '');
+        const formattedNumber = cleanPhoneNumber.startsWith('52')
+            ? cleanPhoneNumber
+            : `52${cleanPhoneNumber}`;
 
-  const encodedMessage = encodeURIComponent(personalizedMessage);
-  const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodedMessage}`;
+        const encodedMessage = encodeURIComponent(personalizedMessage);
+        const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodedMessage}`;
 
-  window.open(whatsappUrl, '_blank');
-};
+        window.open(whatsappUrl, '_blank');
+    };
 
-const handleRelatedWhatsAppClick = (relatedProduct, e) => {
-  e.preventDefault();
-  e.stopPropagation();
+    const handleRelatedWhatsAppClick = (relatedProduct, e) => {
+        e.preventDefault();
+        e.stopPropagation();
 
-  const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
-  const precio = relatedProduct.precioVentaSugerido || 0;
-  const personalizedMessage = randomContact.message
-    .replace('{producto}', relatedProduct.nombre)
-    .replace('{precio}', formatearPrecioWhatsApp(precio));
+        const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
+        const precio = relatedProduct.precioVentaSugerido || 0;
+        const personalizedMessage = randomContact.message
+            .replace('{producto}', relatedProduct.nombre)
+            .replace('{precio}', formatearPrecioWhatsApp(precio));
 
-  const cleanPhoneNumber = randomContact.phoneNumber.replace(/\D/g, '');
-  const formattedNumber = cleanPhoneNumber.startsWith('52')
-    ? cleanPhoneNumber
-    : `52${cleanPhoneNumber}`;
+        const cleanPhoneNumber = randomContact.phoneNumber.replace(/\D/g, '');
+        const formattedNumber = cleanPhoneNumber.startsWith('52')
+            ? cleanPhoneNumber
+            : `52${cleanPhoneNumber}`;
 
-  const encodedMessage = encodeURIComponent(personalizedMessage);
-  const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodedMessage}`;
+        const encodedMessage = encodeURIComponent(personalizedMessage);
+        const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodedMessage}`;
 
-  window.open(whatsappUrl, '_blank');
-};
+        window.open(whatsappUrl, '_blank');
+    };
 
     const handleShareProduct = async () => {
         const shareData = {
@@ -385,14 +386,48 @@ const handleRelatedWhatsAppClick = (relatedProduct, e) => {
         }
     };
 
+    // MODIFICADO: Función mejorada para regresar preservando búsqueda
     const handleBackClick = () => {
-        router.push('/productos');
+        // Obtener parámetros de búsqueda actuales (si los hay)
+        const busqueda = searchParams.get('busqueda');
+        const marca = searchParams.get('marca');
+        
+        // Si hay parámetros de búsqueda, preservarlos
+        if (busqueda || marca) {
+            const params = new URLSearchParams();
+            if (busqueda) params.set('busqueda', busqueda);
+            if (marca) params.set('marca', marca);
+            
+            router.push(`/productos?${params.toString()}`);
+        } else {
+            // Si no hay parámetros, usar router.back() como primera opción
+            // para preservar el estado exacto de la página anterior
+            if (window.history.length > 1) {
+                router.back();
+            } else {
+                // Fallback si no hay historial
+                router.push('/productos');
+            }
+        }
     };
 
     const handleRelatedProductClick = (relatedProduct) => {
         const slug = getProductSlug(relatedProduct);
         console.log('🔗 Navegando a producto relacionado:', { nombre: relatedProduct.nombre, slug });
-        router.push(`/productos/${slug}`);
+        
+        // Preservar parámetros de búsqueda al navegar a productos relacionados
+        const busqueda = searchParams.get('busqueda');
+        const marca = searchParams.get('marca');
+        
+        if (busqueda || marca) {
+            const params = new URLSearchParams();
+            if (busqueda) params.set('busqueda', busqueda);
+            if (marca) params.set('marca', marca);
+            
+            router.push(`/productos/${slug}?${params.toString()}`);
+        } else {
+            router.push(`/productos/${slug}`);
+        }
     };
 
     const nextImage = () => {
@@ -669,7 +704,7 @@ const handleRelatedWhatsAppClick = (relatedProduct, e) => {
                                                     }}
                                                     title="Restablecer"
                                                 >
-                                                    ↺
+                                                    ↻
                                                 </button>
                                                 <div className="zoomIndicator">
                                                     {carouselZoom}%
