@@ -111,10 +111,10 @@ export default function UbicacionClient() {
 
                                 {/* Video de envíos */}
                                 <VideoSection
-                                    title="ENVÍOS A DOMICILIO"
-                                    description="Conoce nuestro servicio de envíos y cómo llevamos los productos hasta tu ubicación"
-                                    videoId="xlIeCDPO9Es" // Cambiar por el ID real del video de envíos
-                                    thumbnailUrl="https://img.youtube.com/vi/xlIeCDPO9Es/maxresdefault.jpg" // Cambiar por el thumbnail real
+                                    title="EMBARQUES"
+                                    description="Tractodo asegura todo: envíos de refacciones a toda la República Mexicana con rapidez y confianza."
+                                    videoId="mUFtQqSt0bA" // Cambiar por el ID real del video de envíos
+                                    thumbnailUrl="https://youtu.be/mUFtQqSt0bA?si=HQSIVjgxpmuTt2U7" // Cambiar por el thumbnail real
                                     className="envios"
                                 />
                             </div>
