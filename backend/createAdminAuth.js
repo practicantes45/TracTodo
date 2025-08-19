@@ -35,7 +35,6 @@ const crearAdministradorInicial = async () => {
     
     console.log("\n¡ÉXITO! Administrador creado correctamente");
     console.log("Ahora puedes iniciar sesión en:");
-    console.log("   - Frontend: https://tractodo-production-3e8e.up.railway.app");
     console.log("   - Endpoint: POST /api/user/inicioSesion");
     console.log("   - Datos: { email: '" + adminData.email + "', password: '******' }");
     

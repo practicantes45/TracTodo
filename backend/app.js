@@ -76,7 +76,7 @@ app.use("/api/seo", seoRoutes); // SEO automático
 // Log de inicio actualizado para Railway
 console.log("✅ Backend iniciado correctamente");
 console.log("🌐 Environment:", process.env.NODE_ENV || 'development');
-console.log("🔗 Frontend URL: https://tractodo-production-3e8e.up.railway.app");
+console.log("🔗 Frontend URL: https://tractodo.com");
 console.log("📡 Backend URL: https://tractodo-production.up.railway.app");
 console.log("📦 Esperando conexiones...");
 

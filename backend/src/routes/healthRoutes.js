@@ -11,7 +11,7 @@ router.get("/health", (req, res) => {
     version: "1.0.0",
     port: process.env.PORT || "3000",
     urls: {
-      frontend: "https://tractodo-production-3e8e.up.railway.app",
+      frontend: "https://tractodo.com",
       backend: "https://tractodo-production.up.railway.app"
     }
   });
