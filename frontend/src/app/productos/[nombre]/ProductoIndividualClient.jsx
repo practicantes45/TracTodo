@@ -13,6 +13,7 @@ import { registrarVista } from '../../../services/trackingService';
 import { getProductSlug } from '../../../utils/slugUtils';
 import { useProductSEO } from '../../../hooks/useSEO';
 import FormattedDescription from '../../components/FormattedDescription/FormattedDescription';
+import { formatearPrecio, formatearPrecioWhatsApp } from '../../../utils/priceUtils';
 
 export default function ProductoIndividualPage({ params }) {
     const router = useRouter();
@@ -314,44 +315,47 @@ export default function ProductoIndividualPage({ params }) {
         };
     }, [isDragging, dragStart, carouselZoom]);
 
-    const handleWhatsAppClick = () => {
-        const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
-        const precio = producto.precioVentaSugerido || 0;
-        const personalizedMessage = randomContact.message
-            .replace('{producto}', producto.nombre)
-            .replace('{precio}', precio.toLocaleString());
+ const handleWhatsAppClick = (producto, e) => {
+  e.preventDefault();
+  e.stopPropagation();
 
-        const cleanPhoneNumber = randomContact.phoneNumber.replace(/\D/g, '');
-        const formattedNumber = cleanPhoneNumber.startsWith('52')
-            ? cleanPhoneNumber
-            : `52${cleanPhoneNumber}`;
+  const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
+  const precio = producto.precioVentaSugerido || producto.precio || 0;
+  const personalizedMessage = randomContact.message
+    .replace('{producto}', producto.nombre)
+    .replace('{precio}', formatearPrecioWhatsApp(precio));
 
-        const encodedMessage = encodeURIComponent(personalizedMessage);
-        const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodedMessage}`;
+  const cleanPhoneNumber = randomContact.phoneNumber.replace(/\D/g, '');
+  const formattedNumber = cleanPhoneNumber.startsWith('52')
+    ? cleanPhoneNumber
+    : `52${cleanPhoneNumber}`;
 
-        window.open(whatsappUrl, '_blank');
-    };
+  const encodedMessage = encodeURIComponent(personalizedMessage);
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodedMessage}`;
 
-    const handleRelatedWhatsAppClick = (relatedProduct, e) => {
-        e.preventDefault();
-        e.stopPropagation();
+  window.open(whatsappUrl, '_blank');
+};
 
-        const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
-        const precio = relatedProduct.precioVentaSugerido || 0;
-        const personalizedMessage = randomContact.message
-            .replace('{producto}', relatedProduct.nombre)
-            .replace('{precio}', precio.toLocaleString());
+const handleRelatedWhatsAppClick = (relatedProduct, e) => {
+  e.preventDefault();
+  e.stopPropagation();
 
-        const cleanPhoneNumber = randomContact.phoneNumber.replace(/\D/g, '');
-        const formattedNumber = cleanPhoneNumber.startsWith('52')
-            ? cleanPhoneNumber
-            : `52${cleanPhoneNumber}`;
+  const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
+  const precio = relatedProduct.precioVentaSugerido || 0;
+  const personalizedMessage = randomContact.message
+    .replace('{producto}', relatedProduct.nombre)
+    .replace('{precio}', formatearPrecioWhatsApp(precio));
 
-        const encodedMessage = encodeURIComponent(personalizedMessage);
-        const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodedMessage}`;
+  const cleanPhoneNumber = randomContact.phoneNumber.replace(/\D/g, '');
+  const formattedNumber = cleanPhoneNumber.startsWith('52')
+    ? cleanPhoneNumber
+    : `52${cleanPhoneNumber}`;
 
-        window.open(whatsappUrl, '_blank');
-    };
+  const encodedMessage = encodeURIComponent(personalizedMessage);
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodedMessage}`;
+
+  window.open(whatsappUrl, '_blank');
+};
 
     const handleShareProduct = async () => {
         const shareData = {
@@ -710,7 +714,7 @@ export default function ProductoIndividualPage({ params }) {
                                     </div>
                                 </div>
                                 <div className="productPrice">
-                                    ${parseFloat(producto.precioVentaSugerido || 0).toLocaleString()}
+                                    {formatearPrecio(producto.precioVentaSugerido || 0)}
                                 </div>
 
                                 <div className="productMeta">

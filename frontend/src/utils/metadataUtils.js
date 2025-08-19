@@ -1,6 +1,6 @@
 // utils/metadataUtils.js
 import { SEO_DEFAULTS } from '../services/seoService';
-
+import { formatearPrecioSEO } from './priceUtils';
 /**
  * Genera metadata server-side para Next.js App Router
  * REFORZADO: Prioridad explícita al frontend sobre backend
@@ -110,9 +110,14 @@ export const generateProductMetadata = (producto, productId) => {
     ? `${producto.nombre} | ${producto.numeroParte || ''} | Tractodo`
     : 'Producto | Tractodo';
     
+  // Incluir precio en la descripción si está disponible
+  const precioInfo = producto.precioVentaSugerido 
+    ? ` Precio: ${formatearPrecioSEO(producto.precioVentaSugerido)}.`
+    : '';
+    
   const description = producto.descripcion 
-    ? `${producto.descripcion.substring(0, 140)}. Envío nacional, garantía incluida.`
-    : 'Refacciones para tractocamión de calidad. Envío nacional, garantía incluida.';
+    ? `${producto.descripcion.substring(0, 120)}${precioInfo} Envío nacional, garantía incluida.`
+    : `Refacciones para tractocamión de calidad.${precioInfo} Envío nacional, garantía incluida.`;
 
   return {
     title,
@@ -121,6 +126,8 @@ export const generateProductMetadata = (producto, productId) => {
     other: {
       'meta-source': 'frontend-product',
       'meta-priority': 'high',
+      'product:price:amount': producto.precioVentaSugerido || '',
+      'product:price:currency': 'MXN',
     },
     
     openGraph: {
@@ -137,6 +144,7 @@ export const generateProductMetadata = (producto, productId) => {
         },
       ],
       type: 'product',
+      productPrice: producto.precioVentaSugerido ? formatearPrecioSEO(producto.precioVentaSugerido) : undefined,
     },
     
     alternates: {

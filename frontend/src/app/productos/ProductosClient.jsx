@@ -13,7 +13,7 @@ import AdminButtons from '../components/AdminButtons/AdminButtons';
 import { getProductSlug } from '../../utils/slugUtils';
 import { useSEO } from '../../hooks/useSEO';
 import { getPreviewDescription, getShortPreviewDescription } from '../../utils/textUtils';
-
+import { formatearPrecio, formatearPrecioWhatsApp } from '../../utils/priceUtils';
 // Constante para productos por página
 const PRODUCTOS_POR_PAGINA = 15;
 
@@ -202,7 +202,7 @@ export default function ProductosPage() {
     const precio = producto.precioVentaSugerido || producto.precio || 0;
     const personalizedMessage = randomContact.message
       .replace('{producto}', producto.nombre)
-      .replace('{precio}', precio.toLocaleString());
+      .replace('{precio}', formatearPrecioWhatsApp(precio));
 
     const cleanPhoneNumber = randomContact.phoneNumber.replace(/\D/g, '');
     const formattedNumber = cleanPhoneNumber.startsWith('52')
@@ -214,7 +214,6 @@ export default function ProductosPage() {
 
     window.open(whatsappUrl, '_blank');
   };
-
   const handleProductoClick = async (producto) => {
     await registrarVista(producto.id);
     const slug = getProductSlug(producto);
@@ -681,8 +680,9 @@ export default function ProductosPage() {
                             <h3 className="productoNombre">{producto.nombre}</h3>
                             <p className="productoDescripcion">
                               {getPreviewDescription(producto.descripcion, 120)}
-                            </p>                            <div className="productoPrecio">
-                              ${parseFloat(producto.precioVentaSugerido || 0).toLocaleString()}
+                            </p>
+                            <div className="productoPrecio">
+                              {formatearPrecio(producto.precioVentaSugerido || 0)}
                             </div>
                             <button
                               className="whatsappBtn"

@@ -6,6 +6,7 @@ import { obtenerProductosDelMes } from '../../../services/productoService';
 import { registrarVista } from '../../../services/trackingService';
 import { getProductSlug } from '../../../utils/slugUtils';
 import styles from './ProductCarousel.module.css';
+import { formatearPrecio, formatearPrecioWhatsApp } from '../../../utils/priceUtils';
 
 export default function ProductCarousel() {
   const [products, setProducts] = useState([]);
@@ -50,15 +51,15 @@ export default function ProductCarousel() {
       console.log('🔄 Cargando productos del mes...');
       const productosDelMes = await obtenerProductosDelMes();
       console.log('📦 Productos del mes recibidos:', productosDelMes);
-    
+
       const productosFormateados = productosDelMes.map(producto => ({
         id: producto.id,
         name: producto.nombre,
-        price: `$${parseFloat(producto.precioVentaSugerido || 0).toLocaleString()}`,
+        price: formatearPrecio(producto.precioVentaSugerido || 0),
         image: obtenerImagenFrente(producto),
         ctaText: "COMPRA AHORA",
         precioNumerico: parseFloat(producto.precioVentaSugerido || 0),
-        productoCompleto: producto // Agregamos el producto completo para poder navegarlo
+        productoCompleto: producto
       }));
       setProducts(productosFormateados);
       console.log('✅ Productos formateados para carrusel:', productosFormateados.length);
@@ -94,35 +95,35 @@ export default function ProductCarousel() {
   };
 
   // Productos de ejemplo como fallback
-  const obtenerProductosEjemplo = () => [
-    {
-      id: 'ejemplo-1',
-      name: "CABEZA DE MOTOR",
-      price: "$3,999",
-      image: null,
-      ctaText: "COMPRA AHORA",
-      precioNumerico: 3999,
-      productoCompleto: { id: 'ejemplo-1', nombre: 'CABEZA DE MOTOR' }
-    },
-    {
-      id: 'ejemplo-2',
-      name: "SISTEMA DE INYECCIÓN",
-      price: "$2,499",
-      image: null,
-      ctaText: "COMPRA AHORA",
-      precioNumerico: 2499,
-      productoCompleto: { id: 'ejemplo-2', nombre: 'SISTEMA DE INYECCIÓN' }
-    },
-    {
-      id: 'ejemplo-3',
-      name: "PISTONES HD",
-      price: "$1,899",
-      image: null,
-      ctaText: "COMPRA AHORA",
-      precioNumerico: 1899,
-      productoCompleto: { id: 'ejemplo-3', nombre: 'PISTONES HD' }
-    }
-  ];
+ const obtenerProductosEjemplo = () => [
+  {
+    id: 'ejemplo-1',
+    name: "CABEZA DE MOTOR",
+    price: formatearPrecio(3999),
+    image: null,
+    ctaText: "COMPRA AHORA",
+    precioNumerico: 3999,
+    productoCompleto: { id: 'ejemplo-1', nombre: 'CABEZA DE MOTOR' }
+  },
+  {
+    id: 'ejemplo-2',
+    name: "SISTEMA DE INYECCIÓN",
+    price: formatearPrecio(2499),
+    image: null,
+    ctaText: "COMPRA AHORA",
+    precioNumerico: 2499,
+    productoCompleto: { id: 'ejemplo-2', nombre: 'SISTEMA DE INYECCIÓN' }
+  },
+  {
+    id: 'ejemplo-3',
+    name: "PISTONES HD",
+    price: formatearPrecio(1899),
+    image: null,
+    ctaText: "COMPRA AHORA",
+    precioNumerico: 1899,
+    productoCompleto: { id: 'ejemplo-3', nombre: 'PISTONES HD' }
+  }
+];
 
   // Función para pasar a la siguiente diapositiva
   const nextSlide = () => {
@@ -149,29 +150,29 @@ export default function ProductCarousel() {
     setCurrentSlide(index);
   };
 
-  const handleWhatsAppClick = (product) => {
-    // Seleccionar contacto aleatorio
-    const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
+ const handleWhatsAppClick = (product) => {
+  // Seleccionar contacto aleatorio
+  const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
 
-    // Crear mensaje personalizado
-    const message = randomContact.message
-      .replace('{producto}', product.name)
-      .replace('{precio}', product.precioNumerico.toLocaleString());
+  // Crear mensaje personalizado
+  const message = randomContact.message
+    .replace('{producto}', product.name)
+    .replace('{precio}', formatearPrecioWhatsApp(product.precioNumerico));
 
-    const encodedMessage = encodeURIComponent(message);
+  const encodedMessage = encodeURIComponent(message);
 
-    // Formatear número de teléfono
-    const cleanPhoneNumber = randomContact.phoneNumber.replace(/\D/g, '');
-    const formattedNumber = cleanPhoneNumber.startsWith('52')
-      ? cleanPhoneNumber
-      : `52${cleanPhoneNumber}`;
+  // Formatear número de teléfono
+  const cleanPhoneNumber = randomContact.phoneNumber.replace(/\D/g, '');
+  const formattedNumber = cleanPhoneNumber.startsWith('52')
+    ? cleanPhoneNumber
+    : `52${cleanPhoneNumber}`;
 
-    // Crear URL de WhatsApp
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodedMessage}`;
+  // Crear URL de WhatsApp
+  const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodedMessage}`;
 
-    // Abrir en nueva ventana/pestaña
-    window.open(whatsappUrl, '_blank');
-  };
+  // Abrir en nueva ventana/pestaña
+  window.open(whatsappUrl, '_blank');
+};
 
   // Nueva función para ir al producto individual
   const handleGoToProduct = async (product) => {
@@ -184,14 +185,14 @@ export default function ProductCarousel() {
     try {
       // Registrar vista del producto
       await registrarVista(product.id);
-      
+
       // Obtener slug del producto
       const slug = getProductSlug(product.productoCompleto);
-      
-      console.log('🔗 Navegando a producto desde carrusel:', { 
-        nombre: product.name, 
+
+      console.log('🔗 Navegando a producto desde carrusel:', {
+        nombre: product.name,
         slug,
-        id: product.id 
+        id: product.id
       });
 
       // Navegar a la página del producto
@@ -276,15 +277,15 @@ export default function ProductCarousel() {
                     />
                   ) : (
                     <div className={styles.imagePlaceholder}>
-                        <div className={styles.noImageIcon}>📷</div>
-                        <p>Imagen no disponible</p>
+                      <div className={styles.noImageIcon}>📷</div>
+                      <p>Imagen no disponible</p>
                     </div>
                   )}
                 </div>
                 <div className={styles.productInfo}>
                   <h2 className={styles.productName}>{product.name}</h2>
                   <p className={styles.productPrice}>{product.price}</p>
-                  
+
                   {/* Contenedor de botones */}
                   <div className={styles.buttonsContainer}>
                     <button
@@ -293,7 +294,7 @@ export default function ProductCarousel() {
                     >
                       {product.ctaText}
                     </button>
-                    
+
                     <button
                       className={styles.viewProductButton}
                       onClick={() => handleGoToProduct(product)}
