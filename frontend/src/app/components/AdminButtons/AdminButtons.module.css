@@ -30,7 +30,6 @@
   box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
 }
 
-/* NUEVO: Botón de eliminar - lado izquierdo */
 .deleteButton {
   position: absolute;
   top: 10px;
@@ -45,6 +44,7 @@
   box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
 }
 
+/* BOTÓN DE AGREGAR - CORREGIDO */
 .addButton {
   position: fixed;
   bottom: 100px;
@@ -55,19 +55,55 @@
   border: 2px solid rgba(245, 158, 11, 0.3);
   font-size: 20px;
   z-index: 999;
+  pointer-events: auto;
+  opacity: 1;
+  filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.3));
+  backdrop-filter: blur(10px);
+  animation: fadeInButton 0.6s ease-out forwards, subtlePulse 3s ease-in-out infinite 0.6s;
 }
 
+/* Efecto hover unificado */
 .addButton:hover {
   background: linear-gradient(135deg, #e59e0b, #c2710c);
-  transform: scale(1.1);
+  transform: translateY(-3px) scale(1.05);
   box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
+  filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.6));
+  animation: none; /* Detener la animación de pulso durante hover */
+}
+
+.addButton:active {
+  transform: translateY(-1px) scale(0.95);
+  transition: transform 0.1s ease;
 }
 
 .adminButton:active {
   transform: scale(0.95);
 }
 
-/* Responsive para el botón de agregar - alineado con ScrollToTop */
+/* Animaciones */
+@keyframes fadeInButton {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes subtlePulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+  }
+  50% {
+    transform: scale(1.02);
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.3);
+  }
+}
+
+/* Responsive para el botón de agregar */
 @media (max-width: 768px) {
   .addButton {
     bottom: 90px;
@@ -88,67 +124,7 @@
   }
 }
 
-/* Animación sutil para llamar la atención */
-.addButton {
-  animation: subtlePulse 3s ease-in-out infinite;
-}
-
-@keyframes subtlePulse {
-  0%, 100% {
-    transform: scale(1);
-    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
-  }
-  50% {
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.3);
-  }
-}
-
-.addButton:hover {
-  animation: none;
-}
-
-/* Evitar interferencia con las cards */
-.addButton {
-  pointer-events: auto;
-}
-
 /* Asegurar que no afecte el layout de las cards */
 .editButton, .deleteButton {
   pointer-events: auto;
-}
-
-/* Efecto de entrada cuando aparece */
-.addButton {
-  opacity: 0;
-  animation: 
-    subtlePulse 3s ease-in-out infinite,
-    fadeInButton 0.6s ease-out forwards;
-}
-
-@keyframes fadeInButton {
-  from {
-    opacity: 0;
-    transform: translateY(20px) scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-/* Estilo similar al ScrollToTop para consistencia visual */
-.addButton {
-  filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.3));
-  backdrop-filter: blur(10px);
-}
-
-.addButton:hover {
-  filter: drop-shadow(0 0 20px rgba(245, 158, 11, 0.6));
-  transform: translateY(-3px) scale(1.05);
-}
-
-.addButton:active {
-  transform: translateY(-1px) scale(0.95);
-  transition: transform 0.1s ease;
 }
