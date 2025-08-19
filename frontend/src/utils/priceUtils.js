@@ -1,77 +1,74 @@
-// Tipo de cambio USD a MXN (puedes actualizar este valor periódicamente)
-const TIPO_CAMBIO_USD_MXN = 18.50; // Aproximadamente 18.50 pesos por dólar
+// utils/priceUtils.js
 
 /**
- * Convierte un precio de USD a MXN
- * @param {number} precioUSD - Precio en dólares estadounidenses
- * @returns {number} - Precio convertido a pesos mexicanos
+ * Formatea un precio en pesos mexicanos con coma como separador de miles
+ * @param {number|string} precio - El precio a formatear
+ * @param {boolean} incluirSimbolo - Si incluir el símbolo $ (default: true)
+ * @param {boolean} mostrarCentavos - Si mostrar centavos (default: false)
+ * @returns {string} Precio formateado
  */
-export const convertirUSDaMXN = (precioUSD) => {
-  if (!precioUSD || precioUSD <= 0) return 0;
-  return precioUSD * TIPO_CAMBIO_USD_MXN;
-};
-
-/**
- * Formatea un precio en pesos mexicanos para mostrar en la interfaz
- * @param {number} precioUSD - Precio base en USD que se convertirá a MXN
- * @returns {string} - Precio formateado como "$ X,XXX MXN"
- */
-export const formatearPrecio = (precioUSD) => {
-  if (!precioUSD || precioUSD <= 0) {
-    return "$ 0 MXN";
+export const formatearPrecio = (precio, incluirSimbolo = true, mostrarCentavos = false) => {
+  // Convertir a número si es string
+  const precioNumerico = typeof precio === 'string' ? parseFloat(precio) : precio;
+  
+  // Validar que sea un número válido
+  if (isNaN(precioNumerico) || precioNumerico < 0) {
+    return incluirSimbolo ? '$0' : '0';
   }
+
+  // Configurar opciones de formateo para pesos mexicanos
+  const opciones = {
+    style: 'decimal',
+    minimumFractionDigits: mostrarCentavos ? 2 : 0,
+    maximumFractionDigits: mostrarCentavos ? 2 : 0,
+    useGrouping: true
+  };
+
+  // Formatear con locale mexicano (coma como separador de miles)
+  const numeroFormateado = precioNumerico.toLocaleString('es-MX', opciones);
   
-  // Convertir de USD a MXN
-  const precioMXN = convertirUSDaMXN(precioUSD);
-  
-  // Formatear con separadores de miles y sin decimales
-  const numeroFormateado = Math.round(precioMXN).toLocaleString('es-MX');
-  
-  return `$ ${numeroFormateado} MXN`;
+  return incluirSimbolo ? `$${numeroFormateado}` : numeroFormateado;
 };
 
 /**
- * Formatea un precio en pesos mexicanos para mensajes de WhatsApp
- * @param {number} precioUSD - Precio base en USD que se convertirá a MXN
- * @returns {string} - Precio formateado como "X,XXX pesos mexicanos"
+ * Formatea precio específicamente para mensajes de WhatsApp
+ * @param {number|string} precio - El precio a formatear
+ * @returns {string} Precio formateado para WhatsApp
  */
-export const formatearPrecioWhatsApp = (precioUSD) => {
-  if (!precioUSD || precioUSD <= 0) {
-    return "precio a consultar";
+export const formatearPrecioWhatsApp = (precio) => {
+  return formatearPrecio(precio, false, false);
+};
+
+/**
+ * Formatea precio específicamente para SEO y metadata
+ * @param {number|string} precio - El precio a formatear
+ * @param {string} moneda - Código de moneda (default: 'MXN')
+ * @returns {string} Precio formateado para SEO
+ */
+export const formatearPrecioSEO = (precio, moneda = 'MXN') => {
+  const precioNumerico = typeof precio === 'string' ? parseFloat(precio) : precio;
+  
+  if (isNaN(precioNumerico) || precioNumerico < 0) {
+    return '0.00 MXN';
   }
+
+  // Formatear con 2 decimales para SEO
+  const numeroFormateado = precioNumerico.toLocaleString('es-MX', {
+    style: 'decimal',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+    useGrouping: true
+  });
   
-  // Convertir de USD a MXN
-  const precioMXN = convertirUSDaMXN(precioUSD);
-  
-  // Formatear con separadores de miles y sin decimales
-  const numeroFormateado = Math.round(precioMXN).toLocaleString('es-MX');
-  
-  return `${numeroFormateado} pesos mexicanos`;
+  return `${numeroFormateado} ${moneda}`;
 };
 
 /**
- * Obtiene el tipo de cambio actual (para futuras implementaciones con API)
- * @returns {number} - Tipo de cambio USD a MXN
+ * Obtiene el precio como número limpio para cálculos
+ * @param {number|string} precio - El precio a limpiar
+ * @returns {number} Precio como número
  */
-export const obtenerTipoCambio = () => {
-  return TIPO_CAMBIO_USD_MXN;
-};
-
-/**
- * Actualiza el tipo de cambio (para futuras implementaciones)
- * @param {number} nuevoTipoCambio - Nuevo tipo de cambio USD a MXN
- */
-export const actualizarTipoCambio = (nuevoTipoCambio) => {
-  // En el futuro esto podría actualizar una variable global o localStorage
-  console.log(`Tipo de cambio actualizado a: ${nuevoTipoCambio}`);
-};
-
-/**
- * Formatea solo el número sin símbolo de moneda (útil para cálculos)
- * @param {number} precioUSD - Precio base en USD
- * @returns {number} - Precio en MXN sin formato
- */
-export const obtenerPrecioMXN = (precioUSD) => {
-  if (!precioUSD || precioUSD <= 0) return 0;
-  return Math.round(convertirUSDaMXN(precioUSD));
+export const obtenerPrecioNumerico = (precio) => {
+  const precioNumerico = typeof precio === 'string' ? parseFloat(precio) : precio;
+  return isNaN(precioNumerico) ? 0 : precioNumerico;
 };
