@@ -7,7 +7,10 @@ const normalizarTexto = (texto) => {
   return texto
     .normalize("NFD") 
     .replace(/[\u0300-\u036f]/g, "") 
-    .toLowerCase();
+    .toLowerCase()
+    .replace(/[^\w\s]/g, ' ') // Reemplazar caracteres especiales por espacios
+    .replace(/\s+/g, ' ') // Múltiples espacios a uno solo
+    .trim();
 };
 
 exports.getAllProductos = async (req, res) => {
@@ -119,11 +122,11 @@ exports.getProductoByNombre = async (req, res) => {
   const { nombre } = req.params;
 
   try {
-    console.log(`Buscando producto por nombre: "${nombre}"`);
+    console.log(`🔍 Buscando producto por nombre: "${nombre}"`);
     
     // Normalizar el nombre buscado para comparación
     const nombreNormalizado = normalizarTexto(nombre);
-    console.log(`Nombre normalizado: "${nombreNormalizado}"`);
+    console.log(`📝 Nombre normalizado: "${nombreNormalizado}"`);
 
     // Obtener todos los productos
     const snapshot = await db.ref("/").once("value");
@@ -133,46 +136,93 @@ exports.getProductoByNombre = async (req, res) => {
       return res.status(404).json({ error: "No hay productos en la base de datos" });
     }
 
-    // MEJORADO: Buscar con múltiples estrategias
+    // Crear variantes del nombre buscado para búsqueda flexible
+    const variantes = [
+      nombreNormalizado,                                    // Original normalizado
+      nombreNormalizado.replace(/\s+/g, ''),               // Sin espacios
+      nombreNormalizado.replace(/([a-z])(\d)/g, '$1 $2'),  // Separar letras de números
+      nombreNormalizado.replace(/(\d)([a-z])/g, '$1 $2'),  // Separar números de letras
+      nombreNormalizado.replace(/\s*\/\s*/g, '/'),         // Normalizar barras
+      nombreNormalizado.replace(/\s*\/\s*/g, ' / '),       // Barras con espacios
+      nombreNormalizado.replace(/\//g, ' '),               // Barras por espacios
+    ];
+
+    // Eliminar duplicados y variantes vacías
+    const variantesUnicas = [...new Set(variantes)].filter(v => v.length > 0);
+    
+    console.log(`🔄 Variantes generadas: [${variantesUnicas.map(v => `"${v}"`).join(', ')}]`);
+
     let productoEncontrado = null;
     let idProducto = null;
+    let tipoCoincidencia = '';
 
-    // 1. Búsqueda exacta del nombre normalizado
-    for (const [id, producto] of Object.entries(data)) {
-      if (producto?.nombre) {
-        const nombreProductoNormalizado = normalizarTexto(producto.nombre);
-        
-        if (nombreProductoNormalizado === nombreNormalizado) {
-          productoEncontrado = producto;
-          idProducto = id;
-          console.log(`Coincidencia exacta: "${producto.nombre}" con ID: ${id}`);
-          break;
-        }
-      }
-    }
-
-    // 2. Si no hay coincidencia exacta, buscar coincidencia parcial
-    if (!productoEncontrado) {
-      console.log(`No se encontró coincidencia exacta, buscando coincidencia parcial...`);
-      
+    // ESTRATEGIA 1: Búsqueda exacta con cada variante
+    for (const variante of variantesUnicas) {
       for (const [id, producto] of Object.entries(data)) {
         if (producto?.nombre) {
           const nombreProductoNormalizado = normalizarTexto(producto.nombre);
           
-          // Coincidencia parcial
-          if (nombreProductoNormalizado.includes(nombreNormalizado)) {
+          if (nombreProductoNormalizado === variante) {
             productoEncontrado = producto;
             idProducto = id;
-            console.log(`Coincidencia parcial: "${producto.nombre}" con ID: ${id}`);
+            tipoCoincidencia = 'exacta';
+            console.log(`✅ Coincidencia exacta: "${producto.nombre}" con variante "${variante}"`);
             break;
           }
         }
       }
+      if (productoEncontrado) break;
     }
 
-    // 3. NUEVO: Si no hay coincidencia, buscar por palabras clave
+    // ESTRATEGIA 2: Búsqueda flexible sin espacios
     if (!productoEncontrado) {
-      console.log(`ℹBuscando por palabras clave individuales...`);
+      console.log(`🔄 Estrategia 2: Búsqueda sin espacios`);
+      
+      for (const variante of variantesUnicas) {
+        const varianteSinEspacios = variante.replace(/\s+/g, '');
+        
+        for (const [id, producto] of Object.entries(data)) {
+          if (producto?.nombre) {
+            const nombreProductoSinEspacios = normalizarTexto(producto.nombre).replace(/\s+/g, '');
+            
+            if (nombreProductoSinEspacios === varianteSinEspacios) {
+              productoEncontrado = producto;
+              idProducto = id;
+              tipoCoincidencia = 'flexible sin espacios';
+              console.log(`✅ Coincidencia flexible: "${producto.nombre}" con variante "${variante}"`);
+              break;
+            }
+          }
+        }
+        if (productoEncontrado) break;
+      }
+    }
+
+    // ESTRATEGIA 3: Búsqueda parcial (contiene)
+    if (!productoEncontrado) {
+      console.log(`🔄 Estrategia 3: Búsqueda parcial`);
+      
+      for (const variante of variantesUnicas) {
+        for (const [id, producto] of Object.entries(data)) {
+          if (producto?.nombre) {
+            const nombreProductoNormalizado = normalizarTexto(producto.nombre);
+            
+            if (nombreProductoNormalizado.includes(variante) || variante.includes(nombreProductoNormalizado)) {
+              productoEncontrado = producto;
+              idProducto = id;
+              tipoCoincidencia = 'parcial';
+              console.log(`✅ Coincidencia parcial: "${producto.nombre}" con variante "${variante}"`);
+              break;
+            }
+          }
+        }
+        if (productoEncontrado) break;
+      }
+    }
+
+    // ESTRATEGIA 4: Búsqueda por palabras clave (última opción)
+    if (!productoEncontrado) {
+      console.log(`🔄 Estrategia 4: Búsqueda por palabras clave`);
       
       const palabrasClave = nombreNormalizado.split(' ').filter(p => p.length > 2);
       let mejorCoincidencia = null;
@@ -190,7 +240,8 @@ exports.getProductoByNombre = async (req, res) => {
             }
           });
           
-          if (puntaje > mejorPuntaje) {
+          // Requerir al menos 60% de coincidencia
+          if (puntaje > mejorPuntaje && puntaje >= Math.ceil(palabrasClave.length * 0.6)) {
             mejorPuntaje = puntaje;
             mejorCoincidencia = { id, producto };
           }
@@ -200,13 +251,18 @@ exports.getProductoByNombre = async (req, res) => {
       if (mejorCoincidencia && mejorPuntaje > 0) {
         productoEncontrado = mejorCoincidencia.producto;
         idProducto = mejorCoincidencia.id;
-        console.log(`Coincidencia por palabras clave: "${productoEncontrado.nombre}" con puntaje ${mejorPuntaje}`);
+        tipoCoincidencia = `palabras clave (${mejorPuntaje}/${palabrasClave.length})`;
+        console.log(`✅ Coincidencia por palabras clave: "${productoEncontrado.nombre}" con puntaje ${mejorPuntaje}/${palabrasClave.length}`);
       }
     }
 
     if (!productoEncontrado) {
-      console.log(`Producto no encontrado para: "${nombre}"`);
-      return res.status(404).json({ error: "Producto no encontrado" });
+      console.log(`❌ Producto no encontrado para: "${nombre}"`);
+      return res.status(404).json({ 
+        error: "Producto no encontrado",
+        busqueda: nombre,
+        variantesProbadas: variantesUnicas
+      });
     }
 
     // SEO híbrido optimizado (usando el ID encontrado)
@@ -234,26 +290,32 @@ exports.getProductoByNombre = async (req, res) => {
     for (const pid of idsRecomendados.slice(0, 6)) {
       try {
         const recSnapshot = await db.ref(`/${pid}`).once("value");
-        if (recSnapshot.exists()) {
-          recomendados.push({ id: pid, ...recSnapshot.val() });
+        const recProducto = recSnapshot.val();
+        if (recProducto?.nombre) {
+          recomendados.push({ id: pid, ...recProducto });
         }
       } catch (error) {
-        console.warn(`Error obteniendo recomendado ${pid}:`, error.message);
+        console.error(`Error obteniendo recomendación ${pid}:`, error.message);
       }
     }
 
-    console.log(`Respuesta completa preparada para: "${productoEncontrado.nombre}"`);
+    console.log(`✅ Producto encontrado: "${productoEncontrado.nombre}" (ID: ${idProducto}) - ${tipoCoincidencia}`);
 
     res.json({
-      producto: { 
-        id: idProducto, 
+      producto: {
+        id: idProducto,
         ...productoEncontrado,
-        seo: datosSEO //  SEO híbrido incluido
+        seo: datosSEO
       },
-      recomendados
+      recomendados,
+      debug: {
+        busquedaOriginal: nombre,
+        tipoCoincidencia: tipoCoincidencia,
+        variantesGeneradas: variantesUnicas.length
+      }
     });
   } catch (error) {
-    console.error("Error obteniendo producto por nombre:", error.message);
+    console.error("Error obteniendo producto:", error.message);
     res.status(500).json({ error: "Error obteniendo producto", detalles: error.message });
   }
 };

@@ -6,7 +6,6 @@ const CACHE_DURATION = 30 * 60 * 1000; // 30 minutos
 
 // ✅ BASE DE DATOS ESPECÍFICA basada en tus documentos
 const PRODUCTOS_ESPECIFICOS = {
-  // TURBOS - Basados en "Descripciones Turbos (Terminado).docx"
   "4037050": {
     tipo: "TURBO",
     titulo: "Turbo PX8 para Motor Cummins | Número de Parte 4037050",
@@ -383,12 +382,14 @@ const generarSlug = (texto) => {
   return texto
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[^a-z0-9\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-")
+    .replace(/[\u0300-\u036f]/g, "") // Remover acentos
+    .replace(/[^\w\s-]/g, ' ') // Reemplazar caracteres especiales por espacios (excepto guiones)
+    .replace(/\s+/g, "-") // Espacios múltiples a un solo guión
+    .replace(/-+/g, "-") // Múltiples guiones a uno solo
+    .replace(/^-|-$/g, '') // Remover guiones al inicio/final
     .trim();
 };
+
 
 // Limpiar caché periódicamente
 setInterval(() => {

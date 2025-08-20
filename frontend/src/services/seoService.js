@@ -136,7 +136,8 @@ export const obtenerSEOProducto = async (id) => {
 
 export const obtenerSchemaProducto = async (id) => {
   try {
-    const response = await fetch(`${API_URL}/seo/producto/${id}/schema`, {
+    // CORREGIDO: La ruta correcta es /api/seo/schema/{id}
+    const response = await fetch(`${API_URL}/seo/schema/${id}`, {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
@@ -154,7 +155,6 @@ export const obtenerSchemaProducto = async (id) => {
     return null;
   }
 };
-
 /**
  * CORREGIDO: Generar SEO para todos los productos
  * Ruta corregida: POST /api/seo/generar-productos
