@@ -5,15 +5,16 @@
  * @param {number|string} precio - El precio a formatear
  * @param {boolean} incluirSimbolo - Si incluir el símbolo $ (default: true)
  * @param {boolean} mostrarCentavos - Si mostrar centavos (default: false)
+ * @param {boolean} mostrarMoneda - Si mostrar MXN al final (default: true)
  * @returns {string} Precio formateado
  */
-export const formatearPrecio = (precio, incluirSimbolo = true, mostrarCentavos = false) => {
+export const formatearPrecio = (precio, incluirSimbolo = true, mostrarCentavos = false, mostrarMoneda = true) => {
   // Convertir a número si es string
   const precioNumerico = typeof precio === 'string' ? parseFloat(precio) : precio;
   
   // Validar que sea un número válido
   if (isNaN(precioNumerico) || precioNumerico < 0) {
-    return incluirSimbolo ? '$0' : '0';
+    return incluirSimbolo ? (mostrarMoneda ? '$0 MXN' : '$0') : '0';
   }
 
   // Configurar opciones de formateo para pesos mexicanos
@@ -27,16 +28,20 @@ export const formatearPrecio = (precio, incluirSimbolo = true, mostrarCentavos =
   // Formatear con locale mexicano (coma como separador de miles)
   const numeroFormateado = precioNumerico.toLocaleString('es-MX', opciones);
   
-  return incluirSimbolo ? `$${numeroFormateado}` : numeroFormateado;
+  if (incluirSimbolo) {
+    return mostrarMoneda ? `$${numeroFormateado} MXN` : `$${numeroFormateado}`;
+  } else {
+    return mostrarMoneda ? `${numeroFormateado} MXN` : numeroFormateado;
+  }
 };
 
 /**
- * Formatea precio específicamente para mensajes de WhatsApp
+ * Formatea precio específicamente para mensajes de WhatsApp (sin MXN para mantener compatibilidad)
  * @param {number|string} precio - El precio a formatear
  * @returns {string} Precio formateado para WhatsApp
  */
 export const formatearPrecioWhatsApp = (precio) => {
-  return formatearPrecio(precio, false, false);
+  return formatearPrecio(precio, false, false, false);
 };
 
 /**
