@@ -1,7 +1,6 @@
 // utils/metadataUtils.js
 import { SEO_DEFAULTS } from '../services/seoService';
 import { formatearPrecioSEO } from './priceUtils';
-
 /**
  * Genera metadata server-side para Next.js App Router
  * REFORZADO: Prioridad explícita al frontend sobre backend
@@ -88,12 +87,12 @@ export const verificarMetaTags = (pageKey) => {
   const metadata = generatePageMetadata(pageKey);
   
   console.log(`🔍 Verificando meta tags para: ${pageKey}`);
-  console.log(`📄 Title: ${metadata.title}`);
+  console.log(`📝 Title: ${metadata.title}`);
   console.log(`📄 Description: ${metadata.description}`);
   console.log(`🏷️ Source: frontend-seoService`);
   
   // Verificar que no hay caracteres extraños
-  const hasEncodingIssues = /[ÃƒÃ‚]/.test(metadata.description);
+  const hasEncodingIssues = /[ÃÂ]/.test(metadata.description);
   if (hasEncodingIssues) {
     console.warn(`⚠️ Posibles problemas de encoding en ${pageKey}`);
   }
@@ -102,7 +101,7 @@ export const verificarMetaTags = (pageKey) => {
 };
 
 /**
- * CORREGIDO: Función existente para productos - AHORA FUERZA MXN
+ * MANTENER: Función existente para productos
  */
 export const generateProductMetadata = (producto, productId) => {
   const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_URL || 'https://tractodo.com';
@@ -111,9 +110,9 @@ export const generateProductMetadata = (producto, productId) => {
     ? `${producto.nombre} | ${producto.numeroParte || ''} | Tractodo`
     : 'Producto | Tractodo';
     
-  // CORREGIDO: Incluir precio en MXN en la descripción si está disponible
+  // Incluir precio en la descripción si está disponible
   const precioInfo = producto.precioVentaSugerido 
-    ? ` Precio: ${formatearPrecioSEO(producto.precioVentaSugerido, 'MXN')}.`
+    ? ` Precio: ${formatearPrecioSEO(producto.precioVentaSugerido)}.`
     : '';
     
   const description = producto.descripcion 
@@ -145,8 +144,7 @@ export const generateProductMetadata = (producto, productId) => {
         },
       ],
       type: 'product',
-      // CORREGIDO: Usar formateo MXN explícito
-      productPrice: producto.precioVentaSugerido ? formatearPrecioSEO(producto.precioVentaSugerido, 'MXN') : undefined,
+      productPrice: producto.precioVentaSugerido ? formatearPrecioSEO(producto.precioVentaSugerido) : undefined,
     },
     
     alternates: {
