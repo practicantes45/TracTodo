@@ -361,6 +361,11 @@ const detectarModelo = (texto) => {
 const generarSchemaProducto = (producto, id, seoEspecifico = null) => {
   const marca = seoEspecifico?.marca || detectarMarca(`${producto.nombre || ''} ${producto.descripcion || ''}`) || "Tractodo";
   
+  // ✅ CORRECCIÓN: Usar precioVentaSugerido (campo correcto) en lugar de precio
+  const precioFinal = (producto.precioVentaSugerido || producto.precio || 0).toString();
+  
+  console.log(`💰 Generando Schema.org para ${producto.nombre}: MXN ${precioFinal}`);
+  
   return {
     "@context": "https://schema.org/",
     "@type": "Product",
@@ -370,9 +375,19 @@ const generarSchemaProducto = (producto, id, seoEspecifico = null) => {
     "brand": { "@type": "Brand", "name": marca },
     "offers": {
       "@type": "Offer",
-      "price": producto.precio || "0",
-      "priceCurrency": "MXN",
+      "price": precioFinal,
+      "priceCurrency": "MXN", // ✅ Esto está correcto
       "availability": "https://schema.org/InStock"
+    },
+    // ✅ REFORZAR ubicación en México
+    "seller": {
+      "@type": "Organization", 
+      "name": "Tractodo",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "MX",
+        "addressRegion": "Querétaro"
+      }
     }
   };
 };
