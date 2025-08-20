@@ -24,11 +24,11 @@ export default function ProductoIndividualPage({ params }) {
     const [error, setError] = useState('');
     const [copied, setCopied] = useState(false);
 
-    // Estados para el carrusel de imÃ¡genes del producto principal
+    // Estados para el carrusel de imágenes del producto principal
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [imagenesProducto, setImagenesProducto] = useState([]);
 
-    // Estados para zoom, rotaciÃ³n y pan del carrusel principal
+    // Estados para zoom, rotación y pan del carrusel principal
     const [carouselZoom, setCarouselZoom] = useState(100);
     const [carouselRotation, setCarouselRotation] = useState(0);
     const [carouselPanX, setCarouselPanX] = useState(0);
@@ -37,7 +37,7 @@ export default function ProductoIndividualPage({ params }) {
     const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
     const carouselImageRef = useRef(null);
 
-    // Estados para el modal de imÃ¡genes
+    // Estados para el modal de imágenes
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [modalImageIndex, setModalImageIndex] = useState(0);
 
@@ -53,26 +53,26 @@ export default function ProductoIndividualPage({ params }) {
         {
             name: "Alan",
             phoneNumber: "+524272245923",
-            message: "Hola Alan, estoy interesado en {producto} con precio de ${precio}. Â¿PodrÃ­a proporcionarme mÃ¡s informaciÃ³n?"
+            message: "Hola Alan, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
         },
         {
             name: "Laura",
             phoneNumber: "+524272033515",
-            message: "Hola Laura, estoy interesado en {producto} con precio de ${precio}. Â¿PodrÃ­a proporcionarme mÃ¡s informaciÃ³n?"
+            message: "Hola Laura, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
         },
         {
             name: "Oscar",
             phoneNumber: "+524272032672",
-            message: "Hola Oscar, estoy interesado en {producto} con precio de ${precio}. Â¿PodrÃ­a proporcionarme mÃ¡s informaciÃ³n?"
+            message: "Hola Oscar, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
         },
         {
             name: "Hugo",
             phoneNumber: "+524424128926",
-            message: "Hola Hugo, estoy interesado en {producto} con precio de ${precio}. Â¿PodrÃ­a proporcionarme mÃ¡s informaciÃ³n?"
+            message: "Hola Hugo, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
         }
     ];
 
-    // Detectar tamaÃ±o de pantalla para items per slide
+    // Detectar tamaño de pantalla para items per slide
     useEffect(() => {
         const handleResize = () => {
             if (window.innerWidth <= 768) {
@@ -99,7 +99,7 @@ export default function ProductoIndividualPage({ params }) {
         }
     }, [params?.nombre]);
 
-    // Resetear zoom, rotaciÃ³n y pan cuando cambia la imagen
+    // Resetear zoom, rotación y pan cuando cambia la imagen
     useEffect(() => {
         setCarouselZoom(100);
         setCarouselRotation(0);
@@ -110,17 +110,17 @@ export default function ProductoIndividualPage({ params }) {
     const cargarProducto = async () => {
         try {
             setLoading(true);
-            console.log('ðŸ”„ Cargando producto por slug:', params.nombre);
+            console.log('🔄 Cargando producto por slug:', params.nombre);
 
-            // Convertir el slug de vuelta a formato de bÃºsqueda
+            // Convertir el slug de vuelta a formato de búsqueda
             const nombreParaBusqueda = params.nombre
                 .replace(/-/g, ' ') // Reemplazar guiones con espacios
                 .toLowerCase();
 
-            console.log('ðŸ” Buscando producto con nombre:', nombreParaBusqueda);
+            console.log('🔍 Buscando producto con nombre:', nombreParaBusqueda);
 
             const data = await obtenerProductoPorNombre(nombreParaBusqueda);
-            console.log('ðŸ“¦ Datos del producto:', data);
+            console.log('📦 Datos del producto:', data);
 
             setProducto(data.producto);
             setProductosRelacionados(data.recomendados || []);
@@ -129,18 +129,18 @@ export default function ProductoIndividualPage({ params }) {
             setImagenesProducto(imagenes);
             setCurrentImageIndex(0);
 
-            console.log('ðŸ–¼ï¸ ImÃ¡genes procesadas:', imagenes);
-            console.log('ðŸ”— Productos relacionados encontrados:', data.recomendados?.length || 0);
+            console.log('🖼️ Imágenes procesadas:', imagenes);
+            console.log('🔗 Productos relacionados encontrados:', data.recomendados?.length || 0);
 
             // Registrar vista usando el ID del producto
             try {
                 await registrarVista(data.producto.id, 'producto');
-                console.log('ðŸ‘€ Vista registrada para producto:', data.producto.id);
+                console.log('👀 Vista registrada para producto:', data.producto.id);
             } catch (vistaError) {
-                console.warn('âš ï¸ Error registrando vista:', vistaError);
+                console.warn('⚠️ Error registrando vista:', vistaError);
             }
         } catch (error) {
-            console.error("âŒ Error al cargar producto:", error);
+            console.error("❌ Error al cargar producto:", error);
             setError('No se pudo cargar el producto');
         } finally {
             setLoading(false);
@@ -152,69 +152,69 @@ export default function ProductoIndividualPage({ params }) {
 
         // 1. PRIORIDAD: Agregar imagen "frente" primero si existe
         if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object' && producto.imagenesUrl.frente) {
-            console.log('ðŸ–¼ï¸ Agregando imagen frente como primera:', producto.imagenesUrl.frente);
+            console.log('🖼️ Agregando imagen frente como primera:', producto.imagenesUrl.frente);
             imagenes.push(producto.imagenesUrl.frente);
         }
 
-        // 2. Agregar el resto de imÃ¡genes de imagenesUrl (excluyendo "frente" que ya se agregÃ³)
+        // 2. Agregar el resto de imágenes de imagenesUrl (excluyendo "frente" que ya se agregó)
         if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object') {
             const otrasImagenes = Object.entries(producto.imagenesUrl)
                 .filter(([key, url]) => key !== 'frente' && url && url.trim() !== '')
                 .map(([key, url]) => url);
 
             imagenes.push(...otrasImagenes);
-            console.log('ðŸ–¼ï¸ Agregando otras imÃ¡genes:', otrasImagenes);
+            console.log('🖼️ Agregando otras imágenes:', otrasImagenes);
         }
 
-        // 3. FALLBACK: Agregar imagenUrl si no estÃ¡ ya incluida
+        // 3. FALLBACK: Agregar imagenUrl si no está ya incluida
         if (producto.imagenUrl && !imagenes.includes(producto.imagenUrl)) {
-            console.log('ðŸ–¼ï¸ Agregando imagenUrl como fallback:', producto.imagenUrl);
+            console.log('🖼️ Agregando imagenUrl como fallback:', producto.imagenUrl);
             imagenes.push(producto.imagenUrl);
         }
 
-        // 4. FALLBACK: Agregar imagen legacy si no estÃ¡ ya incluida
+        // 4. FALLBACK: Agregar imagen legacy si no está ya incluida
         if (producto.imagen && !imagenes.includes(producto.imagen)) {
-            console.log('ðŸ–¼ï¸ Agregando imagen legacy como fallback:', producto.imagen);
+            console.log('🖼️ Agregando imagen legacy como fallback:', producto.imagen);
             imagenes.push(producto.imagen);
         }
 
-        console.log('ðŸ–¼ï¸ Total de imÃ¡genes procesadas:', imagenes.length);
+        console.log('🖼️ Total de imágenes procesadas:', imagenes.length);
         return imagenes;
     };
 
     const obtenerPrimeraImagen = (producto) => {
         // 1. PRIORIDAD: Buscar imagen "frente" en imagenesUrl
         if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object' && producto.imagenesUrl.frente) {
-            console.log('ðŸ–¼ï¸ Usando imagen frente para producto relacionado:', producto.imagenesUrl.frente);
+            console.log('🖼️ Usando imagen frente para producto relacionado:', producto.imagenesUrl.frente);
             return producto.imagenesUrl.frente;
         }
 
         // 2. FALLBACK: Si tiene imagenUrl directa, usarla
         if (producto.imagenUrl) {
-            console.log('ðŸ–¼ï¸ Usando imagenUrl para producto relacionado:', producto.imagenUrl);
+            console.log('🖼️ Usando imagenUrl para producto relacionado:', producto.imagenUrl);
             return producto.imagenUrl;
         }
 
-        // 3. FALLBACK: Si tiene imagenesUrl (objeto con mÃºltiples imÃ¡genes), usar la primera disponible
+        // 3. FALLBACK: Si tiene imagenesUrl (objeto con múltiples imágenes), usar la primera disponible
         if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object') {
             const imagenes = Object.values(producto.imagenesUrl).filter(img => img && img.trim() !== '');
             if (imagenes.length > 0) {
-                console.log('ðŸ–¼ï¸ Usando primera imagen disponible para producto relacionado:', imagenes[0]);
+                console.log('🖼️ Usando primera imagen disponible para producto relacionado:', imagenes[0]);
                 return imagenes[0];
             }
         }
 
         // 4. FALLBACK: Si tiene imagen antigua (string directo)
         if (producto.imagen) {
-            console.log('ðŸ–¼ï¸ Usando imagen legacy para producto relacionado:', producto.imagen);
+            console.log('🖼️ Usando imagen legacy para producto relacionado:', producto.imagen);
             return producto.imagen;
         }
 
-        console.log('ðŸš« No se encontrÃ³ imagen para el producto relacionado:', producto.nombre);
+        console.log('🚫 No se encontró imagen para el producto relacionado:', producto.nombre);
         return null;
     };
 
-    // Funciones de zoom y rotaciÃ³n para el carrusel
+    // Funciones de zoom y rotación para el carrusel
     const handleCarouselZoomIn = () => {
         setCarouselZoom(prev => Math.min(prev + 25, 200));
     };
@@ -271,7 +271,7 @@ export default function ProductoIndividualPage({ params }) {
         setIsDragging(false);
     };
 
-    // Touch events para mÃ³vil
+    // Touch events para móvil
     const handleCarouselTouchStart = (e) => {
         if (carouselZoom > 100) {
             const touch = e.touches[0];
@@ -386,22 +386,22 @@ export default function ProductoIndividualPage({ params }) {
         }
     };
 
-    // MODIFICADO: FunciÃ³n mejorada para regresar preservando bÃºsqueda
+    // MODIFICADO: Función mejorada para regresar preservando búsqueda
     const handleBackClick = () => {
-        // Obtener parÃ¡metros de bÃºsqueda actuales (si los hay)
+        // Obtener parámetros de búsqueda actuales (si los hay)
         const busqueda = searchParams.get('busqueda');
         const marca = searchParams.get('marca');
-
-        // Si hay parÃ¡metros de bÃºsqueda, preservarlos
+        
+        // Si hay parámetros de búsqueda, preservarlos
         if (busqueda || marca) {
             const params = new URLSearchParams();
             if (busqueda) params.set('busqueda', busqueda);
             if (marca) params.set('marca', marca);
-
+            
             router.push(`/productos?${params.toString()}`);
         } else {
-            // Si no hay parÃ¡metros, usar router.back() como primera opciÃ³n
-            // para preservar el estado exacto de la pÃ¡gina anterior
+            // Si no hay parámetros, usar router.back() como primera opción
+            // para preservar el estado exacto de la página anterior
             if (window.history.length > 1) {
                 router.back();
             } else {
@@ -413,17 +413,17 @@ export default function ProductoIndividualPage({ params }) {
 
     const handleRelatedProductClick = (relatedProduct) => {
         const slug = getProductSlug(relatedProduct);
-        console.log('ðŸ”— Navegando a producto relacionado:', { nombre: relatedProduct.nombre, slug });
-
-        // Preservar parÃ¡metros de bÃºsqueda al navegar a productos relacionados
+        console.log('🔗 Navegando a producto relacionado:', { nombre: relatedProduct.nombre, slug });
+        
+        // Preservar parámetros de búsqueda al navegar a productos relacionados
         const busqueda = searchParams.get('busqueda');
         const marca = searchParams.get('marca');
-
+        
         if (busqueda || marca) {
             const params = new URLSearchParams();
             if (busqueda) params.set('busqueda', busqueda);
             if (marca) params.set('marca', marca);
-
+            
             router.push(`/productos/${slug}?${params.toString()}`);
         } else {
             router.push(`/productos/${slug}`);
@@ -457,7 +457,7 @@ export default function ProductoIndividualPage({ params }) {
         {
             id: 'ejemplo-1',
             nombre: 'Producto Relacionado 1',
-            descripcion: 'DescripciÃ³n del producto relacionado de ejemplo para mostrar el carrusel',
+            descripcion: 'Descripción del producto relacionado de ejemplo para mostrar el carrusel',
             precioVentaSugerido: 15000,
             imagenUrl: null
         },
@@ -471,14 +471,14 @@ export default function ProductoIndividualPage({ params }) {
         {
             id: 'ejemplo-3',
             nombre: 'Producto Relacionado 3',
-            descripcion: 'Tercer producto de ejemplo para completar el carrusel de demostraciÃ³n',
+            descripcion: 'Tercer producto de ejemplo para completar el carrusel de demostración',
             precioVentaSugerido: 25000,
             imagenUrl: null
         },
         {
             id: 'ejemplo-4',
             nombre: 'Producto Relacionado 4',
-            descripcion: 'Cuarto producto de ejemplo para mostrar navegaciÃ³n',
+            descripcion: 'Cuarto producto de ejemplo para mostrar navegación',
             precioVentaSugerido: 30000,
             imagenUrl: null
         },
@@ -547,7 +547,7 @@ export default function ProductoIndividualPage({ params }) {
                 {/* SEO Head para error */}
                 <SEOHead
                     title="Producto no encontrado | TRACTODO"
-                    description="El producto que buscas no estÃ¡ disponible"
+                    description="El producto que buscas no está disponible"
                     canonicalUrl={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/productos/${params?.nombre}`}
                     noIndex={true}
                 />
@@ -636,7 +636,7 @@ export default function ProductoIndividualPage({ params }) {
                                             className="imageNotFound"
                                             style={{ display: imagenesProducto.length > 0 ? 'none' : 'flex' }}
                                         >
-                                            <div className="noImageIcon">ðŸ“·</div>
+                                            <div className="noImageIcon">📷</div>
                                             <p>Imagen no detectada</p>
                                         </div>
 
@@ -663,7 +663,7 @@ export default function ProductoIndividualPage({ params }) {
                                             </>
                                         )}
 
-                                        {/* Controles de zoom y rotaciÃ³n */}
+                                        {/* Controles de zoom y rotación */}
                                         {imagenesProducto.length > 0 && (
                                             <div className="imageControls">
                                                 <button
@@ -704,7 +704,7 @@ export default function ProductoIndividualPage({ params }) {
                                                     }}
                                                     title="Restablecer"
                                                 >
-                                                    â†»
+                                                    ↻
                                                 </button>
                                                 <div className="zoomIndicator">
                                                     {carouselZoom}%
@@ -744,7 +744,7 @@ export default function ProductoIndividualPage({ params }) {
                                             title="Copiar enlace"
                                         >
                                             {copied ? <FaCheckCircle /> : <FaCopy />}
-                                            {copied && <span className="copiedText">Â¡Copiado!</span>}
+                                            {copied && <span className="copiedText">¡Copiado!</span>}
                                         </button>
                                     </div>
                                 </div>
@@ -755,7 +755,7 @@ export default function ProductoIndividualPage({ params }) {
                                 <div className="productMeta">
                                     {producto.numeroParte && (
                                         <div className="metaItem">
-                                            <span className="metaLabel">NÃºmero de Parte:</span>
+                                            <span className="metaLabel">Número de Parte:</span>
                                             <span className="metaValue">{producto.numeroParte}</span>
                                         </div>
                                     )}
@@ -766,13 +766,13 @@ export default function ProductoIndividualPage({ params }) {
                                         </span>
                                     </div>
                                     <div className="shippingInfo">
-                                        <span>EnvÃ­os a toda la repÃºblica mexicana.</span>
+                                        <span>Envíos a toda la república mexicana.</span>
                                     </div>
                                 </div>
 
                                 <button
                                     className="whatsappButton"
-                                    onClick={(e) => handleWhatsAppClick(producto, e)}
+                                    onClick={handleWhatsAppClick}
                                 >
                                     <FaWhatsapp />
                                     Compra por WhatsApp
@@ -783,7 +783,7 @@ export default function ProductoIndividualPage({ params }) {
 
                     <section className="descriptionSection">
                         <div className="descriptionContainer">
-                            <h2>DescripciÃ³n</h2>
+                            <h2>Descripción</h2>
                             <div className="descriptionContent">
                                 <FormattedDescription description={producto.descripcion} />
                             </div>
@@ -841,7 +841,7 @@ export default function ProductoIndividualPage({ params }) {
                                                                 className="relatedImageNotFound"
                                                                 style={{ display: imagenUrl ? 'none' : 'flex' }}
                                                             >
-                                                                <div className="noImageIcon">ðŸ“·</div>
+                                                                <div className="noImageIcon">📷</div>
                                                                 <p>Imagen no detectada</p>
                                                             </div>
                                                         </div>
