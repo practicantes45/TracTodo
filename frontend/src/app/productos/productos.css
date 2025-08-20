@@ -1551,7 +1551,6 @@
   position: relative;
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 3; /* AUMENTADO: permitir hasta 3 líneas para el nombre */
   -webkit-box-orient: vertical;
   text-overflow: ellipsis;
   max-height: 4.8em; /* AUMENTADO: más espacio para el nombre */
@@ -2254,6 +2253,7 @@
     max-width: 400px;
     min-width: 320px;
     margin: 0 auto;
+    height: 450px;
   }
 
   .productoInfo {
@@ -2461,6 +2461,7 @@
     max-width: 350px;
     min-width: 280px;
     margin: 0 auto;
+    height: 430px;
   }
 
   .productoImageContainer {
@@ -2484,7 +2485,8 @@
   }
 
   .whatsappBtn {
-    padding: 10px;
+    margin-top: 3px;
+    padding: 13px;
     font-size: 0.9rem;
     gap: 6px;
   }
@@ -2677,6 +2679,7 @@
     max-width: 320px;
     min-width: 260px;
     margin: 0 auto;
+    height: 380px;
   }
 
   .productoImageContainer {
@@ -2703,7 +2706,7 @@
   }
 
   .whatsappBtn {
-    padding: 8px;
+    padding: 12px;
     font-size: 0.8rem;
     gap: 4px;
   }
