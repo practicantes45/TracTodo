@@ -14,6 +14,7 @@ import { getProductSlug } from '../../utils/slugUtils';
 import { useSEO } from '../../hooks/useSEO';
 import { getPreviewDescription, getShortPreviewDescription } from '../../utils/textUtils';
 import { formatearPrecio, formatearPrecioWhatsApp } from '../../utils/priceUtils';
+
 // Constante para productos por página
 const PRODUCTOS_POR_PAGINA = 15;
 
@@ -29,7 +30,7 @@ export default function ProductosPage() {
   const [selectedMarcas, setSelectedMarcas] = useState([]);
   const [selectedOrden, setSelectedOrden] = useState('A-Z');
   const [marcasDisponibles, setMarcasDisponibles] = useState([]);
-  const [filtrosInicializados, setFiltrosInicializados] = useState(false); // NUEVO estado
+  const [filtrosInicializados, setFiltrosInicializados] = useState(false);
 
   // Estados para paginación
   const [productosVisibles, setProductosVisibles] = useState([]);
@@ -55,22 +56,22 @@ export default function ProductosPage() {
     {
       name: "Alan",
       phoneNumber: "+524272245923",
-      message: "Hola Alan, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
+      message: "Hola Alan, estoy interesado en {producto} con precio de ${precio}. ¿Podrías proporcionarme más información?"
     },
     {
       name: "Laura",
       phoneNumber: "+524272033515",
-      message: "Hola Laura, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
+      message: "Hola Laura, estoy interesado en {producto} con precio de ${precio}. ¿Podrías proporcionarme más información?"
     },
     {
       name: "Oscar",
       phoneNumber: "+524272032672",
-      message: "Hola Oscar, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
+      message: "Hola Oscar, estoy interesado en {producto} con precio de ${precio}. ¿Podrías proporcionarme más información?"
     },
     {
       name: "Hugo",
       phoneNumber: "+524424128926",
-      message: "Hola Hugo, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
+      message: "Hola Hugo, estoy interesado en {producto} con precio de ${precio}. ¿Podrías proporcionarme más información?"
     }
   ];
 
@@ -95,7 +96,7 @@ export default function ProductosPage() {
     };
 
     inicializarFiltrosYCargar();
-  }, [marcaParam, busquedaParam]); // Solo depende de los parámetros de URL
+  }, [marcaParam, busquedaParam]);
 
   // MODIFICADO: Efecto para cargar productos cuando cambian los filtros (después de la inicialización)
   useEffect(() => {
@@ -112,86 +113,92 @@ export default function ProductosPage() {
 
   // Función para actualizar productos visibles basado en paginación
   const actualizarProductosVisibles = () => {
-    const inicio = 0;
-    const fin = paginaActual * PRODUCTOS_POR_PAGINA;
-    const nuevosProductosVisibles = productos.slice(inicio, fin);
-
+    const startIndex = (paginaActual - 1) * PRODUCTOS_POR_PAGINA;
+    const endIndex = startIndex + PRODUCTOS_POR_PAGINA;
+    const nuevosProductosVisibles = productos.slice(0, endIndex);
+    
     setProductosVisibles(nuevosProductosVisibles);
-    setHayMasProductos(fin < productos.length);
-
-    console.log(`📦 Mostrando ${nuevosProductosVisibles.length} de ${productos.length} productos (página ${paginaActual})`);
+    setHayMasProductos(endIndex < productos.length);
+    
+    console.log(`📄 Página ${paginaActual}: Mostrando ${nuevosProductosVisibles.length} de ${productos.length} productos`);
   };
 
-  // REVERTIDO: Función principal para cargar productos con filtros (usando servicios originales)
-  const cargarProductosConFiltros = async (marcas = selectedMarcas, orden = selectedOrden, busqueda = busquedaParam) => {
+  const cargarMasProductos = async () => {
+    if (cargandoMas || !hayMasProductos) return;
+    
+    setCargandoMas(true);
+    setPaginaActual(prev => prev + 1);
+    setCargandoMas(false);
+  };
+
+  // Función para cargar productos con filtros
+  const cargarProductosConFiltros = async (marcas = [], orden = 'A-Z', busqueda = '') => {
     try {
       setLoading(true);
       setError('');
       setPaginaActual(1);
 
-      console.log('🔄 Cargando productos con filtros:', {
-        marcas,
-        orden,
-        busqueda
-      });
-
-      let resultados;
+      let productosData = [];
 
       if (busqueda) {
-        console.log('🔍 Buscando con término y filtros:', {
-          q: busqueda,
-          marcas: marcas,
-          orden: orden
-        });
-
-        resultados = await buscarProductos({
-          q: busqueda,
-          marcas: marcas,
-          orden: orden
-        });
+        console.log('🔍 Realizando búsqueda:', busqueda);
+        productosData = await buscarProductos(busqueda);
+        console.log('📊 Resultados de búsqueda:', productosData.length);
       } else {
-        console.log('📦 Cargando productos con filtros:', {
-          marcas: marcas,
-          orden: orden
-        });
-
-        resultados = await obtenerProductos({
-          marcas: marcas,
-          orden: orden
-        });
+        console.log('📦 Cargando todos los productos');
+        productosData = await obtenerProductos();
+        console.log('📊 Total de productos cargados:', productosData.length);
       }
 
-      setProductos(resultados);
+      // Aplicar filtros de marca
+      if (marcas.length > 0) {
+        const productosFiltradosPorMarca = productosData.filter(producto => {
+          const marcaProducto = producto.marca || 'Otros';
+          return marcas.includes(marcaProducto);
+        });
+        console.log(`🏷️ Filtrado por marcas [${marcas.join(', ')}]:`, productosFiltradosPorMarca.length);
+        productosData = productosFiltradosPorMarca;
+      }
 
-      // Extraer marcas únicas de los resultados para el filtro
-      const marcasUnicas = [...new Set(resultados.map(p => p.marca).filter(Boolean))];
-      setMarcasDisponibles(marcasUnicas);
+      // Aplicar ordenamiento
+      const productosOrdenados = ordenarProductos(productosData, orden);
+      setProductos(productosOrdenados);
 
-      console.log(`✅ Cargados ${resultados.length} productos con filtros del backend`);
+      // Extraer marcas únicas disponibles
+      const marcasUnicas = [...new Set(productosData.map(p => p.marca || 'Otros'))];
+      setMarcasDisponibles(marcasUnicas.sort());
+
     } catch (error) {
-      console.error("❌ Error al cargar productos:", error);
-      setError('No se pudieron cargar los productos');
+      console.error('❌ Error al cargar productos:', error);
+      setError('Error al cargar productos. Inténtalo de nuevo.');
     } finally {
       setLoading(false);
     }
   };
 
-  // Función para cargar más productos
-  const cargarMasProductos = async () => {
-    setCargandoMas(true);
-
-    // Simular pequeña carga para mejor UX
-    await new Promise(resolve => setTimeout(resolve, 300));
-
-    setPaginaActual(prev => prev + 1);
-    setCargandoMas(false);
-
-    console.log('📄 Cargando página:', paginaActual + 1);
-  };
-
-  // Función para refrescar productos (llamada desde AdminButtons)
-  const refetchProducts = () => {
-    cargarProductosConFiltros();
+  const ordenarProductos = (productosArray, orden) => {
+    const productosOrdenados = [...productosArray];
+    
+    switch (orden) {
+      case 'A-Z':
+        return productosOrdenados.sort((a, b) => 
+          (a.nombre || '').localeCompare(b.nombre || '', 'es', { sensitivity: 'base' })
+        );
+      case 'Z-A':
+        return productosOrdenados.sort((a, b) => 
+          (b.nombre || '').localeCompare(a.nombre || '', 'es', { sensitivity: 'base' })
+        );
+      case 'precio-bajo':
+        return productosOrdenados.sort((a, b) => 
+          (a.precioVentaSugerido || 0) - (b.precioVentaSugerido || 0)
+        );
+      case 'precio-alto':
+        return productosOrdenados.sort((a, b) => 
+          (b.precioVentaSugerido || 0) - (a.precioVentaSugerido || 0)
+        );
+      default:
+        return productosOrdenados;
+    }
   };
 
   const handleWhatsAppClick = (producto, e) => {
@@ -199,12 +206,12 @@ export default function ProductosPage() {
     e.stopPropagation();
 
     const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
-    const precio = producto.precioVentaSugerido || producto.precio || 0;
+    const precio = producto.precioVentaSugerido || 0;
     const personalizedMessage = randomContact.message
       .replace('{producto}', producto.nombre)
       .replace('{precio}', formatearPrecioWhatsApp(precio));
 
-    const cleanPhoneNumber = randomContact.phoneNumber.replace(/\D/g, '');
+    const cleanPhoneNumber = randomContact.phoneNumber.replace(/\\D/g, '');
     const formattedNumber = cleanPhoneNumber.startsWith('52')
       ? cleanPhoneNumber
       : `52${cleanPhoneNumber}`;
@@ -214,48 +221,27 @@ export default function ProductosPage() {
 
     window.open(whatsappUrl, '_blank');
   };
-  const handleProductoClick = async (producto) => {
-    await registrarVista(producto.id);
-    const slug = getProductSlug(producto);
-    console.log('🔗 Navegando a producto:', { nombre: producto.nombre, slug });
-    router.push(`/productos/${slug}`);
-  };
 
-  const obtenerPrimeraImagen = (producto) => {
-    if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object' && producto.imagenesUrl.frente) {
-      console.log('🖼️ Usando imagen frente:', producto.imagenesUrl.frente);
-      return producto.imagenesUrl.frente;
+  const handleProductClick = async (producto) => {
+    try {
+      await registrarVista(producto.id, 'producto');
+      console.log('👀 Vista registrada para producto:', producto.id);
+    } catch (error) {
+      console.warn('⚠️ Error registrando vista:', error);
     }
 
-    if (producto.imagenUrl) {
-      console.log('🖼️ Usando imagenUrl:', producto.imagenUrl);
-      return producto.imagenUrl;
-    }
-
-    if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object') {
-      const imagenes = Object.values(producto.imagenesUrl).filter(img => img && img.trim() !== '');
-      if (imagenes.length > 0) {
-        console.log('🖼️ Usando primera imagen disponible:', imagenes[0]);
-        return imagenes[0];
-      }
-    }
-
-    if (producto.imagen) {
-      console.log('🖼️ Usando imagen legacy:', producto.imagen);
-      return producto.imagen;
-    }
-
-    console.log('🚫 No se encontró imagen para el producto:', producto.nombre);
-    return null;
-  };
-
-  // Funciones para filtros móviles
-  const toggleMobileFilter = () => {
-    setIsMobileFilterOpen(!isMobileFilterOpen);
-  };
-
-  const closeMobileFilter = () => {
-    setIsMobileFilterOpen(false);
+    const slug = getProductSlug(producto.nombre);
+    const currentParams = new URLSearchParams();
+    
+    if (busquedaParam) currentParams.set('busqueda', busquedaParam);
+    if (marcaParam) currentParams.set('marca', marcaParam);
+    
+    const queryString = currentParams.toString();
+    const targetUrl = queryString 
+      ? `/productos/${slug}?${queryString}`
+      : `/productos/${slug}`;
+    
+    router.push(targetUrl);
   };
 
   const handleMarcaChange = (marca) => {
@@ -283,7 +269,7 @@ export default function ProductosPage() {
     router.push('/productos');
   };
 
-  // Schema.org para la página de productos
+  // CORREGIDO: Schema.org para la página de productos con MXN
   const schemaProductCatalog = {
     "@context": "https://schema.org",
     "@type": "ItemList",
@@ -300,11 +286,11 @@ export default function ProductosPage() {
         "sku": producto.numeroParte,
         "brand": {
           "@type": "Brand",
-          "name": producto.marca
+          "name": producto.marca || "Cummins"
         },
         "offers": {
           "@type": "Offer",
-          "price": producto.precio || "0",
+          "price": (producto.precioVentaSugerido || 0).toString(),
           "priceCurrency": "MXN",
           "availability": "https://schema.org/InStock"
         }
@@ -315,422 +301,225 @@ export default function ProductosPage() {
   if (loading) {
     return (
       <>
-        {seoData && (
-          <SEOHead
-            title={seoData.title}
-            description={seoData.description}
-            keywords={seoData.keywords}
-            ogTitle={seoData.ogTitle}
-            ogDescription={seoData.ogDescription}
-            ogImage={seoData.ogImage}
-            ogUrl={seoData.ogUrl}
-            canonicalUrl={seoData.canonicalUrl}
-          />
-        )}
-        <div className="layout productos-page">
-          <Navbar />
-          <main className="mainContent">
-            <div className="loadingContainer">
-              <div className="spinner"></div>
-              <p>Cargando productos...</p>
-            </div>
-          </main>
-          <Footer />
+        <Navbar />
+        <div className="main-content">
+          <div className="loading-container">
+            <div className="loading-spinner"></div>
+            <p>Cargando productos...</p>
+          </div>
         </div>
-      </>
-    );
-  }
-
-  if (error) {
-    return (
-      <>
-        {seoData && (
-          <SEOHead
-            title={seoData.title}
-            description={seoData.description}
-            keywords={seoData.keywords}
-            canonicalUrl={seoData.canonicalUrl}
-          />
-        )}
-        <div className="layout productos-page">
-          <Navbar />
-          <main className="mainContent">
-            <div className="errorContainer">
-              <h2>Error al cargar productos</h2>
-              <p>{error}</p>
-              <button onClick={() => cargarProductosConFiltros()} className="retryButton">
-                Intentar de nuevo
-              </button>
-            </div>
-          </main>
-          <Footer />
-        </div>
+        <Footer />
       </>
     );
   }
 
   return (
     <>
-      {/* SEO Head */}
-      {seoData && (
-        <SEOHead
-          title={seoData.title}
-          description={seoData.description}
-          keywords={seoData.keywords}
-          ogTitle={seoData.ogTitle}
-          ogDescription={seoData.ogDescription}
-          ogImage={seoData.ogImage}
-          ogUrl={seoData.ogUrl}
-          canonicalUrl={seoData.canonicalUrl}
-          schema={schemaProductCatalog}
-        />
-      )}
-
-      <div className="layout productos-page">
-        <Navbar />
-
-        <main className="mainContent">
-          {/* Hero Section */}
-          <div className="heroSection">
-            <div className="heroOverlay">
-              <div className="heroContent">
-                <h1>Nuestros Productos</h1>
-                {busquedaParam && (
-                  <p className="searchIndicator">
-                    Resultados para: "{busquedaParam}" ({productos.length} productos encontrados)
-                  </p>
-                )}
-              </div>
+      <SEOHead 
+        data={seoData}
+        structuredData={schemaProductCatalog}
+      />
+      <Navbar />
+      <div className="main-content">
+        <div className="productos-container">
+          
+          {/* Header de productos */}
+          <div className="productos-header">
+            <div className="header-content">
+              <h1 className="productos-title">
+                {busquedaParam 
+                  ? `Resultados para "${busquedaParam}"` 
+                  : marcaParam 
+                    ? `Productos ${marcaParam}`
+                    : 'Catálogo de Productos'
+                }
+              </h1>
+              <p className="productos-subtitle">
+                {busquedaParam || marcaParam 
+                  ? `Encontramos ${productos.length} productos` 
+                  : 'Refacciones de calidad para tu tractocamión'
+                }
+              </p>
+              
+              {(busquedaParam || marcaParam) && (
+                <button 
+                  onClick={clearSearch}
+                  className="clear-search-btn"
+                >
+                  <FaTimes /> Ver todos los productos
+                </button>
+              )}
             </div>
           </div>
 
-          {/* Botón Filtrar móvil */}
-          <div className="mobileFilterToggle">
-            <button
-              className="mobileFilterButton"
-              onClick={toggleMobileFilter}
-            >
-              <FaFilter />
-              Filtrar por
-            </button>
-          </div>
-
-          {/* Overlay para filtro móvil */}
-          <div
-            className={`mobileFilterOverlay ${isMobileFilterOpen ? 'overlayOpen' : ''}`}
-            onClick={closeMobileFilter}
-          ></div>
-
-          {/* Menú de filtros móvil */}
-          <div className={`mobileFilterMenu ${isMobileFilterOpen ? 'menuOpen' : ''}`}>
-            <div className="mobileFilterHeader">
-              <h3>Filtros</h3>
-              <button
-                className="closeMobileFilter"
-                onClick={closeMobileFilter}
+          {/* Controles de filtro y ordenamiento */}
+          <div className="controles-container">
+            <div className="controles-content">
+              
+              {/* Botón de filtros móvil */}
+              <button 
+                className="mobile-filter-toggle"
+                onClick={() => setIsMobileFilterOpen(!isMobileFilterOpen)}
               >
-                <FaTimes />
+                <FaFilter />
+                Filtros {selectedMarcas.length > 0 && `(${selectedMarcas.length})`}
+                <FaChevronDown className={isMobileFilterOpen ? 'rotated' : ''} />
               </button>
-            </div>
 
-            <div className="mobileFilterContent">
-              {/* Botón borrar búsqueda en móvil */}
-              {busquedaParam && (
-                <div className="mobileFilterGroup">
-                  <button
-                    className="clearSearchButtonMobile"
-                    onClick={clearSearch}
-                  >
-                    <FaEraser />
-                    Borrar búsqueda "{busquedaParam}"
-                  </button>
-                </div>
-              )}
-
-              {/* Marcas */}
-              <div className="mobileFilterGroup">
-                <h4>Marcas</h4>
-                <div className="mobileMarcasList">
-                  {marcasPredefinidas.map((marca) => (
-                    <label key={marca} className="mobileMarcaCheckbox">
-                      <input
-                        type="checkbox"
-                        checked={selectedMarcas.includes(marca)}
-                        onChange={() => handleMarcaChange(marca)}
-                      />
-                      <span className="mobileCheckmark"></span>
-                      {marca}
-                    </label>
-                  ))}
-                </div>
-              </div>
-
-              {/* Ordenamiento solo visible cuando NO hay búsqueda */}
-              {!busquedaParam && (
-                <div className="mobileFilterGroup">
-                  <h4>Ordenar Por</h4>
-                  <div className="mobileOrdenamientoList">
-                    <label className="mobileOrdenamientoRadio">
-                      <input
-                        type="radio"
-                        name="orden"
-                        value="A-Z"
-                        checked={selectedOrden === 'A-Z'}
-                        onChange={(e) => handleOrdenChange(e.target.value)}
-                      />
-                      <span className="mobileRadiomark"></span>
-                      <FaSortAlphaDown className="sortIcon" />
-                      Alfabéticamente, A-Z
-                    </label>
-                    <label className="mobileOrdenamientoRadio">
-                      <input
-                        type="radio"
-                        name="orden"
-                        value="Z-A"
-                        checked={selectedOrden === 'Z-A'}
-                        onChange={(e) => handleOrdenChange(e.target.value)}
-                      />
-                      <span className="mobileRadiomark"></span>
-                      <FaSortAlphaUp className="sortIcon" />
-                      Alfabéticamente, Z-A
-                    </label>
-                  </div>
-                </div>
-              )}
-
-              {/* Mensaje explicativo cuando hay búsqueda */}
-              {busquedaParam && (
-                <div className="searchPriorityInfo">
-                  <h3>Orden de Relevancia</h3>
-                  <p>Los resultados se muestran por prioridad:</p>
-                  <ol>
-                    <li><strong>Número de parte</strong></li>
-                    <li><strong>Nombre del producto</strong></li>
-                    <li><strong>Descripción</strong></li>
-                  </ol>
-                </div>
-              )}
-
-              {/* Botón limpiar filtros */}
-              <div className="mobileFilterActions">
-                <button
-                  className="clearMobileFilters"
-                  onClick={clearAllFilters}
-                >
-                  Borrar filtros
-                </button>
-                <button
-                  className="applyMobileFilters"
-                  onClick={closeMobileFilter}
-                >
-                  Aplicar
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Sección principal de productos */}
-          <section className="productosMainSection">
-            <div className="productosContainer">
-
-              {/* Sidebar - Filtros DESKTOP */}
-              <aside className="filtrosSidebar">
-                <div className="filtrosHeader">
-                  <h2>Filtros</h2>
-                  <button
-                    className="limpiarFiltrosBtn"
-                    onClick={clearAllFilters}
-                  >
-                    Borrar filtros
-                  </button>
-                </div>
-
-                {/* Botón borrar búsqueda en desktop */}
-                {busquedaParam && (
-                  <div className="clearSearchSection">
-                    <button
-                      className="clearSearchButton"
-                      onClick={clearSearch}
-                    >
-                      <FaEraser />
-                      Borrar búsqueda
+              {/* Panel de filtros */}
+              <div className={`filtros-panel ${isMobileFilterOpen ? 'mobile-open' : ''}`}>
+                <div className="filtros-header">
+                  <h3><FaFilter /> Filtros</h3>
+                  {selectedMarcas.length > 0 && (
+                    <button onClick={clearAllFilters} className="clear-filters">
+                      <FaEraser /> Limpiar
                     </button>
-                    <p className="searchTermDisplay">
-                      Buscando: "{busquedaParam}"
-                    </p>
-                  </div>
-                )}
-
-                {/* Marcas */}
-                <div className="filtroGroup">
-                  <h3>Marcas</h3>
-                  <div className="marcasList">
-                    {marcasPredefinidas.map((marca) => (
-                      <label key={marca} className="marcaCheckbox">
-                        <input
-                          type="checkbox"
-                          checked={selectedMarcas.includes(marca)}
-                          onChange={() => handleMarcaChange(marca)}
-                        />
-                        <span className="checkmark"></span>
-                        {marca}
-                      </label>
-                    ))}
-                  </div>
+                  )}
                 </div>
 
-                {/* Ordenamiento solo visible cuando NO hay búsqueda */}
-                {!busquedaParam && (
-                  <div className="filtroGroup">
-                    <h3>Ordenar Por</h3>
-                    <div className="ordenamientoList">
-                      <label className="ordenamientoRadio">
-                        <input
-                          type="radio"
-                          name="ordenamiento"
-                          value="A-Z"
-                          checked={selectedOrden === 'A-Z'}
-                          onChange={(e) => handleOrdenChange(e.target.value)}
-                        />
-                        <span className="radiomark"></span>
-                        <FaSortAlphaDown className="sortIcon" />
-                        Alfabéticamente, A-Z
-                      </label>
-                      <label className="ordenamientoRadio">
-                        <input
-                          type="radio"
-                          name="ordenamiento"
-                          value="Z-A"
-                          checked={selectedOrden === 'Z-A'}
-                          onChange={(e) => handleOrdenChange(e.target.value)}
-                        />
-                        <span className="radiomark"></span>
-                        <FaSortAlphaUp className="sortIcon" />
-                        Alfabéticamente, Z-A
-                      </label>
+                <div className="filtros-content">
+                  <div className="filtro-grupo">
+                    <h4>Marcas</h4>
+                    <div className="marcas-grid">
+                      {marcasPredefinidas.map(marca => (
+                        <label key={marca} className="marca-checkbox">
+                          <input
+                            type="checkbox"
+                            checked={selectedMarcas.includes(marca)}
+                            onChange={() => handleMarcaChange(marca)}
+                          />
+                          <span>{marca}</span>
+                          <span className="marca-count">
+                            ({productos.filter(p => (p.marca || 'Otros') === marca).length})
+                          </span>
+                        </label>
+                      ))}
                     </div>
                   </div>
-                )}
+                </div>
 
-                {/* Información de prioridad de búsqueda */}
-                {busquedaParam && (
-                  <div className="searchPriorityInfo">
-                    <h3>Orden de Relevancia</h3>
-                    <p>Los resultados se muestran por prioridad:</p>
-                    <ol>
-                      <li><strong>Número de parte</strong></li>
-                      <li><strong>Nombre del producto</strong></li>
-                      <li><strong>Descripción</strong></li>
-                    </ol>
-                  </div>
-                )}
-              </aside>
+                {/* Botón cerrar en móvil */}
+                <button 
+                  className="mobile-filter-close"
+                  onClick={() => setIsMobileFilterOpen(false)}
+                >
+                  <FaTimes /> Cerrar
+                </button>
+              </div>
 
-              {/* Grid de productos */}
-              <div className="productosGrid">
-                <AdminButtons onProductUpdate={refetchProducts} />
+              {/* Selector de ordenamiento */}
+              <div className="orden-selector">
+                <FaSortAlphaDown className="orden-icon" />
+                <select 
+                  value={selectedOrden} 
+                  onChange={(e) => handleOrdenChange(e.target.value)}
+                  className="orden-select"
+                >
+                  <option value="A-Z">A-Z</option>
+                  <option value="Z-A">Z-A</option>
+                  <option value="precio-bajo">Precio: Menor a Mayor</option>
+                  <option value="precio-alto">Precio: Mayor a Menor</option>
+                </select>
+              </div>
 
-                {error ? (
-                  <div className="errorMessage">{error}</div>
-                ) : productosVisibles.length === 0 ? (
-                  <div className="noProducts">
-                    {busquedaParam ?
-                      `No se encontraron productos para "${busquedaParam}"` :
-                      'No se encontraron productos'
-                    }
-                  </div>
-                ) : (
-                  <>
-                    {productosVisibles.map((producto) => {
-                      const imagenUrl = obtenerPrimeraImagen(producto);
-
-                      return (
-                        <div
-                          key={producto.id}
-                          className="productoCard"
-                          onClick={() => handleProductoClick(producto)}
-                          style={{ cursor: 'pointer', position: 'relative' }}
-                        >
-                          <AdminButtons
-                            producto={producto}
-                            onProductUpdate={refetchProducts}
-                          />
-                          <div className="productoImageContainer">
-                            {imagenUrl ? (
-                              <img
-                                src={imagenUrl}
-                                alt={producto.nombre}
-                                className="productoImage"
-                                onError={(e) => {
-                                  e.target.style.display = 'none';
-                                  e.target.nextElementSibling.style.display = 'flex';
-                                }}
-                              />
-                            ) : null}
-                            <div
-                              className="imageNotFound"
-                              style={{ display: imagenUrl ? 'none' : 'flex' }}
-                            >
-                              <div className="noImageIcon">📷</div>
-                              <p>Imagen no detectada</p>
-                            </div>
-                          </div>
-
-                          <div className="productoInfo">
-                            <h3 className="productoNombre">{producto.nombre}</h3>
-                            <p className="productoDescripcion">
-                              {getPreviewDescription(producto.descripcion, 120)}
-                            </p>
-                            <div className="productoPrecio">
-                              {formatearPrecio(producto.precioVentaSugerido || 0)}
-                            </div>
-                            <button
-                              className="whatsappBtn"
-                              onClick={(e) => handleWhatsAppClick(producto, e)}
-                            >
-                              <FaWhatsapp />
-                              Compra por WhatsApp
-                            </button>
-                          </div>
-                        </div>
-                      );
-                    })}
-
-                    {/* Botón Ver más productos */}
-                    {hayMasProductos && (
-                      <div className="verMasContainer">
-                        <button
-                          className="verMasBtn"
-                          onClick={cargarMasProductos}
-                          disabled={cargandoMas}
-                        >
-                          {cargandoMas ? (
-                            <>
-                              <div className="verMasSpinner"></div>
-                              Cargando...
-                            </>
-                          ) : (
-                            <>
-                              <FaChevronDown />
-                              Ver más productos
-                            </>
-                          )}
-                        </button>
-                        <div className="paginacionInfo">
-                          Mostrando {productosVisibles.length} de {productos.length} productos
-                        </div>
-                      </div>
-                    )}
-                  </>
-                )}
+              {/* Resultados counter */}
+              <div className="resultados-info">
+                <span className="resultados-count">
+                  {productosVisibles.length} de {productos.length} productos
+                </span>
               </div>
             </div>
-          </section>
-        </main>
+          </div>
 
-        <Footer />
-        <ScrollToTop />
+          {/* Grid de productos */}
+          {error ? (
+            <div className="error-container">
+              <p className="error-message">{error}</p>
+            </div>
+          ) : productos.length === 0 ? (
+            <div className="no-products">
+              <h3>No se encontraron productos</h3>
+              <p>Intenta con diferentes filtros o términos de búsqueda</p>
+              {(busquedaParam || selectedMarcas.length > 0) && (
+                <button onClick={clearAllFilters} className="reset-button">
+                  Ver todos los productos
+                </button>
+              )}
+            </div>
+          ) : (
+            <>
+              <div className="productos-grid">
+                {productosVisibles.map((producto) => (
+                  <div 
+                    key={producto.id} 
+                    className="productoCard"
+                    onClick={() => handleProductClick(producto)}
+                  >
+                    <div className="productoImageContainer">
+                      {producto.imagenesUrl?.frente || producto.imagenUrl || producto.imagen ? (
+                        <img 
+                          src={producto.imagenesUrl?.frente || producto.imagenUrl || producto.imagen}
+                          alt={producto.nombre}
+                          className="productoImage"
+                          loading="lazy"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                            e.target.nextSibling.style.display = 'flex';
+                          }}
+                        />
+                      ) : null}
+                      
+                      <div className="imagePlaceholder" style={{ 
+                        display: (producto.imagenesUrl?.frente || producto.imagenUrl || producto.imagen) ? 'none' : 'flex' 
+                      }}>
+                        <span>📦</span>
+                        <p>Imagen no disponible</p>
+                      </div>
+                    </div>
+
+                    <div className="productoInfo">
+                      <h3 className="productoNombre">{producto.nombre}</h3>
+                      
+                      <p className="productoDescripcion">
+                        {getShortPreviewDescription(producto.descripcion, 80)}
+                      </p>
+
+                      <div className="productoPrecio">
+                        {formatearPrecio(producto.precioVentaSugerido || 0)}
+                      </div>
+
+                      <button 
+                        className="whatsappBtn"
+                        onClick={(e) => handleWhatsAppClick(producto, e)}
+                      >
+                        <FaWhatsapp />
+                        Consultar por WhatsApp
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Botón cargar más */}
+              {hayMasProductos && (
+                <div className="cargar-mas-container">
+                  <button 
+                    onClick={cargarMasProductos}
+                    disabled={cargandoMas}
+                    className="cargar-mas-btn"
+                  >
+                    {cargandoMas ? 'Cargando...' : 'Cargar más productos'}
+                  </button>
+                </div>
+              )}
+            </>
+          )}
+        </div>
       </div>
+      
+      <AdminButtons />
+      <ScrollToTop />
+      <Footer />
     </>
   );
 }
