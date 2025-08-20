@@ -260,13 +260,12 @@ export default function ProductosPage() {
 
   const handleMarcaChange = (marca) => {
     const nuevasMarcas = selectedMarcas.includes(marca)
-      ? selectedMarcas.filter(m => m !== marca)
-      : [...selectedMarcas, marca];
+      ? [] // Deseleccionar - array vacío
+      : [marca]; // Seleccionar solo esta marca
 
-    console.log('🔄 Cambiando filtro de marca:', { marca, nuevasMarcas });
+    console.log('🔄 Cambiando filtro de marca (solo una):', { marca, nuevasMarcas });
     setSelectedMarcas(nuevasMarcas);
   };
-
   const handleOrdenChange = (nuevoOrden) => {
     console.log('🔄 Cambiando orden:', nuevoOrden);
     setSelectedOrden(nuevoOrden);
