@@ -391,13 +391,13 @@ export default function ProductoIndividualPage({ params }) {
         // Obtener parámetros de búsqueda actuales (si los hay)
         const busqueda = searchParams.get('busqueda');
         const marca = searchParams.get('marca');
-        
+
         // Si hay parámetros de búsqueda, preservarlos
         if (busqueda || marca) {
             const params = new URLSearchParams();
             if (busqueda) params.set('busqueda', busqueda);
             if (marca) params.set('marca', marca);
-            
+
             router.push(`/productos?${params.toString()}`);
         } else {
             // Si no hay parámetros, usar router.back() como primera opción
@@ -414,16 +414,16 @@ export default function ProductoIndividualPage({ params }) {
     const handleRelatedProductClick = (relatedProduct) => {
         const slug = getProductSlug(relatedProduct);
         console.log('🔗 Navegando a producto relacionado:', { nombre: relatedProduct.nombre, slug });
-        
+
         // Preservar parámetros de búsqueda al navegar a productos relacionados
         const busqueda = searchParams.get('busqueda');
         const marca = searchParams.get('marca');
-        
+
         if (busqueda || marca) {
             const params = new URLSearchParams();
             if (busqueda) params.set('busqueda', busqueda);
             if (marca) params.set('marca', marca);
-            
+
             router.push(`/productos/${slug}?${params.toString()}`);
         } else {
             router.push(`/productos/${slug}`);
@@ -772,7 +772,7 @@ export default function ProductoIndividualPage({ params }) {
 
                                 <button
                                     className="whatsappButton"
-                                    onClick={handleWhatsAppClick}
+                                    onClick={(e) => handleWhatsAppClick(producto, e)}
                                 >
                                     <FaWhatsapp />
                                     Compra por WhatsApp
