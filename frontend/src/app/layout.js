@@ -1,21 +1,23 @@
 import { Inter, Ubuntu, Montserrat } from 'next/font/google';
 import SEOProvider from './components/SEOProvider/SEOProvider';
 import { AuthProvider } from '../hooks/useAuth';
-import CookieConsent from './components/CookieConsent/CookieConsent'; 
+import CookieConsent from './components/CookieConsent/CookieConsent';
+import GoogleAnalytics from './components/GoogleAnalytics/GoogleAnalytics';
+
 import './styles/global.css';
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ['latin'],
   variable: '--font-inter'
 });
 
-const ubuntu = Ubuntu({ 
+const ubuntu = Ubuntu({
   weight: ['300', '400', '500', '700'],
   subsets: ['latin'],
   variable: '--font-ubuntu'
 });
 
-const montserrat = Montserrat({ 
+const montserrat = Montserrat({
   weight: ['300', '400', '500', '600', '700'],
   subsets: ['latin'],
   variable: '--font-montserrat'
@@ -24,34 +26,34 @@ const montserrat = Montserrat({
 // METADATA GENÉRICA - será sobrescrita por cada página
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_FRONTEND_URL || 'https://tractodo.com'),
-  
+
   // Metadata por defecto muy genérica
   title: {
     template: '%s | Tractodo',
     default: 'Tractodo - Refacciones para Tractocamión'
   },
-  
+
   description: 'Refaccionaria especializada en partes y componentes para tractocamión.',
-  
+
   verification: {
     google: 'google-site-verification-code',
   },
-  
+
   // Icons y manifest
   icons: {
     icon: '/favicon.ico',
     shortcut: '/favicon.ico',
     apple: '/apple-touch-icon.png',
   },
-  
+
   manifest: '/site.webmanifest',
-  
+
   // Configuración básica
   robots: {
     index: true,
     follow: true,
   },
-  
+
   // Configuración de viewport
   viewport: {
     width: 'device-width',
@@ -67,20 +69,21 @@ export default function RootLayout({ children }) {
         {/* Preconnect para mejorar rendimiento */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-        
+
         {/* Meta tags adicionales */}
         <meta name="msapplication-TileColor" content="#002a5c" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
-        
+
         {/* Enlaces a sitemaps */}
         <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
-        
+
         {/* Preload de recursos críticos */}
         <link rel="preload" href="/images/tractodo-logo.jpg" as="image" />
       </head>
       <body>
         <AuthProvider>
           <SEOProvider>
+            <GoogleAnalytics />
             {children}
             <CookieConsent />
           </SEOProvider>
