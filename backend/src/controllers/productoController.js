@@ -2,7 +2,7 @@ const { db } = require("../config/firebase");
 const { MARCAS_PREDEFINIDAS } = require("../utils/constantes");
 const { guardarBackup } = require("./reversionController");
 
-// FUNCIONES DE BÚSQUEDA INTELIGENTE CON ERRORES ESPECÍFICOS POR PRODUCTO
+// ✅ FUNCIONES DE BÚSQUEDA INTELIGENTE CON FILTRADO MEJORADO
 
 /**
  * Normalización avanzada de texto
@@ -19,7 +19,7 @@ const normalizarTextoInteligente = (texto) => {
 };
 
 /**
- *  CORRECCIÓN MASIVA: Errores tipográficos específicos por cada producto
+ * Corrección de errores tipográficos comunes (versión compacta)
  */
 const corregirErroresComunes = (palabra) => {
   const correcciones = {
@@ -102,7 +102,7 @@ const corregirErroresComunes = (palabra) => {
     "rebuld": "rebuild", "rebuil": "rebuild",
     
     // Media reparación
-    "meia": "media", "medai": "media", "meida": "media", "median": "media", "medias": "media", 
+    "meia": "media", "medai": "media", "meida": "media", "median": "media",
 
     // ========== MARCAS AUTOMOTRICES ==========
     // Cummins
@@ -284,7 +284,7 @@ const corregirErroresComunes = (palabra) => {
 };
 
 /**
- * EXPANSIÓN DE SINÓNIMOS específicos por producto
+ * Expansión de sinónimos específicos por producto
  */
 const expandirTerminos = (palabra) => {
   const sinonimos = {
@@ -375,7 +375,7 @@ const calcularSimilitud = (str1, str2) => {
   // Una contiene a la otra
   if (s1.includes(s2) || s2.includes(s1)) return 80;
   
-  //  MEJORADO: Similitud por palabras en común
+  // Similitud por palabras en común
   const palabras1 = s1.split(' ').filter(p => p.length > 2);
   const palabras2 = s2.split(' ').filter(p => p.length > 2);
   
@@ -400,17 +400,17 @@ const calcularSimilitud = (str1, str2) => {
 };
 
 /**
- * ✅ SISTEMA DE BÚSQUEDA INTELIGENTE MEJORADO con productos específicos
+ * ✅ SISTEMA DE BÚSQUEDA INTELIGENTE CON FILTRADO ESTRICTO
  */
 const buscarProductosInteligente = (productos, consulta) => {
   if (!consulta || consulta.trim() === "") return productos;
   
-  console.log(`🔍 Búsqueda inteligente mejorada: "${consulta}"`);
+  console.log(`🔍 Búsqueda inteligente: "${consulta}"`);
   
   const consultaNormalizada = normalizarTextoInteligente(consulta);
   const palabrasConsulta = consultaNormalizada.split(' ').filter(p => p.length > 1);
   
-  // ✅ EXPANSIÓN MASIVA: Corregir y expandir términos
+  // Expandir términos con correcciones y sinónimos
   const terminosExpandidos = new Set();
   palabrasConsulta.forEach(palabra => {
     // Agregar palabra original
@@ -431,9 +431,9 @@ const buscarProductosInteligente = (productos, consulta) => {
     });
   });
   
-  console.log(` Términos expandidos (${terminosExpandidos.size}):`, Array.from(terminosExpandidos).slice(0, 10), "...");
+  console.log(`📝 Términos expandidos (${terminosExpandidos.size}):`, Array.from(terminosExpandidos).slice(0, 10), "...");
   
-  //  PUNTUACIÓN MEJORADA con bonificaciones específicas
+  // Calcular puntuación para cada producto
   const productosConPuntuacion = productos.map(producto => {
     let puntuacion = 0;
     
@@ -508,26 +508,52 @@ const buscarProductosInteligente = (productos, consulta) => {
       }
     });
     
-    // PUNTUACIÓN POR SIMILITUD (para casos difíciles)
-    if (puntuacion === 0) {
+    // ✅ RESTRICCIÓN: Solo similitud si no hay puntuación directa mayor a 50
+    if (puntuacion < 50) {
       const similitudNombre = calcularSimilitud(nombre, consultaNormalizada);
       const similitudDescripcion = calcularSimilitud(descripcion, consultaNormalizada);
       const similitudNumero = calcularSimilitud(numeroParte, consultaNormalizada);
-      puntuacion += Math.max(similitudNombre, similitudDescripcion, similitudNumero);
+      const maxSimilitud = Math.max(similitudNombre, similitudDescripcion, similitudNumero);
+      
+      // ✅ UMBRAL MÁS ALTO: Solo agregar similitud si es muy alta
+      if (maxSimilitud >= 60) {
+        puntuacion += maxSimilitud;
+      }
     }
     
     return { ...producto, puntuacionRelevancia: puntuacion };
   });
   
-  // Filtrar y ordenar por relevancia
+  // ✅ FILTRADO ESTRICTO: Umbral mínimo más alto
+  const UMBRAL_MINIMO = 80; // Aumentado de 0 a 80
+  
   const resultados = productosConPuntuacion
-    .filter(producto => producto.puntuacionRelevancia > 0)
+    .filter(producto => {
+      // ✅ FILTRADO ESTRICTO: Solo productos con puntuación significativa
+      if (producto.puntuacionRelevancia < UMBRAL_MINIMO) {
+        return false;
+      }
+      
+      // ✅ VERIFICACIÓN ADICIONAL: Al menos un término de búsqueda debe estar presente
+      const textoCompleto = normalizarTextoInteligente(
+        `${producto.nombre || ''} ${producto.descripcion || ''} ${producto.numeroParte || ''} ${producto.marca || ''}`
+      );
+      
+      const tieneTerminoRelevante = Array.from(terminosExpandidos).some(termino => 
+        textoCompleto.includes(termino)
+      ) || palabrasConsulta.some(palabra => {
+        const palabraCorregida = corregirErroresComunes(palabra);
+        return textoCompleto.includes(palabra) || textoCompleto.includes(palabraCorregida);
+      });
+      
+      return tieneTerminoRelevante;
+    })
     .sort((a, b) => b.puntuacionRelevancia - a.puntuacionRelevancia);
   
-  console.log(` Encontrados ${resultados.length} productos relevantes`);
+  console.log(`✅ Encontrados ${resultados.length} productos relevantes (umbral mínimo: ${UMBRAL_MINIMO})`);
   
   if (resultados.length > 0) {
-    console.log(`Top 5 resultados:`);
+    console.log(`🥇 Top 5 resultados:`);
     resultados.slice(0, 5).forEach((prod, index) => {
       console.log(`   ${index + 1}. ${prod.nombre} (${prod.puntuacionRelevancia} pts)`);
     });
@@ -536,7 +562,7 @@ const buscarProductosInteligente = (productos, consulta) => {
   return resultados;
 };
 
-// RESTO DEL ARCHIVO IGUAL (getAllProductos, getProductoByNombre, etc.)
+// ✅ FUNCIÓN PRINCIPAL: getAllProductos con filtrado mejorado
 exports.getAllProductos = async (req, res) => {
   const { q, marca, orden } = req.query;
 
@@ -552,20 +578,20 @@ exports.getAllProductos = async (req, res) => {
 
     let filtrados = productos;
 
-    //  BÚSQUEDA INTELIGENTE MEJORADA
+    // ✅ BÚSQUEDA INTELIGENTE CON FILTRADO ESTRICTO
     if (q) {
-      console.log(` BÚSQUEDA INTELIGENTE INICIADA`);
+      console.log(`🔍 BÚSQUEDA INTELIGENTE INICIADA`);
       console.log(`Query original: "${q}"`);
       console.log(`Total productos disponibles: ${productos.length}`);
       
-      // Usar búsqueda inteligente mejorada
+      // Usar búsqueda inteligente con filtrado estricto
       filtrados = buscarProductosInteligente(productos, q);
       
-      console.log(` Búsqueda completada: ${filtrados.length} productos encontrados`);
+      console.log(`✅ Búsqueda completada: ${filtrados.length} productos encontrados`);
       
-      // Si no hay resultados, búsqueda permisiva
+      // ✅ BÚSQUEDA PERMISIVA SOLO SI NO HAY RESULTADOS
       if (filtrados.length === 0) {
-        console.log(`Sin resultados, intentando búsqueda permisiva...`);
+        console.log(`⚠️ Sin resultados con filtro estricto, intentando búsqueda permisiva...`);
         
         const queryNormalizado = normalizarTextoInteligente(q);
         const palabrasQuery = queryNormalizado.split(' ').filter(p => p.length > 2);
@@ -575,14 +601,17 @@ exports.getAllProductos = async (req, res) => {
             `${producto.nombre || ''} ${producto.descripcion || ''} ${producto.numeroParte || ''} ${producto.marca || ''}`
           );
           
-          // Al menos una palabra (o su corrección) debe estar presente
-          return palabrasQuery.some(palabra => {
+          // ✅ PERMISIVO: Al menos el 50% de las palabras deben estar presentes
+          const palabrasEncontradas = palabrasQuery.filter(palabra => {
             const palabraCorregida = corregirErroresComunes(palabra);
             return textoCompleto.includes(palabra) || textoCompleto.includes(palabraCorregida);
           });
+          
+          const porcentajeCoincidencia = palabrasEncontradas.length / palabrasQuery.length;
+          return porcentajeCoincidencia >= 0.5; // Al menos 50% de coincidencia
         });
         
-        console.log(`Búsqueda permisiva encontró: ${filtrados.length} productos`);
+        console.log(`🔄 Búsqueda permisiva encontró: ${filtrados.length} productos`);
       }
     }
 
@@ -609,7 +638,7 @@ exports.getAllProductos = async (req, res) => {
                normalizarTextoInteligente(p.descripcion || '').includes(marcaBuscada);
       });
       
-      console.log(`Productos después de filtro de marca: ${filtrados.length}`);
+      console.log(`📊 Productos después de filtro de marca: ${filtrados.length}`);
     }
 
     // ORDENAMIENTO INTELIGENTE
@@ -620,13 +649,13 @@ exports.getAllProductos = async (req, res) => {
         filtrados.sort((a, b) => (b.nombre || '').localeCompare(a.nombre || ''));
       }
     } else {
-      console.log(`Manteniendo orden por relevancia`);
+      console.log(`🎯 Manteniendo orden por relevancia`);
     }
 
     res.json(filtrados);
 
   } catch (error) {
-    console.error(" Error al obtener productos:", error.message);
+    console.error("❌ Error al obtener productos:", error.message);
     res.status(500).json({ 
       error: "Error al obtener productos", 
       detalles: error.message 
@@ -634,12 +663,12 @@ exports.getAllProductos = async (req, res) => {
   }
 };
 
-// FUNCIÓN MEJORADA: getProductoByNombre 
+// ✅ FUNCIÓN MEJORADA: getProductoByNombre con filtrado estricto
 exports.getProductoByNombre = async (req, res) => {
   const { nombre } = req.params;
 
   try {
-    console.log(`Búsqueda de producto por nombre: "${nombre}"`);
+    console.log(`🔍 Búsqueda de producto por nombre: "${nombre}"`);
     
     const snapshot = await db.ref("/").once("value");
     const data = snapshot.val();
@@ -652,11 +681,11 @@ exports.getProductoByNombre = async (req, res) => {
       .filter(([id, producto]) => producto?.nombre)
       .map(([id, producto]) => ({ id, ...producto }));
 
-    //  USAR BÚSQUEDA INTELIGENTE MEJORADA
+    // ✅ USAR BÚSQUEDA INTELIGENTE CON FILTRADO ESTRICTO
     const resultados = buscarProductosInteligente(productos, nombre);
 
     if (resultados.length === 0) {
-      console.log(` Producto no encontrado para: "${nombre}"`);
+      console.log(`❌ Producto no encontrado para: "${nombre}"`);
       
       // Generar sugerencia inteligente
       const palabraCorregida = corregirErroresComunes(normalizarTextoInteligente(nombre));
@@ -673,7 +702,7 @@ exports.getProductoByNombre = async (req, res) => {
     const productoEncontrado = resultados[0];
     const idProducto = productoEncontrado.id;
 
-    console.log(` Producto encontrado: "${productoEncontrado.nombre}" (${productoEncontrado.puntuacionRelevancia} pts)`);
+    console.log(`✅ Producto encontrado: "${productoEncontrado.nombre}" (${productoEncontrado.puntuacionRelevancia} pts)`);
 
     // SEO híbrido optimizado
     const { obtenerDatosSEOProducto } = require("../services/seoService");
@@ -716,7 +745,7 @@ exports.getProductoByNombre = async (req, res) => {
       recomendados
     });
   } catch (error) {
-    console.error(" Error obteniendo producto por nombre:", error.message);
+    console.error("❌ Error obteniendo producto por nombre:", error.message);
     res.status(500).json({ 
       error: "Error obteniendo producto", 
       detalles: error.message 
@@ -724,211 +753,7 @@ exports.getProductoByNombre = async (req, res) => {
   }
 };
 
-
-// FUNCIÓN MEJORADA: obtener producto por NOMBRE con mejor coincidencia
-exports.getProductoByNombre = async (req, res) => {
-  const { nombre } = req.params;
-
-  try {
-    console.log(` Buscando producto por nombre: "${nombre}"`);
-    
-    // Normalizar el nombre buscado para comparación
-    const nombreNormalizado = normalizarTexto(nombre);
-    console.log(`Nombre normalizado: "${nombreNormalizado}"`);
-
-    // Obtener todos los productos
-    const snapshot = await db.ref("/").once("value");
-    const data = snapshot.val();
-
-    if (!data) {
-      return res.status(404).json({ error: "No hay productos en la base de datos" });
-    }
-
-    // Crear variantes del nombre buscado para búsqueda flexible
-    const variantes = [
-      nombreNormalizado,                                    // Original normalizado
-      nombreNormalizado.replace(/\s+/g, ''),               // Sin espacios
-      nombreNormalizado.replace(/([a-z])(\d)/g, '$1 $2'),  // Separar letras de números
-      nombreNormalizado.replace(/(\d)([a-z])/g, '$1 $2'),  // Separar números de letras
-      nombreNormalizado.replace(/\s*\/\s*/g, '/'),         // Normalizar barras
-      nombreNormalizado.replace(/\s*\/\s*/g, ' / '),       // Barras con espacios
-      nombreNormalizado.replace(/\//g, ' '),               // Barras por espacios
-    ];
-
-    // Eliminar duplicados y variantes vacías
-    const variantesUnicas = [...new Set(variantes)].filter(v => v.length > 0);
-    
-    console.log(`🔄 Variantes generadas: [${variantesUnicas.map(v => `"${v}"`).join(', ')}]`);
-
-    let productoEncontrado = null;
-    let idProducto = null;
-    let tipoCoincidencia = '';
-
-    // ESTRATEGIA 1: Búsqueda exacta con cada variante
-    for (const variante of variantesUnicas) {
-      for (const [id, producto] of Object.entries(data)) {
-        if (producto?.nombre) {
-          const nombreProductoNormalizado = normalizarTexto(producto.nombre);
-          
-          if (nombreProductoNormalizado === variante) {
-            productoEncontrado = producto;
-            idProducto = id;
-            tipoCoincidencia = 'exacta';
-            console.log(`✅ Coincidencia exacta: "${producto.nombre}" con variante "${variante}"`);
-            break;
-          }
-        }
-      }
-      if (productoEncontrado) break;
-    }
-
-    // ESTRATEGIA 2: Búsqueda flexible sin espacios
-    if (!productoEncontrado) {
-      console.log(`🔄 Estrategia 2: Búsqueda sin espacios`);
-      
-      for (const variante of variantesUnicas) {
-        const varianteSinEspacios = variante.replace(/\s+/g, '');
-        
-        for (const [id, producto] of Object.entries(data)) {
-          if (producto?.nombre) {
-            const nombreProductoSinEspacios = normalizarTexto(producto.nombre).replace(/\s+/g, '');
-            
-            if (nombreProductoSinEspacios === varianteSinEspacios) {
-              productoEncontrado = producto;
-              idProducto = id;
-              tipoCoincidencia = 'flexible sin espacios';
-              console.log(`✅ Coincidencia flexible: "${producto.nombre}" con variante "${variante}"`);
-              break;
-            }
-          }
-        }
-        if (productoEncontrado) break;
-      }
-    }
-
-    // ESTRATEGIA 3: Búsqueda parcial (contiene)
-    if (!productoEncontrado) {
-      console.log(`🔄 Estrategia 3: Búsqueda parcial`);
-      
-      for (const variante of variantesUnicas) {
-        for (const [id, producto] of Object.entries(data)) {
-          if (producto?.nombre) {
-            const nombreProductoNormalizado = normalizarTexto(producto.nombre);
-            
-            if (nombreProductoNormalizado.includes(variante) || variante.includes(nombreProductoNormalizado)) {
-              productoEncontrado = producto;
-              idProducto = id;
-              tipoCoincidencia = 'parcial';
-              console.log(`✅ Coincidencia parcial: "${producto.nombre}" con variante "${variante}"`);
-              break;
-            }
-          }
-        }
-        if (productoEncontrado) break;
-      }
-    }
-
-    // ESTRATEGIA 4: Búsqueda por palabras clave (última opción)
-    if (!productoEncontrado) {
-      console.log(`🔄 Estrategia 4: Búsqueda por palabras clave`);
-      
-      const palabrasClave = nombreNormalizado.split(' ').filter(p => p.length > 2);
-      let mejorCoincidencia = null;
-      let mejorPuntaje = 0;
-      
-      for (const [id, producto] of Object.entries(data)) {
-        if (producto?.nombre) {
-          const nombreProductoNormalizado = normalizarTexto(producto.nombre);
-          let puntaje = 0;
-          
-          // Contar cuántas palabras clave coinciden
-          palabrasClave.forEach(palabra => {
-            if (nombreProductoNormalizado.includes(palabra)) {
-              puntaje++;
-            }
-          });
-          
-          // Requerir al menos 60% de coincidencia
-          if (puntaje > mejorPuntaje && puntaje >= Math.ceil(palabrasClave.length * 0.6)) {
-            mejorPuntaje = puntaje;
-            mejorCoincidencia = { id, producto };
-          }
-        }
-      }
-      
-      if (mejorCoincidencia && mejorPuntaje > 0) {
-        productoEncontrado = mejorCoincidencia.producto;
-        idProducto = mejorCoincidencia.id;
-        tipoCoincidencia = `palabras clave (${mejorPuntaje}/${palabrasClave.length})`;
-        console.log(`✅ Coincidencia por palabras clave: "${productoEncontrado.nombre}" con puntaje ${mejorPuntaje}/${palabrasClave.length}`);
-      }
-    }
-
-    if (!productoEncontrado) {
-      console.log(`❌ Producto no encontrado para: "${nombre}"`);
-      return res.status(404).json({ 
-        error: "Producto no encontrado",
-        busqueda: nombre,
-        variantesProbadas: variantesUnicas
-      });
-    }
-
-    // SEO híbrido optimizado (usando el ID encontrado)
-    const { obtenerDatosSEOProducto } = require("../services/seoService");
-    const datosSEO = await obtenerDatosSEOProducto(idProducto, productoEncontrado);
-
-    // Obtener recomendaciones (optimizado)
-    const recoSnapshot = await db.ref(`/recomendaciones/${idProducto}`).once("value");
-    let idsRecomendados = recoSnapshot.val() || [];
-
-    if (idsRecomendados.length === 0) {
-      // Recomendaciones básicas optimizadas
-      const allSnapshot = await db.ref("/").limitToFirst(50).once("value");
-      const allData = allSnapshot.val() || {};
-      
-      const productosDisponibles = Object.entries(allData)
-        .filter(([pid, prod]) => pid !== idProducto && prod?.nombre)
-        .slice(0, 10);
-
-      idsRecomendados = productosDisponibles.slice(0, 6).map(([pid]) => pid);
-    }
-
-    // Obtener datos de recomendados (optimizado)
-    const recomendados = [];
-    for (const pid of idsRecomendados.slice(0, 6)) {
-      try {
-        const recSnapshot = await db.ref(`/${pid}`).once("value");
-        const recProducto = recSnapshot.val();
-        if (recProducto?.nombre) {
-          recomendados.push({ id: pid, ...recProducto });
-        }
-      } catch (error) {
-        console.error(`Error obteniendo recomendación ${pid}:`, error.message);
-      }
-    }
-
-    console.log(`✅ Producto encontrado: "${productoEncontrado.nombre}" (ID: ${idProducto}) - ${tipoCoincidencia}`);
-
-    res.json({
-      producto: {
-        id: idProducto,
-        ...productoEncontrado,
-        seo: datosSEO
-      },
-      recomendados,
-      debug: {
-        busquedaOriginal: nombre,
-        tipoCoincidencia: tipoCoincidencia,
-        variantesGeneradas: variantesUnicas.length
-      }
-    });
-  } catch (error) {
-    console.error("Error obteniendo producto:", error.message);
-    res.status(500).json({ error: "Error obteniendo producto", detalles: error.message });
-  }
-};
-
-// MANTENER LA FUNCIÓN ORIGINAL POR COMPATIBILIDAD
+// ✅ RESTO DE FUNCIONES SIN CAMBIOS (getProductoById, insertarProducto, etc.)
 exports.getProductoById = async (req, res) => {
   const { id } = req.params;
 
@@ -939,16 +764,15 @@ exports.getProductoById = async (req, res) => {
     }
     const producto = snapshot.val();
 
-    // ✅ SEO híbrido optimizado
+    // SEO híbrido optimizado
     const { obtenerDatosSEOProducto } = require("../services/seoService");
     const datosSEO = await obtenerDatosSEOProducto(id, producto);
 
-    // Obtener recomendaciones (optimizado)
+    // Obtener recomendaciones
     const recoSnapshot = await db.ref(`/recomendaciones/${id}`).once("value");
     let idsRecomendados = recoSnapshot.val() || [];
 
     if (idsRecomendados.length === 0) {
-      // ✅ Recomendaciones básicas optimizadas
       const allSnapshot = await db.ref("/").limitToFirst(50).once("value");
       const allData = allSnapshot.val() || {};
       
@@ -959,7 +783,7 @@ exports.getProductoById = async (req, res) => {
       idsRecomendados = productosDisponibles.slice(0, 6).map(([pid]) => pid);
     }
 
-    // Obtener datos de recomendados (optimizado)
+    // Obtener datos de recomendados
     const recomendados = [];
     for (const pid of idsRecomendados.slice(0, 6)) {
       try {
@@ -976,7 +800,7 @@ exports.getProductoById = async (req, res) => {
       producto: { 
         id, 
         ...producto,
-        seo: datosSEO // ✅ SEO híbrido incluido
+        seo: datosSEO
       },
       recomendados
     });
@@ -986,20 +810,17 @@ exports.getProductoById = async (req, res) => {
   }
 };
 
-// Crea un nuevo producto
+// Resto de funciones sin cambios...
 exports.insertarProducto = async (req, res) => {
   const datos = req.body;
 
   try {
-    // Validación básica (puedes expandirla según tus necesidades)
     if (!datos.nombre || !datos.numeroParte || !datos.descripcion) {
       return res.status(400).json({ mensaje: "Faltan campos obligatorios" });
     }
 
-    // Creamos un nuevo ID usando push
     const nuevoRef = db.ref("/").push();
     await nuevoRef.set(datos);
-
     const nuevoId = nuevoRef.key;
 
     res.status(201).json({
@@ -1012,7 +833,6 @@ exports.insertarProducto = async (req, res) => {
   }
 };
 
-// Elimina un producto por ID
 exports.borrarProductoPorId = async (req, res) => {
   const { id } = req.params;
 
@@ -1032,7 +852,6 @@ exports.borrarProductoPorId = async (req, res) => {
   }
 };
 
-// Actualiza un producto por ID
 exports.actualizarProductoPorId = async (req, res) => {
   const { id } = req.params;
   const datos = req.body;
@@ -1059,28 +878,22 @@ exports.actualizarProductoPorId = async (req, res) => {
   }
 };
 
-// =============== PRODUCTOS DEL MES - SOLO ESTO CAMBIÓ ===============
-
-// CORREGIDO: insertar productos del mes con nuevoPrecio
+// =============== PRODUCTOS DEL MES ===============
 exports.insertarProductosDelMes = async (req, res) => {
   const { productos } = req.body;
 
-  console.log('=== INSERTANDO PRODUCTOS DEL MES - VERSION CORREGIDA ===');
+  console.log('=== INSERTANDO PRODUCTOS DEL MES ===');
   console.log('Productos recibidos:', productos);
 
   if (!Array.isArray(productos) || productos.length === 0) {
     return res.status(400).json({ error: "Debes enviar un arreglo válido de productos" });
   }
 
-  // VALIDACIÓN LIMPIA: Solo ID y nuevoPrecio opcional
   for (const producto of productos) {
-    console.log('Validando producto:', producto);
-    
     if (!producto.id) {
       return res.status(400).json({ error: "Cada producto debe tener un ID válido" });
     }
     
-    // Solo validar nuevoPrecio si existe
     if (producto.nuevoPrecio !== undefined) {
       const precio = parseFloat(producto.nuevoPrecio);
       if (isNaN(precio) || precio <= 0) {
@@ -1090,50 +903,29 @@ exports.insertarProductosDelMes = async (req, res) => {
   }
 
   try {
-    console.log('Validaciones pasadas, procesando...');
-    
-    // Obtener productos actuales del mes
     const snapshot = await db.ref("/productosDelMes").once("value");
     const actuales = snapshot.val() || {};
-
-    // Obtener todos los productos para validación
     const allSnapshot = await db.ref("/").once("value");
     const todosProductos = allSnapshot.val() || {};
 
-    // Procesar cada producto
     for (const producto of productos) {
-      console.log(`Procesando producto: ${producto.id}`);
-      
-      // Verificar que el producto existe
       if (!todosProductos[producto.id]) {
         return res.status(404).json({ error: `Producto con ID ${producto.id} no encontrado` });
       }
 
-      // Si se especifica nuevo precio, actualizar el producto original
       if (producto.nuevoPrecio !== undefined) {
         const nuevoPrecio = parseFloat(producto.nuevoPrecio);
-        
-        console.log(`Actualizando precio de ${producto.id}: $${nuevoPrecio}`);
-        
-        // Backup antes de modificar
         await guardarBackup("productos", producto.id, todosProductos[producto.id]);
-
-        // Actualizar precio original
         await db.ref(`/${producto.id}/precioVentaSugerido`).set(nuevoPrecio);
       }
 
-      // Agregar a productos del mes
       actuales[producto.id] = {
         id: producto.id,
         fechaAgregado: new Date().toISOString()
       };
     }
 
-    // Guardar lista actualizada
     await db.ref("/productosDelMes").set(actuales);
-    console.log('💾 Lista de productos del mes actualizada');
-
-    // Obtener productos completos para respuesta
     const updatedSnapshot = await db.ref("/").once("value");
     const productosActualizados = updatedSnapshot.val() || {};
 
@@ -1143,8 +935,6 @@ exports.insertarProductosDelMes = async (req, res) => {
       fechaAgregado: prodMes.fechaAgregado
     })).filter(p => p && p.nombre);
 
-    console.log('Productos del mes insertados exitosamente');
-    
     res.status(200).json({
       mensaje: "Productos del mes agregados correctamente",
       productos: productosCompletos
@@ -1156,7 +946,6 @@ exports.insertarProductosDelMes = async (req, res) => {
   }
 };
 
-// obtener productos del mes - usa precio original
 exports.getProductosDelMes = async (req, res) => {
   try {
     const snapshot = await db.ref("/productosDelMes").once("value");
@@ -1177,7 +966,6 @@ exports.getProductosDelMes = async (req, res) => {
       }))
       .filter(p => p && p.nombre);
 
-    console.log(`📦 Devolviendo ${destacados.length} productos del mes con precios originales`);
     res.json(destacados);
   } catch (error) {
     console.error("Error al obtener productos del mes:", error.message);
@@ -1185,7 +973,6 @@ exports.getProductosDelMes = async (req, res) => {
   }
 };
 
-// actualizar productos del mes
 exports.actualizarProductosDelMes = async (req, res) => {
   const { productos } = req.body;
 
@@ -1196,7 +983,6 @@ exports.actualizarProductosDelMes = async (req, res) => {
   try {
     const snapshot = await db.ref("/productosDelMes").once("value");
     const productosAntes = snapshot.val() || {};
-
     await guardarBackup("productosDelMes", "listaCompleta", productosAntes);
 
     const allSnapshot = await db.ref("/").once("value");
@@ -1227,7 +1013,6 @@ exports.actualizarProductosDelMes = async (req, res) => {
     }
 
     await db.ref("/productosDelMes").set(nuevosProductos);
-
     const updatedSnapshot = await db.ref("/").once("value");
     const productosActualizados = updatedSnapshot.val() || {};
 
@@ -1247,7 +1032,6 @@ exports.actualizarProductosDelMes = async (req, res) => {
   }
 };
 
-// eliminar productos del mes
 exports.eliminarProductoDelMes = async (req, res) => {
   const { id } = req.body;
 
@@ -1264,7 +1048,6 @@ exports.eliminarProductoDelMes = async (req, res) => {
     }
 
     await guardarBackup("productosDelMes", id, productos[id]);
-
     delete productos[id];
     await db.ref("/productosDelMes").set(productos);
 
@@ -1287,7 +1070,6 @@ exports.eliminarProductoDelMes = async (req, res) => {
   }
 };
 
-// CORREGIDO: actualizar precio con nuevoPrecio
 exports.actualizarPrecioProductoDelMes = async (req, res) => {
   const { id } = req.params;
   const { nuevoPrecio } = req.body;
