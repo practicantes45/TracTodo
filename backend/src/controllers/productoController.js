@@ -27,7 +27,7 @@ const corregirErroresComunes = (palabra) => {
     "cabesa": "cabeza", "caveza": "cabeza", "kaveza": "cabeza", "caeza": "cabeza",
     "cabesa": "cabeza", "cavesa": "cabeza", "kabeza": "cabeza", "cabeza": "cabeza",
     "cabza": "cabeza", "cabea": "cabeza", "cabexa": "cabeza", "cebeza": "cabeza",
-    "cavezas": "cabezas", "cabesas": "cabezas", "caezas": "cabezas",
+    "cavezas": "cabeza", "cabesas": "cabeza", "caezas": "cabeza",
     
     // Culata (sinónimo de cabeza)
     "culta": "culata", "cullata": "culata", "kulata": "culata", "culatta": "culata",
@@ -42,7 +42,7 @@ const corregirErroresComunes = (palabra) => {
     // ========== TURBOS ==========
     "turvo": "turbo", "trubo": "turbo", "tubro": "turbo", "turb": "turbo",
     "tubro": "turbo", "turboo": "turbo", "trbo": "turbo", "tubo": "turbo",
-    "turo": "turbo", "turvo": "turbo", "turbu": "turbo", "turboe": "turbo",
+    "turo": "turbo", "turvo": "turbo", "turbu": "turbo", "turboe": "turbo", "turbos": "turbo", "turvos": "turbo",
     
     // Turbocargador
     "turbocargaor": "turbocargador", "turbocargadro": "turbocargador",
@@ -61,7 +61,7 @@ const corregirErroresComunes = (palabra) => {
     // Árbol
     "arbo": "arbol", "arvol": "arbol", "harbol": "arbol", "arbool": "arbol",
     "arbl": "arbol", "abol": "arbol", "arbol": "arbol", "arbos": "arbol",
-    "harvol": "arbol", "arvool": "arbol", "arvo": "arbol",
+    "harvol": "arbol", "arvool": "arbol", "arvo": "arbol", "arboles": "arbol",
     
     // Levas
     "lebas": "levas", "lvas": "levas", "lebs": "levas", "leav": "levas",
@@ -102,7 +102,7 @@ const corregirErroresComunes = (palabra) => {
     "rebuld": "rebuild", "rebuil": "rebuild",
     
     // Media reparación
-    "meia": "media", "medai": "media", "meida": "media", "median": "media",
+    "meia": "media", "medai": "media", "meida": "media", "median": "media", "medias": "media",
 
     // ========== MARCAS AUTOMOTRICES ==========
     // Cummins
