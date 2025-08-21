@@ -38,7 +38,7 @@ if (process.env.RAILWAY_PUBLIC_DOMAIN) {
   corsOrigins.push(`https://${process.env.RAILWAY_PUBLIC_DOMAIN}`);
 }
 
-console.log('🔒 CORS configurado para:', corsOrigins);
+console.log('CORS configurado para:', corsOrigins);
 
 app.use(cors({
   origin: corsOrigins,
