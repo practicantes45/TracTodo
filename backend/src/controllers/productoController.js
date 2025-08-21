@@ -273,11 +273,11 @@ const corregirErroresComunes = (palabra) => {
     // ========== INYECTORES ==========
     "inyector": "inyector", "injector": "inyector", "inyetor": "inyector",
     "inyectro": "inyector", "inyektor": "inyector", "inyectoor": "inyector",
-    "inyectores": "inyectores", "injectors": "inyectores", "inyetores": "inyectores",
+    "inyectores": "inyectores", "injectors": "inyector", "inyetores": "inyector",
 
     // ========== BOMBA ==========
     "bomba": "bomba", "bonba": "bomba", "bomva": "bomba", "boma": "bomba",
-    "bombaa": "bomba", "bomaba": "bomba", "bomba": "bomba"
+    "bombaa": "bomba", "bomaba": "bomba", "bombas": "bomba"
   };
   
   return correcciones[palabra] || palabra;
