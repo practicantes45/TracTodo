@@ -27,7 +27,7 @@ const corregirErroresComunes = (palabra) => {
     "cabesa": "cabeza", "caveza": "cabeza", "kaveza": "cabeza", "caeza": "cabeza",
     "cabesa": "cabeza", "cavesa": "cabeza", "kabeza": "cabeza", "cabeza": "cabeza",
     "cabza": "cabeza", "cabea": "cabeza", "cabexa": "cabeza", "cebeza": "cabeza",
-    "cavezas": "cabeza", "cabesas": "cabeza", "caezas": "cabeza",
+    "cavezas": "cabeza", "cabesas": "cabeza", "caezas": "cabeza", "cabezas": "cabeza",
     
     // Culata (sinónimo de cabeza)
     "culta": "culata", "cullata": "culata", "kulata": "culata", "culatta": "culata",
@@ -273,7 +273,7 @@ const corregirErroresComunes = (palabra) => {
     // ========== INYECTORES ==========
     "inyector": "inyector", "injector": "inyector", "inyetor": "inyector",
     "inyectro": "inyector", "inyektor": "inyector", "inyectoor": "inyector",
-    "inyectores": "inyectores", "injectors": "inyector", "inyetores": "inyector",
+    "inyectores": "inyectores", "injectors": "inyector", "inyectores": "inyector",
 
     // ========== BOMBA ==========
     "bomba": "bomba", "bonba": "bomba", "bomva": "bomba", "boma": "bomba",
