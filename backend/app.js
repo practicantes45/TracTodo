@@ -24,16 +24,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// NUEVO: Middleware de debugging para rutas problemáticas
-app.use('/api/seo', (req, res, next) => {
-  console.log(`🔧 RUTA SEO: ${req.method} ${req.path} - URL completa: ${req.originalUrl}`);
-  next();
-});
-
-app.use('/api/productos', (req, res, next) => {
-  console.log(`🛒 RUTA PRODUCTOS: ${req.method} ${req.path} - URL completa: ${req.originalUrl}`);
-  next();
-});
 
 // CONFIGURACIÓN MEJORADA DE CORS PARA RAILWAY
 const corsOrigins = [

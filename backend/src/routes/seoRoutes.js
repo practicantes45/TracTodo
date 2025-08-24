@@ -216,28 +216,13 @@ router.get("/producto/:id", obtenerSEOProducto);
  */
 router.get("/schema/:id", obtenerSchemaProducto);
 
+// ================================= RUTAS DE ADMINISTRACIÓN =================================
 
 /**
- * Verificar integridad del mapeo de slugs
+ * Verificar integridad del mapeo de slugs (solo admin)
  * GET /api/seo/verificar-slugs
  */
-router.get("/verificar-slugs", verificarIntegridadSlugs);
-
-
-/**
- * Test básico de conectividad SEO (público)
- * GET /api/seo/test
- */
-router.get("/test", (req, res) => {
-  res.json({
-    mensaje: "Ruta SEO funcionando correctamente",
-    timestamp: new Date().toISOString(),
-    ruta: req.originalUrl,
-    path: req.path
-  });
-});
-
-// ================================= RUTAS DE ADMINISTRACIÓN =================================
+router.get("/verificar-slugs", verificarAdmin, verificarIntegridadSlugs);
 
 /**
  * Regenerar mapeo de slugs (solo admin)
