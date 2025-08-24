@@ -275,37 +275,39 @@ exports.generarSitemap = async (req, res) => {
   </url>
 `;
 
-    // Generar slugs únicos para productos - MEJORADO
-    console.log("Generando URLs amigables para productos...");
-    const productosConSlug = [];
-    const slugsUsados = new Set();
-    
-    if (Object.keys(productos).length > 0) {
-      Object.entries(productos).forEach(([id, producto]) => {
-        try {
-          let slug = generarSlug(producto.nombre);
-          let slugFinal = slug;
-          let contador = 1;
-          
-          // Asegurar que el slug sea único
-          while (slugsUsados.has(slugFinal)) {
-            slugFinal = `${slug}-${contador}`;
-            contador++;
-          }
-          
-          slugsUsados.add(slugFinal);
-          productosConSlug.push({
-            id,
-            slug: slugFinal,
-            nombre: producto.nombre,
-            lastmod: producto.fechaActualizacion || new Date().toISOString()
-          });
-          
-          console.log(`Producto agregado: ${producto.nombre} -> ${slugFinal}`);
-        } catch (error) {
-          console.error(` Error procesando producto ${id}:`, error.message);
-        }
+// Generar slugs únicos para productos - MEJORADO CON NÚMERO DE PARTE
+console.log("Generando URLs amigables para productos...");
+const productosConSlug = [];
+const slugsUsados = new Set();
+
+if (Object.keys(productos).length > 0) {
+  Object.entries(productos).forEach(([id, producto]) => {
+    try {
+      // CORRECCIÓN: Incluir número de parte en el slug
+      let slug = generarSlug(producto.nombre, producto.numeroParte);
+      let slugFinal = slug;
+      let contador = 1;
+      
+      // Asegurar que el slug sea único
+      while (slugsUsados.has(slugFinal)) {
+        slugFinal = `${slug}-${contador}`;
+        contador++;
+      }
+      
+      slugsUsados.add(slugFinal);
+      productosConSlug.push({
+        id,
+        slug: slugFinal,
+        nombre: producto.nombre,
+        numeroParte: producto.numeroParte || '',
+        lastmod: producto.fechaActualizacion || new Date().toISOString()
       });
+      
+      console.log(`✅ Producto: "${producto.nombre}" (${producto.numeroParte}) -> ${slugFinal}`);
+    } catch (error) {
+      console.error(`❌ Error procesando producto ${id}:`, error.message);
+    }
+  });
 
       // Agregar productos al sitemap con URLs amigables
       productosConSlug.forEach(({ slug, nombre, lastmod }) => {

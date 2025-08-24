@@ -53,7 +53,142 @@ router.get("/robots.txt", generarRobots);
  * Obtener mapeo completo de slugs (público)
  * GET /api/seo/slugs
  */
-router.get("/slugs", obtenerMapeoSlugs);
+// RUTA GENÉRICA MEJORADA: Resolver slugs correctamente
+router.get("/:slug", async (req, res) => {
+  const { slug } = req.params;
+  
+  try {
+    console.log(`🔍 DEBUGGING SLUG: "${slug}"`);
+    
+    // Si el slug parece ser un ID de Firebase (empieza con - y tiene caracteres específicos)
+    if (slug.startsWith('-') && slug.length > 10) {
+      console.log(`🆔 Detectado como ID directo: ${slug}`);
+      req.params.id = slug;
+      return require("../controllers/productoController").getProductoById(req, res);
+    }
+    
+    // PASO 1: PRIORIDAD - Resolver usando mapeo exacto
+    try {
+      const slugSnapshot = await db.ref(`/seo/slugs/mapeo/productos/${slug}`).once("value");
+      const idMapeado = slugSnapshot.val();
+      
+      if (idMapeado) {
+        console.log(`✅ MAPEO EXACTO: "${slug}" -> ID: ${idMapeado}`);
+        
+        // VERIFICAR que el producto realmente existe
+        const productoSnapshot = await db.ref(`/${idMapeado}`).once("value");
+        if (productoSnapshot.exists()) {
+          const productoData = productoSnapshot.val();
+          console.log(`✅ PRODUCTO VERIFICADO: ${productoData.nombre} (${productoData.numeroParte})`);
+          
+          req.params.id = idMapeado;
+          return require("../controllers/productoController").getProductoById(req, res);
+        } else {
+          console.log(`⚠️ MAPEO ROTO: ID ${idMapeado} no existe en productos`);
+        }
+      } else {
+        console.log(`⚠️ Slug "${slug}" no encontrado en mapeo exacto`);
+      }
+    } catch (errorMapeo) {
+      console.log(`❌ Error accediendo al mapeo: ${errorMapeo.message}`);
+    }
+    
+    // PASO 2: Verificar integridad del mapeo y regenerar si es necesario
+    console.log(`🔄 Verificando integridad del mapeo de slugs...`);
+    await verificarYRegenerarSlugs();
+    
+    // PASO 3: INTENTAR DE NUEVO con mapeo actualizado
+    try {
+      const slugSnapshot2 = await db.ref(`/seo/slugs/mapeo/productos/${slug}`).once("value");
+      const idMapeado2 = slugSnapshot2.val();
+      
+      if (idMapeado2) {
+        console.log(`✅ MAPEO REGENERADO EXITOSO: "${slug}" -> ID: ${idMapeado2}`);
+        req.params.id = idMapeado2;
+        return require("../controllers/productoController").getProductoById(req, res);
+      }
+    } catch (error) {
+      console.log(`❌ Error en segunda verificación: ${error.message}`);
+    }
+    
+    // PASO 4: Si absolutamente no encuentra nada, error 404 SIN FALLBACK
+    console.log(`❌ PRODUCTO NO ENCONTRADO para slug: "${slug}"`);
+    return res.status(404).json({ 
+      error: "Producto no encontrado",
+      slug: slug,
+      debug: "Slug no encontrado en mapeo y mapeo verificado",
+      sugerencia: "Contacta al administrador para regenerar el sitemap",
+      timestamp: new Date().toISOString()
+    });
+    
+  } catch (error) {
+    console.error(`💥 Error general resolviendo slug "${slug}":`, error.message);
+    return res.status(500).json({
+      error: "Error interno del servidor",
+      detalles: error.message
+    });
+  }
+});
+
+// FUNCIÓN AUXILIAR: Verificar y regenerar slugs automáticamente
+async function verificarYRegenerarSlugs() {
+  try {
+    console.log("🔧 Verificando integridad de slugs...");
+    
+    // Obtener mapeo actual
+    const mapeoSnapshot = await db.ref("/seo/slugs/mapeo/productos").once("value");
+    const mapeoActual = mapeoSnapshot.val() || {};
+    
+    // Obtener productos actuales
+    const productosSnapshot = await db.ref("/").once("value");
+    const productos = productosSnapshot.val() || {};
+    
+    const productosValidos = Object.entries(productos)
+      .filter(([id, producto]) => producto?.nombre)
+      .map(([id, producto]) => ({ id, ...producto }));
+    
+    // Verificar si hay discrepancias
+    const idsEnMapeo = Object.values(mapeoActual);
+    const idsReales = productosValidos.map(p => p.id);
+    
+    const mapeosRotos = idsEnMapeo.filter(id => !idsReales.includes(id));
+    const productosHuerfanos = idsReales.filter(id => !idsEnMapeo.includes(id));
+    
+    if (mapeosRotos.length > 0 || productosHuerfanos.length > 0) {
+      console.log(`⚠️ MAPEO DESACTUALIZADO: ${mapeosRotos.length} mapeos rotos, ${productosHuerfanos.length} productos huérfanos`);
+      
+      // Regenerar mapeo
+      console.log("🔄 Regenerando mapeo de slugs...");
+      const nuevoMapeo = {};
+      const slugsUsados = new Set();
+      
+      productosValidos.forEach(producto => {
+        let slug = generarSlug(producto.nombre, producto.numeroParte);
+        let slugFinal = slug;
+        let contador = 1;
+        
+        while (slugsUsados.has(slugFinal)) {
+          slugFinal = `${slug}-${contador}`;
+          contador++;
+        }
+        
+        slugsUsados.add(slugFinal);
+        nuevoMapeo[slugFinal] = producto.id;
+      });
+      
+      // Guardar mapeo actualizado
+      await db.ref("/seo/slugs/mapeo/productos").set(nuevoMapeo);
+      await db.ref("/seo/slugs/fechaActualizacion").set(new Date().toISOString());
+      
+      console.log(`✅ Mapeo regenerado: ${Object.keys(nuevoMapeo).length} productos mapeados`);
+    } else {
+      console.log("✅ Mapeo de slugs íntegro");
+    }
+    
+  } catch (error) {
+    console.error("❌ Error verificando slugs:", error.message);
+  }
+}
 
 /**
  * Resolver slug a ID (público)
@@ -262,6 +397,67 @@ router.get("/debug-firebase", async (req, res) => {
     
   } catch (error) {
     console.error("❌ Error en debugging:", error.message);
+    res.status(500).json({
+      error: "Error en debugging",
+      detalles: error.message
+    });
+  }
+});
+
+
+/**
+ * Debug específico para un slug
+ * GET /api/seo/debug-slug/:slug
+ */
+router.get("/debug-slug/:slug", async (req, res) => {
+  const { slug } = req.params;
+  
+  try {
+    console.log(`🔍 DEBUGGING SLUG: "${slug}"`);
+    
+    // 1. Verificar en mapeo
+    const mapeoSnapshot = await db.ref(`/seo/slugs/mapeo/productos/${slug}`).once("value");
+    const idMapeado = mapeoSnapshot.val();
+    
+    // 2. Si existe, verificar producto
+    let productoInfo = null;
+    if (idMapeado) {
+      const productoSnapshot = await db.ref(`/${idMapeado}`).once("value");
+      if (productoSnapshot.exists()) {
+        productoInfo = { id: idMapeado, ...productoSnapshot.val() };
+      }
+    }
+    
+    // 3. Buscar productos con nombres similares
+    const todosSnapshot = await db.ref("/").once("value");
+    const todosProductos = todosSnapshot.val() || {};
+    
+    const productosSimilares = Object.entries(todosProductos)
+      .filter(([id, producto]) => producto?.nombre)
+      .map(([id, producto]) => ({
+        id,
+        nombre: producto.nombre,
+        numeroParte: producto.numeroParte,
+        slugGenerado: generarSlug(producto.nombre, producto.numeroParte)
+      }))
+      .filter(p => p.slugGenerado.includes(slug.replace(/-/g, ' ').toLowerCase()) ||
+                   slug.includes(p.slugGenerado.replace(/-/g, ' ').toLowerCase()))
+      .slice(0, 5);
+    
+    res.json({
+      slug,
+      mapeoEncontrado: !!idMapeado,
+      idMapeado,
+      productoExiste: !!productoInfo,
+      productoInfo: productoInfo ? {
+        nombre: productoInfo.nombre,
+        numeroParte: productoInfo.numeroParte
+      } : null,
+      productosSimilares,
+      timestamp: new Date().toISOString()
+    });
+    
+  } catch (error) {
     res.status(500).json({
       error: "Error en debugging",
       detalles: error.message

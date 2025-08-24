@@ -392,30 +392,25 @@ const generarSchemaProducto = (producto, id, seoEspecifico = null) => {
   };
 };
 
-const generarSlug = (texto) => {
+const generarSlug = (texto, numeroParte = '') => {
   if (!texto) return '';
-  return texto
+  
+  // Incluir número de parte para hacer el slug más único
+  let textoCompleto = texto;
+  if (numeroParte && numeroParte.trim()) {
+    textoCompleto = `${texto} ${numeroParte}`;
+  }
+  
+  return textoCompleto
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "") // Remover acentos
-    .replace(/[^\w\s-]/g, ' ') // Reemplazar caracteres especiales por espacios (excepto guiones)
+    .replace(/[^\w\s-]/g, ' ') // Reemplazar caracteres especiales por espacios
     .replace(/\s+/g, "-") // Espacios múltiples a un solo guión
     .replace(/-+/g, "-") // Múltiples guiones a uno solo
     .replace(/^-|-$/g, '') // Remover guiones al inicio/final
     .trim();
 };
-
-
-// Limpiar caché periódicamente
-setInterval(() => {
-  const now = Date.now();
-  for (const [key, value] of seoCache.entries()) {
-    if (now - value.timestamp > CACHE_DURATION) {
-      seoCache.delete(key);
-    }
-  }
-}, 10 * 60 * 1000);
-
 /**
  * Función para obtener estadísticas del sistema
  */
