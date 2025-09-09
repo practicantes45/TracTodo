@@ -24,7 +24,7 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
-  const GTM_ID = 'GTM-XXXXXXX'; // 👈 remplaza por tu ID real
+  const GTM_ID = 'GTM-TK5BTJRB'; // 👈 remplaza por tu ID real
 
   return (
     <html lang="es-MX" className={`${inter.variable} ${ubuntu.variable} ${montserrat.variable}`}>
