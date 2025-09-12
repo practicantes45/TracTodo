@@ -1,8 +1,10 @@
 /* Navbar.module.css — Verde bandera + alto contraste + logo grande 🇲🇽
-   FIX: usar :global(:root) en lugar de :root para variables en CSS Modules
+   FIX: variables definidas en clases locales (no :root) para CSS Modules
 */
 
-:global(:root) {
+/* ===== Barra móvil (<768px) ===== */
+.mobileSearchWrapper {
+  /* Vars locales (también aquí porque usa var() en este bloque) */
   --ink: #fdfdfd;
   --ink-dim: #e6e6e6;
   --bg: #006847;          /* verde bandera */
@@ -12,10 +14,7 @@
   --mx-green: #006847;
   --mx-white: #ffffff;
   --mx-red:   #ce1126;
-}
 
-/* ===== Barra móvil (<768px) ===== */
-.mobileSearchWrapper {
   display: none;
   background: var(--bg);
   border-bottom: 2px solid transparent;
@@ -29,6 +28,17 @@
 
 /* ===== AppBar desktop (≥768px) ===== */
 .appBar {
+  /* Vars locales disponibles para todo lo dentro del nav */
+  --ink: #fdfdfd;
+  --ink-dim: #e6e6e6;
+  --bg: #006847;
+  --bg-2: #015d3e;
+  --shadow: 0 6px 16px rgba(0,0,0,.35);
+
+  --mx-green: #006847;
+  --mx-white: #ffffff;
+  --mx-red:   #ce1126;
+
   position: sticky; top: 0; z-index: 1000; width: 100%;
   background: var(--bg);
   color: var(--ink);
@@ -45,8 +55,10 @@
   display: inline-flex; align-items: center; gap: 8px;
   text-decoration: none; color: var(--ink);
 }
+
+/* LOGO MÁS GRANDE (responsive) */
 .logoImg {
-  height: clamp(48px, 7vw, 88px);  /* logo más grande */
+  height: clamp(48px, 7vw, 88px);
   width: auto; object-fit: contain; display: block;
 }
 
