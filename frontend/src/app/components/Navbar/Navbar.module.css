@@ -1,6 +1,8 @@
-/* Navbar.module.css — Verde bandera + alto contraste + logo grande 🇲🇽 */
+/* Navbar.module.css — Verde bandera + alto contraste + logo grande 🇲🇽
+   FIX: usar :global(:root) en lugar de :root para variables en CSS Modules
+*/
 
-:root {
+:global(:root) {
   --ink: #fdfdfd;
   --ink-dim: #e6e6e6;
   --bg: #006847;          /* verde bandera */
@@ -43,13 +45,9 @@
   display: inline-flex; align-items: center; gap: 8px;
   text-decoration: none; color: var(--ink);
 }
-
-/* LOGO MÁS GRANDE (responsive) */
 .logoImg {
-  height: clamp(48px, 7vw, 88px);  /* ⬅️ más grande */
-  width: auto;
-  object-fit: contain;
-  display: block;
+  height: clamp(48px, 7vw, 88px);  /* logo más grande */
+  width: auto; object-fit: contain; display: block;
 }
 
 /* Acento tricolor opcional al lado del logo */
@@ -98,7 +96,7 @@
   .mobileSearchWrapper { display: block; }
   .appBar { display: none; }
   .mobileSearchContainer { padding: 10px 12px; gap: 10px; }
-  .logoImg { height: 40px; } /* un poco más chico en móvil */
+  .logoImg { height: 40px; }
 }
 @media (min-width: 768px) {
   .mobileSearchWrapper { display: none !important; }
