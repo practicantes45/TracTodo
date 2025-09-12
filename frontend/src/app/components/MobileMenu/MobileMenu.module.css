@@ -1,96 +1,75 @@
-/* MobileMenu.module.css - Menú Hamburguesa Responsivo con elementos más grandes */
+/* MobileMenu.module.css - Menú Hamburguesa Responsivo con elementos más grandes
+   FIXES:
+   - Overlay: pointer-events: none por defecto; auto solo cuando está abierto
+   - Z-index consistente: overlay < panel; botón por encima
+   - Sin cambios visuales inesperados
+*/
 
 /* ===== BOTÓN HAMBURGUESA ===== */
 .hamburgerButton {
-  display: none; /* Oculto por defecto, se muestra solo en móvil */
+  display: none; /* solo en móvil */
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 40px;
-  height: 40px;
+  width: 40px; height: 40px;
   background: transparent;
-  border: none;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 8px;
+  border: none; cursor: pointer;
+  padding: 8px; border-radius: 8px;
   transition: all 0.3s ease;
   position: relative;
-  z-index: 1001;
+  z-index: 10010; /* por encima del overlay */
 }
 
-.hamburgerButton:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
+.hamburgerButton:hover { background: rgba(255, 255, 255, 0.1); }
 
 /* Líneas del hamburguesa con animación */
 .hamburgerLine {
-  width: 24px;
-  height: 2px;
-  background: white;
-  margin: 2px 0;
+  width: 24px; height: 2px;
+  background: white; margin: 2px 0;
   transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1);
-  border-radius: 2px;
-  transform-origin: center;
+  border-radius: 2px; transform-origin: center;
 }
 
 /* Animación para convertir hamburguesa en X */
-.hamburgerButton.active .hamburgerLine:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
-}
+.hamburgerButton.active .hamburgerLine:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.hamburgerButton.active .hamburgerLine:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburgerButton.active .hamburgerLine:nth-child(3) { transform: rotate(-45deg) translate(7px, -6px); }
 
-.hamburgerButton.active .hamburgerLine:nth-child(2) {
-  opacity: 0;
-  transform: scaleX(0);
-}
-
-.hamburgerButton.active .hamburgerLine:nth-child(3) {
-  transform: rotate(-45deg) translate(7px, -6px);
-}
-
-/* MANTENER: Ocultar botón hamburguesa cuando el menú está abierto */
+/* Ocultar botón cuando el menú está abierto */
 .hamburgerButton.menuIsOpen {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-  transform: scale(0.8);
+  opacity: 0; visibility: hidden; pointer-events: none; transform: scale(0.8);
 }
 
 /* ===== OVERLAY DE FONDO ===== */
 .overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  position: fixed; inset: 0;
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(2px);
-  z-index: 60;
+  z-index: 10000;      /* debajo del panel y del botón */
   opacity: 0;
   visibility: hidden;
-  transition: all 0.3s ease;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  pointer-events: none;   /* FIX: cerrado NO captura clics */
 }
 
 .overlayOpen {
   opacity: 1;
   visibility: visible;
+  pointer-events: auto;   /* FIX: solo abierto captura clics */
 }
 
 /* ===== MENÚ LATERAL ===== */
 .mobileMenu {
-  position: fixed;
-  top: 0;
-  left: -100%;
-  width: 320px; /* AUMENTADO de 280px a 320px */
-  height: 100vh;
+  position: fixed; top: 0; left: -100%;
+  width: 320px; height: 100vh;
   background: linear-gradient(135deg, #0a0a1e 0%, #1a1a2e 25%, var(--primary-color, #002a5c) 50%, #16213e 75%, #0f1419 100%);
-  background-size: 400% 400%;
-  animation: menuGradientFlow 12s ease infinite;
-  z-index: 20000;
+  background-size: 400% 400%; animation: menuGradientFlow 12s ease infinite;
+  z-index: 10020;         /* por encima del overlay */
   transition: left 0.4s cubic-bezier(0.23, 1, 0.320, 1);
-  display: flex;
-  flex-direction: column;
+  display: flex; flex-direction: column;
   overflow-y: auto;
   box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+  will-change: left;      /* micro-optimización */
 }
 
 /* Animación del gradiente del menú */
@@ -102,19 +81,13 @@
 
 /* Partículas flotantes en el menú */
 .mobileMenu::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image: 
+  content: ''; position: absolute; inset: 0;
+  background-image:
     radial-gradient(2px 2px at 30px 40px, rgba(0, 180, 216, 0.4), transparent),
     radial-gradient(1px 1px at 80px 80px, rgba(255, 255, 255, 0.2), transparent),
     radial-gradient(1px 1px at 120px 120px, rgba(0, 180, 216, 0.3), transparent),
     radial-gradient(2px 2px at 200px 160px, rgba(255, 255, 255, 0.1), transparent);
-  background-repeat: repeat;
-  background-size: 250px 200px;
+  background-repeat: repeat; background-size: 250px 200px;
   animation: menuSparkle 25s linear infinite;
   pointer-events: none;
 }
@@ -125,355 +98,151 @@
 }
 
 /* Estado abierto del menú */
-.menuOpen {
-  left: 0;
-}
+.menuOpen { left: 0; }
 
 /* ===== HEADER DEL MENÚ ===== */
 .menuHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between; /* Logo a la izquierda, botón cerrar a la derecha */
-  padding: 25px; /* AUMENTADO de 20px a 25px */
-  border-bottom: 1px solid rgba(0, 180, 216, 0.2);
-  position: relative;
-  z-index: 2;
-  min-height: 100px; /* AUMENTADO de 80px a 100px */
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 25px; border-bottom: 1px solid rgba(0, 180, 216, 0.2);
+  position: relative; z-index: 2; min-height: 100px;
 }
 
-.logoContainer {
-  flex-shrink: 0; /* CAMBIADO: ya no se centra, se posiciona a la izquierda */
-  display: flex;
-  align-items: center;
-}
+.logoContainer { flex-shrink: 0; display: flex; align-items: center; }
 
 .menuLogo {
-  height: 50px; /* AUMENTADO de 40px a 55px */
-  width: auto;
-  filter: brightness(1.1);
+  height: 55px; width: auto; filter: brightness(1.1);
 }
 
 /* ===== BOTÓN DE CERRAR ===== */
 .closeButton {
-  background: transparent;
-  border: none;
-  color: #e0e0e0;
-  font-size: 2rem; /* AUMENTADO de 1.5rem a 2rem */
-  cursor: pointer;
-  padding: 10px; /* AUMENTADO de 8px a 10px */
-  border-radius: 50%;
-  width: 50px; /* AUMENTADO de 40px a 50px */
-  height: 50px; /* AUMENTADO de 40px a 50px */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  flex-shrink: 0;
+  background: transparent; border: none; color: #e0e0e0;
+  font-size: 2rem; cursor: pointer; padding: 10px;
+  border-radius: 50%; width: 50px; height: 50px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s ease; position: relative; overflow: hidden; flex-shrink: 0;
 }
-
-/* Efecto de fondo en hover */
 .closeButton::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(220, 53, 69, 0.1);
-  border-radius: 50%;
-  transform: scale(0);
-  transition: transform 0.3s ease;
-  z-index: -1;
+  content: ''; position: absolute; inset: 0;
+  background: rgba(220, 53, 69, 0.1); border-radius: 50%;
+  transform: scale(0); transition: transform 0.3s ease; z-index: -1;
 }
-
 .closeButton:hover {
-  color: #ff4757;
-  transform: rotate(90deg);
-  background: rgba(255, 71, 87, 0.1);
-  border: 1px solid rgba(255, 71, 87, 0.3);
+  color: #ff4757; transform: rotate(90deg);
+  background: rgba(255, 71, 87, 0.1); border: 1px solid rgba(255, 71, 87, 0.3);
 }
-
-.closeButton:hover::before {
-  transform: scale(1);
-}
-
-.closeButton:active {
-  transform: rotate(90deg) scale(0.95);
-}
-
-/* Efecto de pulso sutil en el botón cerrar */
-.closeButton {
-  animation: closePulse 3s ease-in-out infinite;
-}
-
+.closeButton:hover::before { transform: scale(1); }
+.closeButton:active { transform: rotate(90deg) scale(0.95); }
+/* pulso sutil */
+.closeButton { animation: closePulse 3s ease-in-out infinite; }
 @keyframes closePulse {
-  0%, 100% { 
-    box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.4);
-  }
-  50% { 
-    box-shadow: 0 0 0 8px rgba(255, 71, 87, 0);
-  }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.4); }
+  50%     { box-shadow: 0 0 0 8px rgba(255, 71, 87, 0); }
 }
 
 /* ===== LISTA DE NAVEGACIÓN ===== */
 .menuList {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  flex: 1;
-  padding-top: 25px; /* AUMENTADO de 20px a 25px */
-  position: relative;
-  z-index: 2;
+  list-style: none; margin: 0; flex: 1;
+  padding: 25px 0 0; position: relative; z-index: 2;
 }
+.menuItem { margin: 0; }
 
-.menuItem {
-  margin: 0;
-}
-
-/* CAMBIADO: Ahora es un botón en lugar de enlace */
+/* Botón como enlace */
 .menuLink {
-  display: block;
-  width: 100%;
-  color: #e0e0e0;
-  text-decoration: none;
-  padding: 22px 25px; /* AUMENTADO de 18px 20px a 22px 25px */
-  font-size: 1.3rem; /* AUMENTADO de 1.1rem a 1.3rem */
-  font-weight: 600;
+  display: block; width: 100%;
+  color: #e0e0e0; text-decoration: none;
+  padding: 22px 25px; font-size: 1.3rem; font-weight: 600;
   font-family: var(--font-mina), 'Mina', sans-serif;
-  transition: all 0.3s ease;
+  transition: all 0.3s ease; position: relative; overflow: hidden;
+  background: transparent; border: none; text-align: left; cursor: pointer;
   border-left: 4px solid transparent;
-  position: relative;
-  overflow: hidden;
-  background: transparent;
-  border: none;
-  border-left: 4px solid transparent;
-  text-align: left;
-  cursor: pointer;
 }
-
-/* Efecto hover en enlaces */
 .menuLink::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 100%;
-  background: rgba(0, 180, 216, 0.1);
-  transition: width 0.3s ease;
-  z-index: -1;
+  content: ''; position: absolute; inset: 0 auto 0 0; width: 0;
+  background: rgba(0, 180, 216, 0.1); transition: width 0.3s ease; z-index: -1;
 }
-
 .menuLink:hover {
   color: var(--accent-color, #00b4d8);
   border-left-color: var(--accent-color, #00b4d8);
   text-shadow: 0 0 8px rgba(0, 180, 216, 0.4);
   transform: translateX(8px);
 }
+.menuLink:hover::before { width: 100%; }
 
-.menuLink:hover::before {
-  width: 100%;
-}
-
-/* ===== ENLACE ACTIVO ===== */
+/* Enlace activo */
 .menuLink.activeLink {
   color: var(--accent-color, #00b4d8);
   border-left-color: var(--accent-color, #00b4d8);
   background: rgba(0, 180, 216, 0.15);
   text-shadow: 0 0 10px rgba(0, 180, 216, 0.6);
-  font-weight: 700;
-  position: relative;
+  font-weight: 700; position: relative;
 }
-
-.menuLink.activeLink::before {
-  width: 100%;
-  background: rgba(0, 180, 216, 0.2);
-}
-
-/* Indicador adicional para enlace activo */
+.menuLink.activeLink::before { width: 100%; background: rgba(0, 180, 216, 0.2); }
 .menuLink.activeLink::after {
-  content: '▶';
-  position: absolute;
-  right: 25px; /* AUMENTADO de 20px a 25px */
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--accent-color, #00b4d8);
-  font-size: 1rem; /* AUMENTADO de 0.8rem a 1rem */
-  animation: activeArrow 2s ease-in-out infinite;
+  content: '▶'; position: absolute; right: 25px; top: 50%;
+  transform: translateY(-50%); color: var(--accent-color, #00b4d8);
+  font-size: 1rem; animation: activeArrow 2s ease-in-out infinite;
 }
-
 @keyframes activeArrow {
-  0%, 100% { 
-    opacity: 0.7;
-    transform: translateY(-50%) translateX(0);
-  }
-  50% { 
-    opacity: 1;
-    transform: translateY(-50%) translateX(3px);
-  }
-}
-
-/* Hover sobre enlace activo */
-.menuLink.activeLink:hover {
-  color: #00d4ff;
-  border-left-color: #00d4ff;
-  text-shadow: 0 0 15px rgba(0, 212, 255, 0.8);
-  background: rgba(0, 180, 216, 0.25);
-  transform: translateX(12px);
+  0%, 100% { opacity: 0.7; transform: translateY(-50%) translateX(0); }
+  50% { opacity: 1; transform: translateY(-50%) translateX(3px); }
 }
 
 /* ===== FOOTER DEL MENÚ ===== */
 .menuFooter {
-  padding: 25px; /* AUMENTADO de 20px a 25px */
-  border-top: 1px solid rgba(0, 180, 216, 0.2);
-  text-align: center;
-  position: relative;
-  z-index: 2;
+  padding: 25px; border-top: 1px solid rgba(0, 180, 216, 0.2);
+  text-align: center; position: relative; z-index: 2;
 }
-
 .menuSlogan {
-  color: #b8b8b8;
-  font-size: 1.1rem; /* AUMENTADO de 1rem a 1.1rem */
-  margin: 0;
-  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
-  font-weight: 300;
+  color: #b8b8b8; font-size: 1.1rem; margin: 0;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif; font-weight: 300;
 }
-
 .brandName {
-  color: var(--accent-color, #00b4d8);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  text-shadow: 0 0 8px rgba(0, 180, 216, 0.4);
+  color: var(--accent-color, #00b4d8); font-weight: 700; text-transform: uppercase;
+  letter-spacing: 1px; text-shadow: 0 0 8px rgba(0, 180, 216, 0.4);
 }
 
-/* ===== RESPONSIVE - MOSTRAR SOLO EN MÓVIL ===== */
+/* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-  .hamburgerButton {
-    display: flex;
-  }
+  .hamburgerButton { display: flex; }
 }
-
 @media (max-width: 480px) {
-  .mobileMenu {
-    width: 100%;
-    max-width: 350px; /* AUMENTADO de 320px a 350px */
-  }
-  
-  .menuLink {
-    padding: 20px 25px; /* AUMENTADO de 16px 20px a 20px 25px */
-    font-size: 1.2rem; /* AUMENTADO de 1rem a 1.2rem */
-  }
-  
-  .menuLogo {
-    height: 60px; /* AUMENTADO de 35px a 50px */
-  }
-  
-  .closeButton {
-    left: 15px; /* AUMENTADO de 15px a 20px */
-    font-size: 2rem; /* AUMENTADO de 1.3rem a 1.8rem */
-    width: 60px; /* AUMENTADO de 36px a 45px */
-    height: 60px; /* AUMENTADO de 36px a 45px */
-  }
-  
-  .menuHeader {
-    padding: 20px; /* AUMENTADO de 15px a 20px */
-    min-height: 90px; /* AUMENTADO de 70px a 90px */
-  }
-  
-  .menuSlogan {
-    font-size: 1rem; /* Mantener legible en móviles pequeños */
-  }
+  .mobileMenu { width: 100%; max-width: 350px; }
+  .menuLink { padding: 20px 25px; font-size: 1.2rem; }
+  .menuLogo { height: 60px; }
+  .closeButton { font-size: 2rem; width: 60px; height: 60px; }
+  .menuHeader { padding: 20px; min-height: 90px; }
+  .menuSlogan { font-size: 1rem; }
 }
 
 /* ===== EFECTOS ADICIONALES ===== */
-
-/* Efecto de entrada para los elementos del menú */
 .menuOpen .menuItem {
-  opacity: 0;
-  transform: translateX(-20px);
+  opacity: 0; transform: translateX(-20px);
   animation: slideInMenu 0.4s ease-out forwards;
 }
-
 .menuOpen .menuItem:nth-child(1) { animation-delay: 0.1s; }
 .menuOpen .menuItem:nth-child(2) { animation-delay: 0.15s; }
 .menuOpen .menuItem:nth-child(3) { animation-delay: 0.2s; }
 .menuOpen .menuItem:nth-child(4) { animation-delay: 0.25s; }
 .menuOpen .menuItem:nth-child(5) { animation-delay: 0.3s; }
+@keyframes slideInMenu { to { opacity: 1; transform: translateX(0); } }
 
-@keyframes slideInMenu {
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-/* Animación de entrada para el botón cerrar */
 .menuOpen .closeButton {
-  opacity: 0;
-  transform: rotate(-90deg) scale(0.5);
+  opacity: 0; transform: rotate(-90deg) scale(0.5);
   animation: closeButtonIn 0.5s ease-out 0.2s forwards;
 }
+@keyframes closeButtonIn { to { opacity: 1; transform: rotate(0deg) scale(1); } }
 
-@keyframes closeButtonIn {
-  to {
-    opacity: 1;
-    transform: rotate(0deg) scale(1);
-  }
-}
-
-/* Respeto por preferencias de movimiento reducido */
+/* Motion/contrast prefs */
 @media (prefers-reduced-motion: reduce) {
-  .mobileMenu,
-  .hamburgerLine,
-  .overlay,
-  .menuLink,
-  .closeButton {
-    transition: none;
-  }
-  
-  .mobileMenu::before,
-  .closeButton {
-    animation: none;
-  }
-  
-  .menuOpen .menuItem,
-  .menuOpen .closeButton {
-    animation: none;
-    opacity: 1;
-    transform: none;
-  }
+  .mobileMenu, .hamburgerLine, .overlay, .menuLink, .closeButton { transition: none; }
+  .mobileMenu::before, .closeButton { animation: none; }
+  .menuOpen .menuItem, .menuOpen .closeButton { animation: none; opacity: 1; transform: none; }
 }
-
-/* Modo de alto contraste */
 @media (prefers-contrast: high) {
-  .mobileMenu {
-    background: #000000;
-    border-right: 2px solid #ffffff;
-  }
-  
-  .menuLink {
-    color: #ffffff;
-  }
-  
-  .menuLink.activeLink {
-    background: #ffffff;
-    color: #000000;
-  }
-  
-  .hamburgerLine {
-    background: #ffffff;
-  }
-  
-  .closeButton {
-    color: #ffffff;
-    border: 1px solid #ffffff;
-  }
-  
-  .closeButton:hover {
-    background: #ffffff;
-    color: #000000;
-  }
+  .mobileMenu { background: #000; border-right: 2px solid #fff; }
+  .menuLink { color: #fff; }
+  .menuLink.activeLink { background: #fff; color: #000; }
+  .hamburgerLine { background: #fff; }
+  .closeButton { color: #fff; border: 1px solid #fff; }
+  .closeButton:hover { background: #fff; color: #000; }
 }

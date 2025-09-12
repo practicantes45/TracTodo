@@ -1,492 +1,116 @@
-/* Navbar.module.css - Navegación con animación de fondo mejorada */
+/* Navbar.module.css — Verde bandera + alto contraste + logo grande 🇲🇽 */
 
-/* ===== BARRA DE BÚSQUEDA MÓVIL SUPERIOR ===== */
+:root {
+  --ink: #fdfdfd;
+  --ink-dim: #e6e6e6;
+  --bg: #006847;          /* verde bandera */
+  --bg-2: #015d3e;        /* verde más oscuro para hover/activo */
+  --shadow: 0 6px 16px rgba(0,0,0,.35);
+
+  --mx-green: #006847;
+  --mx-white: #ffffff;
+  --mx-red:   #ce1126;
+}
+
+/* ===== Barra móvil (<768px) ===== */
 .mobileSearchWrapper {
-  display: none; /* Oculto por defecto, solo visible en móvil */
-  background: linear-gradient(135deg, rgba(10, 16, 135, 0.9) 0%, rgba(0, 42, 92, 0.95) 50%, rgba(15, 20, 25, 0.9) 100%);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(0, 180, 216, 0.2);
-  position: relative;
-  z-index: 51;
-  width: 100%;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
-
-.mobileSearchContainer {
-  display: flex;
-  align-items: center;
-  padding: 12px 15px;
-  gap: 12px;
-  width: 100%;
-}
-
-.mobileMenuButton {
-  flex-shrink: 0;
-}
-
-.mobileSearchBar {
-  flex: 1;
-  width: 100%;
-}
-
-/* ===== NAVIGATION BAR CON ANIMACIÓN DE FONDO COMPLETA ===== */
-.appBar {
-  /* NUEVO: Gradiente animado igual al header */
-  background: linear-gradient(135deg, #0a0a1e 0%, #1a1a2e 25%, var(--primary-color) 50%, #16213e 75%, #0f1419 100%);
-  background-size: 400% 400%; 
-  animation: headerGradientFlow 12s ease infinite;
-  color: white;
-  overflow: visible; /* CAMBIADO: De "hidden" a "visible" para permitir dropdown */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  padding: 18px 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 0px;
-  z-index: 50;
-  position: relative;
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(0, 180, 216, 0.2);
-  min-height: 70px;
-  align-items: center;
-  flex-shrink: 0;
-}
-
-/* NUEVO: Animación del gradiente del navbar (igual al header) */
-@keyframes headerGradientFlow {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-/* NUEVO: Partículas sutiles para el navbar (igual al header) */
-.appBar::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-image:
-    radial-gradient(1px 1px at 20px 20px, rgba(0, 180, 216, 0.3), transparent),
-    radial-gradient(1px 1px at 60px 15px, rgba(255, 255, 255, 0.15), transparent),
-    radial-gradient(1px 1px at 120px 25px, rgba(0, 180, 216, 0.4), transparent),
-    radial-gradient(1px 1px at 180px 10px, rgba(255, 255, 255, 0.1), transparent);
-  background-repeat: repeat;
-  background-size: 200px 70px; /* Ajustado para altura del navbar */
-  animation: headerSparkle 15s linear infinite;
-  pointer-events: none;
-}
-
-/* NUEVO: Animación de partículas */
-@keyframes headerSparkle {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-200px);
-  }
-}
-
-/* NUEVO: Efecto de brillo sutil en el navbar */
-.appBar::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(90deg,
-      transparent 0%,
-      rgba(0, 180, 216, 0.03) 25%,
-      rgba(0, 180, 216, 0.06) 50%,
-      rgba(0, 180, 216, 0.03) 75%,
-      transparent 100%);
-  transform: translateX(-100%);
-  animation: headerWave 6s ease-in-out infinite;
-  pointer-events: none;
-}
-
-/* NUEVO: Animación de onda de brillo */
-@keyframes headerWave {
-  0%, 100% {
-    transform: translateX(-100%);
-  }
-  50% {
-    transform: translateX(100%);
-  }
-}
-
-/* Contenedor del menú móvil - oculto por defecto */
-.mobileMenuContainer {
   display: none;
+  background: var(--bg);
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(90deg, var(--mx-green), var(--mx-white), var(--mx-red)) 1;
+  position: relative; z-index: 51; width: 100%;
+  box-shadow: 0 2px 10px rgba(0,0,0,.25);
+}
+.mobileSearchContainer { display: flex; align-items: center; gap: 12px; padding: 12px 15px; width: 100%; }
+.mobileMenuButton { flex-shrink: 0; }
+.mobileSearchBar { flex: 1; width: 100%; }
+
+/* ===== AppBar desktop (≥768px) ===== */
+.appBar {
+  position: sticky; top: 0; z-index: 1000; width: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  padding: 12px 16px;
+  display: flex; justify-content: space-between; align-items: center;
+  border-bottom: 2px solid transparent;
+  border-image: linear-gradient(90deg, var(--mx-green), var(--mx-white), var(--mx-red)) 1;
+  min-height: 64px;
 }
 
+/* Marca/Logo */
+.brand {
+  display: inline-flex; align-items: center; gap: 8px;
+  text-decoration: none; color: var(--ink);
+}
+
+/* LOGO MÁS GRANDE (responsive) */
+.logoImg {
+  height: clamp(48px, 7vw, 88px);  /* ⬅️ más grande */
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* Acento tricolor opcional al lado del logo */
+.flagAccent { position: relative; padding-left: 14px; }
+.flagAccent::before {
+  content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+  width: 6px; height: 24px; border-radius: 2px;
+  background: linear-gradient(180deg, var(--mx-green), var(--mx-white), var(--mx-red));
+  box-shadow: 0 0 6px rgba(255,255,255,.18);
+}
+
+/* ===== Navegación ===== */
 .navList {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  font-size: 1.4rem;
-  position: relative;
-  z-index: 2; /* Por encima de las animaciones de fondo */
+  list-style: none; margin: 0; padding: 0;
+  display: flex; gap: 8px;
+  font-size: 1.08rem;
+  position: relative; z-index: 2;
 }
-
-.navItem {
-  display: inline;
-  margin: 0 10px;
-  position: relative;
-  z-index: 2; /* Por encima de las animaciones de fondo */
-}
+.navItem { display: inline-flex; }
 
 .navLink {
-  color: white;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  transition: all 0.4s ease;
-  font-family: var(--font-mina), 'Mina', sans-serif;
-  font-weight: 700;
-  position: relative;
-  border-radius: 8px;
-  overflow: hidden;
-  display: block;
-  /* AGREGADO: evitar que se encojan */
-  flex-shrink: 0;
+  color: var(--ink);
+  display: block; padding: 12px 14px; border-radius: 10px;
+  text-decoration: none; font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0,0,0,.6);
+  transition: color .2s ease, background-color .2s ease, transform .2s ease;
+  position: relative; overflow: hidden;
 }
-
-/* Efecto hover mejorado con transiciones suaves */
-.navLink::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 0;
-  height: 100%;
-  background: rgba(0, 180, 216, 0.08);
-  transition: width 0.25s ease;
-  z-index: -1;
-}
-
 .navLink::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background: var(--accent-color, #00b4d8);
-  transition: all 0.25s ease;
+  content: ''; position: absolute; left: 50%; bottom: 6px;
+  width: 0; height: 2px; border-radius: 1px;
+  background: linear-gradient(90deg, var(--mx-green), var(--mx-white), var(--mx-red));
   transform: translateX(-50%);
-  border-radius: 1px;
-  filter: drop-shadow(0 0 3px rgba(0, 180, 216, 0.3));
+  transition: width .2s ease;
+}
+.navLink:hover { color: var(--ink-dim); background: var(--bg-2); transform: translateY(-1px); }
+.navLink:hover::after { width: 70%; }
+.navLink.active { background: var(--bg-2); box-shadow: inset 0 0 0 1px rgba(255,255,255,.15); }
+.navLink.active::after { width: 80%; }
+
+/* ===== Search desktop ===== */
+.searchSection { display: flex; align-items: center; position: relative; z-index: 2; }
+
+/* ===== Responsive ===== */
+@media (max-width: 767.98px) {
+  .mobileSearchWrapper { display: block; }
+  .appBar { display: none; }
+  .mobileSearchContainer { padding: 10px 12px; gap: 10px; }
+  .logoImg { height: 40px; } /* un poco más chico en móvil */
+}
+@media (min-width: 768px) {
+  .mobileSearchWrapper { display: none !important; }
+  .appBar { display: flex; }
+  .navList { display: flex; }
 }
 
-/* Estado hover para enlaces normales */
-.navLink:hover {
-  color: var(--accent-color, #00b4d8);
-  text-shadow: 0 0 5px rgba(0, 180, 216, 0.3);
-  transform: translateY(-1px);
-}
-
-.navLink:hover::before {
-  width: 100%;
-}
-
-.navLink:hover::after {
-  width: 70%;
-}
-
-/* ===== ESTADO ACTIVO - ENLACE SELECCIONADO (VERSIÓN SUTIL) ===== */
-.navLink.active {
-  color: #ffffff;
-  background: rgba(255, 255, 255, 0.08);
-  text-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
-  font-weight: 700;
-  transform: scale(1.01);
-  box-shadow:
-    0 2px 8px rgba(0, 0, 0, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-/* Fondo completo para el enlace activo */
-.navLink.active::before {
-  width: 100%;
-  background: rgba(255, 255, 255, 0.06);
-}
-
-/* Subrayado permanente y más ancho para el enlace activo */
-.navLink.active::after {
-  width: 80%;
-  height: 2px;
-  background: linear-gradient(90deg,
-      var(--accent-color, #00b4d8) 0%,
-      #00d4ff 50%,
-      var(--accent-color, #00b4d8) 100%);
-  box-shadow: 0 0 6px rgba(0, 180, 216, 0.4);
-  animation: activeGlow 3s ease-in-out infinite;
-}
-
-/* Animación del subrayado activo */
-@keyframes activeGlow {
-  0%, 100% {
-    opacity: 0.7;
-    box-shadow: 0 0 6px rgba(0, 180, 216, 0.4);
-  }
-  50% {
-    opacity: 1;
-    box-shadow: 0 0 12px rgba(0, 180, 216, 0.6);
-  }
-}
-
-/* Efecto hover sobre el enlace activo - más sutil */
-.navLink.active:hover {
-  color: var(--accent-color, #00b4d8);
-  text-shadow: 0 0 8px rgba(0, 180, 216, 0.5);
-  transform: scale(1.02);
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(0, 180, 216, 0.3);
-}
-
-.navLink.active:hover::after {
-  width: 85%;
-  background: linear-gradient(90deg,
-      #00d4ff 0%,
-      #ffffff 50%,
-      #00d4ff 100%);
-  box-shadow: 0 0 15px rgba(0, 180, 216, 0.8);
-}
-
-/* Indicador adicional para el enlace activo */
-.navLink.active::before {
-  background: linear-gradient(135deg,
-      rgba(0, 180, 216, 0.1) 0%,
-      rgba(0, 180, 216, 0.2) 50%,
-      rgba(0, 180, 216, 0.1) 100%);
-  border: 1px solid rgba(0, 180, 216, 0.3);
-}
-
-/* Search Bar */
-.searchSection {
-  display: flex;
-  align-items: center;
-  position: relative;
-  z-index: 100; /* Por encima de las animaciones de fondo */
-}
-
-/* ===== RESPONSIVE DESIGN ===== */
-
-/* Móviles */
-@media(max-width: 1175px) {
-  .appBar {
-    display: none; /* Ocultar la navbar desktop en móvil */
-  }
-  .navList{
-    font-size: 19.6px; /* Aumentar el tamaño de fuente en móvil */
-  }
-}
-
-@media(max-width: 1097px) {
-  .appBar {
-    display: none; /* Ocultar la navbar desktop en móvil */
-  }
-  .navList{
-    font-size: 20px; /* Aumentar el tamaño de fuente en móvil */
-  }
-}
-
-@media(max-width:1078px){
-  .appBar {
-    display: none; /* Ocultar la navbar desktop en móvil */
-  }
-  .navList {
-    font-size: 19px; /* Ajustar el tamaño de fuente en pantallas más pequeñas */
-  }
-}
-
-@media(max-width:1044px){
-  .appBar {
-    display: none; /* Ocultar la navbar desktop en móvil */
-  }
-  .navList {
-    font-size: 18px; /* Ajustar el tamaño de fuente en pantallas más pequeñas */
-  }
-  .navItem{
-    margin: 0 5px;
-  }
-}
-
-@media(max-width: 992px) {
-  .appBar {
-    display: none; /* Ocultar la navbar desktop en móvil */
-  }
-  .navList {
-    font-size: 17px; /* Ajustar el tamaño de fuente en pantallas más pequeñas */
-  }
-  .navItem{
-    margin: 0 5px;
-  }
-}
-
-@media(max-width: 933px) {
-  .appBar {
-    display: none; /* Ocultar la navbar desktop en móvil */
-  }
-  .navList {
-    font-size: 16.5px; /* Ajustar el tamaño de fuente en pantallas más pequeñas */
-  }
-  .navItem{
-    margin: 0 5px;
-  }
-}
-
-@media(max-width: 913px) {
-  .appBar {
-    display: none; /* Ocultar la navbar desktop en móvil */
-  }
-  .navList {
-    font-size: 16px; /* Ajustar el tamaño de fuente en pantallas más pequeñas */
-  }
-  .navItem{
-    margin: 0 4px;
-  }
-}
-
-@media(max-width: 891px) {
-  .appBar {
-    display: none; /* Ocultar la navbar desktop en móvil */
-  }
-  .navList {
-    font-size: 16px; /* Ajustar el tamaño de fuente en pantallas más pequeñas */
-  }
-  .navItem{
-    margin: 0 3.5px;
-  }
-}
-
-@media(max-width: 874px) {
-  .appBar {
-    display: none; /* Ocultar la navbar desktop en móvil */
-  }
-  .navList {
-    font-size: 15.8px; /* Ajustar el tamaño de fuente en pantallas más pequeñas */
-  }
-  .navItem{
-    margin: 0 3.3px;
-  }
-}
-
-@media(max-width: 855px) {
-  .appBar {
-    display: none; /* Ocultar la navbar desktop en móvil */
-  }
-  .navList {
-    font-size: 15px; /* Ajustar el tamaño de fuente en pantallas más pequeñas */
-  }
-  .navItem{
-    margin: 0 3px;
-  }
-}
-
-@media (max-width: 768px) {
-  /* Mostrar la barra de búsqueda móvil encima de todo */
-  .mobileSearchWrapper {
-    display: block;
-  }
-
-  /* Ocultar la navbar desktop completamente en móvil */
-  .appBar {
-    display: none;
-    margin-bottom: 0px;
-  }
-}
-
-@media (max-width: 480px) {
-  .mobileSearchContainer {
-    padding: 10px 12px;
-    gap: 10px;
-  }
-}
-
-/* ===== TABLET Y DESKTOP ===== */
-@media (min-width: 769px) {
-  /* Ocultar la barra de búsqueda móvil */
-  .mobileSearchWrapper {
-    display: none !important;
-  }
-  
-  /* Mostrar navbar desktop normal */
-  .appBar {
-    display: flex;
-  }
-  
-  /* Asegurar que el menú móvil esté oculto */
-  .mobileMenuContainer {
-    display: none !important;
-  }
-  
-  /* Mantener navegación desktop visible */
-  .navList {
-    display: flex;
-  }
-}
-
-/* Efectos adicionales para dispositivos que soportan hover */
-@media (hover: hover) {
-  .navLink.active {
-    animation: activeEntrance 0.5s ease-out;
-  }
-}
-
-@keyframes activeEntrance {
-  0% {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1.02);
-  }
-}
-
-/* Modo de alto contraste */
+/* ===== Accesibilidad ===== */
 @media (prefers-contrast: high) {
-  .navLink.active {
-    background: #ffffff;
-    color: #000000;
-    border: 2px solid #000000;
-  }
-
-  .navLink.active::after {
-    background: #000000;
-  }
+  .navLink { text-shadow: none; }
+  .navLink.active { outline: 2px solid #fff; }
 }
-
-/* Respeto por la preferencia de movimiento reducido */
 @media (prefers-reduced-motion: reduce) {
-  .appBar,
-  .appBar::before,
-  .appBar::after,
-  .navLink.active::after {
-    animation: none;
-  }
-
-  .navLink {
-    transition: color 0.2s ease, background-color 0.2s ease;
-  }
-
-  /* Detener animaciones de fondo si el usuario prefiere movimiento reducido */
-  .headerGradientFlow,
-  .headerSparkle,
-  .headerWave,
-  .activeGlow {
-    animation: none;
-  }
+  .navLink { transition: none; }
 }
