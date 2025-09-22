@@ -1,9 +1,11 @@
 import { Inter, Ubuntu, Montserrat } from "next/font/google";
+import Script from "next/script";
+import { Suspense } from "react";
+
 import SEOProvider from "./components/SEOProvider/SEOProvider";
 import { AuthProvider } from "../hooks/useAuth";
 import CookieConsent from "./components/CookieConsent/CookieConsent";
-import Script from "next/script";
-import Analytics from "./Analytics";
+import Analytics from "./Analytics"; // empuja page_view al dataLayer
 
 import "./styles/global.css";
 
@@ -19,6 +21,7 @@ const montserrat = Montserrat({
   variable: "--font-montserrat",
 });
 
+// ===== Metadata global (sin viewport aquí) =====
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_FRONTEND_URL || "https://tractodo.com"),
   title: { template: "%s | Tractodo", default: "Tractodo - Refacciones para Tractocamión" },
@@ -27,14 +30,23 @@ export const metadata = {
   icons: { icon: "/favicon.ico", shortcut: "/favicon.ico", apple: "/apple-touch-icon.png" },
   manifest: "/site.webmanifest",
   robots: { index: true, follow: true },
-  viewport: { width: "device-width", initialScale: 1, themeColor: "#002a5c" },
+};
+
+// ✅ En App Router, viewport debe exportarse aparte
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: "#002a5c",
 };
 
 export default function RootLayout({ children }) {
-  const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || "GTM-TK5BTJRB"; // 👈 tu ID real de GTM
+  const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || "GTM-TK5BTJRB";
 
   return (
-    <html lang="es-MX" className={`${inter.variable} ${ubuntu.variable} ${montserrat.variable}`}>
+    <html
+      lang="es-MX"
+      className={`${inter.variable} ${ubuntu.variable} ${montserrat.variable}`}
+    >
       <head>
         {/* Google Tag Manager */}
         <Script id="gtm-script" strategy="afterInteractive">
@@ -44,6 +56,16 @@ export default function RootLayout({ children }) {
           'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
           })(window,document,'script','dataLayer','${GTM_ID}');`}
         </Script>
+
+        {/* Performance: preconnect a Google Fonts */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+
+        {/* Extras opcionales que ya traías */}
+        <meta name="msapplication-TileColor" content="#002a5c" />
+        <meta name="msapplication-config" content="/browserconfig.xml" />
+        <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+        <link rel="preload" href="/images/tractodo-logo.jpg" as="image" />
       </head>
       <body>
         {/* Google Tag Manager (noscript) */}
@@ -54,8 +76,10 @@ export default function RootLayout({ children }) {
           }}
         />
 
-        {/* Empuja eventos page_view al dataLayer */}
-        <Analytics />
+        {/* Importante: envolver Analytics (usa useSearchParams) en Suspense */}
+        <Suspense fallback={null}>
+          <Analytics />
+        </Suspense>
 
         <AuthProvider>
           <SEOProvider>

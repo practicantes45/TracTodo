@@ -1,11 +1,11 @@
 import { Suspense } from "react";
-import { generatePageMetadata } from "../../utils/metadataUtils";
 import EntretenimientoClient from "./EntretenimientoClient";
 
-// ✅ Metadata server-side (sin viewport aquí)
-export async function generateMetadata() {
-  return generatePageMetadata("entretenimiento", { path: "/entretenimiento" });
-}
+// ✅ NO uses generateMetadata aquí (suele colar viewport y rompe el build)
+export const metadata = {
+  title: "Entretenimiento",
+  description: "Videos y artículos de Tractodo: shorts, tutoriales y blog.",
+};
 
 export default function Page() {
   return (
@@ -14,3 +14,4 @@ export default function Page() {
     </Suspense>
   );
 }
+
