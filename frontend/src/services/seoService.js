@@ -1,5 +1,5 @@
 // services/seoService.js
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+const API_URL = process.env.NEXT_PUBLIC_API_BASE;
 
 /**
  * CORREGIDO: Configuraciones SEO con encoding UTF-8 correcto

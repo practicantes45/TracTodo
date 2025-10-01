@@ -1,12 +1,12 @@
 /* Global Styles - Versión Mejorada con Headers Animados */
 
 :root {
-  --primary-color: #002a5c;
-  --secondary-color: #023e8a;
-  --accent-color: #00b4d8;
-  --light-color: #f5f5f5;
-  --dark-color: #333333;
-  --success-color: #28a745;
+  --primary-color: #4c1d95;
+  --secondary-color: #2f0a4c;
+  --accent-color: #ff6d00;
+  --light-color: #fff4e6;
+  --dark-color: #1a0b2e;
+  --success-color: #ff9f1c;
 }
 
 * {
@@ -18,7 +18,40 @@
 body {
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
   line-height: 1.5;
+  background: radial-gradient(circle at 10% 20%, rgba(255, 109, 0, 0.18), transparent 55%),
+              radial-gradient(circle at 85% 15%, rgba(148, 33, 146, 0.2), transparent 60%),
+              radial-gradient(circle at 20% 80%, rgba(255, 166, 0, 0.14), transparent 60%),
+              linear-gradient(180deg, #090016 0%, #1a0b2e 40%, #2f0a4c 100%);
+  position: relative;
+  min-height: 100vh;
+  color: #f9f5ff;
 }
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(1px 1px at 20% 30%, rgba(255, 255, 255, 0.08), transparent 60%),
+                    radial-gradient(1px 1px at 70% 60%, rgba(255, 109, 0, 0.12), transparent 65%),
+                    radial-gradient(2px 2px at 15% 75%, rgba(148, 33, 146, 0.18), transparent 70%),
+                    linear-gradient(120deg, rgba(255, 109, 0, 0.05), rgba(76, 29, 149, 0.08));
+  pointer-events: none;
+  z-index: -1;
+  mix-blend-mode: screen;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url('/images/halloween-pattern.svg'),
+                    repeating-linear-gradient(45deg, rgba(76, 29, 149, 0.08), rgba(76, 29, 149, 0.08) 1px, transparent 1px, transparent 10px),
+                    radial-gradient(circle at 5% 5%, rgba(255, 109, 0, 0.05), transparent 45%);
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: -2;
+}
+
 
 /* Layout */
 .layout {
@@ -29,7 +62,7 @@ body {
 
 /* ===== NAVIGATION BAR CON EFECTOS MEJORADOS ===== */
 .appBar {
-  background: linear-gradient(135deg, rgba(10, 16, 135, 0.8) 0%, rgba(0, 42, 92, 0.9) 50%, rgba(15, 20, 25, 0.85) 100%);
+  background: linear-gradient(130deg, #2f0a4c 0%, #4c1d95 45%, #ff6d00 100%);
   background-size: 300% 300%;
   animation: navGradientFlow 10s ease infinite;
   overflow: hidden;
@@ -42,7 +75,7 @@ body {
   z-index: 100;
   position: relative;
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(0, 180, 216, 0.2);
+  border-bottom: 1px solid rgba(255, 109, 0, 0.3);
 }
 
 @keyframes navGradientFlow {
@@ -68,9 +101,9 @@ body {
   width: 100%;
   height: 100%;
   background-image:
-    radial-gradient(1px 1px at 30px 25px, rgba(0, 180, 216, 0.2), transparent),
-    radial-gradient(1px 1px at 80px 35px, rgba(255, 255, 255, 0.1), transparent),
-    radial-gradient(1px 1px at 150px 20px, rgba(0, 180, 216, 0.15), transparent);
+    radial-gradient(1px 1px at 30px 25px, rgba(255, 109, 0, 0.25), transparent),
+    radial-gradient(1px 1px at 80px 35px, rgba(255, 144, 34, 0.18), transparent),
+    radial-gradient(1px 1px at 150px 20px, rgba(140, 53, 191, 0.25), transparent);
   background-repeat: repeat;
   background-size: 180px 60px;
   animation: navSparkle 20s linear infinite;
@@ -97,9 +130,9 @@ body {
   height: 2px;
   background: linear-gradient(90deg,
       transparent 0%,
-      var(--accent-color) 20%,
-      #00d4ff 50%,
-      var(--accent-color) 80%,
+      rgba(255, 109, 0, 0.65) 20%,
+      rgba(255, 173, 73, 0.75) 45%,
+      rgba(107, 27, 138, 0.65) 80%,
       transparent 100%);
   animation: navTopGlow 4s ease-in-out infinite;
 }
@@ -136,7 +169,7 @@ body {
 }
 
 .navItem a {
-  color: white;
+  color: #ffeedd;
   text-align: center;
   padding: 14px 16px;
   text-decoration: none;
@@ -157,7 +190,7 @@ body {
   left: 0;
   width: 0;
   height: 100%;
-  background: rgba(0, 180, 216, 0.08);
+  background: rgba(255, 109, 0, 0.14);
   transition: width 0.25s ease;
   z-index: -1;
 }
@@ -176,8 +209,8 @@ body {
 }
 
 .navItem a:hover {
-  color: var(--accent-color);
-  text-shadow: 0 0 5px rgba(0, 180, 216, 0.3);
+  color: #ffd8a6;
+  text-shadow: 0 0 8px rgba(255, 109, 0, 0.45);
 }
 
 .navItem a:hover::before {
@@ -197,11 +230,17 @@ body {
 }
 
 .searchInput {
+.searchInput::placeholder {
+  color: rgba(26, 11, 46, 0.6);
+  font-weight: 500;
+}
+
   padding: 10px 15px;
   border-radius: 25px;
-  border: 2px solid rgba(0, 180, 216, 0.3);
+  border: 2px solid rgba(255, 109, 0, 0.35);
   width: 300px;
   background: rgba(255, 255, 255, 0.95);
+  color: var(--dark-color);
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
 }
@@ -209,7 +248,7 @@ body {
 .searchInput:focus {
   outline: none;
   border-color: var(--accent-color);
-  box-shadow: 0 0 20px rgba(0, 180, 216, 0.3);
+  box-shadow: 0 0 20px rgba(255, 109, 0, 0.35);
   background: rgba(255, 255, 255, 1);
 }
 
@@ -225,7 +264,7 @@ body {
 }
 
 .searchButton:hover {
-  background: rgba(0, 180, 216, 0.1);
+  background: rgba(255, 109, 0, 0.18);
   transform: scale(1.1);
 }
 
@@ -258,7 +297,7 @@ body {
 
 .contactItem {
   display: flex;
-  background-color: rgb(32, 169, 82);
+  background: linear-gradient(135deg, rgba(255, 109, 0, 0.9), rgba(120, 22, 150, 0.9));
   gap: 10px;
   padding: 12px 23px;
   border-radius: 12px;
@@ -271,9 +310,9 @@ body {
 }
 
 .contactItem:hover {
-  background-color: #128C7E;
+  background: linear-gradient(135deg, rgba(255, 140, 0, 0.95), rgba(148, 33, 146, 0.95));
   transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 12px rgba(255, 109, 0, 0.25);
 }
 
 /* Tooltip text */
@@ -331,6 +370,7 @@ body {
   overflow: hidden;
 }
 
+
 .brandSection h2 {
   font-size: 2.5rem;
   margin-bottom: 30px;
@@ -380,7 +420,7 @@ body {
 }
 
 .brandCard {
-  background-color: rgba(255, 255, 255, 0.849);
+  background-color: rgba(255, 255, 255, 0.95);
   border-radius: 12px;
   padding: 15px;
   display: flex;
@@ -391,25 +431,22 @@ body {
   max-width: 280px;
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  border: none;
   backdrop-filter: blur(5px);
+  color: #1f0a30;
 }
 
 .brandCard:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-  background-color: rgba(255, 255, 255, 1);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
 }
 
 .brandLogo {
-  max-width: 85%;
-  max-height: 85%;
-  width: auto;
+  width: 120px;
   height: auto;
   object-fit: contain;
-  filter: grayscale(20%);
-  transition: filter 0.3s ease, transform 0.3s ease;
-  min-width: 120px;
-  min-height: 60px;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.2));
+  transition: transform 0.2s ease;
 }
 
 .brandLogo.large {
@@ -528,7 +565,7 @@ body {
   justify-content: center;
   text-align: center;
   gap: 15px;
-  background: linear-gradient(-45deg, #1a1a2e 0%, #152656 50%, var(--primary-color) 100%);
+  background: linear-gradient(-45deg, #1f0a30 0%, #152656 50%, var(--primary-color) 100%);
   color: #e8e8e8;
   padding: 30px;
   line-height: 1.5;

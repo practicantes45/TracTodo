@@ -11,7 +11,7 @@
   border-radius: 20px;
   overflow: hidden;
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  box-shadow: 0 15px 40px rgba(0, 42, 92, 0.15);
+  box-shadow: 0 15px 40px rgba(148, 33, 146, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -72,9 +72,9 @@
 }
 
 .imageControlButton:hover {
-  background: rgba(0, 180, 216, 0.9);
+  background: rgba(255, 109, 0, 0.9);
   transform: scale(1.1);
-  box-shadow: 0 4px 12px rgba(0, 180, 216, 0.4);
+  box-shadow: 0 4px 12px rgba(255, 109, 0, 0.4);
   border-color: rgba(255, 255, 255, 0.3);
 }
 
@@ -146,7 +146,7 @@
 }
 
 .carouselArrow:hover {
-  background: rgba(0, 42, 92, 0.9);
+  background: rgba(148, 33, 146, 0.9);
   transform: translateY(-50%) scale(1.1);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
@@ -173,7 +173,7 @@
   height: 15px;
   border: none;
   border-radius: 50%;
-  background: rgba(0, 42, 92, 0.3);
+  background: rgba(148, 33, 146, 0.3);
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
@@ -187,7 +187,7 @@
   left: 50%;
   width: 0;
   height: 0;
-  background: var(--accent-color, #00b4d8);
+  background: var(--accent-color, #ff6d00);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   transition: all 0.3s ease;
@@ -199,8 +199,8 @@
 }
 
 .imageIndicator.active {
-  background: var(--accent-color, #00b4d8);
-  box-shadow: 0 0 10px rgba(0, 180, 216, 0.5);
+  background: var(--accent-color, #ff6d00);
+  box-shadow: 0 0 10px rgba(255, 109, 0, 0.5);
   transform: scale(1.3);
 }
 
@@ -612,7 +612,7 @@
   left: -8px;
   right: -8px;
   bottom: -8px;
-  background: radial-gradient(circle at center, rgba(0, 180, 216, 0.1) 0%, transparent 70%);
+  background: radial-gradient(circle at center, rgba(255, 109, 0, 0.1) 0%, transparent 70%);
   border-radius: 50%;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -662,7 +662,7 @@
 
   .imageControlButton:active {
     transform: scale(0.95);
-    background: rgba(0, 180, 216, 0.9);
+    background: rgba(255, 109, 0, 0.9);
   }
 
   .zoomIndicator {
@@ -775,8 +775,8 @@
 /* ===== LÍMITES VISUALES DEL PAN ===== */
 .productImageContainer.panning {
   box-shadow: 
-    inset 0 0 20px rgba(0, 180, 216, 0.1),
-    0 15px 40px rgba(0, 42, 92, 0.15);
+    inset 0 0 20px rgba(255, 109, 0, 0.1),
+    0 15px 40px rgba(148, 33, 146, 0.15);
 }
 
 /* ===== OPTIMIZACIÓN PARA IMÁGENES MÁS GRANDES ===== */

@@ -173,10 +173,10 @@
   border-radius: 25px;
   margin-bottom: 100px;
   box-shadow:
-    0 20px 60px rgba(0, 42, 92, 0.08),
-    0 8px 25px rgba(0, 180, 216, 0.05),
+    0 20px 60px rgba(148, 33, 146, 0.08),
+    0 8px 25px rgba(255, 109, 0, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(0, 180, 216, 0.1);
+  border: 1px solid rgba(255, 109, 0, 0.1);
   backdrop-filter: blur(10px);
 }
 
@@ -231,10 +231,10 @@
   border-radius: 20px;
   background: linear-gradient(135deg, #ffffff 0%, #f8fafe 100%);
   box-shadow:
-    0 15px 35px rgba(0, 42, 92, 0.08),
+    0 15px 35px rgba(148, 33, 146, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
   overflow: hidden;
-  border: 1px solid rgba(0, 180, 216, 0.1);
+  border: 1px solid rgba(255, 109, 0, 0.1);
 }
 
 .productImage {
@@ -245,7 +245,7 @@
   transition: transform 0.3s ease;
   filter: brightness(1) contrast(1.02);
   border-radius: 15px;
-  box-shadow: 0 8px 25px rgba(0, 42, 92, 0.1);
+  box-shadow: 0 8px 25px rgba(148, 33, 146, 0.1);
 }
 
 .slide:hover .productImage {
@@ -268,7 +268,7 @@
 }
 
 .slide:hover .imagePlaceholder {
-  border-color: rgba(0, 180, 216, 0.4);
+  border-color: rgba(255, 109, 0, 0.4);
   background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
 }
 
@@ -276,13 +276,13 @@
   font-size: 4rem;
   margin-bottom: 1rem;
   opacity: 0.6;
-  color: rgba(0, 180, 216, 0.7);
+  color: rgba(255, 109, 0, 0.7);
   transition: all 0.3s ease;
 }
 
 .slide:hover .noImageIcon {
   opacity: 0.8;
-  color: rgba(0, 180, 216, 0.9);
+  color: rgba(255, 109, 0, 0.9);
 }
 
 .imagePlaceholder p {
@@ -314,7 +314,7 @@
   line-height: 1.2;
   position: relative;
   transition: all 0.3s ease;
-  text-shadow: 0 2px 4px rgba(0, 42, 92, 0.1);
+  text-shadow: 0 2px 4px rgba(148, 33, 146, 0.1);
 }
 
 .productName::after {
@@ -324,14 +324,14 @@
   left: 50%;
   width: 0;
   height: 3px;
-  background: linear-gradient(90deg, #002a5c, #00b4d8);
+  background: linear-gradient(90deg, #002a5c, #ff6d00);
   transition: width 0.4s ease;
   transform: translateX(-50%);
   border-radius: 2px;
 }
 
 .slide:hover .productName {
-  color: #00b4d8;
+  color: #ff6d00;
   transform: translateY(-2px);
 }
 
@@ -357,7 +357,7 @@
   left: -15px;
   width: 5px;
   height: 0;
-  background: linear-gradient(180deg, #00b4d8, #d9252a);
+  background: linear-gradient(180deg, #ff6d00, #d9252a);
   border-radius: 3px;
   transform: translateY(-50%);
   transition: height 0.4s ease;
@@ -390,18 +390,18 @@
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
   box-shadow:
     0 8px 25px rgba(217, 37, 42, 0.3),
-    0 4px 15px rgba(0, 180, 216, 0.1);
+    0 4px 15px rgba(255, 109, 0, 0.1);
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(0, 180, 216, 0.2);
+  border: 1px solid rgba(255, 109, 0, 0.2);
 }
 
 .ctaButton:hover {
   transform: translateY(-2px);
   box-shadow:
     0 12px 35px rgba(217, 37, 42, 0.4),
-    0 6px 20px rgba(0, 180, 216, 0.2);
-  border-color: rgba(0, 180, 216, 0.4);
+    0 6px 20px rgba(255, 109, 0, 0.2);
+  border-color: rgba(255, 109, 0, 0.4);
 }
 
 /* ===== BOTONES DE NAVEGACIÓN LIMPIOS ===== */
@@ -423,19 +423,19 @@
   z-index: 15;
   transition: all 0.3s ease;
   box-shadow:
-    0 8px 25px rgba(0, 42, 92, 0.15),
-    0 4px 15px rgba(0, 180, 216, 0.1);
+    0 8px 25px rgba(148, 33, 146, 0.15),
+    0 4px 15px rgba(255, 109, 0, 0.1);
   backdrop-filter: blur(15px);
-  border: 2px solid rgba(0, 180, 216, 0.2);
+  border: 2px solid rgba(255, 109, 0, 0.2);
 }
 
 .carouselButton:hover {
-  background: #00b4d8;
+  background: #ff6d00;
   color: white;
   transform: translateY(-50%) scale(1.05);
   box-shadow:
-    0 12px 30px rgba(0, 180, 216, 0.3),
-    0 6px 20px rgba(0, 42, 92, 0.15);
+    0 12px 30px rgba(255, 109, 0, 0.3),
+    0 6px 20px rgba(148, 33, 146, 0.15);
   border-color: rgba(255, 255, 255, 0.3);
 }
 
@@ -463,21 +463,21 @@
   height: 15px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.7);
-  border: 2px solid rgba(0, 180, 216, 0.3);
+  border: 2px solid rgba(255, 109, 0, 0.3);
   cursor: pointer;
   transition: all 0.3s ease;
   backdrop-filter: blur(10px);
 }
 
 .indicator:hover {
-  background: rgba(0, 180, 216, 0.3);
-  border-color: rgba(0, 180, 216, 0.5);
+  background: rgba(255, 109, 0, 0.3);
+  border-color: rgba(255, 109, 0, 0.5);
 }
 
 .indicator.active {
-  background: #00b4d8;
-  border-color: #00b4d8;
-  box-shadow: 0 0 15px rgba(0, 180, 216, 0.4);
+  background: #ff6d00;
+  border-color: #ff6d00;
+  box-shadow: 0 0 15px rgba(255, 109, 0, 0.4);
   transform: scale(1.2);
 }
 
@@ -536,7 +536,7 @@
 
 /* ===== BOTÓN VER PRODUCTO (AZUL) ===== */
 .viewProductButton {
-  background: linear-gradient(135deg, #00b4d8 0%, #0096c7 50%, #0077b6 100%);
+  background: linear-gradient(135deg, #ff6d00 0%, #0096c7 50%, #0077b6 100%);
   color: white;
   border: none;
   padding: 15px 35px;
@@ -550,15 +550,15 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
-  box-shadow: 0 6px 20px rgba(0, 180, 216, 0.3);
+  box-shadow: 0 6px 20px rgba(255, 109, 0, 0.3);
   position: relative;
   overflow: hidden;
 }
 
 .viewProductButton:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 180, 216, 0.4);
-  background: linear-gradient(135deg, #0096c7 0%, #0077b6 50%, #023e8a 100%);
+  box-shadow: 0 8px 25px rgba(255, 109, 0, 0.4);
+  background: linear-gradient(135deg, #0096c7 0%, #0077b6 50%, #2f0a4c 100%);
 }
 
 .viewProductButton:disabled {
@@ -934,4 +934,58 @@
   .imagePlaceholder p {
     font-size: 0.9rem;
   }
+}.advisorSummary {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  margin: 16px 0 0;
+}
+
+.advisorSummaryLabel {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #ff9f1c;
+}
+
+.advisorSummaryNotice {
+  background: rgba(255, 166, 0, 0.1);
+  border-radius: 12px;
+  padding: 10px 14px;
+  border: 1px dashed rgba(255, 166, 0, 0.35);
+}
+
+.advisorReminder {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: #0c3623;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 10px 14px;
+  border-left: 3px solid rgba(255, 166, 0, 0.5);
+  border-radius: 10px;
+}
+
+@media (min-width: 768px) {
+  .advisorSummary {
+    align-items: stretch;
+  }
+}
+
+.cartButton {
+  width: 100%;
+  padding: 12px 18px;
+  border-radius: 14px;
+  border: 2px solid rgba(255, 166, 0, 0.5);
+  background: #ffffff;
+  color: #0c3623;
+  font-weight: 600;
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.cartButton:hover {
+  transform: translateY(-1px);
+  background: rgba(255, 166, 0, 0.1);
 }

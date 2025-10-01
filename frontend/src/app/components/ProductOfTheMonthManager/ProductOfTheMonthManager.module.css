@@ -30,7 +30,7 @@
   border-radius: 28px;
   box-shadow: 
     0 30px 80px rgba(0, 0, 0, 0.2),
-    0 15px 40px rgba(0, 180, 216, 0.15),
+    0 15px 40px rgba(255, 109, 0, 0.15),
     inset 0 2px 4px rgba(255, 255, 255, 0.9);
   border: 3px solid transparent;
   background-clip: padding-box;
@@ -54,7 +54,7 @@
   content: '';
   position: absolute;
   inset: -3px;
-  background: linear-gradient(135deg, #00b4d8, #0096c7, #0077b6, #023047);
+  background: linear-gradient(135deg, #ff6d00, #0096c7, #0077b6, #023047);
   border-radius: 31px;
   z-index: -1;
 }
@@ -86,8 +86,8 @@
 
 .headerIcon {
   font-size: 24px;
-  color: #00b4d8;
-  filter: drop-shadow(0 0 10px rgba(0, 180, 216, 0.5));
+  color: #ff6d00;
+  filter: drop-shadow(0 0 10px rgba(255, 109, 0, 0.5));
 }
 
 .closeButton {
@@ -131,7 +131,7 @@
 }
 
 .form::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #00b4d8, #0096c7);
+  background: linear-gradient(135deg, #ff6d00, #0096c7);
   border-radius: 4px;
 }
 
@@ -196,7 +196,7 @@
 }
 
 .sectionIcon {
-  color: #00b4d8;
+  color: #ff6d00;
   font-size: 18px;
 }
 
@@ -212,7 +212,7 @@
 }
 
 .labelIcon {
-  color: #00b4d8;
+  color: #ff6d00;
   font-size: 14px;
 }
 
@@ -246,9 +246,9 @@
 
 .searchInput:focus,
 .productSelect:focus {
-  border-color: #00b4d8;
+  border-color: #ff6d00;
   background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(0, 180, 216, 0.1);
+  box-shadow: 0 0 0 4px rgba(255, 109, 0, 0.1);
   transform: translateY(-2px);
 }
 
@@ -267,7 +267,7 @@
 }
 
 .countIcon {
-  color: #00b4d8;
+  color: #ff6d00;
   font-size: 12px;
 }
 
@@ -363,9 +363,9 @@
 }
 
 .priceInput:focus {
-  border-color: #00b4d8;
+  border-color: #ff6d00;
   background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(0, 180, 216, 0.1);
+  box-shadow: 0 0 0 4px rgba(255, 109, 0, 0.1);
   transform: translateY(-2px);
 }
 
@@ -560,7 +560,7 @@
 .productItem:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-color: #00b4d8;
+  border-color: #ff6d00;
 }
 
 .productItemInfo {
@@ -581,7 +581,7 @@
 }
 
 .productItemIcon {
-  color: #00b4d8;
+  color: #ff6d00;
   font-size: 14px;
 }
 

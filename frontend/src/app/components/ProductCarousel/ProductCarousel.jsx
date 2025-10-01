@@ -7,38 +7,47 @@ import { registrarVista } from '../../../services/trackingService';
 import { getProductSlug } from '../../../utils/slugUtils';
 import styles from './ProductCarousel.module.css';
 import { formatearPrecio, formatearPrecioWhatsApp } from '../../../utils/priceUtils';
+import { useWhatsAppContact } from '../../../hooks/useWhatsAppContact';
+import { useCart } from '../../../hooks/useCart';
 
 export default function ProductCarousel() {
   const [products, setProducts] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [advisorSelectionReminder, setAdvisorSelectionReminder] = useState(false);
   const { isAdmin } = useAuth();
   const router = useRouter();
+  const { addItem } = useCart();
 
-  // Lista de contactos para WhatsApp
-  const contactList = [
-    {
-      name: "Alan",
-      phoneNumber: "+524272245923",
-      message: "Hola Alan, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
+  const {
+    selectedAdvisor,
+    startContact: startAdvisorContact,
+    isReady: isAdvisorReady,
+  } = useWhatsAppContact({
+    allowSelection: false,
+    onRequireSelection: () => {
+      setAdvisorSelectionReminder(true);
+      router.push('/#asesores');
     },
-    {
-      name: "Laura",
-      phoneNumber: "+524272033515",
-      message: "Hola Laura, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
+    getMessage: ({ advisor, payload }) => {
+      const productData = payload?.product;
+      if (productData) {
+        const price = payload?.price ?? productData.precioVentaSugerido ?? productData.precio ?? 0;
+        const name = productData.nombre || productData.name || "este producto";
+        return advisor.productMessage
+          .replace('{producto}', name)
+          .replace('{precio}', formatearPrecioWhatsApp(price));
+      }
+      return advisor.generalMessage;
     },
-    {
-      name: "Oscar",
-      phoneNumber: "+524272032672",
-      message: "Hola Oscar, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
-    },
-    {
-      name: "Hugo",
-      phoneNumber: "+524424128926",
-      message: "Hola Hugo, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
+  });
+  useEffect(() => {
+    if (selectedAdvisor) {
+      setAdvisorSelectionReminder(false);
     }
-  ];
+  }, [selectedAdvisor]);
+
 
   // Cargar productos del mes al montar el componente
   useEffect(() => {
@@ -151,27 +160,21 @@ export default function ProductCarousel() {
   };
 
  const handleWhatsAppClick = (product) => {
-  // Seleccionar contacto aleatorio
-  const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
+  const payload = {
+    product: product?.productoCompleto || product,
+    price: product?.precioNumerico,
+  };
+  startAdvisorContact(payload);
+};
 
-  // Crear mensaje personalizado
-  const message = randomContact.message
-    .replace('{producto}', product.name)
-    .replace('{precio}', formatearPrecioWhatsApp(product.precioNumerico));
-
-  const encodedMessage = encodeURIComponent(message);
-
-  // Formatear número de teléfono
-  const cleanPhoneNumber = randomContact.phoneNumber.replace(/\D/g, '');
-  const formattedNumber = cleanPhoneNumber.startsWith('52')
-    ? cleanPhoneNumber
-    : `52${cleanPhoneNumber}`;
-
-  // Crear URL de WhatsApp
-  const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodedMessage}`;
-
-  // Abrir en nueva ventana/pestaña
-  window.open(whatsappUrl, '_blank');
+const handleAddToCart = (product) => {
+  if (!product) {
+    return;
+  }
+  const payload = product?.productoCompleto || product;
+  const price = Number(product?.precioNumerico || payload?.precioVentaSugerido || payload?.precio || 0);
+  const itemId = payload?.id || product?.id || product?.name;
+  addItem({ id: itemId, name: product?.name || payload?.nombre || 'Producto', price });
 };
 
   // Nueva función para ir al producto individual
@@ -195,7 +198,7 @@ export default function ProductCarousel() {
         id: product.id
       });
 
-      // Navegar a la página del producto
+      // Navegar a la pagina del producto
       router.push(`/productos/${slug}`);
     } catch (error) {
       console.error('❌ Error al navegar al producto:', error);
@@ -289,11 +292,34 @@ export default function ProductCarousel() {
                   {/* Contenedor de botones */}
                   <div className={styles.buttonsContainer}>
                     <button
+                      type="button"
+                      className={styles.cartButton}
+                      onClick={() => handleAddToCart(product)}
+                    >
+                      Agregar al carrito
+                    </button>
+                    <button
                       className={styles.ctaButton}
                       onClick={() => handleWhatsAppClick(product)}
                     >
                       {product.ctaText}
                     </button>
+
+                    {selectedAdvisor && (
+                      <div className={styles.advisorSummary}>
+                        <span className={styles.advisorSummaryLabel}>Te atendera {selectedAdvisor.name}</span>
+                      </div>
+                    )}
+                    {!selectedAdvisor && isAdvisorReady && (
+                      <div className={`${styles.advisorSummary} ${styles.advisorSummaryNotice}`}>
+                        <span className={styles.advisorSummaryLabel}>Selecciona tu asesor en la pagina de inicio para continuar por WhatsApp.</span>
+                      </div>
+                    )}
+                    {advisorSelectionReminder && (
+                      <div className={styles.advisorReminder}>
+                        Elige o cambia asesor desde la pagina principal de TracTodo para finalizar tu compra.
+                      </div>
+                    )}
 
                     <button
                       className={styles.viewProductButton}
@@ -332,6 +358,7 @@ export default function ProductCarousel() {
           </div>
         )}
       </div>
+
     </section>
   );
 };

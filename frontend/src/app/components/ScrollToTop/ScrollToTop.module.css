@@ -14,14 +14,14 @@
     /* Gradiente que combina con la paleta del sitio */
     background: linear-gradient(135deg,
             var(--primary-color, #002a5c) 0%,
-            var(--accent-color, #00b4d8) 50%,
+            var(--accent-color, #ff6d00) 50%,
             var(--primary-color, #002a5c) 100%);
     background-size: 200% 200%;
 
     /* Efectos visuales */
     box-shadow:
-        0 4px 20px rgba(0, 42, 92, 0.4),
-        0 2px 10px rgba(0, 180, 216, 0.3),
+        0 4px 20px rgba(148, 33, 146, 0.4),
+        0 2px 10px rgba(255, 109, 0, 0.3),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
 
     /* Transiciones suaves */
@@ -36,13 +36,13 @@
     animation: gradientShift 3s ease-in-out infinite;
 
     /* Efecto de resplandor sutil */
-    filter: drop-shadow(0 0 10px rgba(0, 180, 216, 0.3));
+    filter: drop-shadow(0 0 10px rgba(255, 109, 0, 0.3));
 
     /* Backdrop filter para modernidad */
     backdrop-filter: blur(10px);
 
     /* Border sutil */
-    border: 2px solid rgba(0, 180, 216, 0.2);
+    border: 2px solid rgba(255, 109, 0, 0.2);
 }
 
 /* Animación del gradiente de fondo */
@@ -79,13 +79,13 @@
 
     /* Sombra más pronunciada en hover */
     box-shadow:
-        0 8px 30px rgba(0, 42, 92, 0.5),
-        0 4px 20px rgba(0, 180, 216, 0.4),
-        0 0 0 4px rgba(0, 180, 216, 0.1),
+        0 8px 30px rgba(148, 33, 146, 0.5),
+        0 4px 20px rgba(255, 109, 0, 0.4),
+        0 0 0 4px rgba(255, 109, 0, 0.1),
         inset 0 1px 0 rgba(255, 255, 255, 0.2);
 
     /* Intensificar el resplandor */
-    filter: drop-shadow(0 0 20px rgba(0, 180, 216, 0.6));
+    filter: drop-shadow(0 0 20px rgba(255, 109, 0, 0.6));
 
     /* Pausar la animación del gradiente en hover */
     animation-play-state: paused;
@@ -104,8 +104,8 @@
     transition: transform 0.1s ease;
 
     box-shadow:
-        0 4px 15px rgba(0, 42, 92, 0.6),
-        0 2px 8px rgba(0, 180, 216, 0.5),
+        0 4px 15px rgba(148, 33, 146, 0.6),
+        0 2px 8px rgba(255, 109, 0, 0.5),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
@@ -120,7 +120,7 @@
     border-radius: 50%;
     background: linear-gradient(45deg,
             transparent 30%,
-            rgba(0, 180, 216, 0.1) 50%,
+            rgba(255, 109, 0, 0.1) 50%,
             transparent 70%);
     opacity: 0;
     transition: opacity 0.3s ease;

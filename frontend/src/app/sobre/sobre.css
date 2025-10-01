@@ -34,7 +34,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: rgba(0, 0, 0, 0.3);
+  background: linear-gradient(0deg, rgba(26, 11, 46, 0.72), rgba(14, 4, 28, 0.45));
 
 }
 
@@ -55,7 +55,7 @@
   text-shadow:
     2px 2px 4px rgba(0, 0, 0, 0.8),
     0 0 10px rgba(0, 0, 0, 0.6),
-    0 0 20px rgba(0, 42, 92, 0.4);
+    0 0 20px rgba(148, 33, 146, 0.4);
   opacity: 0;
   animation: fadeInUp 1s ease-out 0.5s forwards;
 }
@@ -91,6 +91,27 @@
   overflow: hidden;
 }
 
+.aboutSection::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('/images/halloween-pattern.svg') repeat;
+  opacity: 0.16;
+  pointer-events: none;
+}
+
+.aboutSection::after {
+  content: "";
+  position: absolute;
+  top: -40px;
+  left: -40px;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(148, 33, 146, 0.2) 0%, transparent 70%);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 .aboutContainer {
   max-width: 1400px;
   margin: 0 auto;
@@ -110,10 +131,10 @@
   border-radius: 25px;
   padding: 50px;
   box-shadow:
-    0 20px 60px rgba(0, 42, 92, 0.08),
-    0 8px 25px rgba(0, 180, 216, 0.05),
+    0 20px 60px rgba(148, 33, 146, 0.08),
+    0 8px 25px rgba(255, 109, 0, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(0, 180, 216, 0.1);
+  border: 1px solid rgba(255, 109, 0, 0.1);
   position: relative;
   overflow: hidden;
   transition: all 0.4s ease;
@@ -122,8 +143,8 @@
 .aboutContentWithImage:hover {
   transform: translateY(-5px);
   box-shadow:
-    0 30px 80px rgba(0, 42, 92, 0.12),
-    0 12px 35px rgba(0, 180, 216, 0.08),
+    0 30px 80px rgba(148, 33, 146, 0.12),
+    0 12px 35px rgba(255, 109, 0, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.95);
 }
 
@@ -137,7 +158,7 @@
   height: 100%;
   background: linear-gradient(90deg,
       transparent 0%,
-      rgba(0, 180, 216, 0.05) 50%,
+      rgba(255, 109, 0, 0.05) 50%,
       transparent 100%);
   transition: left 2s ease;
   pointer-events: none;
@@ -163,7 +184,7 @@
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
   font-weight: 700;
   position: relative;
-  text-shadow: 0 2px 4px rgba(0, 42, 92, 0.1);
+  text-shadow: 0 2px 4px rgba(148, 33, 146, 0.1);
   letter-spacing: -1px;
 }
 
@@ -176,7 +197,7 @@
   margin: 20px 0 0 0;
   border-radius: 2px;
   animation: expandUnderline 1.5s ease-out 0.5s forwards;
-  box-shadow: 0 2px 8px rgba(0, 180, 216, 0.3);
+  box-shadow: 0 2px 8px rgba(255, 109, 0, 0.3);
 }
 
 @keyframes expandUnderline {
@@ -212,7 +233,7 @@
   height: 4px;
   background: var(--accent-color);
   border-radius: 50%;
-  box-shadow: 0 0 10px rgba(0, 180, 216, 0.5);
+  box-shadow: 0 0 10px rgba(255, 109, 0, 0.5);
   animation: pulse 2s ease-in-out infinite;
 }
 
@@ -252,8 +273,8 @@
   height: auto;
   border-radius: 18px;
   box-shadow:
-    0 15px 40px rgba(0, 42, 92, 0.15),
-    0 5px 15px rgba(0, 180, 216, 0.1);
+    0 15px 40px rgba(148, 33, 146, 0.15),
+    0 5px 15px rgba(255, 109, 0, 0.1);
   transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
   position: relative;
   z-index: 2;
@@ -263,14 +284,14 @@
 .aboutTruckImage:hover {
   transform: translateY(-8px) scale(1.02);
   box-shadow:
-    0 25px 60px rgba(0, 42, 92, 0.25),
-    0 10px 25px rgba(0, 180, 216, 0.15);
+    0 25px 60px rgba(148, 33, 146, 0.25),
+    0 10px 25px rgba(255, 109, 0, 0.15);
   filter: brightness(1.05) contrast(1.08);
 }
 
 /* ===== SECCIÓN MISIÓN Y VISIÓN ===== */
 .missionVisionSection {
-  background: linear-gradient(135deg, var(--primary-color) 0%, #0e86ca 100%);
+  background: linear-gradient(135deg, var(--primary-color) 0%, #4c1d95 100%);
   padding: 80px 20px;
   margin: 0;
   position: relative;
@@ -286,7 +307,7 @@
   height: 100%;
   background-image:
     radial-gradient(2px 2px at 30px 40px, rgba(255, 255, 255, 0.1), transparent),
-    radial-gradient(1px 1px at 80px 80px, rgba(0, 180, 216, 0.15), transparent),
+    radial-gradient(1px 1px at 80px 80px, rgba(255, 109, 0, 0.15), transparent),
     radial-gradient(1px 1px at 150px 120px, rgba(255, 255, 255, 0.08), transparent);
   background-repeat: repeat;
   background-size: 200px 160px;
@@ -409,7 +430,7 @@
   left: 0;
   width: 0;
   height: 100%;
-  background: rgba(0, 180, 216, 0.05);
+  background: rgba(255, 109, 0, 0.05);
   transition: width 0.3s ease;
 }
 
@@ -529,7 +550,7 @@
     text-shadow:
       2px 2px 4px rgba(0, 0, 0, 0.9),
       0 0 8px rgba(0, 0, 0, 0.7),
-      0 0 16px rgba(0, 42, 92, 0.5);
+      0 0 16px rgba(148, 33, 146, 0.5);
   }
 
   .aboutSection {

@@ -564,6 +564,10 @@ const buscarProductosInteligente = (productos, consulta) => {
 
 // ✅ FUNCIÓN PRINCIPAL: getAllProductos con filtrado mejorado
 exports.getAllProductos = async (req, res) => {
+  const origin = req.headers.origin || req.headers.referer || 'desconocido';
+  const authHeader = req.headers.authorization;
+  const queryLog = JSON.stringify(req.query || {});
+  console.log(`📦 GET /api/productos - origin: ${origin} - auth: ${authHeader ? 'sí' : 'no'} - query: ${queryLog}`);
   const { q, marca, orden } = req.query;
 
   try {

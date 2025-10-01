@@ -22,11 +22,11 @@
   transform: translateX(-50%);
   width: 450px;
   max-width: calc(100vw - 40px);
-  background: linear-gradient(145deg, #ffffff 0%, #fafbff 30%, #f0f8ff 100%);
+  background: linear-gradient(145deg, rgba(29, 9, 50, 0.95) 0%, rgba(54, 20, 80, 0.9) 35%, rgba(98, 28, 143, 0.88) 100%);
   border-radius: 28px;
   box-shadow: 
     0 30px 80px rgba(0, 0, 0, 0.2),
-    0 15px 40px rgba(0, 180, 216, 0.15),
+    0 15px 40px rgba(255, 109, 0, 0.15),
     inset 0 2px 4px rgba(255, 255, 255, 0.9);
   border: 3px solid transparent;
   background-clip: padding-box;
@@ -39,7 +39,7 @@
   content: '';
   position: absolute;
   inset: -3px;
-  background: linear-gradient(135deg, #00b4d8, #0096c7, #0077b6, #023047);
+  background: linear-gradient(135deg, #ff6d00, #e85d04, #6421c0, #39007e);
   border-radius: 31px;
   z-index: -1;
 }
@@ -59,6 +59,7 @@
   padding: 32px;
   position: relative;
   background: inherit;
+  color: #ffeede;
   border-radius: 25px;
 }
 
@@ -80,11 +81,11 @@
   margin: 0;
   font-weight: 900;
   line-height: 1.2;
-  background: linear-gradient(135deg, #002a5c 0%, #0077b6 50%, #00b4d8 100%);
+  background: linear-gradient(135deg, #002a5c 0%, #0077b6 50%, #ff6d00 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  text-shadow: 0 2px 4px rgba(0, 42, 92, 0.1);
+  text-shadow: 0 2px 4px rgba(148, 33, 146, 0.1);
   font-family: var(--font-ubuntu, 'Ubuntu'), sans-serif;
 }
 
@@ -144,11 +145,11 @@
 }
 
 .cookieBtnAccept {
-  background: linear-gradient(135deg, #00b4d8 0%, #0096c7 50%, #0077b6 100%);
+  background: linear-gradient(135deg, #ff6d00 0%, #0096c7 50%, #0077b6 100%);
   color: white;
   flex: 2;
   box-shadow: 
-    0 6px 20px rgba(0, 180, 216, 0.5),
+    0 6px 20px rgba(255, 109, 0, 0.5),
     inset 0 1px 2px rgba(255, 255, 255, 0.3);
   position: relative;
 }
@@ -156,7 +157,7 @@
 .cookieBtnAccept:hover {
   transform: translateY(-2px);
   box-shadow: 
-    0 8px 25px rgba(0, 180, 216, 0.6),
+    0 8px 25px rgba(255, 109, 0, 0.6),
     inset 0 1px 2px rgba(255, 255, 255, 0.4);
   background: linear-gradient(135deg, #0096c7 0%, #0077b6 50%, #023047 100%);
 }

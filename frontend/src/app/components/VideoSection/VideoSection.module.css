@@ -5,10 +5,10 @@
   border-radius: 25px;
   padding: 40px;
   box-shadow:
-    0 20px 60px rgba(0, 42, 92, 0.08),
-    0 8px 25px rgba(0, 180, 216, 0.05),
+    0 20px 60px rgba(148, 33, 146, 0.08),
+    0 8px 25px rgba(255, 109, 0, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(0, 180, 216, 0.1);
+  border: 1px solid rgba(255, 109, 0, 0.1);
   position: relative;
   overflow: hidden;
   transition: all 0.4s ease;
@@ -19,8 +19,8 @@
 .videoSection:hover {
   transform: translateY(-5px);
   box-shadow:
-    0 30px 80px rgba(0, 42, 92, 0.12),
-    0 12px 35px rgba(0, 180, 216, 0.08);
+    0 30px 80px rgba(148, 33, 146, 0.12),
+    0 12px 35px rgba(255, 109, 0, 0.08);
 }
 
 .videoSection h2 {
@@ -30,7 +30,7 @@
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
   font-weight: 700;
   position: relative;
-  text-shadow: 0 2px 4px rgba(0, 42, 92, 0.1);
+  text-shadow: 0 2px 4px rgba(148, 33, 146, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -66,14 +66,14 @@
   max-width: 605px;
   width: 100%;
   aspect-ratio: 16/9;
-  box-shadow: 0 15px 40px rgba(0, 42, 92, 0.15);
+  box-shadow: 0 15px 40px rgba(148, 33, 146, 0.15);
   transition: all 0.3s ease;
   cursor: pointer;
 }
 
 .youtubeVideoContainer:hover {
   transform: translateY(-3px);
-  box-shadow: 0 25px 60px rgba(0, 42, 92, 0.2);
+  box-shadow: 0 25px 60px rgba(148, 33, 146, 0.2);
 }
 
 .videoThumbnail {

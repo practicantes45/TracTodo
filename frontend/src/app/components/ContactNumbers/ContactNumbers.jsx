@@ -1,91 +1,140 @@
 import React from 'react';
 import { FaWhatsapp } from "react-icons/fa";
+import { useRouter } from 'next/navigation';
 import styles from './ContactNumbers.module.css';
+import { useWhatsAppContact } from '../../../hooks/useWhatsAppContact';
 
 const ContactNumbers = ({ pageContext = 'home' }) => {
-    const contactList = [
-        {
-            name: "Alan",
-            phoneNumber: "+524272245923",
-            message: "Hola Alan, estoy buscando información sobre refacciones de motores diésel y agradecería mucho si pudieras ayudarme con mi duda."
-        },
-        {
-            name: "Laura",
-            phoneNumber: "+524272033515",
-            message: "Hola Laura, estoy buscando información sobre refacciones de motores diésel y agradecería mucho si pudieras ayudarme con mi duda."
-        },
-        {
-            name: "Oscar",
-            phoneNumber: "+524272032672",
-            message: "Hola Oscar, estoy buscando información sobre refacciones de motores diésel y agradecería mucho si pudieras ayudarme con mi duda."
-        },
-        {
-            name: "Hugo",
-            phoneNumber: "+524424128926",
-            message: "Hola Hugo, estoy buscando información sobre refacciones de motores diésel y agradecería mucho si pudieras ayudarme con mi duda."
-        }
-    ];
+    const router = useRouter();
+    const allowSelection = pageContext === 'home';
 
-    const handleWhatsAppClick = (phoneNumber, message) => {
-        // Eliminar cualquier caracter que no sea dígito (+ incluido)
-        const cleanPhoneNumber = phoneNumber.replace(/\D/g, '');
-        
-        // Asegurar que comience con 52 (código de México)
-        const formattedNumber = cleanPhoneNumber.startsWith('52') 
-            ? cleanPhoneNumber 
-            : `52${cleanPhoneNumber}`;
-        
-        // Codificar el mensaje para URL
-        const encodedMessage = encodeURIComponent(message);
-        
-        // Detectar si es móvil
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-            typeof navigator !== 'undefined' ? navigator.userAgent : ''
-        );
-        
-        const universalUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodedMessage}`;
-        
-        // Abrir en nueva ventana/pestaña
-        window.open(universalUrl, '_blank');
+    const {
+        advisors,
+        selectedAdvisor,
+        selectAdvisor,
+        startContact: startAdvisorContact,
+        isReady,
+    } = useWhatsAppContact({
+        allowSelection,
+        onRequireSelection: () => {
+            router.push('/#asesores');
+        },
+        getMessage: ({ advisor }) => advisor.generalMessage,
+    });
+
+    const handleWhatsAppClick = (event) => {
+        if (!selectedAdvisor) {
+            router.push('/#asesores');
+            return;
+        }
+        startAdvisorContact({}, event);
     };
 
-    // Función para formatear el número de teléfono para mostrar
     const formatPhoneForDisplay = (phoneNumber) => {
-        // Eliminamos el prefijo '+52' para mostrar solo el número local
         const localNumber = phoneNumber.substring(3);
-        
-        // Verificamos la longitud para formatear correctamente
-        if (localNumber.length === 10) { // Números con 10 dígitos (celulares mexicanos)
+        if (localNumber.length === 10) {
             return `${localNumber.substring(0, 3)}-${localNumber.substring(3, 6)}-${localNumber.substring(6, 8)}-${localNumber.substring(8)}`;
-        } else {
-            // Formato genérico para otros casos
-            return localNumber;
         }
+        return localNumber;
     };
 
-    // NUEVA LÓGICA: Aplicar clases contextuales según la página
+    const getInitials = (name) => {
+        return name
+            .split(' ')
+            .map((segment) => segment.charAt(0))
+            .join('')
+            .substring(0, 2)
+            .toUpperCase();
+    };
+
     const getContainerClasses = () => {
         const baseClass = styles.contactNumbers;
-        const contextClass = styles[`contactNumbers${pageContext.charAt(0).toUpperCase() + pageContext.slice(1)}`];
+        const contextKey = pageContext.charAt(0).toUpperCase() + pageContext.slice(1);
+        const contextClass = styles[`contactNumbers${contextKey}`];
         return `${baseClass} ${contextClass || ''}`.trim();
     };
 
+    const selectorTitle = allowSelection ? 'Elige a tu asesor de confianza' : 'Asesores de contacto';
+    const selectorSubtitle = allowSelection
+        ? 'Guardaremos tu eleccion para que cada compra y consulta se realice con la misma persona.'
+        : 'Puedes comunicarte con tu asesor asignado, o elegir uno nuevo desde la pagina principal.';
+
     return (
-        <div className={getContainerClasses()}>
-            {contactList.map((contact, index) => (
-                <div key={index} className={styles.tooltipContainer}>
-                    <button 
-                        className={styles.contactItem} 
-                        onClick={() => handleWhatsAppClick(contact.phoneNumber, contact.message)}
-                        aria-label={`Contactar a ${contact.name} por WhatsApp`}
-                    >
-                        <span className={styles.phoneIcon}><FaWhatsapp /></span>
-                        <span>{formatPhoneForDisplay(contact.phoneNumber)} ({contact.name})</span>
-                    </button>
-                    <div className={styles.tooltipText}>¡Comunícate con {contact.name} por WhatsApp!</div>
-                </div>
-            ))}
-        </div>
+        <section className={getContainerClasses()} id="asesores">
+            <div className={styles.selectorIntro}>
+                <h2>{selectorTitle}</h2>
+                <p>{selectorSubtitle}</p>
+            </div>
+
+            <div className={styles.advisorGrid}>
+                {advisors.map((advisor) => {
+                    const isActive = selectedAdvisor && selectedAdvisor.id === advisor.id;
+                    const cardClasses = [styles.advisorCard];
+                    if (isActive) cardClasses.push(styles.activeCard);
+                    if (!allowSelection) cardClasses.push(styles.readonlyCard);
+
+                    const content = (
+                        <>
+                            <span
+                                className={styles.avatar}
+                                style={{ background: advisor.accentColor }}
+                            >
+                                {getInitials(advisor.name)}
+                            </span>
+                            <span className={styles.advisorName}>{advisor.name}</span>
+                            <span className={styles.advisorRole}>{advisor.role}</span>
+                            <span className={styles.advisorPhone}>{formatPhoneForDisplay(advisor.phoneNumber)}</span>
+                            {isActive && <span className={styles.currentBadge}>Seleccionado</span>}
+                        </>
+                    );
+
+                    if (allowSelection) {
+                        return (
+                            <button
+                                key={advisor.id}
+                                type="button"
+                                className={cardClasses.join(' ')}
+                                onClick={() => selectAdvisor(advisor.id)}
+                                aria-pressed={isActive}
+                                aria-label={`Seleccionar a ${advisor.name} como asesor`}
+                            >
+                                {content}
+                            </button>
+                        );
+                    }
+
+                    return (
+                        <div key={advisor.id} className={cardClasses.join(' ')}>
+                            {content}
+                        </div>
+                    );
+                })}
+            </div>
+
+            <div className={styles.actionPanel}>
+                {selectedAdvisor ? (
+                    <>
+                        <p className={styles.selectedMessage}>
+                            Te atendera <strong>{selectedAdvisor.name}</strong>. {allowSelection ? 'Si necesitas soporte general, escribele directamente por WhatsApp.' : 'Si deseas cambiar de asesor, hazlo desde la pagina principal.'}
+                        </p>
+                        <button
+                            className={styles.primaryButton}
+                            onClick={handleWhatsAppClick}
+                            aria-label={`Contactar a ${selectedAdvisor.name} por WhatsApp`}
+                        >
+                            <span className={styles.phoneIcon}><FaWhatsapp /></span>
+                            Contactar por WhatsApp
+                        </button>
+                    </>
+                ) : (
+                    <p className={styles.pendingMessage}>
+                        {allowSelection
+                            ? (isReady ? 'Selecciona un asesor para habilitar el contacto directo por WhatsApp.' : 'Cargando asesores disponibles...')
+                            : 'Selecciona tu asesor desde la pagina principal de TracTodo para continuar por WhatsApp.'}
+                    </p>
+                )}
+            </div>
+        </section>
     );
 };
 

@@ -26,13 +26,19 @@ app.use((req, res, next) => {
 
 
 // CONFIGURACIÓN MEJORADA DE CORS PARA RAILWAY
-const corsOrigins = [
+const defaultCorsOrigins = [
   "http://localhost:3001", // Desarrollo local
   "http://127.0.0.1:3001", // Desarrollo local
   "https://tractodo-production-3e8e.up.railway.app", // Frontend Railway
   "https://tractodo-production.up.railway.app", // Backend Railway
   "https://tractodo.com"  // Dominio final
 ];
+
+const envCorsOrigins = process.env.CORS_ORIGINS ?
+  process.env.CORS_ORIGINS.split(',').map(origin => origin.trim()).filter(Boolean)
+  : [];
+
+const corsOrigins = Array.from(new Set([...envCorsOrigins, ...defaultCorsOrigins]));
 
 // Agregar dinámicamente el dominio de Railway si existe
 if (process.env.RAILWAY_PUBLIC_DOMAIN) {
@@ -74,11 +80,13 @@ app.use("/api/entretenimiento", entretenimientoRoutes); // Blog/Videos
 app.use("/api/vistas", vistasRoutes); // Contador de vistas
 app.use("/api/seo", seoRoutes); // SEO automático
 
+const fallbackBackendUrl = `http://localhost:${process.env.PORT || 8080}`;
+
 // Log de inicio actualizado para Railway
 console.log("✅ Backend iniciado correctamente");
 console.log("🌐 Environment:", process.env.NODE_ENV || 'development');
-console.log("🔗 Frontend URL: https://tractodo.com");
-console.log("📡 Backend URL: https://tractodo-production.up.railway.app");
+console.log("🔗 Frontend URL:", process.env.FRONTEND_URL || 'https://tractodo.com');
+console.log("📡 Backend URL:", process.env.BACKEND_URL || fallbackBackendUrl);
 console.log("📦 Esperando conexiones...");
 
 // Programar tareas...

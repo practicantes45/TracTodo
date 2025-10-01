@@ -34,7 +34,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: rgba(0, 0, 0, 0.3);
+  background: linear-gradient(0deg, rgba(26, 11, 46, 0.72), rgba(14, 4, 28, 0.45));
 }
 
 .heroContent {
@@ -51,7 +51,7 @@
   text-shadow:
     2px 2px 4px rgba(0, 0, 0, 0.8),
     0 0 10px rgba(0, 0, 0, 0.6),
-    0 0 20px rgba(0, 42, 92, 0.4);
+    0 0 20px rgba(148, 33, 146, 0.4);
   opacity: 0;
   animation: fadeInUp 1s ease-out 0.5s forwards;
 }
@@ -87,6 +87,29 @@
   overflow: hidden;
 }
 
+.locationMainSection::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('/images/halloween-pattern.svg') repeat;
+  opacity: 0.18;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.locationMainSection::after {
+  content: "";
+  position: absolute;
+  bottom: -60px;
+  right: -40px;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(255, 109, 0, 0.25) 0%, transparent 70%);
+  filter: blur(0.5px);
+  opacity: 0.45;
+  pointer-events: none;
+}
+
 .locationContainer {
   max-width: 1400px;
   margin: 0 auto;
@@ -106,10 +129,10 @@
   border-radius: 25px;
   padding: 40px;
   box-shadow:
-    0 20px 60px rgba(0, 42, 92, 0.08),
-    0 8px 25px rgba(0, 180, 216, 0.05),
+    0 20px 60px rgba(148, 33, 146, 0.08),
+    0 8px 25px rgba(255, 109, 0, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(0, 180, 216, 0.1);
+  border: 1px solid rgba(255, 109, 0, 0.1);
   position: relative;
   overflow: hidden;
   transition: all 0.4s ease;
@@ -119,8 +142,8 @@
 .videoSection:hover {
   transform: translateY(-5px);
   box-shadow:
-    0 30px 80px rgba(0, 42, 92, 0.12),
-    0 12px 35px rgba(0, 180, 216, 0.08);
+    0 30px 80px rgba(148, 33, 146, 0.12),
+    0 12px 35px rgba(255, 109, 0, 0.08);
 }
 
 .videoSection h2 {
@@ -130,7 +153,7 @@
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
   font-weight: 700;
   position: relative;
-  text-shadow: 0 2px 4px rgba(0, 42, 92, 0.1);
+  text-shadow: 0 2px 4px rgba(148, 33, 146, 0.1);
 }
 
 .videoDescription {
@@ -152,14 +175,14 @@
   max-width: 605px;
   width: 100%;
   aspect-ratio: 16/9;
-  box-shadow: 0 15px 40px rgba(0, 42, 92, 0.15);
+  box-shadow: 0 15px 40px rgba(148, 33, 146, 0.15);
   transition: all 0.3s ease;
   cursor: pointer;
 }
 
 .youtubeVideoContainer:hover {
   transform: translateY(-3px);
-  box-shadow: 0 25px 60px rgba(0, 42, 92, 0.2);
+  box-shadow: 0 25px 60px rgba(148, 33, 146, 0.2);
 }
 
 .videoThumbnail {
@@ -227,7 +250,7 @@
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
   font-weight: 700;
   position: relative;
-  text-shadow: 0 2px 4px rgba(0, 42, 92, 0.1);
+  text-shadow: 0 2px 4px rgba(148, 33, 146, 0.1);
 }
 
 .mapSection h2::after {
@@ -239,7 +262,7 @@
   margin: 20px 0 0 0;
   border-radius: 2px;
   animation: expandUnderline 1.5s ease-out 0.5s forwards;
-  box-shadow: 0 2px 8px rgba(0, 180, 216, 0.3);
+  box-shadow: 0 2px 8px rgba(255, 109, 0, 0.3);
 }
 
 @keyframes expandUnderline {
@@ -265,8 +288,8 @@
   background: rgba(255, 255, 255, 0.9);
   padding: 25px;
   border-radius: 15px;
-  box-shadow: 0 8px 25px rgba(0, 42, 92, 0.08);
-  border: 1px solid rgba(0, 180, 216, 0.1);
+  box-shadow: 0 8px 25px rgba(148, 33, 146, 0.08);
+  border: 1px solid rgba(255, 109, 0, 0.1);
   transition: all 0.3s ease;
   position: relative;
 }
@@ -274,7 +297,7 @@
 .addressCard:hover,
 .scheduleCard:hover {
   transform: translateY(-3px);
-  box-shadow: 0 15px 35px rgba(0, 42, 92, 0.12);
+  box-shadow: 0 15px 35px rgba(148, 33, 146, 0.12);
 }
 
 .addressCard h3,
@@ -315,7 +338,7 @@
 }
 
 .clickableAddress:hover {
-  background: rgba(0, 180, 216, 0.1);
+  background: rgba(255, 109, 0, 0.1);
   color: var(--primary-color);
   transform: translateX(5px);
 }
@@ -383,7 +406,7 @@
   margin-bottom: 30px;
   border-radius: 15px;
   overflow: hidden;
-  box-shadow: 0 15px 40px rgba(0, 42, 92, 0.15);
+  box-shadow: 0 15px 40px rgba(148, 33, 146, 0.15);
   transition: all 0.3s ease;
   position: relative;
   padding-bottom: 56.25%;
@@ -401,7 +424,7 @@
 
 .mapContainer:hover {
   transform: translateY(-3px);
-  box-shadow: 0 25px 60px rgba(0, 42, 92, 0.2);
+  box-shadow: 0 25px 60px rgba(148, 33, 146, 0.2);
 }
 
 /* ===== BOTÓN DE ACCIÓN ===== */
@@ -433,7 +456,7 @@
 
 .actionButton:hover {
   transform: translateY(-3px);
-  box-shadow: 0 15px 35px rgba(0, 42, 92, 0.3);
+  box-shadow: 0 15px 35px rgba(148, 33, 146, 0.3);
 }
 
 .actionButton svg {
@@ -488,7 +511,7 @@
 
 /* ===== SECCIÓN DE REFERENCIAS ===== */
 .referencesSection {
-  background: linear-gradient(135deg, var(--primary-color) 0%, #0e86ca 100%);
+  background: linear-gradient(135deg, var(--primary-color) 0%, #4c1d95 100%);
   padding: 80px 20px;
   margin: 0;
   position: relative;
@@ -504,7 +527,7 @@
   height: 100%;
   background-image:
     radial-gradient(2px 2px at 30px 40px, rgba(255, 255, 255, 0.1), transparent),
-    radial-gradient(1px 1px at 80px 80px, rgba(0, 180, 216, 0.15), transparent);
+    radial-gradient(1px 1px at 80px 80px, rgba(255, 109, 0, 0.15), transparent);
   background-repeat: repeat;
   background-size: 200px 160px;
   animation: floatingParticles 25s linear infinite;
@@ -569,14 +592,14 @@
   border-radius: 10px;
   overflow: hidden;
   margin-bottom: 20px;
-  box-shadow: 0 8px 25px rgba(0, 42, 92, 0.15);
+  box-shadow: 0 8px 25px rgba(148, 33, 146, 0.15);
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .referenceImageContainer:hover {
   transform: scale(1.02);
-  box-shadow: 0 12px 35px rgba(0, 42, 92, 0.25);
+  box-shadow: 0 12px 35px rgba(148, 33, 146, 0.25);
 }
 
 .referenceImage {
@@ -602,7 +625,7 @@
   justify-content: center;
   margin: 0 auto 20px;
   transition: all 0.3s ease;
-  box-shadow: 0 8px 25px rgba(0, 42, 92, 0.2);
+  box-shadow: 0 8px 25px rgba(148, 33, 146, 0.2);
 }
 
 .referenceIcon svg {
@@ -613,7 +636,7 @@
 
 .referenceCard:hover .referenceIcon {
   transform: scale(1.1) rotate(5deg);
-  box-shadow: 0 12px 35px rgba(0, 42, 92, 0.3);
+  box-shadow: 0 12px 35px rgba(148, 33, 146, 0.3);
 }
 
 .referenceCard h4 {
@@ -922,7 +945,7 @@
   }
 
   .clickableAddress:active {
-    background: rgba(0, 180, 216, 0.2);
+    background: rgba(255, 109, 0, 0.2);
   }
 
   .referenceCard:active {
@@ -1088,7 +1111,7 @@
   .youtubeVideoContainer {
     max-width: 100%;
     border-radius: 12px;
-    box-shadow: 0 10px 25px rgba(0, 42, 92, 0.15);
+    box-shadow: 0 10px 25px rgba(148, 33, 146, 0.15);
   }
 
   .playButton {

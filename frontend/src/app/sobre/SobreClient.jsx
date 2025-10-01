@@ -3,7 +3,6 @@ import './sobre.css';
 import { useState } from 'react';
 import { FaCalendarCheck, FaMapMarkedAlt } from "react-icons/fa";
 import Navbar from '../components/Navbar/Navbar';
-import ContactNumbers from '../components/ContactNumbers/ContactNumbers';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
 import SEOHead from '../components/SEOHead/SEOHead';
@@ -92,8 +91,6 @@ export default function SobrePage() {
                             </div>
                         </div>
                     </div>
-                    {/* Números de contacto */}
-                    <ContactNumbers pageContext="sobre" />
 
                     {/* Sección ¿Quiénes Somos? - MODIFICADA para layout horizontal */}
                     <section className="aboutSection">

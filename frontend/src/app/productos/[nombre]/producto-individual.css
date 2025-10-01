@@ -77,12 +77,12 @@
   font-family: var(--font-montserrat, 'Montserrat'), sans-serif;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 42, 92, 0.2);
+  box-shadow: 0 4px 15px rgba(148, 33, 146, 0.2);
 }
 
 .backButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 42, 92, 0.3);
+  box-shadow: 0 8px 25px rgba(148, 33, 146, 0.3);
   background: linear-gradient(135deg, var(--accent-color) 0%, #00d4ff 100%);
 }
 
@@ -103,10 +103,10 @@
   border-radius: 25px;
   padding: 40px;
   box-shadow: 
-    0 20px 60px rgba(0, 42, 92, 0.08),
-    0 8px 25px rgba(0, 180, 216, 0.05),
+    0 20px 60px rgba(148, 33, 146, 0.08),
+    0 8px 25px rgba(255, 109, 0, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(0, 180, 216, 0.1);
+  border: 1px solid rgba(255, 109, 0, 0.1);
 }
 
 /* ===== SECCIÓN DE IMAGEN ===== */
@@ -121,7 +121,7 @@
   border-radius: 20px;
   overflow: hidden;
   background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  box-shadow: 0 15px 40px rgba(0, 42, 92, 0.15);
+  box-shadow: 0 15px 40px rgba(148, 33, 146, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -222,7 +222,7 @@
 .shareButton:hover,
 .copyButton:hover {
   transform: translateY(-2px) scale(1.1);
-  box-shadow: 0 8px 25px rgba(0, 180, 216, 0.4);
+  box-shadow: 0 8px 25px rgba(255, 109, 0, 0.4);
 }
 
 .copiedText {
@@ -268,7 +268,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 8px 0;
-  border-bottom: 1px solid rgba(0, 180, 216, 0.1);
+  border-bottom: 1px solid rgba(255, 109, 0, 0.1);
 }
 
 .metaItem:last-child {
@@ -367,8 +367,8 @@
   backdrop-filter: blur(10px);
   border-radius: 25px;
   padding: 40px;
-  box-shadow: 0 15px 35px rgba(0, 42, 92, 0.08);
-  border: 1px solid rgba(0, 180, 216, 0.1);
+  box-shadow: 0 15px 35px rgba(148, 33, 146, 0.08);
+  border: 1px solid rgba(255, 109, 0, 0.1);
 }
 
 .descriptionContainer h2 {
@@ -388,7 +388,7 @@
   background: linear-gradient(90deg, var(--accent-color) 0%, #00d4ff 100%);
   margin: 15px 0 0 0;
   border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(0, 180, 216, 0.3);
+  box-shadow: 0 2px 8px rgba(255, 109, 0, 0.3);
 }
 
 .descriptionContent {
@@ -406,7 +406,7 @@
 /* ===== PRODUCTOS RELACIONADOS - VERSIÓN MEJORADA ===== */
 .relatedProductsSection {
   padding: 60px 20px 80px 20px; /* AUMENTADO: más padding superior para animaciones */
-  background: linear-gradient(135deg, var(--primary-color) 0%, #0e86ca 100%);
+  background: linear-gradient(135deg, var(--primary-color) 0%, #4c1d95 100%);
   margin: 0;
   position: relative;
   /* REMOVIDO: overflow: hidden que cortaba las animaciones */
@@ -421,7 +421,7 @@
   height: 100%;
   background-image:
     radial-gradient(2px 2px at 30px 40px, rgba(255, 255, 255, 0.1), transparent),
-    radial-gradient(1px 1px at 80px 80px, rgba(0, 180, 216, 0.15), transparent);
+    radial-gradient(1px 1px at 80px 80px, rgba(255, 109, 0, 0.15), transparent);
   background-repeat: repeat;
   background-size: 200px 160px;
   animation: floatingParticles 25s linear infinite;
@@ -619,7 +619,7 @@
   background: var(--accent-color);
   color: white;
   transform: translateY(-50%) scale(1.1);
-  box-shadow: 0 6px 20px rgba(0, 180, 216, 0.3);
+  box-shadow: 0 6px 20px rgba(255, 109, 0, 0.3);
   opacity: 1;
 }
 
@@ -1105,4 +1105,69 @@
   .relatedProductCard:hover {
     transform: none !important;
   }
+}.advisorSummary {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-start;
+}
+
+.advisorSummaryLabel {
+    font-size: 0.9rem;
+    color: rgba(255, 233, 214, 0.85);
+    font-weight: 600;
+}
+
+.advisorSummaryNotice {
+    background: rgba(255, 166, 0, 0.08);
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px dashed rgba(255, 166, 0, 0.3);
+}
+
+.advisorReminder {
+    margin-top: 10px;
+    font-size: 0.95rem;
+    color: #ffeede;
+    background: linear-gradient(135deg, rgba(54, 20, 80, 0.78), rgba(98, 28, 143, 0.82));
+    padding: 12px 16px;
+    border-left: 3px solid rgba(255, 166, 0, 0.6);
+    border-radius: 12px;
+    box-shadow: 0 0 16px rgba(255, 109, 0, 0.15);
+}
+
+@media (max-width: 768px) {
+    .advisorSummary {
+        width: 100%;
+    }
+
+    .advisorChangeButton,
+    .advisorChooseButton {
+        width: 100%;
+    }
+}
+
+.cartButton {
+    margin-top: 16px;
+    width: 100%;
+    padding: 12px 18px;
+    border-radius: 12px;
+    border: 2px solid rgba(255, 166, 0, 0.55);
+    background: linear-gradient(145deg, rgba(255, 109, 0, 0.18), rgba(76, 29, 149, 0.32));
+    color: #ffeede;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.cartButton:hover {
+    background: rgba(255, 166, 0, 0.25);
+    transform: translateY(-1px);
+}
+
+.cartFeedback {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: rgba(255, 233, 214, 0.85);
 }

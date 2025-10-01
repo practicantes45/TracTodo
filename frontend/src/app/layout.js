@@ -4,10 +4,13 @@ import { Suspense } from "react";
 
 import SEOProvider from "./components/SEOProvider/SEOProvider";
 import { AuthProvider } from "../hooks/useAuth";
+import { CartProvider } from "../context/CartContext";
+import CartWidget from "./components/CartWidget/CartWidgetRoot";
 import CookieConsent from "./components/CookieConsent/CookieConsent";
 import Analytics from "./Analytics"; // empuja page_view al dataLayer
 
 import "./styles/global.css";
+
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const ubuntu = Ubuntu({
@@ -24,8 +27,8 @@ const montserrat = Montserrat({
 // ===== Metadata global (sin viewport aquí) =====
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_FRONTEND_URL || "https://tractodo.com"),
-  title: { template: "%s | Tractodo", default: "Tractodo - Refacciones para Tractocamión" },
-  description: "Refaccionaria especializada en partes y componentes para tractocamión.",
+  title: { template: "%s | Tractodo", default: "Tractodo - Especial Halloween de Refacciones" },
+  description: "Refaccionaria especializada en partes y componentes para tractocamión con edición especial de Halloween y Día de Muertos.",
   verification: { google: "google-site-verification-code" },
   icons: { icon: "/favicon.ico", shortcut: "/favicon.ico", apple: "/apple-touch-icon.png" },
   manifest: "/site.webmanifest",
@@ -36,7 +39,7 @@ export const metadata = {
 export const viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#002a5c",
+  themeColor: "#1a0b2e",
 };
 
 export default function RootLayout({ children }) {
@@ -62,7 +65,7 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
 
         {/* Extras opcionales que ya traías */}
-        <meta name="msapplication-TileColor" content="#002a5c" />
+        <meta name="msapplication-TileColor" content="#4c1d95" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
         <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
         <link rel="preload" href="/images/tractodo-logo.jpg" as="image" />
@@ -82,10 +85,13 @@ export default function RootLayout({ children }) {
         </Suspense>
 
         <AuthProvider>
-          <SEOProvider>
-            {children}
-            <CookieConsent />
-          </SEOProvider>
+          <CartProvider>
+            <SEOProvider>
+              {children}
+              <CartWidget />
+              <CookieConsent />
+            </SEOProvider>
+          </CartProvider>
         </AuthProvider>
       </body>
     </html>

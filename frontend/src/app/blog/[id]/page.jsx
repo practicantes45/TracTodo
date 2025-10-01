@@ -8,7 +8,7 @@ export async function generateStaticParams() {
     console.log('🏗️ Generando parámetros estáticos para blog...');
     
     // Usar URL de producción para build
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://tractodo-production.up.railway.app/api';
+    const apiUrl = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8080/api';
     const response = await fetch(`${apiUrl}/entretenimiento/blogs`, {
         headers: {
             'Content-Type': 'application/json',

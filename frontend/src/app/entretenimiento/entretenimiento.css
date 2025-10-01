@@ -11,8 +11,8 @@
   width: 100%;
   left: 0;
   background-image: url('https://i.postimg.cc/SNFcd0pZ/entretenimiento3.png');
-  background-size: cover;
-  background-repeat: no-repeat;
+  background-size: cover, 320px;
+  background-repeat: no-repeat, repeat;
   color: white;
   top: 90px;
   display: flex;
@@ -30,7 +30,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: rgba(0, 0, 0, 0.3);
+  background: linear-gradient(0deg, rgba(26, 11, 46, 0.72), rgba(14, 4, 28, 0.45));
 }
 
 .heroContent {
@@ -50,7 +50,7 @@
   text-shadow:
     2px 2px 4px rgba(0, 0, 0, 0.8),
     0 0 10px rgba(0, 0, 0, 0.6),
-    0 0 20px rgba(0, 42, 92, 0.4);
+    0 0 20px rgba(148, 33, 146, 0.4);
   opacity: 0;
   animation: fadeInUp 1s ease-out 0.5s forwards;
 }
@@ -84,6 +84,29 @@
   overflow: hidden;
 }
 
+.entertainmentMainSection::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url('/images/halloween-pattern.svg') repeat;
+  opacity: 0.14;
+  pointer-events: none;
+}
+
+.entertainmentMainSection::after {
+  content: "";
+  position: absolute;
+  top: auto;
+  bottom: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 260px;
+  height: 260px;
+  background: radial-gradient(circle, rgba(255, 109, 0, 0.2) 0%, transparent 70%);
+  opacity: 0.45;
+  pointer-events: none;
+}
+
 .entertainmentContainer {
   max-width: 1400px;
   margin: 0 auto;
@@ -106,7 +129,7 @@
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
   font-weight: 700;
   position: relative;
-  text-shadow: 0 2px 4px rgba(0, 42, 92, 0.1);
+  text-shadow: 0 2px 4px rgba(148, 33, 146, 0.1);
 }
 
 .sectionHeader h2::after {
@@ -118,7 +141,7 @@
   margin: 20px auto 0;
   border-radius: 2px;
   animation: expandUnderline 1.5s ease-out 0.5s forwards;
-  box-shadow: 0 2px 8px rgba(0, 180, 216, 0.3);
+  box-shadow: 0 2px 8px rgba(255, 109, 0, 0.3);
 }
 
 @keyframes expandUnderline {
@@ -159,13 +182,13 @@
   border-radius: 20px;
   overflow: hidden;
   box-shadow:
-    0 8px 25px rgba(0, 42, 92, 0.1),
-    0 4px 15px rgba(0, 180, 216, 0.05),
+    0 8px 25px rgba(148, 33, 146, 0.1),
+    0 4px 15px rgba(255, 109, 0, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
   transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
   cursor: pointer;
   position: relative;
-  border: 1px solid rgba(0, 180, 216, 0.15);
+  border: 1px solid rgba(255, 109, 0, 0.15);
   backdrop-filter: blur(10px);
 }
 
@@ -178,7 +201,7 @@
   height: 100%;
   background: linear-gradient(90deg,
       transparent 0%,
-      rgba(0, 180, 216, 0.1) 50%,
+      rgba(255, 109, 0, 0.1) 50%,
       transparent 100%);
   transition: left 1.5s ease;
   pointer-events: none;
@@ -188,10 +211,10 @@
 .shortCard:hover {
   transform: translateY(-8px) scale(1.02);
   box-shadow:
-    0 20px 40px rgba(0, 42, 92, 0.15),
-    0 8px 25px rgba(0, 180, 216, 0.1),
+    0 20px 40px rgba(148, 33, 146, 0.15),
+    0 8px 25px rgba(255, 109, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  border-color: rgba(0, 180, 216, 0.3);
+  border-color: rgba(255, 109, 0, 0.3);
 }
 
 .shortCard:hover::before {
@@ -333,7 +356,7 @@
 }
 
 .shortCard:hover .shortTitle {
-  color: #00b4d8;
+  color: #ff6d00;
 }
 
 .shortMeta {
@@ -374,12 +397,12 @@
   border-radius: 20px;
   overflow: hidden;
   box-shadow:
-    0 10px 30px rgba(0, 42, 92, 0.08),
-    0 4px 15px rgba(0, 180, 216, 0.05),
+    0 10px 30px rgba(148, 33, 146, 0.08),
+    0 4px 15px rgba(255, 109, 0, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
   transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
   cursor: pointer;
-  border: 1px solid rgba(0, 180, 216, 0.15);
+  border: 1px solid rgba(255, 109, 0, 0.15);
   position: relative;
   backdrop-filter: blur(10px);
 }
@@ -393,7 +416,7 @@
   height: 100%;
   background: linear-gradient(90deg,
       transparent 0%,
-      rgba(0, 180, 216, 0.1) 50%,
+      rgba(255, 109, 0, 0.1) 50%,
       transparent 100%);
   transition: left 1.5s ease;
   pointer-events: none;
@@ -403,10 +426,10 @@
 .blogCard:hover {
   transform: translateY(-10px) scale(1.02);
   box-shadow:
-    0 25px 50px rgba(0, 42, 92, 0.15),
-    0 10px 30px rgba(0, 180, 216, 0.1),
+    0 25px 50px rgba(148, 33, 146, 0.15),
+    0 10px 30px rgba(255, 109, 0, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  border-color: rgba(0, 180, 216, 0.3);
+  border-color: rgba(255, 109, 0, 0.3);
 }
 
 .blogCard:hover::before {
@@ -436,7 +459,7 @@
   position: absolute;
   top: 15px;
   left: 15px;
-  background: linear-gradient(45deg, #00b4d8, #0077b6);
+  background: linear-gradient(45deg, #ff6d00, #0077b6);
   color: white;
   padding: 6px 14px;
   border-radius: 20px;
@@ -445,7 +468,7 @@
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
+  box-shadow: 0 4px 15px rgba(255, 109, 0, 0.3);
   z-index: 2;
 }
 
@@ -488,7 +511,7 @@
 }
 
 .blogCard:hover .blogTitle {
-  color: #00b4d8;
+  color: #ff6d00;
 }
 
 /* ===== NUEVO: SUBTÍTULO DESTACADO EN TARJETAS DE BLOG ===== */
@@ -503,7 +526,7 @@
   border-left: 3px solid var(--accent-color);
   padding-left: 12px;
   background: linear-gradient(90deg, 
-    rgba(0, 180, 216, 0.05) 0%, 
+    rgba(255, 109, 0, 0.05) 0%, 
     transparent 100%);
   border-radius: 0 8px 8px 0;
   padding: 8px 0 8px 15px;
@@ -543,7 +566,7 @@
 }
 
 .readMoreButton {
-  background: linear-gradient(135deg, #00b4d8 0%, #0077b6 100%);
+  background: linear-gradient(135deg, #ff6d00 0%, #0077b6 100%);
   color: white;
   border: none;
   padding: 12px 24px;
@@ -567,7 +590,7 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #0077b6 0%, #023e8a 100%);
+  background: linear-gradient(135deg, #0077b6 0%, #2f0a4c 100%);
   transition: left 0.3s ease;
 }
 
@@ -582,7 +605,7 @@
 
 .readMoreButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 180, 216, 0.4);
+  box-shadow: 0 8px 25px rgba(255, 109, 0, 0.4);
 }
 
 /* ===== ESTADOS DE CARGA Y ERROR ===== */
@@ -591,7 +614,7 @@
   padding: 60px 20px;
   background: rgba(255, 255, 255, 0.9);
   border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(0, 42, 92, 0.1);
+  box-shadow: 0 10px 30px rgba(148, 33, 146, 0.1);
   margin: 40px 0;
 }
 
@@ -626,7 +649,7 @@
 
 .retryButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(0, 180, 216, 0.4);
+  box-shadow: 0 8px 25px rgba(255, 109, 0, 0.4);
 }
 
 .noVideosMessage, .noBlogMessage {
@@ -634,7 +657,7 @@
   padding: 60px 20px;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 20px;
-  border: 2px dashed rgba(0, 180, 216, 0.3);
+  border: 2px dashed rgba(255, 109, 0, 0.3);
   margin: 40px 0;
 }
 
@@ -659,7 +682,7 @@
   padding: 60px 20px;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 20px;
-  border: 2px dashed rgba(0, 180, 216, 0.3);
+  border: 2px dashed rgba(255, 109, 0, 0.3);
 }
 
 .noResults h3 {
@@ -686,7 +709,7 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  background: linear-gradient(135deg, #002a5c 0%, #00436e 50%, #00b4d8 100%);
+  background: linear-gradient(135deg, #002a5c 0%, #00436e 50%, #ff6d00 100%);
   color: white;
   text-decoration: none;
   padding: 18px 36px;
@@ -699,8 +722,8 @@
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
   box-shadow:
-    0 8px 25px rgba(0, 42, 92, 0.2),
-    0 4px 15px rgba(0, 180, 216, 0.1);
+    0 8px 25px rgba(148, 33, 146, 0.2),
+    0 4px 15px rgba(255, 109, 0, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
   cursor: pointer;
@@ -726,8 +749,8 @@
 .viewMoreButton:hover {
   transform: translateY(-4px) scale(1.05);
   box-shadow:
-    0 15px 40px rgba(0, 42, 92, 0.3),
-    0 8px 25px rgba(0, 180, 216, 0.2);
+    0 15px 40px rgba(148, 33, 146, 0.3),
+    0 8px 25px rgba(255, 109, 0, 0.2);
   border-color: rgba(255, 255, 255, 0.4);
 }
 
@@ -743,7 +766,7 @@
 
 /* Variante para botón de shorts */
 .viewMoreButton.shorts {
-  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 50%, #00b4d8 100%);
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 50%, #ff6d00 100%);
 }
 
 .viewMoreButton.shorts::after {
@@ -1141,7 +1164,7 @@
    text-shadow:
      2px 2px 4px rgba(0, 0, 0, 0.9),
      0 0 8px rgba(0, 0, 0, 0.7),
-     0 0 16px rgba(0, 42, 92, 0.5);
+     0 0 16px rgba(148, 33, 146, 0.5);
  }
  
  .entertainmentMainSection{
@@ -1350,7 +1373,7 @@
 }
 
 .shortCategory {
- background: rgba(0, 180, 216, 0.1);
+ background: rgba(255, 109, 0, 0.1);
  color: var(--accent-color);
  padding: 4px 8px;
  border-radius: 12px;

@@ -13,7 +13,7 @@ export async function generateMetadata({ params }) {
     const nombreParaBusqueda = nombre.replace(/-/g, ' ').toLowerCase();
     
     // Llamar al backend usando tu función existente del servicio de productos
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://tractodo-production.up.railway.app/api';
+    const API_URL = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8080/api';
     const response = await fetch(`${API_URL}/productos/nombre/${encodeURIComponent(nombreParaBusqueda)}`);
     
     if (response.ok) {

@@ -14,6 +14,8 @@ import { getProductSlug } from '../../utils/slugUtils';
 import { useSEO } from '../../hooks/useSEO';
 import { getPreviewDescription, getShortPreviewDescription } from '../../utils/textUtils';
 import { formatearPrecio, formatearPrecioWhatsApp } from '../../utils/priceUtils';
+import { useCart } from '../../hooks/useCart';
+import { useWhatsAppContact } from '../../hooks/useWhatsAppContact';
 // Constante para productos por página
 const PRODUCTOS_POR_PAGINA = 15;
 
@@ -36,6 +38,8 @@ export default function ProductosPage() {
   const [paginaActual, setPaginaActual] = useState(1);
   const [hayMasProductos, setHayMasProductos] = useState(false);
   const [cargandoMas, setCargandoMas] = useState(false);
+  const [advisorSelectionReminder, setAdvisorSelectionReminder] = useState(false);
+  const { addItem } = useCart();
 
   const searchParams = useSearchParams();
   const busquedaParam = searchParams.get('busqueda');
@@ -50,29 +54,36 @@ export default function ProductosPage() {
   // Lista de marcas predefinidas
   const marcasPredefinidas = ["Cummins", "Navistar", "Volvo", "Mercedes Benz", "Detroit", "Caterpillar", "Otros"];
 
-  // Lista de contactos
-  const contactList = [
-    {
-      name: "Alan",
-      phoneNumber: "+524272245923",
-      message: "Hola Alan, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
+  const {
+    selectedAdvisor,
+    startContact: startAdvisorContact,
+    isReady: isAdvisorReady,
+  } = useWhatsAppContact({
+    allowSelection: false,
+    onRequireSelection: () => {
+      setAdvisorSelectionReminder(true);
+      router.push('/#asesores');
     },
-    {
-      name: "Laura",
-      phoneNumber: "+524272033515",
-      message: "Hola Laura, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
+    getMessage: ({ advisor, payload }) => {
+      if (payload?.customMessage) {
+        return payload.customMessage;
+      }
+      const productData = payload?.product;
+      if (productData) {
+        const price = productData.precioVentaSugerido || productData.precio || 0;
+        return advisor.productMessage
+          .replace('{producto}', productData.nombre)
+          .replace('{precio}', formatearPrecioWhatsApp(price));
+      }
+      return advisor.generalMessage;
     },
-    {
-      name: "Oscar",
-      phoneNumber: "+524272032672",
-      message: "Hola Oscar, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
-    },
-    {
-      name: "Hugo",
-      phoneNumber: "+524424128926",
-      message: "Hola Hugo, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
+  });
+  useEffect(() => {
+    if (selectedAdvisor) {
+      setAdvisorSelectionReminder(false);
     }
-  ];
+  }, [selectedAdvisor]);
+
 
   // MODIFICADO: Efecto combinado para inicializar filtros y cargar productos
   useEffect(() => {
@@ -195,24 +206,15 @@ export default function ProductosPage() {
   };
 
   const handleWhatsAppClick = (producto, e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
-    const precio = producto.precioVentaSugerido || producto.precio || 0;
-    const personalizedMessage = randomContact.message
-      .replace('{producto}', producto.nombre)
-      .replace('{precio}', formatearPrecioWhatsApp(precio));
-
-    const cleanPhoneNumber = randomContact.phoneNumber.replace(/\D/g, '');
-    const formattedNumber = cleanPhoneNumber.startsWith('52')
-      ? cleanPhoneNumber
-      : `52${cleanPhoneNumber}`;
-
-    const encodedMessage = encodeURIComponent(personalizedMessage);
-    const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodedMessage}`;
-
-    window.open(whatsappUrl, '_blank');
+    startAdvisorContact({ product: producto }, e);
+  };
+  const handleAddToCart = (producto) => {
+    if (!producto) {
+      return;
+    }
+    const price = Number(producto.precioVentaSugerido || producto.precio || 0);
+    const itemId = producto.id || producto.slug || producto.nombre;
+    addItem({ id: itemId, name: producto.nombre || 'Producto', price });
   };
   const handleProductoClick = async (producto) => {
     await registrarVista(producto.id);
@@ -684,12 +686,34 @@ export default function ProductosPage() {
                               {formatearPrecio(producto.precioVentaSugerido || 0)}
                             </div>
                             <button
+                              type="button"
+                              className="cartButton"
+                              onClick={() => handleAddToCart(producto)}
+                            >
+                              Agregar al carrito
+                            </button>
+                            <button
                               className="whatsappBtn"
                               onClick={(e) => handleWhatsAppClick(producto, e)}
                             >
                               <FaWhatsapp />
                               Compra por WhatsApp
                             </button>
+                            {selectedAdvisor && (
+                              <div className="advisorSummary">
+                                <span className="advisorSummaryLabel">Te atendera {selectedAdvisor.name}</span>
+                              </div>
+                            )}
+                            {!selectedAdvisor && isAdvisorReady && (
+                              <div className="advisorSummary advisorSummaryNotice">
+                                <span className="advisorSummaryLabel">Selecciona tu asesor en la pagina de inicio para continuar por WhatsApp.</span>
+                              </div>
+                            )}
+                            {advisorSelectionReminder && (
+                              <div className="advisorReminder">
+                                Elige o cambia asesor desde la pagina principal de TracTodo para finalizar tu compra.
+                              </div>
+                            )}
                           </div>
                         </div>
                       );

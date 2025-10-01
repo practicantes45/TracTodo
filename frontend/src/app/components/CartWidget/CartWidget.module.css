@@ -1,0 +1,231 @@
+.cartContainer {
+  position: fixed;
+  bottom: 120px;
+  right: 30px;
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.fabButton {
+  width: 56px;
+  height: 56px;
+  border: none;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 109, 0, 0.95), rgba(98, 28, 143, 0.95));
+  color: #ffffff;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  box-shadow: 0 16px 30px rgba(255, 166, 0, 0.28);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fabButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 36px rgba(255, 166, 0, 0.32);
+}
+
+.badge {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  min-width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 166, 0, 0.95), rgba(124, 43, 163, 0.95));
+  color: #ffffff;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+.panel {
+  margin-top: 16px;
+  width: min(360px, 90vw);
+  background: linear-gradient(145deg, rgba(29, 9, 50, 0.92), rgba(54, 20, 80, 0.92));
+  border-radius: 20px;
+  box-shadow: 0 24px 48px rgba(98, 28, 143, 0.22);
+  padding: 20px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panelHeader h3 {
+  margin: 0;
+  font-size: 1.2rem;
+  color: #ffeede;
+}
+
+.closeButton {
+  border: none;
+  background: transparent;
+  color: rgba(255, 233, 214, 0.8);
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.emptyState {
+  margin: 0;
+  color: rgba(255, 233, 214, 0.8);
+  font-size: 0.95rem;
+}
+
+.itemList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+.itemRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(255, 166, 0, 0.06);
+}
+
+.itemName {
+  margin: 0 0 4px;
+  font-weight: 600;
+  color: #ffeede;
+}
+
+.itemMeta {
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgba(255, 233, 214, 0.8);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.quantityInput {
+  width: 60px;
+  border-radius: 8px;
+  border: 1px solid rgba(98, 28, 143, 0.2);
+  padding: 4px 6px;
+  font-size: 0.9rem;
+}
+
+.removeButton {
+  border: none;
+  background: transparent;
+  color: #c04a4a;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffeede;
+}
+
+.advisorNote {
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgba(255, 233, 214, 0.8);
+}
+
+.reminderAlert {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #7a2f2f;
+  background: rgba(234, 84, 84, 0.18);
+  border-left: 3px solid rgba(234, 84, 84, 0.54);
+  padding: 10px 14px;
+  border-radius: 10px;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.primaryAction,
+.secondaryAction {
+  flex: 1;
+  border-radius: 14px;
+  padding: 12px 16px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.primaryAction {
+  background: linear-gradient(135deg, rgba(255, 109, 0, 0.95), rgba(98, 28, 143, 0.95));
+  color: #ffffff;
+  box-shadow: 0 16px 28px rgba(255, 166, 0, 0.25);
+}
+
+.primaryAction:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 20px 32px rgba(255, 166, 0, 0.3);
+}
+
+.primaryAction:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.secondaryAction {
+  background: rgba(98, 28, 143, 0.08);
+  color: #ffeede;
+}
+
+.secondaryAction:hover {
+  transform: translateY(-1px);
+  background: rgba(98, 28, 143, 0.12);
+}
+
+.secondaryAction:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+  .cartContainer {
+    bottom: 100px;
+    right: 20px;
+  }
+
+  .panel {
+    width: min(92vw, 320px);
+    padding: 18px;
+  }
+
+  .actions {
+    flex-direction: column;
+  }
+}

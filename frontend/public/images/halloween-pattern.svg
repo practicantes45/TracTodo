@@ -1,0 +1,35 @@
+﻿<svg xmlns="http://www.w3.org/2000/svg" width="240" height="240" viewBox="0 0 240 240" preserveAspectRatio="xMidYMid slice">
+  <rect width="240" height="240" fill="#1a0b2e"/>
+  <g stroke="#402066" stroke-width="2" opacity="0.35" fill="none">
+    <path d="M0 0 L120 120 L240 0"/>
+    <path d="M0 240 L120 120 L240 240"/>
+    <path d="M120 0 L120 240"/>
+    <path d="M0 120 L240 120"/>
+    <path d="M30 0 C60 60 180 60 210 0"/>
+    <path d="M30 240 C60 180 180 180 210 240"/>
+  </g>
+  <g fill="#ff6d00" opacity="0.8">
+    <circle cx="50" cy="60" r="26"/>
+    <circle cx="190" cy="170" r="24"/>
+    <circle cx="140" cy="40" r="18"/>
+    <circle cx="90" cy="175" r="20"/>
+  </g>
+  <g fill="#2f0a4c" opacity="0.88">
+    <path d="M47 52 q3 -4 6 0 q-6 9 -12 0z"/>
+    <path d="M187 162 q3 -4 6 0 q-6 9 -12 0z"/>
+    <path d="M137 32 q2 -3 4 0 q-4 6 -8 0z"/>
+    <path d="M87 167 q2 -3 4 0 q-4 6 -8 0z"/>
+  </g>
+  <g fill="#1a0b2e" opacity="0.95">
+    <path d="M50 60 c-6 -10 -18 -10 -24 2 c12 -3 14 4 16 8 c2 -4 4 -11 16 -8 c-6 -12 -18 -12 -24 -2z"/>
+    <path d="M190 170 c-6 -10 -18 -10 -24 2 c12 -3 14 4 16 8 c2 -4 4 -11 16 -8 c-6 -12 -18 -12 -24 -2z"/>
+    <path d="M140 40 c-4 -8 -12 -8 -16 1 c8 -2 9 3 10 6 c1 -3 2 -7 10 -6 c-4 -8 -12 -9 -16 -1z"/>
+    <path d="M90 175 c-5 -8 -15 -8 -20 1 c10 -2 11 4 12 6 c1 -3 2 -7 12 -6 c-5 -9 -15 -9 -20 -1z"/>
+  </g>
+  <g fill="#ffb347" opacity="0.85">
+    <circle cx="50" cy="52" r="6"/>
+    <circle cx="140" cy="32" r="4"/>
+    <circle cx="90" cy="168" r="5"/>
+    <circle cx="190" cy="162" r="5"/>
+  </g>
+</svg>

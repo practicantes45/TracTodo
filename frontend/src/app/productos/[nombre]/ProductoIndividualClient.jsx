@@ -14,6 +14,10 @@ import { getProductSlug } from '../../../utils/slugUtils';
 import { useProductSEO } from '../../../hooks/useSEO';
 import FormattedDescription from '../../components/FormattedDescription/FormattedDescription';
 import { formatearPrecio, formatearPrecioWhatsApp } from '../../../utils/priceUtils';
+import { useCart } from '../../../hooks/useCart';
+
+
+import { useWhatsAppContact } from '../../../hooks/useWhatsAppContact';
 
 export default function ProductoIndividualPage({ params }) {
     const router = useRouter();
@@ -35,6 +39,10 @@ export default function ProductoIndividualPage({ params }) {
     const [carouselPanY, setCarouselPanY] = useState(0);
     const [isDragging, setIsDragging] = useState(false);
     const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+    const [advisorSelectionReminder, setAdvisorSelectionReminder] = useState(false);
+    const [cartConfirmation, setCartConfirmation] = useState("");
+    const cartMessageTimeout = useRef(null);
+    const { addItem } = useCart();
     const carouselImageRef = useRef(null);
 
     // Estados para el modal de imágenes
@@ -48,29 +56,45 @@ export default function ProductoIndividualPage({ params }) {
     // Hook SEO para producto individual
     const { seoData, schema, loading: seoLoading } = useProductSEO(producto?.id, producto);
 
-    // Lista de contactos para WhatsApp
-    const contactList = [
-        {
-            name: "Alan",
-            phoneNumber: "+524272245923",
-            message: "Hola Alan, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
+    const {
+        advisors,
+        selectedAdvisor,
+        isModalOpen: isAdvisorModalOpen,
+        openModal: openAdvisorModal,
+        closeModal: closeAdvisorModal,
+        selectAdvisor: selectAdvisorHandler,
+        startContact: startAdvisorContact,
+        changeAdvisor: changeSelectedAdvisor,
+        isReady: isAdvisorReady,
+    } = useWhatsAppContact({
+        getMessage: ({ advisor, payload }) => {
+            if (payload?.customMessage) {
+                return payload.customMessage;
+            }
+            const productData = payload?.product;
+            if (productData) {
+                const price = productData.precioVentaSugerido || productData.precio || 0;
+                return advisor.productMessage
+                    .replace('{producto}', productData.nombre)
+                    .replace('{precio}', formatearPrecioWhatsApp(price));
+            }
+            return advisor.generalMessage;
         },
-        {
-            name: "Laura",
-            phoneNumber: "+524272033515",
-            message: "Hola Laura, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
-        },
-        {
-            name: "Oscar",
-            phoneNumber: "+524272032672",
-            message: "Hola Oscar, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
-        },
-        {
-            name: "Hugo",
-            phoneNumber: "+524424128926",
-            message: "Hola Hugo, estoy interesado en {producto} con precio de ${precio}. ¿Podría proporcionarme más información?"
+    });
+    useEffect(() => {
+        return () => {
+            if (cartMessageTimeout.current) {
+                clearTimeout(cartMessageTimeout.current);
+            }
+        };
+    }, []);
+
+    useEffect(() => {
+        if (selectedAdvisor) {
+            setAdvisorSelectionReminder(false);
         }
-    ];
+    }, [selectedAdvisor]);
+
 
     // Detectar tamaño de pantalla para items per slide
     useEffect(() => {
@@ -317,45 +341,25 @@ export default function ProductoIndividualPage({ params }) {
     }, [isDragging, dragStart, carouselZoom]);
 
     const handleWhatsAppClick = (producto, e) => {
-        e.preventDefault();
-        e.stopPropagation();
+        startAdvisorContact({ product: producto }, e);
+    };
 
-        const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
-        const precio = producto.precioVentaSugerido || producto.precio || 0;
-        const personalizedMessage = randomContact.message
-            .replace('{producto}', producto.nombre)
-            .replace('{precio}', formatearPrecioWhatsApp(precio));
-
-        const cleanPhoneNumber = randomContact.phoneNumber.replace(/\D/g, '');
-        const formattedNumber = cleanPhoneNumber.startsWith('52')
-            ? cleanPhoneNumber
-            : `52${cleanPhoneNumber}`;
-
-        const encodedMessage = encodeURIComponent(personalizedMessage);
-        const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodedMessage}`;
-
-        window.open(whatsappUrl, '_blank');
+    const handleAddToCart = (producto) => {
+        if (!producto) {
+            return;
+        }
+        const price = Number(producto.precioVentaSugerido || producto.precio || producto.precioLista || 0);
+        const itemId = producto.id || producto.slug || producto.nombre;
+        addItem({ id: itemId, name: producto.nombre || 'Producto', price });
+        setCartConfirmation(`${producto.nombre || 'Producto'} agregado al carrito.`);
+        if (cartMessageTimeout.current) {
+            clearTimeout(cartMessageTimeout.current);
+        }
+        cartMessageTimeout.current = setTimeout(() => setCartConfirmation(''), 2500);
     };
 
     const handleRelatedWhatsAppClick = (relatedProduct, e) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        const randomContact = contactList[Math.floor(Math.random() * contactList.length)];
-        const precio = relatedProduct.precioVentaSugerido || 0;
-        const personalizedMessage = randomContact.message
-            .replace('{producto}', relatedProduct.nombre)
-            .replace('{precio}', formatearPrecioWhatsApp(precio));
-
-        const cleanPhoneNumber = randomContact.phoneNumber.replace(/\D/g, '');
-        const formattedNumber = cleanPhoneNumber.startsWith('52')
-            ? cleanPhoneNumber
-            : `52${cleanPhoneNumber}`;
-
-        const encodedMessage = encodeURIComponent(personalizedMessage);
-        const whatsappUrl = `https://api.whatsapp.com/send?phone=${formattedNumber}&text=${encodedMessage}`;
-
-        window.open(whatsappUrl, '_blank');
+        startAdvisorContact({ product: relatedProduct }, e);
     };
 
     const handleShareProduct = async () => {
@@ -771,12 +775,37 @@ export default function ProductoIndividualPage({ params }) {
                                 </div>
 
                                 <button
+                                    type="button"
+                                    className="cartButton"
+                                    onClick={() => handleAddToCart(producto)}
+                                >
+                                    Agregar al carrito
+                                </button>
+                                <button
                                     className="whatsappButton"
                                     onClick={(e) => handleWhatsAppClick(producto, e)}
                                 >
                                     <FaWhatsapp />
                                     Compra por WhatsApp
                                 </button>
+                                {cartConfirmation && (
+                                    <div className="cartFeedback">{cartConfirmation}</div>
+                                )}
+                                {selectedAdvisor && (
+                                    <div className="advisorSummary">
+                                        <span className="advisorSummaryLabel">Te atendera {selectedAdvisor.name}</span>
+                                    </div>
+                                )}
+                                {!selectedAdvisor && isAdvisorReady && (
+                                    <div className="advisorSummary advisorSummaryNotice">
+                                        <span className="advisorSummaryLabel">Selecciona tu asesor en la pagina de inicio para continuar por WhatsApp.</span>
+                                    </div>
+                                )}
+                                {advisorSelectionReminder && (
+                                    <div className="advisorReminder">
+                                        Elige o cambia asesor desde la pagina principal de TracTodo para finalizar tu compra.
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </section>
@@ -891,6 +920,7 @@ export default function ProductoIndividualPage({ params }) {
                     onClose={closeModal}
                     initialIndex={modalImageIndex}
                 />
+
 
                 <Footer />
                 <ScrollToTop />

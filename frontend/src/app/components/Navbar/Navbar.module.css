@@ -5,15 +5,15 @@
 /* ===== Barra móvil (<768px) ===== */
 .mobileSearchWrapper {
   /* Vars locales (también aquí porque usa var() en este bloque) */
-  --ink: #fdfdfd;
-  --ink-dim: #e6e6e6;
-  --bg: #006847;          /* verde bandera */
-  --bg-2: #015d3e;        /* verde más oscuro para hover/activo */
-  --shadow: 0 6px 16px rgba(0,0,0,.35);
+  --ink: #fdf7ff;
+  --ink-dim: #ffeede;
+  --bg: linear-gradient(135deg, #2f0a4c 0%, #4c1d95 50%, #ff6d00 100%);          /* verde bandera */
+  --bg-2: linear-gradient(135deg, #4c1d95 0%, #ff6d00 50%, #ffa94d 100%);        /* verde más oscuro para hover/activo */
+  --shadow: 0 8px 20px rgba(44, 6, 69, 0.35);
 
-  --mx-green: #006847;
-  --mx-white: #ffffff;
-  --mx-red:   #ce1126;
+  --mx-green: #2f0a4c;
+  --mx-white: #ff6d00;
+  --mx-red:   #ffa94d;
 
   display: none;
   background: var(--bg);
@@ -29,15 +29,15 @@
 /* ===== AppBar desktop (≥768px) ===== */
 .appBar {
   /* Vars locales disponibles para todo lo dentro del nav */
-  --ink: #fdfdfd;
-  --ink-dim: #e6e6e6;
-  --bg: #006847;
-  --bg-2: #015d3e;
-  --shadow: 0 6px 16px rgba(0,0,0,.35);
+  --ink: #fdf7ff;
+  --ink-dim: #ffeede;
+  --bg: linear-gradient(135deg, #2f0a4c 0%, #4c1d95 50%, #ff6d00 100%);
+  --bg-2: linear-gradient(135deg, #4c1d95 0%, #ff6d00 50%, #ffa94d 100%);
+  --shadow: 0 8px 20px rgba(44, 6, 69, 0.35);
 
-  --mx-green: #006847;
-  --mx-white: #ffffff;
-  --mx-red:   #ce1126;
+  --mx-green: #2f0a4c;
+  --mx-white: #ff6d00;
+  --mx-red:   #ffa94d;
 
   position: sticky; top: 0; z-index: 1000; width: 100%;
   background: var(--bg);
@@ -91,13 +91,13 @@
 .navLink::after {
   content: ''; position: absolute; left: 50%; bottom: 6px;
   width: 0; height: 2px; border-radius: 1px;
-  background: linear-gradient(90deg, var(--mx-green), var(--mx-white), var(--mx-red));
+  background: linear-gradient(90deg, rgba(255, 109, 0, 0.75), rgba(255, 173, 73, 0.85), rgba(76, 29, 149, 0.8));
   transform: translateX(-50%);
   transition: width .2s ease;
 }
-.navLink:hover { color: var(--ink-dim); background: var(--bg-2); transform: translateY(-1px); }
+.navLink:hover { color: #ffeede; background: var(--bg-2); transform: translateY(-1px); box-shadow: 0 8px 18px rgba(44, 6, 69, 0.25); }
 .navLink:hover::after { width: 70%; }
-.navLink.active { background: var(--bg-2); box-shadow: inset 0 0 0 1px rgba(255,255,255,.15); }
+.navLink.active { background: var(--bg-2); box-shadow: inset 0 0 0 1px rgba(255, 233, 214, 0.3); }
 .navLink.active::after { width: 80%; }
 
 /* ===== Search desktop ===== */

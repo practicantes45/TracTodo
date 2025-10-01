@@ -3,7 +3,6 @@ import './ubicacion.css';
 import { useState } from 'react';
 import { FaCalendarCheck, FaMapMarkedAlt, FaCar, FaBuilding, FaShoppingCart, FaClock, FaPlay, FaInfoCircle, FaTimes, FaTruck } from "react-icons/fa";
 import Navbar from '../components/Navbar/Navbar';
-import ContactNumbers from '../components/ContactNumbers/ContactNumbers';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
 import VideoSection from '../components/VideoSection/VideoSection';
@@ -93,9 +92,6 @@ export default function UbicacionClient() {
                             </div>
                         </div>
                     </div>
-
-                    <ContactNumbers pageContext="ubicacion" />
-
                     {/* Sección principal con videos y mapa */}
                     <section className="locationMainSection">
                         <div className="locationContainer">

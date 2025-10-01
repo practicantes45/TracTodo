@@ -8,7 +8,7 @@
   left: 0;
   background-image: url('https://i.postimg.cc/hj0RYW59/fondoazul.png');
   background-size: cover;
-  background-position: center center; /* CORREGIDO: posición idéntica */
+  background-position: center center;
   background-repeat: no-repeat;
   color: white;
   top: 90px;
@@ -27,7 +27,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: rgba(0, 0, 0, 0.3);
+  background: linear-gradient(0deg, rgba(10, 16, 135, 0.45), rgba(0, 42, 92, 0.55));
 }
 
 .heroContent {
@@ -65,7 +65,7 @@
   text-shadow: 
     1px 1px 3px rgba(0, 0, 0, 0.8),
     0 0 8px rgba(0, 0, 0, 0.5),
-    0 0 15px rgba(0, 42, 92, 0.3);
+    0 0 15px rgba(148, 33, 146, 0.3);
   opacity: 0;
   animation: fadeInUp 1s ease-out 0.8s forwards;
   text-align: center;

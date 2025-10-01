@@ -1,5 +1,59 @@
 // services/productoService.js
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
+const API_URL = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8080/api';
+
+const buildAuthHeaders = () => {
+  if (typeof window === 'undefined') {
+    return {};
+  }
+
+  try {
+    const cookieHeader = typeof document !== 'undefined'
+      ? document.cookie?.split('; ').find(value => value.startsWith('token='))
+      : null;
+
+    if (cookieHeader) {
+      const [, rawToken = ''] = cookieHeader.split('=');
+      const token = decodeURIComponent(rawToken);
+      if (token) {
+        return { Authorization: `Bearer ${token}` };
+      }
+    }
+
+    const storedSession = window.localStorage?.getItem('adminSession');
+    if (storedSession) {
+      try {
+        const parsed = JSON.parse(storedSession);
+        if (parsed?.token) {
+          return { Authorization: `Bearer ${parsed.token}` };
+        }
+      } catch (error) {
+        console.warn('No se pudo leer adminSession para auth:', error);
+      }
+    }
+  } catch (error) {
+    console.warn('No se pudo generar encabezados de autorización:', error);
+  }
+
+  return {};
+};
+
+const fetchWithAuth = (url, init = {}) => {
+  const authHeaders = buildAuthHeaders();
+  const headers = {
+    ...(init.headers || {}),
+    ...authHeaders,
+  };
+
+  if (init.body && !headers['Content-Type']) {
+    headers['Content-Type'] = 'application/json';
+  }
+
+  return fetch(url, {
+    credentials: 'include',
+    ...init,
+    headers,
+  });
+};
 
 export const obtenerProductos = async (filtros = {}) => {
   try {
@@ -19,7 +73,7 @@ export const obtenerProductos = async (filtros = {}) => {
     const url = `${API_URL}/productos${queryParams.toString() ? '?' + queryParams.toString() : ''}`;
     console.log('🔗 Solicitando productos con filtros:', url);
 
-    const response = await fetch(url, {
+    const response = await fetchWithAuth(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -59,7 +113,7 @@ export const buscarProductos = async (params) => {
     const url = `${API_URL}/productos?${queryParams.toString()}`;
     console.log('🔍 Buscando productos con filtros:', url);
 
-    const response = await fetch(url, {
+    const response = await fetchWithAuth(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -80,7 +134,7 @@ export const buscarProductos = async (params) => {
 
 export const obtenerProductoPorId = async (id) => {
   try {
-    const response = await fetch(`${API_URL}/productos/${id}`, {
+    const response = await fetchWithAuth(`${API_URL}/productos/${id}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -104,7 +158,7 @@ export const crearProducto = async (productoData) => {
   try {
     console.log('📤 Enviando datos para crear producto:', productoData);
 
-    const response = await fetch(`${API_URL}/productos`, {
+    const response = await fetchWithAuth(`${API_URL}/productos`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -144,7 +198,7 @@ export const actualizarProducto = async (id, productoData) => {
   try {
     console.log('📤 Actualizando producto:', id, productoData);
 
-    const response = await fetch(`${API_URL}/productos/${id}`, {
+    const response = await fetchWithAuth(`${API_URL}/productos/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -184,7 +238,7 @@ export const eliminarProducto = async (id) => {
   try {
     console.log('🗑️ Eliminando producto:', id);
 
-    const response = await fetch(`${API_URL}/productos/${id}`, {
+    const response = await fetchWithAuth(`${API_URL}/productos/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -223,7 +277,7 @@ export const eliminarProducto = async (id) => {
 // Obtener productos del mes
 export const obtenerProductosDelMes = async () => {
   try {
-    const response = await fetch(`${API_URL}/productos/mes/destacados`, {
+    const response = await fetchWithAuth(`${API_URL}/productos/mes/destacados`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -247,7 +301,7 @@ export const agregarProductosDelMes = async (productos) => {
   try {
     console.log('📄 Enviando productos al backend:', productos);
 
-    const response = await fetch(`${API_URL}/productos/mes/agregar`, {
+    const response = await fetchWithAuth(`${API_URL}/productos/mes/agregar`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -278,7 +332,7 @@ export const eliminarProductoDelMes = async (id) => {
   try {
     console.log('🗑️ Eliminando producto del mes:', id);
 
-    const response = await fetch(`${API_URL}/productos/mes/eliminar`, {
+    const response = await fetchWithAuth(`${API_URL}/productos/mes/eliminar`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -309,7 +363,7 @@ export const actualizarPrecioProductoDelMes = async (id, nuevoPrecio) => {
   try {
     console.log('💰 Actualizando precio del producto del mes:', { id, nuevoPrecio });
 
-    const response = await fetch(`${API_URL}/productos/mes/precio/${id}`, {
+    const response = await fetchWithAuth(`${API_URL}/productos/mes/precio/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -341,7 +395,7 @@ export const obtenerProductoPorNombre = async (nombre) => {
     // Decodificar el nombre de la URL por si tiene caracteres especiales
     const nombreDecodificado = decodeURIComponent(nombre);
     
-    const response = await fetch(`${API_URL}/productos/${nombreDecodificado}`, {
+    const response = await fetchWithAuth(`${API_URL}/productos/${nombreDecodificado}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -374,7 +428,7 @@ export const obtenerProductosConSEO = async (filtros = {}) => {
     const url = `${API_URL}/productos?${queryParams.toString()}`;
     console.log('🔗 Solicitando productos con SEO:', url);
 
-    const response = await fetch(url, {
+    const response = await fetchWithAuth(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -399,7 +453,7 @@ export const obtenerProductosConSEO = async (filtros = {}) => {
  */
 export const obtenerProductoPorIdConSEO = async (id) => {
   try {
-    const response = await fetch(`${API_URL}/productos/${id}?incluirSEO=true`, {
+    const response = await fetchWithAuth(`${API_URL}/productos/${id}?incluirSEO=true`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

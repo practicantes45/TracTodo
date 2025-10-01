@@ -1,7 +1,43 @@
 import axios from "axios";
 
 // CONFIGURACIÓN CORREGIDA PARA DESARROLLO LOCAL
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
+const API_URL = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8080/api";
+
+const resolveAuthToken = () => {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  try {
+    const cookieHeader = typeof document !== 'undefined'
+      ? document.cookie?.split('; ').find(value => value.startsWith('token='))
+      : null;
+
+    if (cookieHeader) {
+      const [, rawToken = ''] = cookieHeader.split('=');
+      const token = decodeURIComponent(rawToken);
+      if (token) {
+        return token;
+      }
+    }
+
+    const storedSession = window.localStorage?.getItem('adminSession');
+    if (storedSession) {
+      try {
+        const parsed = JSON.parse(storedSession);
+        if (parsed?.token) {
+          return parsed.token;
+        }
+      } catch (error) {
+        console.warn('No se pudo leer adminSession para axios auth:', error);
+      }
+    }
+  } catch (error) {
+    console.warn('No se pudo obtener token para axios:', error);
+  }
+
+  return null;
+};
 
 console.log('🔗 API configurada para:', API_URL);
 
@@ -18,6 +54,12 @@ const api = axios.create({
 // Interceptor para debugging
 api.interceptors.request.use(
   config => {
+    const token = resolveAuthToken();
+    if (token && !config.headers?.Authorization) {
+      config.headers = config.headers || {};
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
     console.log('🔄 Enviando petición:', config.method?.toUpperCase(), config.url);
     if (config.url?.includes('administradores')) {
       console.log('🍪 Cookies serán enviadas automáticamente');

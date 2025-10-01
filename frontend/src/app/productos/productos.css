@@ -53,7 +53,7 @@
   text-shadow:
     2px 2px 4px rgba(0, 0, 0, 0.8),
     0 0 10px rgba(0, 0, 0, 0.6),
-    0 0 20px rgba(0, 42, 92, 0.4);
+    0 0 20px rgba(148, 33, 146, 0.4);
   opacity: 0;
   animation: fadeInUp 1s ease-out 0.5s forwards;
 }
@@ -83,7 +83,7 @@
   /* Oculto por defecto */
   padding: 15px 20px;
   background: linear-gradient(145deg, #f0f8ff 0%, #e6f3ff 30%, #ffffff 70%, #f8f9fa 100%);
-  border-bottom: 1px solid rgba(0, 180, 216, 0.1);
+  border-bottom: 1px solid rgba(255, 109, 0, 0.1);
   position: relative;
   z-index: 5;
 }
@@ -101,7 +101,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 42, 92, 0.2);
+  box-shadow: 0 4px 15px rgba(148, 33, 146, 0.2);
   width: 100%;
   justify-content: center;
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
@@ -109,7 +109,7 @@
 
 .mobileFilterButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 42, 92, 0.3);
+  box-shadow: 0 6px 20px rgba(148, 33, 146, 0.3);
 }
 
 .mobileFilterButton svg {
@@ -144,7 +144,7 @@
   right: 0;
   width: 100%;
   max-height: 80vh;
-  background: linear-gradient(135deg, #0a0a1e 0%, #1a1a2e 25%, var(--primary-color, #002a5c) 50%, #16213e 75%, #0f1419 100%);
+  background: linear-gradient(135deg, #120019 0%, #1f0a30 25%, var(--primary-color, #002a5c) 50%, #271046 75%, #1a0b2e 100%);
   background-size: 400% 400%;
   animation: menuGradientFlow 12s ease infinite;
   z-index: 999;
@@ -179,7 +179,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 20px 25px;
-  border-bottom: 1px solid rgba(0, 180, 216, 0.2);
+  border-bottom: 1px solid rgba(255, 109, 0, 0.2);
   position: sticky;
   top: 0;
   background: inherit;
@@ -192,7 +192,7 @@
   font-weight: 700;
   margin: 0;
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
-  text-shadow: 0 0 10px rgba(0, 180, 216, 0.4);
+  text-shadow: 0 0 10px rgba(255, 109, 0, 0.4);
 }
 
 .closeMobileFilter {
@@ -256,8 +256,8 @@
 }
 
 .mobileMarcaCheckbox:hover {
-  color: var(--accent-color, #00b4d8);
-  background: rgba(0, 180, 216, 0.1);
+  color: var(--accent-color, #ff6d00);
+  background: rgba(255, 109, 0, 0.1);
   padding-left: 40px;
 }
 
@@ -275,20 +275,20 @@
   height: 20px;
   width: 20px;
   background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(0, 180, 216, 0.4);
+  border: 2px solid rgba(255, 109, 0, 0.4);
   border-radius: 4px;
   transition: all 0.3s ease;
 }
 
 .mobileMarcaCheckbox:hover .mobileCheckmark {
-  border-color: var(--accent-color, #00b4d8);
-  background: rgba(0, 180, 216, 0.1);
+  border-color: var(--accent-color, #ff6d00);
+  background: rgba(255, 109, 0, 0.1);
 }
 
 .mobileMarcaCheckbox input:checked~.mobileCheckmark {
-  background: var(--accent-color, #00b4d8);
-  border-color: var(--accent-color, #00b4d8);
-  box-shadow: 0 0 10px rgba(0, 180, 216, 0.5);
+  background: var(--accent-color, #ff6d00);
+  border-color: var(--accent-color, #ff6d00);
+  box-shadow: 0 0 10px rgba(255, 109, 0, 0.5);
 }
 
 .mobileCheckmark::after {
@@ -330,8 +330,8 @@
 }
 
 .mobileOrdenamientoRadio:hover {
-  color: var(--accent-color, #00b4d8);
-  background: rgba(0, 180, 216, 0.1);
+  color: var(--accent-color, #ff6d00);
+  background: rgba(255, 109, 0, 0.1);
   padding-left: 40px;
 }
 
@@ -349,20 +349,20 @@
   height: 16px;
   width: 16px;
   background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(0, 180, 216, 0.4);
+  border: 2px solid rgba(255, 109, 0, 0.4);
   border-radius: 50%;
   transition: all 0.3s ease;
 }
 
 .mobileOrdenamientoRadio:hover .mobileRadiomark {
-  border-color: var(--accent-color, #00b4d8);
-  background: rgba(0, 180, 216, 0.1);
+  border-color: var(--accent-color, #ff6d00);
+  background: rgba(255, 109, 0, 0.1);
 }
 
 .mobileOrdenamientoRadio input:checked~.mobileRadiomark {
-  background: var(--accent-color, #00b4d8);
-  border-color: var(--accent-color, #00b4d8);
-  box-shadow: 0 0 10px rgba(0, 180, 216, 0.5);
+  background: var(--accent-color, #ff6d00);
+  border-color: var(--accent-color, #ff6d00);
+  box-shadow: 0 0 10px rgba(255, 109, 0, 0.5);
 }
 
 .mobileRadiomark::after {
@@ -385,7 +385,7 @@
   margin-left: 10px;
   margin-right: 8px;
   font-size: 1rem;
-  color: var(--accent-color, #00b4d8);
+  color: var(--accent-color, #ff6d00);
   transition: all 0.3s ease;
 }
 
@@ -399,7 +399,7 @@
   gap: 15px;
   margin-top: 30px;
   padding-top: 20px;
-  border-top: 1px solid rgba(0, 180, 216, 0.2);
+  border-top: 1px solid rgba(255, 109, 0, 0.2);
 }
 
 .clearMobileFilters,
@@ -418,26 +418,26 @@
 .clearMobileFilters {
   background: transparent;
   color: #e0e0e0;
-  border: 2px solid rgba(0, 180, 216, 0.4);
+  border: 2px solid rgba(255, 109, 0, 0.4);
 }
 
 .clearMobileFilters:hover {
-  background: rgba(0, 180, 216, 0.1);
-  border-color: var(--accent-color, #00b4d8);
-  color: var(--accent-color, #00b4d8);
+  background: rgba(255, 109, 0, 0.1);
+  border-color: var(--accent-color, #ff6d00);
+  color: var(--accent-color, #ff6d00);
 }
 
 .applyMobileFilters {
-  background: var(--accent-color, #00b4d8);
+  background: var(--accent-color, #ff6d00);
   color: white;
-  border: 2px solid var(--accent-color, #00b4d8);
+  border: 2px solid var(--accent-color, #ff6d00);
 }
 
 .applyMobileFilters:hover {
   background: #0096c7;
   border-color: #0096c7;
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
+  box-shadow: 0 4px 15px rgba(255, 109, 0, 0.3);
 }
 
 /* ===== SECCIÓN PRINCIPAL DE PRODUCTOS ===== */
@@ -465,7 +465,7 @@
 /* ===== SIDEBAR DE FILTROS DESKTOP ===== */
 .filtrosSidebar {
   width: 340px;
-  background: linear-gradient(135deg, #0a0a1e 0%, #1a1a2e 25%, var(--primary-color, #002a5c) 50%, #16213e 75%, #0f1419 100%);
+  background: linear-gradient(135deg, #120019 0%, #1f0a30 25%, var(--primary-color, #002a5c) 50%, #271046 75%, #1a0b2e 100%);
   background-size: 400% 400%;
   animation: sidebarGradientFlow 12s ease infinite;
   border-radius: 20px;
@@ -478,7 +478,7 @@
   max-height: none;
   height: auto;
   overflow-y: auto;
-  box-shadow: 2px 0 10px rgba(0, 42, 92, 0.15);
+  box-shadow: 2px 0 10px rgba(148, 33, 146, 0.15);
   backdrop-filter: blur(10px);
   flex-shrink: 0;
   z-index: 10;
@@ -506,9 +506,9 @@
   width: 100%;
   height: 100%;
   background-image:
-    radial-gradient(2px 2px at 30px 40px, rgba(0, 180, 216, 0.4), transparent),
+    radial-gradient(2px 2px at 30px 40px, rgba(255, 109, 0, 0.4), transparent),
     radial-gradient(1px 1px at 80px 80px, rgba(255, 255, 255, 0.2), transparent),
-    radial-gradient(1px 1px at 120px 120px, rgba(0, 180, 216, 0.3), transparent);
+    radial-gradient(1px 1px at 120px 120px, rgba(255, 109, 0, 0.3), transparent);
   background-repeat: repeat;
   background-size: 150px 120px;
   animation: sidebarSparkle 20s linear infinite;
@@ -541,13 +541,13 @@
   font-size: 2rem;
   font-weight: 700;
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
-  text-shadow: 0 0 10px rgba(0, 180, 216, 0.4);
+  text-shadow: 0 0 10px rgba(255, 109, 0, 0.4);
 }
 
 .limpiarFiltrosBtn {
   background: transparent;
-  border: 2px solid rgba(0, 180, 216, 0.6);
-  color: var(--accent-color, #00b4d8);
+  border: 2px solid rgba(255, 109, 0, 0.6);
+  color: var(--accent-color, #ff6d00);
   padding: 8px 16px;
   border-radius: 8px;
   font-size: 0.9rem;
@@ -558,10 +558,10 @@
 }
 
 .limpiarFiltrosBtn:hover {
-  background: rgba(0, 180, 216, 0.1);
-  border-color: var(--accent-color, #00b4d8);
+  background: rgba(255, 109, 0, 0.1);
+  border-color: var(--accent-color, #ff6d00);
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(0, 180, 216, 0.3);
+  box-shadow: 0 4px 15px rgba(255, 109, 0, 0.3);
 }
 
 /* ===== GRUPOS DE FILTROS DESKTOP ===== */
@@ -585,10 +585,10 @@
   display: block;
   width: 40px;
   height: 2px;
-  background: var(--accent-color, #00b4d8);
+  background: var(--accent-color, #ff6d00);
   margin: 8px 0 0 0;
   border-radius: 1px;
-  box-shadow: 0 0 8px rgba(0, 180, 216, 0.4);
+  box-shadow: 0 0 8px rgba(255, 109, 0, 0.4);
 }
 
 /* ===== CHECKBOXES DESKTOP ===== */
@@ -612,7 +612,7 @@
 }
 
 .marcaCheckbox:hover {
-  color: var(--accent-color, #00b4d8);
+  color: var(--accent-color, #ff6d00);
   transform: translateX(5px);
 }
 
@@ -629,20 +629,20 @@
   height: 20px;
   width: 20px;
   background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(0, 180, 216, 0.4);
+  border: 2px solid rgba(255, 109, 0, 0.4);
   border-radius: 4px;
   transition: all 0.3s ease;
 }
 
 .marcaCheckbox:hover .checkmark {
-  border-color: var(--accent-color, #00b4d8);
-  background: rgba(0, 180, 216, 0.1);
+  border-color: var(--accent-color, #ff6d00);
+  background: rgba(255, 109, 0, 0.1);
 }
 
 .marcaCheckbox input:checked~.checkmark {
-  background: var(--accent-color, #00b4d8);
-  border-color: var(--accent-color, #00b4d8);
-  box-shadow: 0 0 10px rgba(0, 180, 216, 0.5);
+  background: var(--accent-color, #ff6d00);
+  border-color: var(--accent-color, #ff6d00);
+  box-shadow: 0 0 10px rgba(255, 109, 0, 0.5);
 }
 
 .checkmark::after {
@@ -683,7 +683,7 @@
 }
 
 .ordenamientoRadio:hover {
-  color: var(--accent-color, #00b4d8);
+  color: var(--accent-color, #ff6d00);
   transform: translateX(5px);
 }
 
@@ -700,20 +700,20 @@
   height: 16px;
   width: 16px;
   background: rgba(255, 255, 255, 0.1);
-  border: 2px solid rgba(0, 180, 216, 0.4);
+  border: 2px solid rgba(255, 109, 0, 0.4);
   border-radius: 50%;
   transition: all 0.3s ease;
 }
 
 .ordenamientoRadio:hover .radiomark {
-  border-color: var(--accent-color, #00b4d8);
-  background: rgba(0, 180, 216, 0.1);
+  border-color: var(--accent-color, #ff6d00);
+  background: rgba(255, 109, 0, 0.1);
 }
 
 .ordenamientoRadio input:checked~.radiomark {
-  background: var(--accent-color, #00b4d8);
-  border-color: var(--accent-color, #00b4d8);
-  box-shadow: 0 0 10px rgba(0, 180, 216, 0.5);
+  background: var(--accent-color, #ff6d00);
+  border-color: var(--accent-color, #ff6d00);
+  box-shadow: 0 0 10px rgba(255, 109, 0, 0.5);
 }
 
 .radiomark::after {
@@ -736,7 +736,7 @@
   margin-left: 10px;
   margin-right: 8px;
   font-size: 1rem;
-  color: var(--accent-color, #00b4d8);
+  color: var(--accent-color, #ff6d00);
   transition: all 0.3s ease;
 }
 
@@ -761,12 +761,12 @@
   border-radius: 18px;
   overflow: hidden;
   box-shadow:
-    0 8px 25px rgba(0, 42, 92, 0.12),
+    0 8px 25px rgba(148, 33, 146, 0.12),
     0 4px 15px rgba(0, 0, 0, 0.06),
-    0 2px 8px rgba(0, 180, 216, 0.04);
+    0 2px 8px rgba(255, 109, 0, 0.04);
   transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
-  border: 1px solid rgba(0, 180, 216, 0.08);
+  border: 1px solid rgba(255, 109, 0, 0.08);
   position: relative;
   overflow: hidden;
   display: flex;
@@ -785,7 +785,7 @@
   left: 50%;
   width: 0;
   height: 0;
-  background: radial-gradient(circle, rgba(0, 180, 216, 0.08) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 109, 0, 0.08) 0%, transparent 70%);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
@@ -803,7 +803,7 @@
   bottom: 0;
   background: linear-gradient(45deg,
       transparent 30%,
-      rgba(0, 180, 216, 0.3) 50%,
+      rgba(255, 109, 0, 0.3) 50%,
       transparent 70%);
   background-size: 200% 200%;
   border-radius: 18px;
@@ -832,11 +832,11 @@
 .productoCard:hover {
   transform: translateY(-12px) scale(1.03) rotateX(5deg);
   box-shadow:
-    0 20px 40px rgba(0, 42, 92, 0.2),
+    0 20px 40px rgba(148, 33, 146, 0.2),
     0 12px 25px rgba(0, 0, 0, 0.1),
-    0 6px 15px rgba(0, 180, 216, 0.15),
-    0 0 0 1px rgba(0, 180, 216, 0.1);
-  border-color: rgba(0, 180, 216, 0.2);
+    0 6px 15px rgba(255, 109, 0, 0.15),
+    0 0 0 1px rgba(255, 109, 0, 0.1);
+  border-color: rgba(255, 109, 0, 0.2);
 }
 
 .productoCard:hover::before {
@@ -903,10 +903,12 @@
   flex-grow: 1;
   background: linear-gradient(180deg, white 0%, rgba(248, 249, 250, 0.5) 100%);
   width: 100%;
+  gap: 14px;
+  min-height: 360px;
 }
 
 .productoNombre {
-  color: #1a1a2e;
+  color: #1f0a30;
   font-size: 1.3rem;
   font-weight: 700;
   margin: 0 0 12px 0;
@@ -925,14 +927,14 @@
   left: 0;
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--primary-color, #002a5c), var(--accent-color, #00b4d8));
+  background: linear-gradient(90deg, var(--primary-color, #002a5c), var(--accent-color, #ff6d00));
   transition: width 0.4s ease 0.1s;
 }
 
 .productoCard:hover .productoNombre {
   color: var(--primary-color, #002a5c);
   transform: translateY(-2px);
-  text-shadow: 0 2px 8px rgba(0, 42, 92, 0.1);
+  text-shadow: 0 2px 8px rgba(148, 33, 146, 0.1);
 }
 
 .productoCard:hover .productoNombre::after {
@@ -986,7 +988,7 @@
   left: -10px;
   width: 4px;
   height: 0;
-  background: linear-gradient(180deg, var(--accent-color, #00b4d8), #1e40af);
+  background: linear-gradient(180deg, var(--accent-color, #ff6d00), #1e40af);
   border-radius: 2px;
   transform: translateY(-50%);
   transition: height 0.4s ease 0.15s;
@@ -1003,6 +1005,8 @@
 
 /* ===== BOTÓN WHATSAPP ===== */
 .whatsappBtn {
+  align-self: flex-start;
+  margin-top: 8px;
   width: 100%;
   background: linear-gradient(135deg, #25d366 0%, #20ba5a 50%, #128c7e 100%);
   background-size: 200% 200%;
@@ -1251,12 +1255,12 @@
 
 /* ===== ACCESIBILIDAD Y OPTIMIZACIONES ===== */
 .productoCard[role="button"]:focus {
-  outline: 3px solid var(--accent-color, #00b4d8);
+  outline: 3px solid var(--accent-color, #ff6d00);
   outline-offset: 4px;
 }
 
 .productoCard[role="button"]:focus-visible {
-  outline: 3px solid var(--accent-color, #00b4d8);
+  outline: 3px solid var(--accent-color, #ff6d00);
   outline-offset: 4px;
 }
 
@@ -1275,6 +1279,8 @@
   }
 
   .whatsappBtn {
+  align-self: flex-start;
+  margin-top: 8px;
     background: #25d366;
     border: 2px solid #000000;
   }
@@ -1357,7 +1363,7 @@
 .clearMobileFilters:focus,
 .applyMobileFilters:focus,
 .closeMobileFilter:focus {
-  outline: 2px solid var(--accent-color, #00b4d8);
+  outline: 2px solid var(--accent-color, #ff6d00);
   outline-offset: 2px;
 }
 
@@ -1507,12 +1513,12 @@
   border-radius: 18px;
   overflow: hidden;
   box-shadow:
-    0 8px 25px rgba(0, 42, 92, 0.12),
+    0 8px 25px rgba(148, 33, 146, 0.12),
     0 4px 15px rgba(0, 0, 0, 0.06),
-    0 2px 8px rgba(0, 180, 216, 0.04);
+    0 2px 8px rgba(255, 109, 0, 0.04);
   transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   cursor: pointer;
-  border: 1px solid rgba(0, 180, 216, 0.08);
+  border: 1px solid rgba(255, 109, 0, 0.08);
   position: relative;
   overflow: hidden;
   display: flex;
@@ -1540,7 +1546,7 @@
 
 /* ===== CORRECCIONES PARA TEXTO QUE SE SOBRESALE ===== */
 .productoNombre {
-  color: #1a1a2e;
+  color: #1f0a30;
   font-size: 1.3rem;
   font-weight: 700;
   margin: 0 0 15px 0;
@@ -1588,11 +1594,11 @@
 .productoCard:hover {
   transform: translateY(-12px) scale(1.03);
   box-shadow:
-    0 20px 40px rgba(0, 42, 92, 0.2),
+    0 20px 40px rgba(148, 33, 146, 0.2),
     0 12px 25px rgba(0, 0, 0, 0.1),
-    0 6px 15px rgba(0, 180, 216, 0.15),
-    0 0 0 1px rgba(0, 180, 216, 0.1);
-  border-color: rgba(0, 180, 216, 0.2);
+    0 6px 15px rgba(255, 109, 0, 0.15),
+    0 0 0 1px rgba(255, 109, 0, 0.1);
+  border-color: rgba(255, 109, 0, 0.2);
   overflow: hidden;
   /* MANTENIDO: prevenir overflow en hover */
 }
@@ -1652,14 +1658,14 @@
   color: rgba(255, 255, 255, 0.95);
   margin-top: 15px;
   padding: 12px 24px;
-  background: rgba(0, 180, 216, 0.25);
+  background: rgba(255, 109, 0, 0.25);
   border-radius: 30px;
-  border: 1px solid rgba(0, 180, 216, 0.4);
+  border: 1px solid rgba(255, 109, 0, 0.4);
   backdrop-filter: blur(15px);
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
   font-weight: 600;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
-  box-shadow: 0 4px 15px rgba(0, 180, 216, 0.2);
+  box-shadow: 0 4px 15px rgba(255, 109, 0, 0.2);
 }
 
 /* ===== SECCIÓN BORRAR BÚSQUEDA EN SIDEBAR DESKTOP ===== */
@@ -1749,17 +1755,17 @@
 
 /* ===== INFORMACIÓN DE PRIORIDAD DE BÚSQUEDA ===== */
 .searchPriorityInfo {
-  background: linear-gradient(135deg, rgba(0, 180, 216, 0.15) 0%, rgba(0, 42, 92, 0.2) 100%);
+  background: linear-gradient(135deg, rgba(255, 109, 0, 0.15) 0%, rgba(148, 33, 146, 0.2) 100%);
   padding: 20px;
   border-radius: 15px;
   margin-bottom: 20px;
-  border: 1px solid rgba(0, 180, 216, 0.3);
+  border: 1px solid rgba(255, 109, 0, 0.3);
   position: relative;
   z-index: 2;
 }
 
 .searchPriorityInfo h3 {
-  color: var(--accent-color, #00b4d8);
+  color: var(--accent-color, #ff6d00);
   font-size: 1.3rem;
   margin: 0 0 15px 0;
   font-weight: 700;
@@ -1794,15 +1800,15 @@
 
 /* MODIFICADO: Versión móvil con el MISMO diseño que desktop */
 .mobileFilterContent .searchPriorityInfo {
-  background: linear-gradient(135deg, rgba(0, 180, 216, 0.15) 0%, rgba(0, 42, 92, 0.2) 100%);
+  background: linear-gradient(135deg, rgba(255, 109, 0, 0.15) 0%, rgba(148, 33, 146, 0.2) 100%);
   padding: 18px;
   border-radius: 12px;
   margin-bottom: 25px;
-  border: 1px solid rgba(0, 180, 216, 0.3);
+  border: 1px solid rgba(255, 109, 0, 0.3);
 }
 
 .mobileFilterContent .searchPriorityInfo h3 {
-  color: var(--accent-color, #00b4d8);
+  color: var(--accent-color, #ff6d00);
   font-size: 1.2rem;
   margin: 0 0 12px 0;
   font-weight: 700;
@@ -1849,7 +1855,7 @@
 }
 
 .verMasBtn {
-  background: linear-gradient(135deg, var(--primary-color, #002a5c) 0%, var(--accent-color, #00b4d8) 100%);
+  background: linear-gradient(135deg, var(--primary-color, #002a5c) 0%, var(--accent-color, #ff6d00) 100%);
   color: white;
   border: none;
   padding: 18px 40px;
@@ -1867,9 +1873,9 @@
   position: relative;
   overflow: hidden;
   box-shadow: 
-    0 8px 25px rgba(0, 42, 92, 0.2),
-    0 4px 15px rgba(0, 180, 216, 0.1);
-  border: 1px solid rgba(0, 180, 216, 0.2);
+    0 8px 25px rgba(148, 33, 146, 0.2),
+    0 4px 15px rgba(255, 109, 0, 0.1);
+  border: 1px solid rgba(255, 109, 0, 0.2);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -1891,9 +1897,9 @@
 .verMasBtn:hover {
   transform: translateY(-3px) scale(1.02);
   box-shadow: 
-    0 12px 35px rgba(0, 42, 92, 0.3),
-    0 6px 20px rgba(0, 180, 216, 0.2);
-  border-color: rgba(0, 180, 216, 0.4);
+    0 12px 35px rgba(148, 33, 146, 0.3),
+    0 6px 20px rgba(255, 109, 0, 0.2);
+  border-color: rgba(255, 109, 0, 0.4);
 }
 
 .verMasBtn:hover::before {
@@ -1953,8 +1959,8 @@
   background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
   padding: 12px 24px;
   border-radius: 20px;
-  border: 1px solid rgba(0, 180, 216, 0.2);
-  box-shadow: 0 4px 15px rgba(0, 180, 216, 0.05);
+  border: 1px solid rgba(255, 109, 0, 0.2);
+  box-shadow: 0 4px 15px rgba(255, 109, 0, 0.05);
   backdrop-filter: blur(10px);
   position: relative;
 }
@@ -1974,14 +1980,14 @@
 @keyframes pulseGlow {
   0%, 100% {
     box-shadow: 
-      0 8px 25px rgba(0, 42, 92, 0.2),
-      0 4px 15px rgba(0, 180, 216, 0.1);
+      0 8px 25px rgba(148, 33, 146, 0.2),
+      0 4px 15px rgba(255, 109, 0, 0.1);
   }
   50% {
     box-shadow: 
-      0 8px 25px rgba(0, 42, 92, 0.3),
-      0 4px 15px rgba(0, 180, 216, 0.2),
-      0 0 30px rgba(0, 180, 216, 0.1);
+      0 8px 25px rgba(148, 33, 146, 0.3),
+      0 4px 15px rgba(255, 109, 0, 0.2),
+      0 0 30px rgba(255, 109, 0, 0.1);
   }
 }
 
@@ -2098,17 +2104,17 @@
 
 /* ===== INDICADOR VISUAL DE PRODUCTOS CARGADOS ===== */
 .productoCard.nuevoCargado {
-  border: 2px solid rgba(0, 180, 216, 0.3);
+  border: 2px solid rgba(255, 109, 0, 0.3);
   animation: highlightNew 2s ease-out;
 }
 
 @keyframes highlightNew {
   0% {
-    border-color: rgba(0, 180, 216, 0.8);
-    box-shadow: 0 0 20px rgba(0, 180, 216, 0.4);
+    border-color: rgba(255, 109, 0, 0.8);
+    box-shadow: 0 0 20px rgba(255, 109, 0, 0.4);
   }
   100% {
-    border-color: rgba(0, 180, 216, 0.08);
+    border-color: rgba(255, 109, 0, 0.08);
     box-shadow: none;
   }
 }
@@ -2176,7 +2182,7 @@
     /* AGREGADO: margen inferior */
     padding: 15px 20px;
     background: linear-gradient(145deg, #f0f8ff 0%, #e6f3ff 30%, #ffffff 70%, #f8f9fa 100%);
-    border-bottom: 1px solid rgba(0, 180, 216, 0.1);
+    border-bottom: 1px solid rgba(255, 109, 0, 0.1);
     margin-top: -220px;
   }
 
@@ -2269,6 +2275,8 @@
   }
 
   .whatsappBtn {
+  align-self: flex-start;
+  margin-top: 8px;
     padding: 12px;
     font-size: 1rem;
   }
@@ -2485,6 +2493,8 @@
   }
 
   .whatsappBtn {
+  align-self: flex-start;
+  margin-top: 8px;
     margin-top: 3px;
     padding: 13px;
     font-size: 0.9rem;
@@ -2706,6 +2716,8 @@
   }
 
   .whatsappBtn {
+  align-self: flex-start;
+  margin-top: 8px;
     padding: 12px;
     font-size: 0.8rem;
     gap: 4px;
@@ -2786,4 +2798,69 @@
     background-size: cover;
     background-position: center 30%;
   }
+}
+.advisorSummary {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.advisorSummaryLabel {
+  font-size: 0.95rem;
+  color: #ffe8d6;
+  font-weight: 600;
+  text-shadow: 0 0 12px rgba(255, 109, 0, 0.45);
+}
+
+.advisorSummaryNotice {
+  background: linear-gradient(135deg, rgba(54, 20, 80, 0.7), rgba(98, 28, 143, 0.7));
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px dashed rgba(255, 166, 0, 0.4);
+}
+
+.advisorReminder {
+  margin-top: 6px;
+  font-size: 0.85rem;
+  color: #ffeede;
+  background: linear-gradient(120deg, rgba(44, 6, 69, 0.8), rgba(76, 29, 149, 0.85));
+  padding: 10px 14px;
+  border-left: 3px solid rgba(255, 166, 0, 0.55);
+  border-radius: 12px;
+  box-shadow: 0 0 16px rgba(255, 109, 0, 0.15);
+}
+
+@media (max-width: 768px) {
+  .advisorSummary {
+    align-items: stretch;
+  }
+
+  .advisorChangeButton,
+  .advisorChooseButton {
+    width: 100%;
+  }
+}
+
+
+.cartButton {
+  margin-top: 12px;
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: 2px solid rgba(255, 166, 0, 0.45);
+  background: linear-gradient(145deg, rgba(255, 109, 0, 0.18), rgba(76, 29, 149, 0.28));
+  color: #ffeede;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cartButton:hover {
+  background: rgba(255, 166, 0, 0.15);
+  transform: translateY(-1px);
 }

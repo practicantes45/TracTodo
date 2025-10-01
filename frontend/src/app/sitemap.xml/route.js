@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET() {
   try {
-    const backendUrl = process.env.NEXT_PUBLIC_API_URL || 'https://api.tractodo.com';
+    const backendUrl = process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8080/api';
     
     console.log('🗺️ Solicitando sitemap desde:', `${backendUrl}/seo/sitemap.xml`);
     
