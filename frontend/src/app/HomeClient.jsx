@@ -114,6 +114,14 @@ export default function HomeClient() {
                     {/* Hero Section con logo y slogan centrados */}
                     <HeroSection />
 
+                    <section className="whatsappNotice">
+                      <div className="whatsappNotice__content">
+                        <h2>Recomendacion para tus pedidos</h2>
+                        <p>
+                          Si navegas desde una computadora, te recomendamos usar WhatsApp Web. Desde un dispositivo movil puedes continuar en la app con total tranquilidad; disfruta tu experiencia en TracTodo.
+                        </p>
+                      </div>
+                    </section>
                     {/* Números de contacto*/}
                     <ContactNumbers pageContext="home" />
 

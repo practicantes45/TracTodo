@@ -6,48 +6,15 @@ import { obtenerProductosDelMes } from '../../../services/productoService';
 import { registrarVista } from '../../../services/trackingService';
 import { getProductSlug } from '../../../utils/slugUtils';
 import styles from './ProductCarousel.module.css';
-import { formatearPrecio, formatearPrecioWhatsApp } from '../../../utils/priceUtils';
-import { useWhatsAppContact } from '../../../hooks/useWhatsAppContact';
-import { useCart } from '../../../hooks/useCart';
+import { formatearPrecio } from '../../../utils/priceUtils';
 
 export default function ProductCarousel() {
   const [products, setProducts] = useState([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [advisorSelectionReminder, setAdvisorSelectionReminder] = useState(false);
   const { isAdmin } = useAuth();
   const router = useRouter();
-  const { addItem } = useCart();
-
-  const {
-    selectedAdvisor,
-    startContact: startAdvisorContact,
-    isReady: isAdvisorReady,
-  } = useWhatsAppContact({
-    allowSelection: false,
-    onRequireSelection: () => {
-      setAdvisorSelectionReminder(true);
-      router.push('/#asesores');
-    },
-    getMessage: ({ advisor, payload }) => {
-      const productData = payload?.product;
-      if (productData) {
-        const price = payload?.price ?? productData.precioVentaSugerido ?? productData.precio ?? 0;
-        const name = productData.nombre || productData.name || "este producto";
-        return advisor.productMessage
-          .replace('{producto}', name)
-          .replace('{precio}', formatearPrecioWhatsApp(price));
-      }
-      return advisor.generalMessage;
-    },
-  });
-  useEffect(() => {
-    if (selectedAdvisor) {
-      setAdvisorSelectionReminder(false);
-    }
-  }, [selectedAdvisor]);
-
 
   // Cargar productos del mes al montar el componente
   useEffect(() => {
@@ -110,8 +77,6 @@ export default function ProductCarousel() {
     name: "CABEZA DE MOTOR",
     price: formatearPrecio(3999),
     image: null,
-    ctaText: "COMPRA AHORA",
-    precioNumerico: 3999,
     productoCompleto: { id: 'ejemplo-1', nombre: 'CABEZA DE MOTOR' }
   },
   {
@@ -119,8 +84,6 @@ export default function ProductCarousel() {
     name: "SISTEMA DE INYECCIÓN",
     price: formatearPrecio(2499),
     image: null,
-    ctaText: "COMPRA AHORA",
-    precioNumerico: 2499,
     productoCompleto: { id: 'ejemplo-2', nombre: 'SISTEMA DE INYECCIÓN' }
   },
   {
@@ -128,8 +91,6 @@ export default function ProductCarousel() {
     name: "PISTONES HD",
     price: formatearPrecio(1899),
     image: null,
-    ctaText: "COMPRA AHORA",
-    precioNumerico: 1899,
     productoCompleto: { id: 'ejemplo-3', nombre: 'PISTONES HD' }
   }
 ];
@@ -158,24 +119,6 @@ export default function ProductCarousel() {
   const goToSlide = (index) => {
     setCurrentSlide(index);
   };
-
- const handleWhatsAppClick = (product) => {
-  const payload = {
-    product: product?.productoCompleto || product,
-    price: product?.precioNumerico,
-  };
-  startAdvisorContact(payload);
-};
-
-const handleAddToCart = (product) => {
-  if (!product) {
-    return;
-  }
-  const payload = product?.productoCompleto || product;
-  const price = Number(product?.precioNumerico || payload?.precioVentaSugerido || payload?.precio || 0);
-  const itemId = payload?.id || product?.id || product?.name;
-  addItem({ id: itemId, name: product?.name || payload?.nombre || 'Producto', price });
-};
 
   // Nueva función para ir al producto individual
   const handleGoToProduct = async (product) => {
@@ -289,44 +232,14 @@ const handleAddToCart = (product) => {
                   <h2 className={styles.productName}>{product.name}</h2>
                   <p className={styles.productPrice}>{product.price}</p>
 
-                  {/* Contenedor de botones */}
+                  {/* Acciones disponibles */}
                   <div className={styles.buttonsContainer}>
-                    <button
-                      type="button"
-                      className={styles.cartButton}
-                      onClick={() => handleAddToCart(product)}
-                    >
-                      Agregar al carrito
-                    </button>
-                    <button
-                      className={styles.ctaButton}
-                      onClick={() => handleWhatsAppClick(product)}
-                    >
-                      {product.ctaText}
-                    </button>
-
-                    {selectedAdvisor && (
-                      <div className={styles.advisorSummary}>
-                        <span className={styles.advisorSummaryLabel}>Te atendera {selectedAdvisor.name}</span>
-                      </div>
-                    )}
-                    {!selectedAdvisor && isAdvisorReady && (
-                      <div className={`${styles.advisorSummary} ${styles.advisorSummaryNotice}`}>
-                        <span className={styles.advisorSummaryLabel}>Selecciona tu asesor en la pagina de inicio para continuar por WhatsApp.</span>
-                      </div>
-                    )}
-                    {advisorSelectionReminder && (
-                      <div className={styles.advisorReminder}>
-                        Elige o cambia asesor desde la pagina principal de TracTodo para finalizar tu compra.
-                      </div>
-                    )}
-
                     <button
                       className={styles.viewProductButton}
                       onClick={() => handleGoToProduct(product)}
                       disabled={product.id.startsWith('ejemplo')}
                     >
-                      IR AL PRODUCTO
+                      Ir al producto
                     </button>
                   </div>
                 </div>

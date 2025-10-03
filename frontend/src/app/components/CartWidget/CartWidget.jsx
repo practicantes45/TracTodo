@@ -152,7 +152,7 @@ const CartWidget = () => {
                 </p>
               ) : (
                 <p className={styles.advisorNote}>
-                  Selecciona tu asesor en la pagina de inicio para poder enviar este pedido por WhatsApp.
+                  Selecciona un asesor en la seccion de asesores para poder enviar este pedido por WhatsApp.
                 </p>
               )}
 
