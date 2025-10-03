@@ -1,39 +1,60 @@
-import axios from "axios";
+// frontend/src/services/api.js
+import axios from 'axios';
 
-// CONFIGURACIÓN CORREGIDA PARA DESARROLLO LOCAL
-const API_URL = process.env.NEXT_PUBLIC_API_BASE || "http://localhost:8080/api";
+/**
+ * NEXT_PUBLIC_API_BASE puede venir:
+ *  - sin /api  → ej: http://localhost:8080
+ *  - con /api  → ej: http://localhost:8080/api
+ * Normalizamos para no duplicar /api ni dejarlo fuera.
+ */
+function resolveBaseURL() {
+  const base = (process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8080').trim();
 
-const resolveAuthToken = () => {
-  if (typeof window === 'undefined') {
-    return null;
+  // Quita trailing slash
+  const noTrail = base.replace(/\/+$/, '');
+
+  // Si ya trae /api al final, lo dejamos; si no, lo agregamos
+  if (/\/api$/i.test(noTrail)) {
+    return noTrail; // p.ej. http://localhost:8080/api
   }
+  return `${noTrail}/api`; // p.ej. http://localhost:8080/api
+}
+
+const API_URL = resolveBaseURL();
+
+/**
+ * Intenta resolver un token desde:
+ *  - cookie "token"
+ *  - localStorage "adminSession".token
+ */
+const resolveAuthToken = () => {
+  if (typeof window === 'undefined') return null;
 
   try {
-    const cookieHeader = typeof document !== 'undefined'
-      ? document.cookie?.split('; ').find(value => value.startsWith('token='))
-      : null;
-
-    if (cookieHeader) {
-      const [, rawToken = ''] = cookieHeader.split('=');
-      const token = decodeURIComponent(rawToken);
-      if (token) {
-        return token;
+    // 1) Cookie "token"
+    if (typeof document !== 'undefined' && document.cookie) {
+      const cookie = document.cookie
+        .split('; ')
+        .find((value) => value.startsWith('token='));
+      if (cookie) {
+        const [, rawToken = ''] = cookie.split('=');
+        const token = decodeURIComponent(rawToken || '');
+        if (token) return token;
       }
     }
 
-    const storedSession = window.localStorage?.getItem('adminSession');
-    if (storedSession) {
+    // 2) localStorage "adminSession"
+    const raw = window.localStorage?.getItem('adminSession');
+    if (raw) {
       try {
-        const parsed = JSON.parse(storedSession);
-        if (parsed?.token) {
-          return parsed.token;
-        }
-      } catch (error) {
-        console.warn('No se pudo leer adminSession para axios auth:', error);
+        const parsed = JSON.parse(raw);
+        if (parsed?.token) return parsed.token;
+      } catch (e) {
+        console.warn('No se pudo parsear adminSession:', e);
       }
     }
-  } catch (error) {
-    console.warn('No se pudo obtener token para axios:', error);
+  } catch (e) {
+    console.warn('No se pudo obtener token para axios:', e);
   }
 
   return null;
@@ -41,53 +62,79 @@ const resolveAuthToken = () => {
 
 console.log('🔗 API configurada para:', API_URL);
 
-// Crear instancia de axios con configuración base
+// ===============================
+// Instancia Axios
+// ===============================
 const api = axios.create({
   baseURL: API_URL,
-  withCredentials: true, // CRÍTICO: Enviar cookies automáticamente
+  withCredentials: true, // CRÍTICO: envía cookies (sesión/admin)
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 10000, // 10 segundos timeout
+  timeout: 10000, // 10s
 });
 
-// Interceptor para debugging
+// ===============================
+// Interceptor de petición
+// ===============================
 api.interceptors.request.use(
-  config => {
+  (config) => {
+    // Token Bearer si existe
     const token = resolveAuthToken();
-    if (token && !config.headers?.Authorization) {
+    if (token) {
       config.headers = config.headers || {};
-      config.headers.Authorization = `Bearer ${token}`;
+      // No sobrescribir si ya venía set (ej. peticiones especiales)
+      if (!config.headers.Authorization) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
 
-    console.log('🔄 Enviando petición:', config.method?.toUpperCase(), config.url);
-    if (config.url?.includes('administradores')) {
-      console.log('🍪 Cookies serán enviadas automáticamente');
-    }
+    // Logging útil
+    const method = (config.method || 'GET').toUpperCase();
+    const url = `${config.baseURL?.replace(/\/+$/, '')}/${String(config.url || '').replace(/^\/+/, '')}`;
+    console.log(`🔄 ${method} ${url}`);
+
     return config;
   },
-  error => {
-    console.error('❌ Error en petición:', error);
+  (error) => {
+    console.error('❌ Error preparando petición:', error);
     return Promise.reject(error);
   }
 );
 
-// Interceptor para manejar respuestas
+// ===============================
+// Interceptor de respuesta
+// ===============================
 api.interceptors.response.use(
-  response => {
-    if (response.config.url?.includes('administradores')) {
-      console.log('✅ Respuesta de admin:', response.status, response.data);
+  (response) => {
+    // Log específico de endpoints de admin si quieres
+    if (String(response.config.url || '').includes('administradores')) {
+      console.log('✅ Respuesta admin:', response.status, response.data);
     }
     return response;
   },
-  error => {
-    if (error.response?.status === 401) {
-      console.log('🚫 Token inválido - sesión expirada');
-    } else if (error.code === 'ECONNREFUSED') {
-      console.error('🔥 No se pudo conectar al backend. ¿Está corriendo en puerto 3000?');
+  (error) => {
+    // Conexión rechazada o caído
+    if (error.code === 'ECONNABORTED') {
+      console.error('⏳ Timeout al conectar con el backend.');
+    }
+    if (error.code === 'ERR_NETWORK') {
+      console.error(`🔥 No se pudo conectar al backend: ${API_URL}`);
+    }
+    if (error?.response?.status === 401) {
+      console.warn('🚫 401 Unauthorized: sesión expirada o token inválido.');
     }
     return Promise.reject(error);
   }
 );
 
 export default api;
+
+/**
+ * Helper opcional, por si quieres construir URLs fuera de axios.
+ */
+export function apiUrl(path = '/') {
+  const cleanBase = API_URL.replace(/\/+$/, '');
+  const cleanPath = String(path).replace(/^\/+/, '');
+  return `${cleanBase}/${cleanPath}`;
+}

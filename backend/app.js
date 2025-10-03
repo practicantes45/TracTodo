@@ -1,103 +1,91 @@
-require("dotenv").config();
+﻿const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+const cookieParser = require('cookie-parser');
 
-const cron = require("node-cron");
-const productoRoutes = require("./src/routes/productoRoutes.js"); 
-const trackingRoutes = require("./src/routes/trackingRoutes");
-const userRoutes = require("./src/routes/userRoutes.js");
-const entretenimientoRoutes = require("./src/routes/entretenimientoRoutes.js");
-const { generarRecomendaciones } = require("./src/services/productoRecomendado");
-const reversionRoutes = require("./src/routes/reversionRoutes.js");
-const { limpiarBackupsAntiguos } = require("./src/controllers/limpiarBackupsAntiguos.js");
-const vistasRoutes = require("./src/routes/vistasRoutes.js");
-const healthRoutes = require("./src/routes/healthRoutes.js");
-const seoRoutes = require("./src/routes/seoRoutes.js");
-const cookieParser = require("cookie-parser");
+const healthRoutes = require('./src/routes/healthRoutes');
+const productoRoutes = require('./src/routes/productoRoutes');
+const entretenimientoRoutes = require('./src/routes/entretenimientoRoutes');
+const seoRoutes = require('./src/routes/seoRoutes');
+const trackingRoutes = require('./src/routes/trackingRoutes');
+const reversionRoutes = require('./src/routes/reversionRoutes');
+const vistasRoutes = require('./src/routes/vistasRoutes');
+const userRoutes = require('./src/routes/userRoutes');
+const { agregarSEOaProductos, generarSEOAutomatico, agregarHeadersSEO } = require('./src/middlewares/seoMiddleware');
 
-// Configuración inicial del servidor
-const express = require("express");
-const cors = require("cors");
 const app = express();
 
-// Middleware para log de conexiones
-app.use((req, res, next) => {
-  console.log(`[${new Date().toISOString()}] ${req.method} ${req.path} - IP: ${req.ip}`);
-  next();
-});
+// ===============================
+// Configuración general
+// ===============================
+app.set('trust proxy', true);
 
+const rawOrigins = [
+  process.env.CORS_ORIGINS,
+  process.env.FRONTEND_URL,
+  process.env.BACKEND_URL,
+]
+  .filter(Boolean)
+  .join(',');
 
-// CONFIGURACIÓN MEJORADA DE CORS PARA RAILWAY
-const defaultCorsOrigins = [
-  "http://localhost:3001", // Desarrollo local
-  "http://127.0.0.1:3001", // Desarrollo local
-  "https://tractodo-production-3e8e.up.railway.app", // Frontend Railway
-  "https://tractodo-production.up.railway.app", // Backend Railway
-  "https://tractodo.com"  // Dominio final
-];
-
-const envCorsOrigins = process.env.CORS_ORIGINS ?
-  process.env.CORS_ORIGINS.split(',').map(origin => origin.trim()).filter(Boolean)
-  : [];
-
-const corsOrigins = Array.from(new Set([...envCorsOrigins, ...defaultCorsOrigins]));
-
-// Agregar dinámicamente el dominio de Railway si existe
-if (process.env.RAILWAY_PUBLIC_DOMAIN) {
-  corsOrigins.push(`https://${process.env.RAILWAY_PUBLIC_DOMAIN}`);
-}
-
-console.log('CORS configurado para:', corsOrigins);
+const allowedOrigins = rawOrigins
+  .split(',')
+  .map((origin) => origin && origin.trim())
+  .filter(Boolean);
 
 app.use(cors({
-  origin: corsOrigins,
+  origin: allowedOrigins.length ? allowedOrigins : true,
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie'],
-  exposedHeaders: ['set-cookie']
 }));
 
-app.use(express.json());
-app.use(cookieParser()); 
+app.use(helmet({
+  crossOriginEmbedderPolicy: false,
+  contentSecurityPolicy: false,
+}));
 
-// MIDDLEWARE PARA DEBUGGING DE COOKIES
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(cookieParser());
+app.use(agregarHeadersSEO);
+
+// ===============================
+// Rutas
+// ===============================
+app.use('/api/health', healthRoutes);
+app.use('/api/productos', generarSEOAutomatico, agregarSEOaProductos, productoRoutes);
+app.use('/api/entretenimiento', entretenimientoRoutes);
+app.use('/api/seo', seoRoutes);
+app.use('/api/tracking', trackingRoutes);
+app.use('/api/reversiones', reversionRoutes);
+app.use('/api/vistas', vistasRoutes);
+app.use('/api/user', userRoutes);
+
+app.get('/', (req, res) => {
+  res.json({
+    name: 'TracTodo Backend API',
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+  });
+});
+
+// ===============================
+// Manejo de rutas no encontradas
+// ===============================
 app.use((req, res, next) => {
-  if (req.path.includes('/user/administradores')) {
-    console.log(' === DEBUGGING ADMIN REQUEST ===');
-    console.log('Ruta:', req.path);
-    console.log('Cookies parseadas:', req.cookies);
-    console.log('Headers:', req.headers.cookie);
-  }
-  next();
+  res.status(404).json({
+    error: 'Ruta no encontrada',
+    path: req.originalUrl,
+  });
 });
 
-
-// Rutas principales planificadas
-app.use("/api/health", healthRoutes); // Health checks
-app.use("/api/productos", productoRoutes); // Gestión de productos
-app.use("/api/tracking", trackingRoutes); // Analytics
-app.use("/api/user", userRoutes); // Autenticación
-app.use("/api/entretenimiento", entretenimientoRoutes); // Blog/Videos
-//app.use("/api/reversion", reversionRoutes);
-app.use("/api/vistas", vistasRoutes); // Contador de vistas
-app.use("/api/seo", seoRoutes); // SEO automático
-
-const fallbackBackendUrl = `http://localhost:${process.env.PORT || 8080}`;
-
-// Log de inicio actualizado para Railway
-console.log("✅ Backend iniciado correctamente");
-console.log("🌐 Environment:", process.env.NODE_ENV || 'development');
-console.log("🔗 Frontend URL:", process.env.FRONTEND_URL || 'https://tractodo.com');
-console.log("📡 Backend URL:", process.env.BACKEND_URL || fallbackBackendUrl);
-console.log("📦 Esperando conexiones...");
-
-// Programar tareas...
-cron.schedule("0 3 * * *", async () => {
-  console.log("Ejecutando limpieza de backups antiguos...");
-  await limpiarBackupsAntiguos();
-});
-
-cron.schedule("*/10 * * * *", async () => {
-  console.log("Generando recomendaciones automáticamente...");
-  await generarRecomendaciones();
+// ===============================
+// Manejador de errores
+// ===============================
+app.use((err, req, res, next) => {
+  console.error('Error no controlado:', err);
+  res.status(err.status || 500).json({
+    error: err.message || 'Error interno del servidor',
+  });
 });
 
 module.exports = app;

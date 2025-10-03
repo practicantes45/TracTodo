@@ -617,3 +617,50 @@ body::after {
 .card:hover .front-content .icon-container svg {
   fill: rgba(255, 255, 255, 0.3);
 }
+
+/* Aviso de recomendacion para WhatsApp */
+.whatsappNotice {
+  max-width: 960px;
+  margin: 0 auto 40px;
+  padding: 24px 28px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 245, 233, 0.92));
+  border: 1px solid rgba(255, 166, 0, 0.25);
+  border-radius: 18px;
+  box-shadow: 0 14px 28px rgba(148, 33, 146, 0.08);
+}
+
+.whatsappNotice__content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  text-align: center;
+}
+
+.whatsappNotice__content h2 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #2b143b;
+  margin: 0;
+}
+
+.whatsappNotice__content p {
+  font-size: 1rem;
+  color: #3c2a4d;
+  margin: 0;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .whatsappNotice {
+    margin: 0 16px 32px;
+    padding: 20px 18px;
+  }
+
+  .whatsappNotice__content h2 {
+    font-size: 1.3rem;
+  }
+
+  .whatsappNotice__content p {
+    font-size: 0.95rem;
+  }
+}

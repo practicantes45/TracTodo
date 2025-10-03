@@ -115,7 +115,7 @@ const ContactNumbers = ({ pageContext = 'home' }) => {
                 {selectedAdvisor ? (
                     <>
                         <p className={styles.selectedMessage}>
-                            Te atendera <strong>{selectedAdvisor.name}</strong>. {allowSelection ? 'Si necesitas soporte general, escribele directamente por WhatsApp.' : 'Si deseas cambiar de asesor, hazlo desde la pagina principal.'}
+                            Te atendera <strong className={styles.selectedName}>{selectedAdvisor.name}</strong>, <span className={styles.selectedRole}>{selectedAdvisor.role}</span>. {allowSelection ? 'Si necesitas soporte general, escribele directamente por WhatsApp.' : 'Si deseas cambiar de asesor, hazlo desde la pagina principal.'}
                         </p>
                         <button
                             className={styles.primaryButton}
@@ -127,11 +127,13 @@ const ContactNumbers = ({ pageContext = 'home' }) => {
                         </button>
                     </>
                 ) : (
-                    <p className={styles.pendingMessage}>
-                        {allowSelection
-                            ? (isReady ? 'Selecciona un asesor para habilitar el contacto directo por WhatsApp.' : 'Cargando asesores disponibles...')
-                            : 'Selecciona tu asesor desde la pagina principal de TracTodo para continuar por WhatsApp.'}
-                    </p>
+                    allowSelection
+                        ? (isReady ? null : (
+                            <p className={styles.pendingMessage}>Cargando asesores disponibles...</p>
+                        ))
+                        : (
+                            <p className={styles.pendingMessage}>Selecciona tu asesor desde la pagina principal de TracTodo para continuar por WhatsApp.</p>
+                        )
                 )}
             </div>
         </section>
@@ -139,3 +141,4 @@ const ContactNumbers = ({ pageContext = 'home' }) => {
 };
 
 export default ContactNumbers;
+

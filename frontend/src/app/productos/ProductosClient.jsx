@@ -53,6 +53,42 @@ export default function ProductosPage() {
 
   // Lista de marcas predefinidas
   const marcasPredefinidas = ["Cummins", "Navistar", "Volvo", "Mercedes Benz", "Detroit", "Caterpillar", "Otros"];
+  const ordenarResultadosPorBusqueda = (items, termino) => {
+    const query = termino?.trim().toLowerCase();
+    if (!query) {
+      return items;
+    }
+
+    const tokens = query.split(/\s+/).filter(Boolean);
+
+    const calcularPuntaje = (producto) => {
+      const nombre = (producto?.nombre || '').toLowerCase();
+      const numeroParte = (producto?.numeroParte || '').toLowerCase();
+      const descripcion = (producto?.descripcion || '').toLowerCase();
+      const marca = (producto?.marca || '').toLowerCase();
+      let puntaje = 0;
+
+      if (nombre === query) puntaje += 200;
+      if (nombre.startsWith(query)) puntaje += 140;
+      if (nombre.includes(query)) puntaje += 90;
+
+      tokens.forEach((token) => {
+        if (nombre.startsWith(token)) puntaje += 50;
+        if (nombre.includes(token)) puntaje += 30;
+        if (numeroParte.includes(token)) puntaje += 25;
+        if (marca.includes(token)) puntaje += 15;
+        if (descripcion.includes(token)) puntaje += 10;
+      });
+
+      if (producto?.puntuacionRelevancia) {
+        puntaje += Number(producto.puntuacionRelevancia);
+      }
+
+      return puntaje;
+    };
+
+    return [...items].sort((a, b) => calcularPuntaje(b) - calcularPuntaje(a));
+  };
 
   const {
     selectedAdvisor,
@@ -172,13 +208,19 @@ export default function ProductosPage() {
         });
       }
 
-      setProductos(resultados);
+      let productosProcesados = Array.isArray(resultados) ? resultados : resultados?.productos || [];
+
+      if (busqueda) {
+        productosProcesados = ordenarResultadosPorBusqueda(productosProcesados, busqueda);
+      }
+
+      setProductos(productosProcesados);
 
       // Extraer marcas únicas de los resultados para el filtro
-      const marcasUnicas = [...new Set(resultados.map(p => p.marca).filter(Boolean))];
+      const marcasUnicas = [...new Set(productosProcesados.map(p => p.marca).filter(Boolean))];
       setMarcasDisponibles(marcasUnicas);
 
-      console.log(`✅ Cargados ${resultados.length} productos con filtros del backend`);
+      console.log(`✅ Cargados ${productosProcesados.length} productos con filtros del backend`);
     } catch (error) {
       console.error("❌ Error al cargar productos:", error);
       setError('No se pudieron cargar los productos');

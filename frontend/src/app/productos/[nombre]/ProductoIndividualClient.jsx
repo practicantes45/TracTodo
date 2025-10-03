@@ -1,16 +1,16 @@
 'use client';
 import './producto-individual.css';
 import { useState, useEffect, useRef } from 'react';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { FaArrowLeft, FaWhatsapp, FaShare, FaCopy, FaCheckCircle, FaChevronLeft, FaChevronRight, FaSearchPlus, FaSearchMinus, FaRedo } from "react-icons/fa";
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import ScrollToTop from '../../components/ScrollToTop/ScrollToTop';
 import ProductImageModal from '../../components/ProductImageModal/ProductImageModal';
 import SEOHead from '../../components/SEOHead/SEOHead';
-import { obtenerProductoPorNombre } from '@/services/productoService';
+import { obtenerProductoPorId, obtenerProductoPorNombre } from '@/services/productoService';
 import { registrarVista } from '../../../services/trackingService';
-import { getProductSlug } from '../../../utils/slugUtils';
+import { getProductSlug, extractIdFromSlug } from '../../../utils/slugUtils';
 import { useProductSEO } from '../../../hooks/useSEO';
 import FormattedDescription from '../../components/FormattedDescription/FormattedDescription';
 import { formatearPrecio, formatearPrecioWhatsApp } from '../../../utils/priceUtils';
@@ -134,32 +134,74 @@ export default function ProductoIndividualPage({ params }) {
     const cargarProducto = async () => {
         try {
             setLoading(true);
-            console.log('🔄 Cargando producto por slug:', params.nombre);
 
-            // Convertir el slug de vuelta a formato de búsqueda
-            const nombreParaBusqueda = params.nombre
-                .replace(/-/g, ' ') // Reemplazar guiones con espacios
-                .toLowerCase();
+            const rawSlug = params?.nombre ? decodeURIComponent(params.nombre) : '';
+            console.log('🔄 Cargando producto por slug:', rawSlug || params?.nombre);
 
-            console.log('🔍 Buscando producto con nombre:', nombreParaBusqueda);
+            const posibleId = rawSlug ? extractIdFromSlug(rawSlug) : null;
+            let data = null;
+            let nombreParaBusqueda = '';
 
-            const data = await obtenerProductoPorNombre(nombreParaBusqueda);
-            console.log('📦 Datos del producto:', data);
+            if (posibleId) {
+                try {
+                    data = await obtenerProductoPorId(posibleId);
+                    console.log('📦 Datos del producto (por ID):', data);
+                } catch (idError) {
+                    console.warn('⚠️ No se pudo obtener producto por ID, se intentará por nombre:', idError);
+                }
+            }
 
-            setProducto(data.producto);
+            if (!data || !data.producto) {
+                let slugSinId = rawSlug;
+
+                if (posibleId) {
+                    const encodedId = getProductSlug({ nombre: '', id: posibleId });
+                    const normalizedSlug = slugSinId.toLowerCase();
+
+                    if (encodedId && normalizedSlug.endsWith(`-${encodedId.toLowerCase()}`)) {
+                        slugSinId = slugSinId.slice(0, -1 * (encodedId.length + 1));
+                    } else {
+                        const idVariants = [String(posibleId), String(posibleId).replace(/^-/u, '')].filter(Boolean);
+                        for (const variant of idVariants) {
+                            if (normalizedSlug.endsWith(`-${variant.toLowerCase()}`)) {
+                                slugSinId = slugSinId.slice(0, -1 * (variant.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                nombreParaBusqueda = (slugSinId || rawSlug || '')
+                    .replace(/-/g, ' ')
+                    .replace(/\s+/g, ' ')
+                    .trim()
+                    .toLowerCase();
+
+                console.log('🔍 Buscando producto con nombre:', nombreParaBusqueda);
+                if (nombreParaBusqueda) {
+                    data = await obtenerProductoPorNombre(nombreParaBusqueda);
+                    console.log('📦 Datos del producto (por nombre):', data);
+                }
+            }
+
+            if (!data || !data.producto) {
+                throw new Error('Producto no encontrado');
+            }
+
+            const productoBase = data.producto;
+            setProducto(productoBase);
             setProductosRelacionados(data.recomendados || []);
 
-            const imagenes = procesarImagenesProducto(data.producto);
+            const imagenes = procesarImagenesProducto(productoBase);
             setImagenesProducto(imagenes);
             setCurrentImageIndex(0);
 
             console.log('🖼️ Imágenes procesadas:', imagenes);
             console.log('🔗 Productos relacionados encontrados:', data.recomendados?.length || 0);
 
-            // Registrar vista usando el ID del producto
             try {
-                await registrarVista(data.producto.id, 'producto');
-                console.log('👀 Vista registrada para producto:', data.producto.id);
+                await registrarVista(productoBase.id, 'producto');
+                console.log('👀 Vista registrada para producto:', productoBase.id);
             } catch (vistaError) {
                 console.warn('⚠️ Error registrando vista:', vistaError);
             }

@@ -1278,9 +1278,10 @@
     border: 2px solid #000000;
   }
 
-  .whatsappBtn {
-  align-self: flex-start;
-  margin-top: 8px;
+  .whatsappBtn,
+  .cartButton {
+    align-self: flex-start;
+    margin-top: 8px;
     background: #25d366;
     border: 2px solid #000000;
   }
@@ -1322,7 +1323,8 @@
   }
 
   .productoCard:hover,
-  .whatsappBtn:hover {
+  .whatsappBtn:hover,
+  .cartButton:hover {
     transform: none;
   }
 
@@ -1343,7 +1345,8 @@
     transform: scale(0.98);
   }
 
-  .whatsappBtn:active {
+  .whatsappBtn:active,
+  .cartButton:active {
     transform: scale(0.95);
   }
 
@@ -2274,7 +2277,8 @@
     font-size: 1.8rem;
   }
 
-  .whatsappBtn {
+  .whatsappBtn,
+  .cartButton {
   align-self: flex-start;
   margin-top: 8px;
     padding: 12px;
@@ -2492,7 +2496,8 @@
     font-size: 1.6rem;
   }
 
-  .whatsappBtn {
+  .whatsappBtn,
+  .cartButton {
   align-self: flex-start;
   margin-top: 8px;
     margin-top: 3px;
@@ -2715,7 +2720,8 @@
     margin-bottom: 15px;
   }
 
-  .whatsappBtn {
+  .whatsappBtn,
+  .cartButton {
   align-self: flex-start;
   margin-top: 8px;
     padding: 12px;
@@ -2811,27 +2817,25 @@
   font-size: 0.95rem;
   color: #ffe8d6;
   font-weight: 600;
-  text-shadow: 0 0 12px rgba(255, 109, 0, 0.45);
 }
 
 .advisorSummaryNotice {
-  background: linear-gradient(135deg, rgba(54, 20, 80, 0.7), rgba(98, 28, 143, 0.7));
+  background: rgba(255, 255, 255, 0.92);
   padding: 12px 14px;
   border-radius: 12px;
-  border: 1px dashed rgba(255, 166, 0, 0.4);
+  border: 1px solid rgba(255, 109, 0, 0.25);
+  color: #111111;
 }
-
 .advisorReminder {
   margin-top: 6px;
   font-size: 0.85rem;
-  color: #ffeede;
-  background: linear-gradient(120deg, rgba(44, 6, 69, 0.8), rgba(76, 29, 149, 0.85));
+  color: #111111;
+  background: rgba(255, 240, 218, 0.92);
   padding: 10px 14px;
-  border-left: 3px solid rgba(255, 166, 0, 0.55);
+  border-left: 3px solid rgba(255, 109, 0, 0.5);
   border-radius: 12px;
-  box-shadow: 0 0 16px rgba(255, 109, 0, 0.15);
+  box-shadow: 0 6px 14px rgba(255, 109, 0, 0.18);
 }
-
 @media (max-width: 768px) {
   .advisorSummary {
     align-items: stretch;
@@ -2845,22 +2849,74 @@
 
 
 .cartButton {
+  position: relative;
   margin-top: 12px;
-  padding: 10px 18px;
-  border-radius: 10px;
-  border: 2px solid rgba(255, 166, 0, 0.45);
-  background: linear-gradient(145deg, rgba(255, 109, 0, 0.18), rgba(76, 29, 149, 0.28));
-  color: #ffeede;
-  font-weight: 600;
+  width: 100%;
+  padding: 18px 24px;
+  border-radius: 15px;
+  border: none;
+  background: linear-gradient(135deg, #ff6d00 0%, #ff8928 50%, #ffb347 100%);
+  background-size: 200% 200%;
+  color: #2b1402;
+  font-size: 1.05rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: background 0.2s ease, transform 0.2s ease;
-  align-self: flex-start;
   display: inline-flex;
+  justify-content: center;
   align-items: center;
-  gap: 8px;
+  gap: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  box-shadow: 0 18px 38px rgba(255, 121, 0, 0.32);
+  transition: transform 0.3s ease, background-position 0.3s ease, box-shadow 0.3s ease;
+  overflow: hidden;
+}
+
+.cartButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.18), transparent);
+  transition: left 0.45s ease;
 }
 
 .cartButton:hover {
-  background: rgba(255, 166, 0, 0.15);
-  transform: translateY(-1px);
+  transform: translateY(-3px);
+  background-position: 100% 100%;
+  box-shadow: 0 24px 48px rgba(255, 121, 0, 0.4);
 }
+
+.cartButton:hover::before {
+  left: 100%;
+}
+
+.cartButton:active {
+  transform: translateY(1px);
+  box-shadow: 0 12px 26px rgba(255, 109, 0, 0.3);
+}
+/* Ajustes finales para visibilidad de acciones en tarjetas */
+.productoCard {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+}
+
+.productoCard .productoInfo {
+  min-height: auto;
+  padding-bottom: 24px;
+}
+
+.productoCard .productoInfo .cartButton {
+  margin-bottom: 12px;
+}
+
+@media (max-width: 768px) {
+  .productoCard {
+    min-height: unset;
+  }
+}
+
+
