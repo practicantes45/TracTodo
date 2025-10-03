@@ -16,12 +16,13 @@ const { agregarSEOaProductos, generarSEOAutomatico, agregarHeadersSEO } = requir
 const app = express();
 
 // ===============================
-// Configuración general
+// Configuracion general
 // ===============================
 app.set('trust proxy', true);
 
 const rawOrigins = [
   process.env.CORS_ORIGINS,
+  process.env.NEXT_PUBLIC_FRONTEND_URL,
   process.env.FRONTEND_URL,
   process.env.BACKEND_URL,
 ]
@@ -89,3 +90,4 @@ app.use((err, req, res, next) => {
 });
 
 module.exports = app;
+
