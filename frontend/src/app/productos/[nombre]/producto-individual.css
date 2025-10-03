@@ -1108,7 +1108,9 @@
   .relatedProductCard:hover {
     transform: none !important;
   }
-}.advisorSummary {
+}
+
+.advisorSummary {
     margin-top: 12px;
     display: flex;
     flex-direction: column;
@@ -1141,7 +1143,7 @@
 }
 
 @media (max-width: 768px) {
-    .advisorSummary {
+  .advisorSummary {
         width: 100%;
     }
 

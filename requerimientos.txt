@@ -1,151 +1,49 @@
-Este comportamiento ocurre con algunos productos:
-La miniatura muestra un artículo, pero al hacer clic redirige a otro diferente.
-Cuando se modifica ligeramente el nombre del producto, la redirección suele corregirse y después funciona de manera adecuada
-mejora el motor de busqueda, si buscas alguna cabeza de motor, salen como 
-segundo resultado, como primer resultado salen las juntas de cabeza
+volVi a tener este rpoblema en el front de railway, como sé cual es la correcta o la que acambio?
+ChatGPT said:
 
- BÚSQUEDA INTELIGENTE INICIADA
-Query original: "ISM-M11"
-Total productos disponibles: 211        
-🔍 Búsqueda inteligente: "ISM-M11"      
-📝 Términos expandidos (2): [ 'ism', 'm11' ] ...
-✅ Encontrados 21 productos relevantes (umbral mínimo: 80)
-🥇 Top 5 resultados:
-   1. Cabeza ISM/M11 (2160 pts)
-   2. Junta de cabeza ISM/M11 (2160 pts)
-   3. Bomba diésel ISM/ M11 (2160 pts)  
-   4. Media ISM-M11 (2080 pts)
-   5. Freno ISM (1110 pts)
-✅ Búsqueda completada: 21 productos encontrados
-🎯 Manteniendo orden por relevancia     
+Ya vi tu captura 👀
 
-=== EVENTO DE TRACKING RECIBIDO ===     
-Timestamp: 2025-10-03T18:12:06.448Z
-UID: user-1757700198894-mn6z6qj4b       
-Evento: ver_producto
-Data: {
-  "id": "-OHF5KrnJ0HOoCVwC-Ey"
-}
-Timestamp del evento: 2025-10-03T18:12:06.135Z
-Evento guardado exitosamente en Firebase
-=====================================
+Tienes dos variables en Railway que se parecen mucho:
 
-🔍 PRODUCTOS - Procesando slug: "cabeza-ismm11--ohf5krnj0hoocvwc-ey"
-🔍 Buscando en mapeo: /seo/slugs/mapeo/productos/cabeza-ismm11--ohf5krnj0hoocvwc-ey
-🔍 PRODUCTOS - Procesando slug: "cabeza-ismm11--ohf5krnj0hoocvwc-ey"
-🔍 Buscando en mapeo: /seo/slugs/mapeo/productos/cabeza-ismm11--ohf5krnj0hoocvwc-ey
-⚠️ Slug "cabeza-ismm11--ohf5krnj0hoocvwcc-ey" no encontrado en mapeo exacto      
-🔄 Regenerando mapeo para encontrar: "cabeza-ismm11--ohf5krnj0hoocvwc-ey"       
-🔄 Regenerando mapeo automáticamente... 
-⚠️ Slug "cabeza-ismm11--ohf5krnj0hoocvwcc-ey" no encontrado en mapeo exacto      
-🔄 Regenerando mapeo para encontrar: "cabeza-ismm11--ohf5krnj0hoocvwc-ey"       
-🔄 Regenerando mapeo automáticamente... 
-✅ Mapeo regenerado: 211 productos
-✅ Mapeo regenerado: 211 productos
-🔄 FALLBACK: Buscando por nombre similar a "cabeza-ismm11--ohf5krnj0hoocvwc-ey" 
-🔍 Probando búsqueda por nombre: "cabeza ismm11  ohf5krnj0hoocvwc ey"
-🔍 Búsqueda de producto por nombre: "cabeza ismm11  ohf5krnj0hoocvwc ey"        
-🔄 FALLBACK: Buscando por nombre similar a "cabeza-ismm11--ohf5krnj0hoocvwc-ey" 
-🔍 Probando búsqueda por nombre: "cabeza ismm11  ohf5krnj0hoocvwc ey"
-🔍 Búsqueda de producto por nombre: "cabeza ismm11  ohf5krnj0hoocvwc ey"        
-🔍 Búsqueda inteligente: "cabeza ismm11  ohf5krnj0hoocvwc ey"
-📝 Términos expandidos (9): [
-  'cabeza',
-  'culata',
-  'tapa',
-  'head',
-  'cabezal',
-  'testa',
-  'ismm11',
-  'ohf5krnj0hoocvwc',
-  'ey'
-] ...
-✅ Encontrados 51 productos relevantes (umbral mínimo: 80)
-🥇 Top 5 resultados:
-   1. Cabeza 3406 M (610 pts)
-   2. Junta de cabeza ISM/M11 (610 pts) 
-   3. Junta cabeza ISX (610 pts)        
-   4. Cabeza + Media ISX (610 pts)      
-   5. Cabeza ISX AM (530 pts)
-✅ Producto encontrado: "Cabeza 3406 M" (610 pts)
-💰 Generando Schema.org para Cabeza 3406 M: MXN 45000
-SEO específico encontrado por número de parte: M7W2203
-🔍 Búsqueda inteligente: "cabeza ismm11  ohf5krnj0hoocvwc ey"
-📝 Términos expandidos (9): [
-  'cabeza',
-  'culata',
-  'tapa',
-  'head',
-  'cabezal',
-  'testa',
-  'ismm11',
-  'ohf5krnj0hoocvwc',
-  'ey'
-] ...
-✅ Encontrados 51 productos relevantes (umbral mínimo: 80)
-🥇 Top 5 resultados:
-   1. Cabeza 3406 M (610 pts)
-   2. Junta de cabeza ISM/M11 (610 pts) 
-   3. Junta cabeza ISX (610 pts)        
-   4. Cabeza + Media ISX (610 pts)      
-   5. Cabeza ISX AM (530 pts)
-✅ Producto encontrado: "Cabeza 3406 M" (610 pts)
-✅ ENCONTRADO por nombre: "cabeza ismm11  ohf5krnj0hoocvwc ey" -> Cabeza 3406 M 
-✅ ENCONTRADO por nombre: "cabeza ismm11  ohf5krnj0hoocvwc ey" -> Cabeza 3406 M 
-🔍 PRODUCTOS - Procesando slug: "cabeza-ismm11--ohf5krnj0hoocvwc-ey"
-🔍 Buscando en mapeo: /seo/slugs/mapeo/productos/cabeza-ismm11--ohf5krnj0hoocvwc-ey
+NEXT_PUBLIC_API_BASE = https://tractodo-production.up.railway.app/api
 
-=== EVENTO DE TRACKING RECIBIDO ===     
-Timestamp: 2025-10-03T18:12:09.146Z     
-UID: user-1757700198894-mn6z6qj4b       
-Evento: ver_producto
-Data: {
-  "id": "-OGuPSzHthXoTLNtlcx8"
-}
-Timestamp del evento: 2025-10-03T18:12:09.132Z
-⚠️ Slug "cabeza-ismm11--ohf5krnj0hoocvwcc-ey" no encontrado en mapeo exacto      
-🔄 Regenerando mapeo para encontrar: "cabeza-ismm11--ohf5krnj0hoocvwc-ey"       
-🔄 Regenerando mapeo automáticamente... 
-Evento guardado exitosamente en Firebase
-=====================================   
+NEXT_PUBLIC_FRONTEND_URL = https://tractodo-production-3e8e.up.railway.app
 
-✅ Mapeo regenerado: 211 productos
-🔄 FALLBACK: Buscando por nombre similar a "cabeza-ismm11--ohf5krnj0hoocvwc-ey" 
-🔍 Probando búsqueda por nombre: "cabeza ismm11  ohf5krnj0hoocvwc ey"
-🔍 Búsqueda de producto por nombre: "cabeza ismm11  ohf5krnj0hoocvwc ey"        
-🔍 Búsqueda inteligente: "cabeza ismm11  ohf5krnj0hoocvwc ey"
-📝 Términos expandidos (9): [
-  'cabeza',
-  'culata',
-  'tapa',
-  'head',
-  'cabezal',
-  'testa',
-  'ismm11',
-  'ohf5krnj0hoocvwc',
-  'ey'
-] ...
-✅ Encontrados 51 productos relevantes (umbral mínimo: 80)
-🥇 Top 5 resultados:
-   1. Cabeza 3406 M (610 pts)
-   2. Junta de cabeza ISM/M11 (610 pts) 
-   3. Junta cabeza ISX (610 pts)        
-   4. Cabeza + Media ISX (610 pts)      
-   5. Cabeza ISX AM (530 pts)
-✅ Producto encontrado: "Cabeza 3406 M" (610 pts)
-✅ ENCONTRADO por nombre: "cabeza ismm11  ohf5krnj0hoocvwc ey" -> Cabeza 3406 M 
+Cómo saber cuál usar
 
-=== EVENTO DE TRACKING RECIBIDO ===     
-Timestamp: 2025-10-03T18:12:10.140Z     
-UID: user-1757700198894-mn6z6qj4b       
-Evento: ver_producto
-Data: {
-  "id": "-OGuPSzHthXoTLNtlcx8"
-Timestamp del evento: 2025-10-03T18:12:10.128Z
-Evento guardado exitosamente en Firebase
-=====================================
+API (backend)
 
-http://localhost:3001/productos/cabeza-ismm11--ohf5krnj0hoocvwc-ey este es 
-el lint pero el producto que aparece es Cabeza 3406 M
+La variable NEXT_PUBLIC_API_BASE debe apuntar a tu backend, siempre terminando con /api.
+
+Si entras en el navegador a https://tractodo-production.up.railway.app/api/health y responde algo (200 OK o similar), entonces esa es la correcta.
+
+Esa es la URL que tu frontend (Next.js) usará para hacer las llamadas fetch.
+
+Frontend (Next.js)
+
+La variable NEXT_PUBLIC_FRONTEND_URL debe apuntar a tu frontend (el build de Next en Railway).
+
+Este NO debe llevar /api, solo la raíz del dominio que Railway te dio para el frontend.
+
+El problema típico
+
+Railway crea subdominios distintos para cada servicio (backend y frontend).
+
+Si en el frontend pones como API la URL del frontend (sin querer), te saldrán errores de “No se pudieron cargar los productos” o CORS.
+
+En tu caso:
+
+tractodo-production.up.railway.app parece el backend.
+
+tractodo-production-3e8e.up.railway.app parece el frontend.
+
+Qué hacer
+
+En frontend .env.production (o en variables de Railway) pon:
+
+NEXT_PUBLIC_API_BASE=https://tractodo-production.up.railway.app/api
+NEXT_PUBLIC_FRONTEND_URL=https://tractodo-production-3e8e.up.railway.app
+NODE_ENV=production
 
 
+En backend, asegúrate de que CORS permite ese NEXT_PUBLIC_FRONTEND_URL.
