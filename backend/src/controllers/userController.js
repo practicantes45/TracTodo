@@ -1,4 +1,5 @@
 const { register, login } = require("../db/usuariosDB");
+const jwt = require("jsonwebtoken");
 
 /**
  * ACTUALIZADO: Registro con email como identificador principal
@@ -47,7 +48,7 @@ const registrarUsuario = async (req, res) => {
  * Cambios: Ahora usa email en lugar de username
  */
 const iniciarSesion = async (req, res) => {
-  const { email, password } = req.body; // CAMBIO: email en lugar de username
+  const { email, password } = req.body;
 
   console.log('=== INICIO DE SESIÓN (EMAIL) ===');
   console.log('Email:', email);

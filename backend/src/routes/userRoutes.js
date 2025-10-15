@@ -1,6 +1,9 @@
 const express = require("express");
 const { registrarUsuario, iniciarSesion, obtenerPerfilUsuario } = require("../controllers/userController.js");
-const { adminAutorizado, usuarioAutenticado } = require("../middlewares/funcionesPassword.js");
+const { iniciarSesionSeguro } = require("../controllers/adminAuthController.js");
+const { adminAutorizado } = require("../middlewares/funcionesPassword.js");
+const { loginRateLimiter } = require("../middlewares/rateLimit.js");
+const { usuarioAutenticado } = require("../middlewares/funcionesPassword.js");
 
 const router = express.Router();
 
@@ -16,7 +19,9 @@ router.post("/registro", registrarUsuario);
  * POST /api/user/inicioSesion  
  * Body: { email, password }
  */
-router.post("/inicioSesion", iniciarSesion);
+// Rate limit al login para mitigar fuerza bruta
+// Controlador de login simplificado
+router.post("/inicioSesion", loginRateLimiter, iniciarSesionSeguro);
 
 /**
  *  MANTENIDO: Verificación de admin (actualizada internamente)
@@ -125,6 +130,8 @@ router.get("/verificar-sesion", async (req, res) => {
     });
   }
 });
+
+// Endpoints auxiliares eliminados
 
 /**
  * NUEVO: Ruta de información sobre el sistema de autenticación

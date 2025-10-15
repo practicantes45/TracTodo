@@ -2,6 +2,7 @@ const { db } = require("../config/firebase");
 const express = require("express");
 const router = express.Router();
 const { adminAutorizado } = require("../middlewares/funcionesPassword");
+const { adminWriteLimiter, adminReadLimiter } = require("../middlewares/rateLimit");
 const {
   generarSEOProductos,
   obtenerSEOProducto,
@@ -179,27 +180,27 @@ router.get("/schema/:id", obtenerSchemaProducto);
 /**
  * Regenerar mapeo de slugs (solo admin)
  */
-router.post("/regenerar-slugs", verificarAdmin, regenerarSlugs);
+router.post("/regenerar-slugs", adminWriteLimiter, verificarAdmin, regenerarSlugs);
 
 /**
  * Generar SEO para todos los productos (solo admin)
  */
-router.post("/generar-productos", verificarAdmin, generarSEOProductos);
+router.post("/generar-productos", adminWriteLimiter, verificarAdmin, generarSEOProductos);
 
 /**
  * Obtener estadísticas SEO generales (solo admin)
  */
-router.get("/estadisticas", verificarAdmin, obtenerEstadisticasSEO);
+router.get("/estadisticas", adminReadLimiter, verificarAdmin, obtenerEstadisticasSEO);
 
 /**
  * Regenerar SEO para un producto específico (solo admin)
  */
-router.put("/producto/:id/regenerar", verificarAdmin, regenerarSEOProducto);
+router.put("/producto/:id/regenerar", adminWriteLimiter, verificarAdmin, regenerarSEOProducto);
 
 /**
  * Limpiar cache y forzar regeneración del sitemap (solo admin)
  */
-router.post("/limpiar-cache", verificarAdmin, async (req, res) => {
+router.post("/limpiar-cache", adminWriteLimiter, verificarAdmin, async (req, res) => {
   try {
     console.log("🧹 Limpiando cache de SEO...");
     

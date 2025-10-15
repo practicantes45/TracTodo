@@ -7,7 +7,7 @@ import styles from './AdminLoginModal.module.css';
 
 export default function AdminLoginModal({ isOpen, onClose }) {
   const [credentials, setCredentials] = useState({
-    email: '', // CAMBIO: username -> email
+    email: '',
     password: ''
   });
   const [loading, setLoading] = useState(false);
@@ -44,7 +44,10 @@ export default function AdminLoginModal({ isOpen, onClose }) {
       console.log('🔐 === MODAL LOGIN - INICIANDO ===');
       console.log('📧 Email:', credentials.email); // CAMBIO: mostrar email
 
-      const respuestaLogin = await iniciarSesion(credentials);
+      const respuestaLogin = await iniciarSesion({
+        email: credentials.email,
+        password: credentials.password
+      });
       console.log('📡 Respuesta login modal:', respuestaLogin);
       
       if (respuestaLogin.mensaje === "Login exitoso") {
@@ -82,6 +85,8 @@ export default function AdminLoginModal({ isOpen, onClose }) {
       console.log('🏁 MODAL - Proceso terminado');
     }
   };
+
+  
 
   if (!isOpen) return null;
 
@@ -133,6 +138,8 @@ export default function AdminLoginModal({ isOpen, onClose }) {
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </button>
             </div>
+
+            
             
             {error && (
               <div className={styles.errorMessage}>
@@ -148,6 +155,8 @@ export default function AdminLoginModal({ isOpen, onClose }) {
               {loading ? 'Verificando...' : 'Login'}
             </button>
           </form>
+
+          
         </div>
         
         {[...Array(50)].map((_, i) => (

@@ -1,49 +1,15 @@
-volVi a tener este rpoblema en el front de railway, como sé cual es la correcta o la que acambio?
-ChatGPT said:
+este texto: "Selecciona tu asesor en la pagina de inicio para continuar por WhatsApp." 
+en la pestaña de "productos"
+sale en color negro en localhost, pero ya con la 
+pagina desplegada en la web sale de color blanco 
+y no es legible, cambialo a color negro tambien, de favor.
 
-Ya vi tu captura 👀
+quiero que quites de todos los productos la opcion de
+"comprar por whatsapp" y el de "agregar al carrito"
+para que el usuario solo pueda cliquear el producto
+y ya con la pestaña de producto abierta, ahora si 
+agregar al carrito o comprar por whatsapp
+pero no quiero que estas opciones salgan en la 
+pantalla de productos, solo ya que entras a uno en
+especifico. 
 
-Tienes dos variables en Railway que se parecen mucho:
-
-NEXT_PUBLIC_API_BASE = https://tractodo-production.up.railway.app/api
-
-NEXT_PUBLIC_FRONTEND_URL = https://tractodo-production-3e8e.up.railway.app
-
-Cómo saber cuál usar
-
-API (backend)
-
-La variable NEXT_PUBLIC_API_BASE debe apuntar a tu backend, siempre terminando con /api.
-
-Si entras en el navegador a https://tractodo-production.up.railway.app/api/health y responde algo (200 OK o similar), entonces esa es la correcta.
-
-Esa es la URL que tu frontend (Next.js) usará para hacer las llamadas fetch.
-
-Frontend (Next.js)
-
-La variable NEXT_PUBLIC_FRONTEND_URL debe apuntar a tu frontend (el build de Next en Railway).
-
-Este NO debe llevar /api, solo la raíz del dominio que Railway te dio para el frontend.
-
-El problema típico
-
-Railway crea subdominios distintos para cada servicio (backend y frontend).
-
-Si en el frontend pones como API la URL del frontend (sin querer), te saldrán errores de “No se pudieron cargar los productos” o CORS.
-
-En tu caso:
-
-tractodo-production.up.railway.app parece el backend.
-
-tractodo-production-3e8e.up.railway.app parece el frontend.
-
-Qué hacer
-
-En frontend .env.production (o en variables de Railway) pon:
-
-NEXT_PUBLIC_API_BASE=https://tractodo-production.up.railway.app/api
-NEXT_PUBLIC_FRONTEND_URL=https://tractodo-production-3e8e.up.railway.app
-NODE_ENV=production
-
-
-En backend, asegúrate de que CORS permite ese NEXT_PUBLIC_FRONTEND_URL.

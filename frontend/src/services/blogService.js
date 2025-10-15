@@ -1,4 +1,4 @@
-import api from './api';
+import api, { API_URL } from './api';
 
 // Obtener todos los posts del blog
 export const obtenerPosts = async () => {
@@ -16,9 +16,9 @@ export const obtenerPostPorId = async (id) => {
   try {    
     // Si estamos en el servidor, hacer la petición directamente
     if (typeof window === 'undefined') {
-      // Estamos en el servidor - hacer petición HTTP directa
-const baseUrl = process.env.EXT_PUBLIC_API_URL || 'http://localhost:3000';
-const response = await fetch(`${baseUrl}/api/entretenimiento/blogs/${id}`, {        headers: {
+      // SSR: usar API_URL ya normalizada (incluye /api)
+      const response = await fetch(`${API_URL.replace(/\/+$/, '')}/entretenimiento/blogs/${id}`, {
+        headers: {
           'Content-Type': 'application/json',
         },
       });

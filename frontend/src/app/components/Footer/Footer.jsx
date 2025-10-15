@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../../../hooks/useAuth';
 import { usePathname } from 'next/navigation';
-import AdminLoginButton from '../AdminLoginButton/AdminLoginButton';
 import {
   FaLinkedin,
   FaYoutube,
@@ -178,7 +177,7 @@ const Footer = () => {
           <p>&copy; {currentYear} TRACTODO - Todos los derechos reservados</p>
         </div>
       </div>
-      {pathname === '/' && !isAdmin && <AdminLoginButton />}
+      {/* Botón de login de administradores oculto en home para reducir superficie pública */}
 
     </footer>
   );

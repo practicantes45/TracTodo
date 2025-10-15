@@ -727,20 +727,9 @@ export default function ProductosPage() {
                             <div className="productoPrecio">
                               {formatearPrecio(producto.precioVentaSugerido || 0)}
                             </div>
-                            <button
-                              type="button"
-                              className="cartButton"
-                              onClick={() => handleAddToCart(producto)}
-                            >
-                              Agregar al carrito
-                            </button>
-                            <button
-                              className="whatsappBtn"
-                              onClick={(e) => handleWhatsAppClick(producto, e)}
-                            >
-                              <FaWhatsapp />
-                              Compra por WhatsApp
-                            </button>
+                            {/* Requerimiento: ocultar acciones en listado. 
+                                Las acciones "Agregar al carrito" y "Compra por WhatsApp"
+                                solo deben mostrarse en la página del producto individual. */}
                             {selectedAdvisor && (
                               <div className="advisorSummary">
                                 <span className="advisorSummaryLabel">Te atendera {selectedAdvisor.name}</span>

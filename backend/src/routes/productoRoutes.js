@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const { db } = require("../config/firebase");
+const { adminAutorizado } = require("../middlewares/funcionesPassword");
+const { adminWriteLimiter } = require("../middlewares/rateLimit");
 
 const { getAllProductos, getProductoById, getProductoByNombre, borrarProductoPorId,actualizarProductoPorId,insertarProducto,getProductosDelMes,actualizarProductosDelMes,insertarProductosDelMes, eliminarProductoDelMes, actualizarPrecioProductoDelMes} = require("../controllers/productoController");
 
@@ -11,15 +13,29 @@ const { generarRecomendaciones } = require("../services/productoRecomendado");
 // Obtener todos los productos
 router.get("/", getAllProductos);
 
+// Middleware de verificación de admin (reutilizable)
+const verificarAdmin = async (req, res, next) => {
+  try {
+    const resultado = await adminAutorizado(req);
+    if (resultado.status !== 200) {
+      return res.status(resultado.status).json({ mensaje: resultado.mensajeUsuario });
+    }
+    next();
+  } catch (error) {
+    console.error('Error en verificarAdmin:', error);
+    return res.status(500).json({ mensaje: "Error interno del servidor" });
+  }
+};
+
 // ============================================================ PRODUCTOS DEL MES ====================================================================
 router.get("/mes/destacados", getProductosDelMes);
-router.put("/mes/actualizar", actualizarProductosDelMes);
-router.put("/mes/agregar", insertarProductosDelMes);
-router.put("/mes/eliminar", eliminarProductoDelMes);
-router.put("/mes/precio/:id", actualizarPrecioProductoDelMes);
+router.put("/mes/actualizar", adminWriteLimiter, verificarAdmin, actualizarProductosDelMes);
+router.put("/mes/agregar", adminWriteLimiter, verificarAdmin, insertarProductosDelMes);
+router.put("/mes/eliminar", adminWriteLimiter, verificarAdmin, eliminarProductoDelMes);
+router.put("/mes/precio/:id", adminWriteLimiter, verificarAdmin, actualizarPrecioProductoDelMes);
 
 // RUTA PARA TESTING DE RECOMENDACIONES
-router.post("/generar-recomendaciones", async (req, res) => {
+router.post("/generar-recomendaciones", adminWriteLimiter, verificarAdmin, async (req, res) => {
   try {
     console.log("🔧 Generación manual de recomendaciones solicitada");
     await generarRecomendaciones();
@@ -34,9 +50,9 @@ router.get("/nombre/:nombre", getProductoByNombre);
 router.get("/id/:id", getProductoById);
 
 // CRUD de productos
-router.post("/", insertarProducto);
-router.put("/:id", actualizarProductoPorId);
-router.delete("/:id", borrarProductoPorId);
+router.post("/", adminWriteLimiter, verificarAdmin, insertarProducto);
+router.put("/:id", adminWriteLimiter, verificarAdmin, actualizarProductoPorId);
+router.delete("/:id", adminWriteLimiter, verificarAdmin, borrarProductoPorId);
 
 // ============================================================ RUTA GENÉRICA AL FINAL ====================================================================
 // IMPORTANTE: Esta ruta DEBE estar al final para no interceptar otras rutas

@@ -48,7 +48,7 @@ export const verificarAdmin = async () => {
     
     // El backend devuelve "Admin autorizado" cuando es admin
     // y status 200 cuando es válido
-    if (respuesta.status === 200 && respuesta.data === "Admin autorizado") {
+    if (respuesta.status === 200) {
       console.log('✅ Backend confirmó que es admin');
       return { isAdmin: true };
     } else {

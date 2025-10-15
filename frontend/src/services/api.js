@@ -20,7 +20,7 @@ function resolveBaseURL() {
   return `${noTrail}/api`; // p.ej. http://localhost:8080/api
 }
 
-const API_URL = resolveBaseURL();
+export const API_URL = resolveBaseURL();
 
 /**
  * Intenta resolver un token desde:
@@ -138,3 +138,4 @@ export function apiUrl(path = '/') {
   const cleanPath = String(path).replace(/^\/+/, '');
   return `${cleanBase}/${cleanPath}`;
 }
+

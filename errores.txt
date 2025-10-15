@@ -1,38 +1,22 @@
-Error: ./src/app/productos/[nombre]/producto-individual.css
-Error evaluating Node.js code
-CssSyntaxError: D:\TracTodo\TracTodo\frontend\src\app\productos\[nombre]\producto-individual.css:1149:1: Unexpected }
-    [at Input.error (turbopack:///[project]/node_modules/postcss/lib/input.js:135:16)]
-    [at Parser.unexpectedClose (turbopack:///[project]/node_modules/postcss/lib/parser.js:587:22)]
-    [at Parser.end (turbopack:///[project]/node_modules/postcss/lib/parser.js:330:12)]
-    [at Parser.parse (turbopack:///[project]/node_modules/postcss/lib/parser.js:456:16)]
-    [at parse (turbopack:///[project]/node_modules/postcss/lib/parse.js:11:12)]
-    [at new LazyResult (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:165:16)]
-    [at Processor.process (turbopack:///[project]/node_modules/postcss/lib/processor.js:53:14)]
-    [at transform (turbopack:///[project]/postcss.config.mjs/transform.ts:80:51)]
-    [at run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:29)]
-    [at run (turbopack:///[turbopack-node]/ipc/evaluate.ts:115:11)]
-    at BuildError (http://localhost:3001/_next/static/chunks/%5Broot-of-the-server%5D__e2c08166._.js:17395:41)
-    at Object.react_stack_bottom_frame (http://localhost:3001/_next/static/chunks/node_modules_react-dom_82bb97c6._.js:13596:24)
-    at renderWithHooks (http://localhost:3001/_next/static/chunks/node_modules_react-dom_82bb97c6._.js:3560:24)
-    at updateFunctionComponent (http://localhost:3001/_next/static/chunks/node_modules_react-dom_82bb97c6._.js:5317:21)
-    at beginWork (http://localhost:3001/_next/static/chunks/node_modules_react-dom_82bb97c6._.js:5916:24)
-    at runWithFiberInDEV (http://localhost:3001/_next/static/chunks/node_modules_react-dom_82bb97c6._.js:1335:74)
-    at performUnitOfWork (http://localhost:3001/_next/static/chunks/node_modules_react-dom_82bb97c6._.js:7988:97)
-    at workLoopSync (http://localhost:3001/_next/static/chunks/node_modules_react-dom_82bb97c6._.js:7880:40)
-    at renderRootSync (http://localhost:3001/_next/static/chunks/node_modules_react-dom_82bb97c6._.js:7863:13)
-    at performWorkOnRoot (http://localhost:3001/_next/static/chunks/node_modules_react-dom_82bb97c6._.js:7602:212)
-    at performWorkOnRootViaSchedulerTask (http://localhost:3001/_next/static/chunks/node_modules_react-dom_82bb97c6._.js:8566:9)
-    at MessagePort.performWorkUntilDeadline (http://localhost:3001/_next/static/chunks/node_modules_a51498a5._.js:1119:64)
-
-
-        [at Parser.end (turbopack:///[project]/node_modules/postcss/lib/parser.js:330:12)]
-    [at Parser.parse (turbopack:///[project]/node_modules/postcss/lib/parser.js:456:16)]
-    [at parse (turbopack:///[project]/node_modules/postcss/lib/parse.js:11:12)] 
-    [at new LazyResult (turbopack:///[project]/node_modules/postcss/lib/lazy-result.js:165:16)]
-    [at Processor.process (turbopack:///[project]/node_modules/postcss/lib/processor.js:53:14)]
-    [at transform (turbopack:///[project]/postcss.config.mjs/transform.ts:80:51)]
-    [at run (turbopack:///[turbopack-node]/ipc/evaluate.ts:92:29)]
-    [at run (turbopack:///[turbopack-node]/ipc/evaluate.ts:115:11)]
-
-
- GET /productos/actuador-isx-egr-985 500 in 249ms
+=== INICIO DE SESION (SEGURO) ===
+Email: tractoddpracticantes@gmail.com
+Intentando iniciar sesión con email: tractoddpracticantes@gmail.com
+Usuario encontrado: UpHKycmphDWNNCIeLurkiiWvQP12
+Login exitoso para: tractoddpracticantes@gmail.com
+=== VERIFICACIÓN DE ADMINISTRADOR ===
+Timestamp: 2025-10-15T17:29:20.545Z
+IP: 127.0.0.1
+=== VERIFICACIÓN DE ADMIN (FIREBASE AUTH) ===      
+Cookies recibidas: {
+  tractodo_selected_advisor: '524272245923',       
+  token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOiJVcEhLeWNtcGhEV05OQ0llTHVya2lpV3ZRUDEyIiwiZW1haWwiOiJ0cmFjdG9kZHByYWN0aWNhbnRlc0BnbWFpbC5jb20iLCJ1c2VybmFtZSI6IkFkbWluaXN0cmFkb3IgVHJhY1RvZG8iLCJ0aXBvVXN1YXJpbyI6ImFkbWluIiwiaWF0IjoxNzYwNTQ5MzYwLCJleHAiOjE3NjA2MzU3NjB9.UO_Xcq4faW84so8UEyOrmPrideAaYbTBokd7I1aNgTE'
+}
+Token decodificado exitosamente: {
+  uid: 'UpHKycmphDWNNCIeLurkiiWvQP12',
+  email: 'tractoddpracticantes@gmail.com',
+  tipoUsuario: 'admin'
+}
+Verificación adicional contra Firebase Auth habilitada
+Verificando admin contra Firebase Auth para UID: UpHKycmphDWNNCIeLurkiiWvQP12
+Verificación Firebase Auth exitosa para admin: tractoddpracticantes@gmail.com
+Resultado verificación: { status: 200, mensaje: 'Admin autorizado - verificación completa' }

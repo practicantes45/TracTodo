@@ -152,34 +152,36 @@ async function login({ email, password }) {
  */
 async function verifyPasswordWithFirebaseAPI(email, password) {
   try {
-    const fetch = require('node-fetch'); // Necesitarás instalar: npm install node-fetch
+    // Node >=18 expone fetch de forma nativa; evitamos dependencias externas
     const apiKey = process.env.FIREBASE_WEB_API_KEY; // Necesitas agregar esto a tu .env
-    
+
     if (!apiKey) {
       console.warn("FIREBASE_WEB_API_KEY no configurado, saltando verificación de contraseña");
       return true; // En desarrollo, permitir acceso
     }
 
-    const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: email,
-        password: password,
-        returnSecureToken: true
-      })
-    });
+    const response = await fetch(
+      `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password,
+          returnSecureToken: true,
+        }),
+      }
+    );
 
     const result = await response.json();
-    
+
     if (response.ok && result.localId) {
       return true; // Contraseña correcta
     } else {
       return false; // Contraseña incorrecta
     }
-    
   } catch (error) {
     console.error("Error verificando contraseña con API:", error.message);
     return false;
