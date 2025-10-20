@@ -94,8 +94,8 @@
   }
 
   .mainContent {
-    padding-top: 480px;
-    /* Padding superior reducido de 550px a 480px */
+    padding-top: 400px;
+    /* Más cerca del Hero */
   }
   /* ===== BENEFITS SECTION RESPONSIVE ===== */
   /* Sección de ventajas para móvil */
@@ -188,6 +188,10 @@
 
 
   /* ===== BENEFITS SECTION PARA MÓVIL PEQUEÑO ===== */
+  /* Alinear main content con Hero en móviles pequeños */
+  .mainContent {
+    padding-top: 370px;
+  }
   .benefitsSection {
     padding: 50px 10px;
     /* Padding aún más reducido */
@@ -274,6 +278,10 @@
   .benefitsSection {
     padding: 40px 8px;
     /* Padding mínimo */
+  }
+  /* Alinear main content con Hero en móviles muy pequeños */
+  .mainContent {
+    padding-top: 340px;
   }
 
   .card-container {

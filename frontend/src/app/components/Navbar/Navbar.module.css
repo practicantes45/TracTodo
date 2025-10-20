@@ -19,12 +19,14 @@
   background: var(--bg);
   border-bottom: 2px solid transparent;
   border-image: linear-gradient(90deg, var(--mx-green), var(--mx-white), var(--mx-red)) 1;
-  position: relative; z-index: 51; width: 100%;
+  position: sticky; top: 0; z-index: 1001; width: 100%;
   box-shadow: 0 2px 10px rgba(0,0,0,.25);
 }
-.mobileSearchContainer { display: flex; align-items: center; gap: 12px; padding: 12px 15px; width: 100%; }
-.mobileMenuButton { flex-shrink: 0; }
-.mobileSearchBar { flex: 1; width: 100%; }
+.mobileSearchContainer { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 10px; width: 100%; }
+.mobileMenuButton { flex: 0 0 auto; }
+.mobileSearchBar { flex: 1 1 auto; min-width: 0; max-width: 55%; margin-left: auto; }
+.mobileBrand { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; text-decoration: none; }
+.mobileLogoImg { height: 44px; width: auto; object-fit: contain; display: block; filter: drop-shadow(0 2px 6px rgba(0,0,0,.25)); }
 
 /* ===== AppBar desktop (≥768px) ===== */
 .appBar {
@@ -107,8 +109,18 @@
 @media (max-width: 767.98px) {
   .mobileSearchWrapper { display: block; }
   .appBar { display: none; }
-  .mobileSearchContainer { padding: 10px 12px; gap: 10px; }
+  .mobileSearchContainer { padding: 6px 10px; gap: 8px; }
   .logoImg { height: 40px; }
+}
+
+@media (max-width: 480px) {
+  .mobileSearchBar { max-width: 50%; }
+  .mobileLogoImg { height: 40px; }
+}
+
+@media (max-width: 360px) {
+  .mobileSearchBar { max-width: 48%; }
+  .mobileLogoImg { height: 36px; }
 }
 @media (min-width: 768px) {
   .mobileSearchWrapper { display: none !important; }

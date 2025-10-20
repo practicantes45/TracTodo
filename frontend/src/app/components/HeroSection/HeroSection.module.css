@@ -3,7 +3,7 @@
 /* Hero Section - EXACTAMENTE IGUAL A UBICACIÓN Y SOBRE */
 .heroSection {
   position: absolute;
-  height: 580px; /* ALTURA UNIFICADA */
+  height: 480px; /* ALTURA AJUSTADA */
   width: 100%;
   left: 0;
   background-image: url('https://i.postimg.cc/hj0RYW59/fondoazul.png');
@@ -88,7 +88,7 @@
 /* Tablet (992px) - IGUAL A OTRAS PÁGINAS */
 @media (max-width: 992px) {
   .heroSection {
-    height: 540px; /* ALTURA CONSISTENTE */
+    height: 460px; /* ALTURA AJUSTADA */
     background-position: center center; /* CORREGIDO: posición idéntica */
   }
 
@@ -108,92 +108,45 @@
 /* Móvil (768px) - IGUAL A OTRAS PÁGINAS */
 @media (max-width: 768px) {
   .heroSection {
-    height: 400px; /* ALTURA CONSISTENTE */
+    height: 360px; /* ALTURA AJUSTADA */
     top: 60px;
     background-position: center center; /* CORREGIDO: posición idéntica */
   }
-
-  /* Logo oculto en dispositivos móviles */
-  .logoImage {
-    display: none !important;
-  }
-
-  /* OCULTAR SLOGAN EN MÓVIL */
-  .heroSlogan {
-    display: none !important;
-  }
+  .logoImage { width: min(60vw, 240px); max-width: 240px; }
 }
 
 @media (max-width: 661px) {
   .heroSection {
-    height: 420px; /* ALTURA CONSISTENTE */
+    height: 360px; /* ALTURA AJUSTADA */
     top: 60px;
     background-position: center center; /* CORREGIDO: posición idéntica */
-  }
-
-  /* Logo oculto en dispositivos móviles */
-  .logoImage {
-    display: none !important;
-  }
-
-  /* OCULTAR SLOGAN EN MÓVIL */
-  .heroSlogan {
-    display: none !important;
   }
 }
 
 /* Móvil pequeño (480px) - IGUAL A OTRAS PÁGINAS */
 @media (max-width: 481px) {
   .heroSection {
-    height: 380px; /* ALTURA CONSISTENTE */
+    height: 340px; /* ALTURA AJUSTADA */
     top: 60px;
     background-position: center center; /* CORREGIDO: posición idéntica */
   }
-
-  /* Logo confirmadamente oculto */
-  .logoImage {
-    display: none !important;
-  }
-
-  /* OCULTAR SLOGAN EN MÓVIL PEQUEÑO */
-  .heroSlogan {
-    display: none !important;
-  }
+  .logoImage { width: min(65vw, 200px); }
 }
 
 /* Móviles muy pequeños (360px) - IGUAL A OTRAS PÁGINAS */
 @media (max-width: 375px) {
   .heroSection {
-    height: 350px; /* ALTURA CONSISTENTE */
+    height: 320px; /* ALTURA AJUSTADA */
     top:60px;
     background-position: center center; /* CORREGIDO: posición idéntica */
-  }
-
-  /* Logo confirmadamente oculto */
-  .logoImage {
-    display: none !important;
-  }
-
-  /* OCULTAR SLOGAN EN MÓVIL MUY PEQUEÑO */
-  .heroSlogan {
-    display: none !important;
   }
 }
 
 @media (max-width: 360px) {
   .heroSection {
-    height: 350px; /* ALTURA CONSISTENTE */
+    height: 310px; /* ALTURA AJUSTADA */
     top: 60px;
     background-position: center center; /* CORREGIDO: posición idéntica */
   }
-
-  /* Logo confirmadamente oculto */
-  .logoImage {
-    display: none !important;
-  }
-
-  /* OCULTAR SLOGAN EN MÓVIL EXTRA PEQUEÑO */
-  .heroSlogan {
-    display: none !important;
-  }
+  .logoImage { width: min(70vw, 180px); }
 }

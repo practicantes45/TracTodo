@@ -43,7 +43,7 @@ export const viewport = {
 };
 
 export default function RootLayout({ children }) {
-  const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID || "GTM-TK5BTJRB";
+  const GTM_ID = "GTM-TK5BTJRB";
 
   return (
     <html

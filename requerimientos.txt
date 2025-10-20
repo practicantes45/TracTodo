@@ -1,15 +1,21 @@
-este texto: "Selecciona tu asesor en la pagina de inicio para continuar por WhatsApp." 
-en la pestaña de "productos"
-sale en color negro en localhost, pero ya con la 
-pagina desplegada en la web sale de color blanco 
-y no es legible, cambialo a color negro tambien, de favor.
+Instalar Google Tag Manager
 
-quiero que quites de todos los productos la opcion de
-"comprar por whatsapp" y el de "agregar al carrito"
-para que el usuario solo pueda cliquear el producto
-y ya con la pestaña de producto abierta, ahora si 
-agregar al carrito o comprar por whatsapp
-pero no quiero que estas opciones salgan en la 
-pantalla de productos, solo ya que entras a uno en
-especifico. 
+Copie el código que aparece a continuación y péguelo en todas las páginas de su sitio web.
 
+1. Pegue este código lo más arriba posible en la sección <head> de la página:
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-TK5BTJRB');</script>
+<!-- End Google Tag Manager -->
+
+
+2. Pegue este código justo después de la etiqueta de apertura <body>:
+
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TK5BTJRB"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->

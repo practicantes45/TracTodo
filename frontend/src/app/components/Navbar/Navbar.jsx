@@ -28,6 +28,16 @@ const Navbar = () => {
           <div className={styles.mobileMenuButton}>
             <MobileMenu />
           </div>
+          <Link href="/" className={styles.mobileBrand} aria-label="Ir a inicio">
+            <Image
+              src="/logo-tractodo.png"
+              alt="TRACTODO"
+              width={600}
+              height={300}
+              className={styles.mobileLogoImg}
+              priority
+            />
+          </Link>
           <div className={styles.mobileSearchBar}>
             <Suspense fallback={<div>Cargando...</div>}>
               <SearchBar />
