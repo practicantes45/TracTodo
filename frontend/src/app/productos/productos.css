@@ -2251,18 +2251,18 @@
   }
 
   .productosGrid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-    justify-items: center;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    justify-items: stretch;
     margin-top: 10px;
   }
 
   .productoCard {
     width: 100%;
-    max-width: 400px;
-    min-width: 320px;
-    margin: 0 auto;
-    height: 450px;
+    max-width: none;
+    min-width: 0;
+    margin: 0;
+    height: auto;
   }
 
   .productoInfo {
@@ -2470,10 +2470,10 @@
 
   .productoCard {
     width: 100%;
-    max-width: 350px;
-    min-width: 280px;
-    margin: 0 auto;
-    height: 430px;
+    max-width: none;
+    min-width: 0;
+    margin: 0;
+    height: auto;
   }
 
   .productoImageContainer {
@@ -2507,9 +2507,9 @@
   }
 
   .productosGrid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-    justify-items: center;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    justify-items: stretch;
     margin-top: 10px;
   }
 
@@ -2691,10 +2691,10 @@
 
   .productoCard {
     width: 100%;
-    max-width: 320px;
-    min-width: 260px;
-    margin: 0 auto;
-    height: 380px;
+    max-width: none;
+    min-width: 0;
+    margin: 0;
+    height: auto;
   }
 
   .productoImageContainer {
@@ -2906,7 +2906,8 @@
 
 .productoCard .productoInfo {
   min-height: auto;
-  padding-bottom: 24px;
+  /* Reservar espacio inferior para el botón compacto de carrito */
+  padding-bottom: 64px;
 }
 
 .productoCard .productoInfo .cartButton {
@@ -2916,6 +2917,35 @@
 @media (max-width: 768px) {
   .productoCard {
     min-height: unset;
+  }
+}
+
+@media (max-width: 520px) {
+  .productoCard .productoInfo {
+    padding-bottom: 56px;
+  }
+}
+
+
+/* Botón de carrito compacto para tarjetas de listado */
+.productoCard .cartButton.cartButtonCompact {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  width: auto;
+  padding: 8px 12px;
+  font-size: 0.85rem;
+  gap: 8px;
+  border-radius: 12px;
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .productoCard .cartButton.cartButtonCompact {
+    right: 10px;
+    bottom: 10px;
+    padding: 8px 10px;
+    font-size: 0.8rem;
   }
 }
 

@@ -55,10 +55,10 @@ const Navbar = () => {
             <Image
               src="/logo-tractodo.png"
               alt="TRACTODO"
-              width={800}     // cualquier tamaño base para preservar ratio
+              width={800}
               height={400}
               className={styles.logoImg}
-              priority        // ayuda a que aparezca rápido
+              priority
             />
           </Link>
         </div>
@@ -93,3 +93,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

@@ -10,11 +10,10 @@
   height: 580px;
   width: 100%;
   left: 0;
-  background-image: linear-gradient(135deg, rgba(44, 5, 66, 0.9) 0%, rgba(74, 11, 110, 0.84) 55%, rgba(255, 109, 0, 0.78) 100%),
-                    url('/images/halloween-pattern.svg');
-  background-size: cover, 320px;
+  background-image: url('https://i.postimg.cc/gJpP4kNz/blog.jpg');
+  background-size: cover;
   background-position: center center;
-  background-repeat: no-repeat, repeat;
+  background-repeat: no-repeat;
   color: white;
   top: 90px;
   display: flex;

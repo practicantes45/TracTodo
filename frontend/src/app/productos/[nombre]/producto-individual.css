@@ -1204,8 +1204,27 @@
 }
 
 .cartFeedback {
-    margin-top: 8px;
-    font-size: 0.9rem;
-    color: rgba(255, 233, 214, 0.85);
+    margin-top: 10px;
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #000; /* Mejor contraste sobre fondo blanco */
+    background: #ffffff; /* Pastilla blanca para resaltar */
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #e6e6e6;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    animation: cartFeedbackIn 280ms ease-out both;
+}
+
+@keyframes cartFeedbackIn {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 

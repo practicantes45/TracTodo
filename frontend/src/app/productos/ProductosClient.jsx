@@ -1,6 +1,6 @@
 'use client';
 import './productos.css';
-import { FaFilter, FaWhatsapp, FaSortAlphaDown, FaSortAlphaUp, FaTimes, FaEraser, FaChevronDown } from "react-icons/fa";
+import { FaFilter, FaWhatsapp, FaSortAlphaDown, FaSortAlphaUp, FaTimes, FaEraser, FaChevronDown, FaShoppingCart } from "react-icons/fa";
 import { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
@@ -16,6 +16,7 @@ import { getPreviewDescription, getShortPreviewDescription } from '../../utils/t
 import { formatearPrecio, formatearPrecioWhatsApp } from '../../utils/priceUtils';
 import { useCart } from '../../hooks/useCart';
 import { useWhatsAppContact } from '../../hooks/useWhatsAppContact';
+import AdvisorPickerModal from '../components/AdvisorPickerModal/AdvisorPickerModal';
 // Constante para productos por página
 const PRODUCTOS_POR_PAGINA = 15;
 
@@ -39,6 +40,8 @@ export default function ProductosPage() {
   const [hayMasProductos, setHayMasProductos] = useState(false);
   const [cargandoMas, setCargandoMas] = useState(false);
   const [advisorSelectionReminder, setAdvisorSelectionReminder] = useState(false);
+  const [advisorModalOpen, setAdvisorModalOpen] = useState(false);
+  const [pendingProductPath, setPendingProductPath] = useState(null);
   const { addItem } = useCart();
 
   const searchParams = useSearchParams();
@@ -98,7 +101,7 @@ export default function ProductosPage() {
     allowSelection: false,
     onRequireSelection: () => {
       setAdvisorSelectionReminder(true);
-      router.push('/#asesores');
+      setAdvisorModalOpen(true);
     },
     getMessage: ({ advisor, payload }) => {
       if (payload?.customMessage) {
@@ -259,11 +262,44 @@ export default function ProductosPage() {
     addItem({ id: itemId, name: producto.nombre || 'Producto', price });
   };
   const handleProductoClick = async (producto) => {
-    await registrarVista(producto.id);
     const slug = getProductSlug(producto);
-    console.log('🔗 Navegando a producto:', { nombre: producto.nombre, slug });
-    router.push(`/productos/${slug}`);
+    const targetPath = `/productos/${slug}`;
+
+    // Esperar a que el hook cargue la selección persistida antes de decidir
+    if (!isAdvisorReady) {
+      setPendingProductPath(targetPath);
+      setAdvisorSelectionReminder(true);
+      // No abrir modal todavía; se decidirá cuando isAdvisorReady sea true
+      return;
+    }
+
+    if (selectedAdvisor) {
+      await registrarVista(producto.id);
+      router.push(targetPath);
+      return;
+    }
+
+    setPendingProductPath(targetPath);
+    setAdvisorSelectionReminder(true);
+    setAdvisorModalOpen(true);
   };
+
+  // Si se selecciona asesor y hay un producto pendiente, navegar al detalle automáticamente
+  useEffect(() => {
+    if (selectedAdvisor && pendingProductPath) {
+      setAdvisorModalOpen(false);
+      router.push(pendingProductPath);
+      setPendingProductPath(null);
+      setAdvisorSelectionReminder(false);
+    }
+  }, [selectedAdvisor, pendingProductPath]);
+
+  // Abrir el modal solo cuando ya sabemos si hay asesor o no
+  useEffect(() => {
+    if (isAdvisorReady && !selectedAdvisor && pendingProductPath) {
+      setAdvisorModalOpen(true);
+    }
+  }, [isAdvisorReady, selectedAdvisor, pendingProductPath]);
 
   const obtenerPrimeraImagen = (producto) => {
     if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object' && producto.imagenesUrl.frente) {
@@ -735,17 +771,17 @@ export default function ProductosPage() {
                                 <span className="advisorSummaryLabel">Te atendera {selectedAdvisor.name}</span>
                               </div>
                             )}
-                            {!selectedAdvisor && isAdvisorReady && (
-                              <div className="advisorSummary advisorSummaryNotice">
-                                <span className="advisorSummaryLabel">Selecciona tu asesor en la pagina de inicio para continuar por WhatsApp.</span>
-                              </div>
-                            )}
-                            {advisorSelectionReminder && (
-                              <div className="advisorReminder">
-                                Elige o cambia asesor desde la pagina principal de TracTodo para finalizar tu compra.
-                              </div>
-                            )}
                           </div>
+                          <button
+                            type="button"
+                            className="cartButton cartButtonCompact"
+                            aria-label={`Agregar ${producto.nombre} al carrito`}
+                            onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleAddToCart(producto); }}
+                            title="Agregar al carrito"
+                          >
+                            <FaShoppingCart />
+                            <span className="cartButtonLabel">Agregar</span>
+                          </button>
                         </div>
                       );
                     })}
@@ -784,7 +820,12 @@ export default function ProductosPage() {
 
         <Footer />
         <ScrollToTop />
+        <AdvisorPickerModal isOpen={advisorModalOpen} onClose={() => setAdvisorModalOpen(false)} />
       </div>
     </>
   );
 }
+
+
+
+

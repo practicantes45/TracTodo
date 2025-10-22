@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import styles from './ContactNumbers.module.css';
 import { useWhatsAppContact } from '../../../hooks/useWhatsAppContact';
 
-const ContactNumbers = ({ pageContext = 'home' }) => {
+const ContactNumbers = ({ pageContext = 'home', onSelected }) => {
     const router = useRouter();
     const allowSelection = pageContext === 'home';
 
@@ -94,7 +94,7 @@ const ContactNumbers = ({ pageContext = 'home' }) => {
                                 key={advisor.id}
                                 type="button"
                                 className={cardClasses.join(' ')}
-                                onClick={() => selectAdvisor(advisor.id)}
+                                onClick={() => { selectAdvisor(advisor.id); onSelected?.(advisor); }}
                                 aria-pressed={isActive}
                                 aria-label={`Seleccionar a ${advisor.name} como asesor`}
                             >

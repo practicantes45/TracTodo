@@ -110,7 +110,7 @@ export default function HomeClient() {
                 <Navbar />
 
                 {/* Contenido principal */}
-                <main className="mainContent">
+                <main className="mainContent homeMainContent">
                     {/* Hero Section con logo y slogan centrados */}
                     <HeroSection />
 

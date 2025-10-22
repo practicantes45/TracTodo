@@ -81,18 +81,16 @@
   margin: 0;
   font-weight: 900;
   line-height: 1.2;
-  background: linear-gradient(135deg, #002a5c 0%, #0077b6 50%, #ff6d00 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-shadow: 0 2px 4px rgba(148, 33, 146, 0.1);
+  color: #ffffff;
+  -webkit-text-fill-color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
   font-family: var(--font-ubuntu, 'Ubuntu'), sans-serif;
 }
 
 .cookieDescription {
   font-size: 1.05rem;
   line-height: 1.7;
-  color: #444;
+  color: #ffffff;
   margin-bottom: 28px;
   font-weight: 450;
   font-family: var(--font-montserrat, 'Montserrat'), sans-serif;

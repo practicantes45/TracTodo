@@ -8,7 +8,12 @@ import axios from 'axios';
  * Normalizamos para no duplicar /api ni dejarlo fuera.
  */
 function resolveBaseURL() {
-  const base = (process.env.NEXT_PUBLIC_API_BASE || 'http://localhost:8080').trim();
+  const isProd = process.env.NODE_ENV === 'production';
+  const envBase = process.env.NEXT_PUBLIC_API_BASE;
+  if (isProd && !envBase) {
+    throw new Error('NEXT_PUBLIC_API_BASE no está configurada en producción');
+  }
+  const base = (envBase || 'http://localhost:8080').trim();
 
   // Quita trailing slash
   const noTrail = base.replace(/\/+$/, '');

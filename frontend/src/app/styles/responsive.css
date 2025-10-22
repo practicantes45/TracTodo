@@ -1,4 +1,4 @@
-/* ===== RESPONSIVE DESIGN MEJORADO CON MENÚ MÓVIL Y BENEFITS SECTION ===== */
+﻿/* ===== RESPONSIVE DESIGN MEJORADO CON MENÚ MÓVIL Y BENEFITS SECTION ===== */
 
 /* =============================================
    PARTE 1: RESPONSIVE PARA TABLET (992px)
@@ -14,9 +14,7 @@
   }
 
   /* Main Content - Contenido principal */
-  .mainContent {
-    padding-top: 680px;
-  }
+  .mainContent { padding-top: 680px; }
   .logoImage {
     position: static;
     width: 330px;
@@ -93,10 +91,7 @@
     /* Padding reducido para móvil */
   }
 
-  .mainContent {
-    padding-top: 400px;
-    /* Más cerca del Hero */
-  }
+  .mainContent { padding-top: 680px; }
   /* ===== BENEFITS SECTION RESPONSIVE ===== */
   /* Sección de ventajas para móvil */
   .benefitsSection {
@@ -189,9 +184,7 @@
 
   /* ===== BENEFITS SECTION PARA MÓVIL PEQUEÑO ===== */
   /* Alinear main content con Hero en móviles pequeños */
-  .mainContent {
-    padding-top: 370px;
-  }
+  .mainContent { padding-top: 680px; }
   .benefitsSection {
     padding: 50px 10px;
     /* Padding aún más reducido */
@@ -280,9 +273,7 @@
     /* Padding mínimo */
   }
   /* Alinear main content con Hero en móviles muy pequeños */
-  .mainContent {
-    padding-top: 340px;
-  }
+  .mainContent { padding-top: 680px; }
 
   .card-container {
     max-width: 280px;
@@ -378,3 +369,11 @@
     /* Sin scroll cuando menú abierto */
   }
 }
+
+
+/* Overrides Home: eliminar padding extra del main en Home */
+.homeMainContent { padding-top: 0 !important; }
+@media (max-width: 992px) { .homeMainContent { padding-top: 0 !important; } }
+@media (max-width: 768px) { .homeMainContent { padding-top: 0 !important; } }
+@media (max-width: 480px) { .homeMainContent { padding-top: 0 !important; } }
+

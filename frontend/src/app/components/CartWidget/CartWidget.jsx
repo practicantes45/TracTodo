@@ -13,6 +13,7 @@ const CartWidget = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectionReminder, setSelectionReminder] = useState(false);
   const [sending, setSending] = useState(false);
+  const [confirmClear, setConfirmClear] = useState(false);
   const router = useRouter();
 
   const hasItems = items.length > 0;
@@ -68,9 +69,10 @@ const CartWidget = () => {
     }
 
     setSending(true);
+    // Abrir WhatsApp pero mantener el carrito intacto
     startAdvisorContact({ customMessage: summaryMessage });
-    clearCart();
-    setIsOpen(false);
+    // Mostrar confirmación "push" para vaciar el carrito tras el envío
+    setConfirmClear(true);
     setSelectionReminder(false);
     setTimeout(() => setSending(false), 800);
   };
@@ -112,6 +114,27 @@ const CartWidget = () => {
             <p className={styles.emptyState}>Aun no agregas productos. Explora el catalogo y usa "Agregar al carrito".</p>
           ) : (
             <>
+              {confirmClear && (
+                <div className={styles.confirmPush} role="alert">
+                  <div className={styles.confirmText}>¿Deseas vaciar el carrito ahora que lo enviaste por WhatsApp?</div>
+                  <div className={styles.confirmActions}>
+                    <button
+                      type="button"
+                      className={styles.secondaryAction}
+                      onClick={() => setConfirmClear(false)}
+                    >
+                      Mantener carrito
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.primaryAction}
+                      onClick={() => { clearCart(); setConfirmClear(false); }}
+                    >
+                      Vaciar carrito
+                    </button>
+                  </div>
+                </div>
+              )}
               <ul className={styles.itemList}>
                 {items.map((item) => (
                   <li key={item.id} className={styles.itemRow}>

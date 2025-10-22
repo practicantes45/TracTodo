@@ -1246,15 +1246,8 @@
 
 /* ==== Final overrides: asegurar una sola línea y flama al final en móviles, con tamaño más pequeño */
 @media (max-width: 660px) {
-  .offerBanner.withOverlay > h2 { font-size: 0.92rem; white-space: nowrap; letter-spacing: -0.2px; color: #ffffff; text-shadow: 0 1px 4px rgba(0,0,0,0.45); }
-  .offerBanner.withOverlay > h2::after { content: none; }
-}
-/* Reforzar tamaños aún menores con mayor especificidad */
-@media (max-width: 480px) {
-  .offerBanner.withOverlay > h2 { font-size: 0.82rem; white-space: nowrap; letter-spacing: -0.25px; }
-}
-@media (max-width: 360px) {
-  .offerBanner.withOverlay > h2 { font-size: 0.76rem; white-space: nowrap; letter-spacing: -0.3px; }
+  .withOverlay > h2 { font-size: 0.98rem; white-space: nowrap; }
+  .withOverlay > h2::after { content: '\00A1Vuelan! Aprovecha ahora \1F525'; }
 }
 @media (max-width: 480px) {
   .withOverlay > h2 { font-size: 0.86rem; white-space: nowrap; }

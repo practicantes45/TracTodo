@@ -13,12 +13,42 @@ export default function ProductCarousel() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [headlineIndex, setHeadlineIndex] = useState(0);
+  const [isTinyMobile, setIsTinyMobile] = useState(false);
   const { isAdmin } = useAuth();
   const router = useRouter();
 
   // Cargar productos del mes al montar el componente
   useEffect(() => {
     cargarProductosDelMes();
+  }, []);
+
+  // Detectar pantallas muy pequeñas (<=360px) y actualizar en cambios
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mq = window.matchMedia('(max-width: 360px)');
+    const update = () => setIsTinyMobile(!!mq.matches);
+    update();
+    if (mq.addEventListener) {
+      mq.addEventListener('change', update);
+      return () => mq.removeEventListener('change', update);
+    } else if (mq.addListener) {
+      mq.addListener(update);
+      return () => mq.removeListener(update);
+    }
+  }, []);
+
+  // Ajustar titular largo en pantallas muy pequeñas (<=360px)
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const tiny = typeof window !== 'undefined' && window.matchMedia('(max-width: 360px)').matches;
+    const container = document.querySelector(`.${styles.offerHeadline}`);
+    if (container) {
+      const heads = container.querySelectorAll('h2');
+      if (heads[1]) heads[1].textContent = tiny ? '¡Vuelan! Aprovecha ahora 🔥' : '¡Vuelan! Aprovecha antes de que se agoten 🔥';
+    }
+    const fallback = document.querySelector(`.${styles.withOverlay} > h2`);
+    if (fallback) fallback.textContent = tiny ? '¡Vuelan! Aprovecha ahora 🔥' : '¡Vuelan! Aprovecha antes de que se agoten 🔥';
   }, []);
 
   const cargarProductosDelMes = async () => {
@@ -115,6 +145,38 @@ export default function ProductCarousel() {
     }
   }, [products.length]);
 
+  // Alternar el encabezado del banner cada ~4 segundos
+  useEffect(() => {
+    const id = setInterval(() => {
+      setHeadlineIndex((prev) => (prev === 0 ? 1 : 0));
+    }, 4000);
+    return () => clearInterval(id);
+  }, []);
+
+  // Sincronizar el texto del segundo titular según el tamaño de pantalla
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const container = document.querySelector(`.${styles.offerHeadline}`);
+    const shortText = '¡Vuelan! Aprovecha ahora 🔥';
+    const longText = '¡Vuelan! Aprovecha antes de que se agoten 🔥';
+    if (container) {
+      const heads = container.querySelectorAll('h2');
+      if (heads[1]) heads[1].textContent = isTinyMobile ? shortText : longText;
+    }
+    const fallback = document.querySelector(`.${styles.withOverlay} > h2`);
+    if (fallback) fallback.textContent = isTinyMobile ? shortText : longText;
+  }, [headlineIndex, isTinyMobile]);
+
+  // Ya no se manipula el DOM del h2; el cambio se hace via JSX (crossfade)
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const container = document.querySelector(`.${styles.offerHeadline}`);
+    if (!container) return;
+    const heads = container.querySelectorAll('h2');
+    if (heads[0]) heads[0].textContent = 'PRODUCTOS DEL MES';
+    if (heads[1]) heads[1].textContent = '¡Vuelan! Aprovecha antes de que se agoten 🔥';
+  }, []);
+
   // Función para ir a una diapositiva específica
   const goToSlide = (index) => {
     setCurrentSlide(index);
@@ -147,6 +209,19 @@ export default function ProductCarousel() {
       console.error('❌ Error al navegar al producto:', error);
     }
   };
+
+  // Forzar titular corto en pantallas muy pequeñas (<=360px) después de montar todos los efectos
+  useEffect(() => {
+    if (typeof document === 'undefined') return;
+    const tiny = typeof window !== 'undefined' && window.matchMedia('(max-width: 360px)').matches;
+    const container = document.querySelector(`.${styles.offerHeadline}`);
+    if (container) {
+      const heads = container.querySelectorAll('h2');
+      if (heads[1]) heads[1].textContent = tiny ? '¡Vuelan! Aprovecha ahora 🔥' : '¡Vuelan! Aprovecha antes de que se agoten 🔥';
+    }
+    const fallback = document.querySelector(`.${styles.withOverlay} > h2`);
+    if (fallback) fallback.textContent = tiny ? '¡Vuelan! Aprovecha ahora 🔥' : '¡Vuelan! Aprovecha antes de que se agoten 🔥';
+  }, []);
 
   // Mostrar loading
   if (loading) {
@@ -184,8 +259,13 @@ export default function ProductCarousel() {
   return (
     <section className={styles.productSection}>
       {/* Banner de PRODUCTOS DEL MES */}
-      <div className={styles.offerBanner}>
-        <h2>PRODUCTOS DEL MES</h2>
+      <div className={`${styles.offerBanner} ${styles.withOverlay}`}>
+        <div className={styles.offerHeadline} aria-live="polite" aria-atomic="true">
+          <h2 className={`${styles.headlineItem} ${headlineIndex === 0 ? styles.headlineVisible : styles.headlineHidden}`}>PRODUCTOS DEL MES</h2>
+          <h2 className={`${styles.headlineItem} ${headlineIndex === 1 ? styles.headlineVisible : styles.headlineHidden}`}>¡Vuelan! Aprovecha antes de que se agoten 🔥</h2>
+        </div>
+        
+        <h2>¡Vuelan! Aprovecha antes de que se agoten 🔥</h2>
       </div>
 
       {/* Carrusel de productos con clase condicional */}
@@ -210,7 +290,7 @@ export default function ProductCarousel() {
               }}
             >
               <div className={styles.slideContent}>
-                <div className={styles.imageContainer}>
+                <div className={styles.mediaArea}>
                   {product.image ? (
                     <img
                       src={product.image}
@@ -242,6 +322,18 @@ export default function ProductCarousel() {
                       Ir al producto
                     </button>
                   </div>
+                  {products.length > 1 && index === currentSlide && (
+                    <div className={styles.indicatorsInline}>
+                      {products.map((_, i) => (
+                        <button
+                          key={i}
+                          className={`${styles.indicator} ${i === currentSlide ? styles.active : ''}`}
+                          onClick={() => goToSlide(i)}
+                          aria-label={`Ir a producto ${i + 1}`}
+                        />
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -258,18 +350,7 @@ export default function ProductCarousel() {
           </button>
         )}
 
-        {products.length > 1 && (
-          <div className={styles.indicators}>
-            {products.map((_, index) => (
-              <button
-                key={index}
-                className={`${styles.indicator} ${index === currentSlide ? styles.active : ''}`}
-                onClick={() => goToSlide(index)}
-                aria-label={`Ir a producto ${index + 1}`}
-              />
-            ))}
-          </div>
-        )}
+        {/* Indicadores se muestran dentro de productInfo para evitar solaparse con el botón */}
       </div>
 
     </section>

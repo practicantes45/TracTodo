@@ -238,3 +238,31 @@
 .advisorNote strong {
   color: #ffcf66;
 }
+
+/* Confirmación push tras enviar por WhatsApp */
+.confirmPush {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(255, 207, 102, 0.12);
+  border: 1px solid rgba(255, 207, 102, 0.35);
+}
+
+.confirmText {
+  color: #ffcf66;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.confirmActions {
+  display: flex;
+  gap: 10px;
+}
+
+@media (max-width: 640px) {
+  .confirmActions {
+    flex-direction: column;
+  }
+}

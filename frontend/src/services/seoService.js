@@ -1,5 +1,15 @@
 // services/seoService.js
-const API_URL = process.env.NEXT_PUBLIC_API_BASE;
+// Base URL: en producción es obligatoria; en dev tiene fallback
+let __API_BASE__ = process.env.NEXT_PUBLIC_API_BASE;
+const __IS_PROD__ = process.env.NODE_ENV === 'production';
+if (!__API_BASE__) {
+  if (__IS_PROD__) {
+    throw new Error('NEXT_PUBLIC_API_BASE no está configurada en producción');
+  } else {
+    __API_BASE__ = 'http://localhost:8080/api';
+  }
+}
+const API_URL = String(__API_BASE__).trim();
 
 /**
  * CORREGIDO: Configuraciones SEO con encoding UTF-8 correcto
