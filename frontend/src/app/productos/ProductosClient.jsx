@@ -41,6 +41,7 @@ export default function ProductosPage() {
   const [cargandoMas, setCargandoMas] = useState(false);
   const [advisorSelectionReminder, setAdvisorSelectionReminder] = useState(false);
   const [advisorModalOpen, setAdvisorModalOpen] = useState(false);
+  const [pendingAdvisorPrompt, setPendingAdvisorPrompt] = useState(false);
   const [pendingProductPath, setPendingProductPath] = useState(null);
   const { addItem } = useCart();
 
@@ -257,6 +258,23 @@ export default function ProductosPage() {
     if (!producto) {
       return;
     }
+
+    // Requisito: solo agregar si ya hay asesor seleccionado previamente
+    if (!isAdvisorReady) {
+      // Aún no carga el estado de asesor; marcar para abrir modal al estar listo
+      setPendingAdvisorPrompt(true);
+      setAdvisorSelectionReminder(true);
+      return;
+    }
+
+    if (!selectedAdvisor) {
+      // No hay asesor, abrir modal y no agregar
+      setAdvisorSelectionReminder(true);
+      setAdvisorModalOpen(true);
+      return;
+    }
+
+    // Hay asesor seleccionado: proceder a agregar
     const price = Number(producto.precioVentaSugerido || producto.precio || 0);
     const itemId = producto.id || producto.slug || producto.nombre;
     addItem({ id: itemId, name: producto.nombre || 'Producto', price });
@@ -300,6 +318,18 @@ export default function ProductosPage() {
       setAdvisorModalOpen(true);
     }
   }, [isAdvisorReady, selectedAdvisor, pendingProductPath]);
+
+  // Si se agregó al carrito sin asesor cargado aún, abrir modal cuando esté listo
+  useEffect(() => {
+    if (pendingAdvisorPrompt && isAdvisorReady && !selectedAdvisor) {
+      setAdvisorSelectionReminder(true);
+      setAdvisorModalOpen(true);
+      setPendingAdvisorPrompt(false);
+    }
+    if (selectedAdvisor && pendingAdvisorPrompt) {
+      setPendingAdvisorPrompt(false);
+    }
+  }, [pendingAdvisorPrompt, isAdvisorReady, selectedAdvisor]);
 
   const obtenerPrimeraImagen = (producto) => {
     if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object' && producto.imagenesUrl.frente) {
@@ -482,6 +512,8 @@ export default function ProductosPage() {
               </div>
             </div>
           </div>
+
+          {/* Aviso retirado: ahora se abre el modal de asesores directamente */}
 
           {/* Botón Filtrar móvil */}
           <div className="mobileFilterToggle">

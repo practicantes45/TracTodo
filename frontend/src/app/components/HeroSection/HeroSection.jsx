@@ -14,11 +14,10 @@ const HeroSection = () => {
           />
 
           <h1 className={styles.heroTitle}>
-            Cuando tu motor falla, Tractodo responde
-          </h1>
+Si el motor se detiene, Tractodo la refacción te tiene          </h1>
           <p className={styles.heroSubtitle}>
-somos tu mejor aliado en refacciones diesel para tractocamión
-</p>
+            Tu mejor aliado en refacciones diésel
+          </p>
           <div className={styles.heroCTAs}>
             <Link href="/productos" className={styles.secondaryBtn} aria-label="Ver refacciones">
               Ver refacciones
@@ -37,4 +36,3 @@ somos tu mejor aliado en refacciones diesel para tractocamión
 };
 
 export default HeroSection;
-

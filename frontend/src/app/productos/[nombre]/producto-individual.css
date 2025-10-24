@@ -56,6 +56,18 @@
   font-family: var(--font-ubuntu, 'Ubuntu'), sans-serif;
 }
 
+/* Aviso al usuario para seleccionar asesor antes de agregar */
+.advisorReminder {
+  margin-top: 10px;
+  font-size: 0.95rem;
+  color: #111111;
+  background: rgba(255, 240, 218, 0.95);
+  padding: 12px 16px;
+  border-left: 3px solid rgba(255, 109, 0, 0.55);
+  border-radius: 12px;
+  box-shadow: 0 6px 14px rgba(255, 109, 0, 0.18);
+}
+
 /* ===== BOTÓN DE REGRESO - SIN MARGEN SUPERIOR ===== */
 .backButtonContainer {
   max-width: 1400px;

@@ -18,6 +18,7 @@ import { useCart } from '../../../hooks/useCart';
 
 
 import { useWhatsAppContact } from '../../../hooks/useWhatsAppContact';
+import AdvisorPickerModal from '../../components/AdvisorPickerModal/AdvisorPickerModal';
 
 export default function ProductoIndividualPage({ params }) {
     const router = useRouter();
@@ -27,6 +28,7 @@ export default function ProductoIndividualPage({ params }) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [copied, setCopied] = useState(false);
+    const [pendingAdvisorPrompt, setPendingAdvisorPrompt] = useState(false);
 
     // Estados para el carrusel de imágenes del producto principal
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -67,6 +69,7 @@ export default function ProductoIndividualPage({ params }) {
         changeAdvisor: changeSelectedAdvisor,
         isReady: isAdvisorReady,
     } = useWhatsAppContact({
+        allowSelection: true,
         getMessage: ({ advisor, payload }) => {
             if (payload?.customMessage) {
                 return payload.customMessage;
@@ -390,6 +393,20 @@ export default function ProductoIndividualPage({ params }) {
         if (!producto) {
             return;
         }
+
+        // Requisito: agregar solo si ya hay asesor seleccionado previamente
+        if (!isAdvisorReady) {
+            setAdvisorSelectionReminder(true);
+            setPendingAdvisorPrompt(true);
+            return;
+        }
+
+        if (!selectedAdvisor) {
+            setAdvisorSelectionReminder(true);
+            openAdvisorModal();
+            return;
+        }
+
         const price = Number(producto.precioVentaSugerido || producto.precio || producto.precioLista || 0);
         const itemId = producto.id || producto.slug || producto.nombre;
         addItem({ id: itemId, name: producto.nombre || 'Producto', price });
@@ -403,6 +420,16 @@ export default function ProductoIndividualPage({ params }) {
     const handleRelatedWhatsAppClick = (relatedProduct, e) => {
         startAdvisorContact({ product: relatedProduct }, e);
     };
+
+    // Si se intentó agregar y el estado de asesor no estaba listo, abrir modal al estar listo
+    useEffect(() => {
+        if (pendingAdvisorPrompt && isAdvisorReady) {
+            if (!selectedAdvisor) {
+                openAdvisorModal();
+            }
+            setPendingAdvisorPrompt(false);
+        }
+    }, [pendingAdvisorPrompt, isAdvisorReady, selectedAdvisor, openAdvisorModal]);
 
     const handleShareProduct = async () => {
         const shareData = {
@@ -838,16 +865,6 @@ export default function ProductoIndividualPage({ params }) {
                                         <span className="advisorSummaryLabel">Te atendera {selectedAdvisor.name}</span>
                                     </div>
                                 )}
-                                {!selectedAdvisor && isAdvisorReady && (
-                                    <div className="advisorSummary advisorSummaryNotice">
-                                        <span className="advisorSummaryLabel">Selecciona tu asesor en la pagina de inicio para continuar por WhatsApp.</span>
-                                    </div>
-                                )}
-                                {advisorSelectionReminder && (
-                                    <div className="advisorReminder">
-                                        Elige o cambia asesor desde la pagina principal de TracTodo para finalizar tu compra.
-                                    </div>
-                                )}
                             </div>
                         </div>
                     </section>
@@ -962,6 +979,8 @@ export default function ProductoIndividualPage({ params }) {
                     onClose={closeModal}
                     initialIndex={modalImageIndex}
                 />
+
+                <AdvisorPickerModal isOpen={isAdvisorModalOpen} onClose={closeAdvisorModal} />
 
 
                 <Footer />

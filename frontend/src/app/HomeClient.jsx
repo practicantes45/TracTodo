@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import Navbar from './components/Navbar/Navbar';
 import HeroSection from './components/HeroSection/HeroSection';
 import ContactNumbers from './components/ContactNumbers/ContactNumbers';
-import ProductCarousel from './components/ProductCarousel/ProductCarousel';
+import ProductCarousel from './components/ProductCarousel/ProductCarousel.jsx';
 import VerMarcas from './components/VerMarcas/VerMarcas';
 import BenefitsSection from './components/BenefitsSection/BenefitsSection';
 import Footer from './components/Footer/Footer';
@@ -15,12 +15,6 @@ import AdminPanel from './components/AdminPanel/AdminPanel';
 import ManageProductsButton from './components/ManageProductsButton/ManageProductsButton';
 import SEOHead from './components/SEOHead/SEOHead';
 import { useSEO } from '../hooks/useSEO';
-
-// METADATA SERVER-SIDE - se exporta antes del componente
-export async function generateMetadata() {
-  const { generatePageMetadata } = await import('../utils/metadataUtils');
-  return generatePageMetadata('inicio', { path: '/' });
-}
 
 export default function HomeClient() {
     const [searchQuery, setSearchQuery] = useState('');

@@ -26,6 +26,7 @@ export default function AdvisorPickerModal({ isOpen, onClose }) {
           <button className={styles.closeBtn} onClick={onClose} aria-label="Cerrar">×</button>
         </div>
         <div className={styles.content}>
+          <p className={styles.hint}>Selecciona un asesor para continuar con tu compra y agregar productos al carrito.</p>
           <ContactNumbers pageContext="home" onSelected={() => onClose?.()} />
         </div>
       </div>

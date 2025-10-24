@@ -1,44 +1,20 @@
-Error: An unexpected Turbopack error occurred. Please see the output of `next dev` for more details.
+PS D:\TracTodo\TracTodo\frontend>
+      npm run dev
+
+> frontend@0.1.0 dev        
+> next dev --turbopack -p 3001
+
+   ▲ Next.js 15.3.2 (Turbopack)
+   - Local:        http://localhost:3001
+   - Network:      http://192.168.100.35:3001
+al folder. If you have an antivirus enabled, consider excluding your project directory.
+ ✓ Ready in 1528ms
+ ○ Compiling / ...
+ ✓ Compiled / in 2.5s
+ ○ Compiling /_error ...
+ ✓ Compiled /_error in 1319ms
+ GET / 500 in 4156ms
+
+ Error: An unexpected Turbopack error occurred. Please see the output of `next dev` for more details.
     at getServerError (http://localhost:3001/_next/static/chunks/%5Broot-of-the-server%5D__e2c08166._.js:11049:62)
     at http://localhost:3001/_next/static/chunks/%5Broot-of-the-server%5D__e2c08166._.js:21318:27
-
-
-    Remove-Item -Recurse -Force .next
-PS D:\TracTodo\TracTodo\frontend> npm run dev
-
-> frontend@0.1.0 dev
-> next dev --turbopack -p 3001
-
-   ▲ Next.js 15.3.2 (Turbopack)
-   - Local:        http://localhost:3001
-   - Network:      http://192.168.100.35:3001
-
- ✓ Starting...
-Slow filesystem detected. If D:\TracTodo\TracTodo\frontend\.next is a network drive, consider moving it to a local folder. If you have an antivirus enabled, consider excluding your project directory.
- ✓ Compiled middleware in 303ms
- ✓ Ready in 1900ms
- ○ Compiling / ...
- ✓ Compiled / in 3s
- ○ Compiling /_error ...
- ✓ Compiled /_error in 1532ms
- GET / 500 in 5050ms
-PS D:\TracTodo\TracTodo\frontend> 
-                                  $env:NEXT_DISABLE_TURBOPACK="1"; npm run dev
-
-> frontend@0.1.0 dev
-> next dev --turbopack -p 3001
-
-   ▲ Next.js 15.3.2 (Turbopack)
-   - Local:        http://localhost:3001
-   - Network:      http://192.168.100.35:3001
-
- ✓ Starting...
-Slow filesystem detected. If D:\TracTodo\TracTodo\frontend\.next is a network drive, consider moving it to a local folder. If you have an antivirus enabled, consider excluding your project directory.
- ✓ Compiled middleware in 314ms
- ✓ Ready in 1980ms
- ○ Compiling / ...
- ✓ Compiled / in 3.2s
- ○ Compiling /_error ...
- ✓ Compiled /_error in 1479ms
- GET / 500 in 5175ms
- 
