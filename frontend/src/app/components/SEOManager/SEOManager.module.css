@@ -1,4 +1,4 @@
-/* components/SEOManager/SEOManager.module.css */
+﻿/* components/SEOManager/SEOManager.module.css */
 .seoManager {
   background: white;
   border-radius: 12px;
@@ -148,7 +148,7 @@
 .input:focus {
   outline: none;
   border-color: var(--accent-color);
-  box-shadow: 0 0 0 3px rgba(255, 109, 0, 0.1);
+  box-shadow: 0 0 0 3px rgba(195, 0, 33, 0.1);
 }
 
 .secondaryButton {

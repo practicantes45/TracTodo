@@ -1,0 +1,177 @@
+﻿/* Full-bleed banners and differentiated styles */
+
+/* Todos los productos: banner full-width (viewport), sin desplazamiento en hover */
+.allProductsBanner { display: flex; flex-direction: column; align-items: center; width: 100%; }
+.allProductsBanner .allProductsBannerBox {
+  /* Full-bleed a todo el ancho del viewport */
+  width: 100vw !important;
+  margin-left: calc(50% - 50vw) !important;
+  margin-right: calc(50% - 50vw) !important;
+  margin-bottom: 10px !important;
+  box-sizing: border-box !important;
+  padding: 16px 24px !important;
+  border-radius: 0 !important;
+  background: linear-gradient(135deg, var(--secondary-color, #2f0a4c) 0%, rgba(195, 0, 33, 0.85) 100%) !important;
+  color: #fff !important;
+  font-size: clamp(1.15rem, 2.4vw, 1.6rem) !important;
+  line-height: 1.25 !important;
+  font-weight: 900 !important;
+  letter-spacing: .8px !important;
+  text-transform: uppercase !important;
+  box-shadow: 0 6px 18px rgba(148, 33, 146, 0.2), 0 3px 10px rgba(195, 0, 33, 0.12) !important;
+  border-top: 1px solid rgba(195, 0, 33, 0.25) !important;
+  border-bottom: 1px solid rgba(195, 0, 33, 0.25) !important;
+  cursor: default !important;
+  z-index: auto;
+}
+/* Hover estable: sin traslaciÃ³n horizontal */
+.allProductsBanner .allProductsBannerBox:hover { transform: none !important; }
+/* Pegado al hero: el primer banner no tiene separaciÃ³n superior */
+.featuredCategories > .allProductsBanner { margin-top: -2px !important; }
+@media (min-width: 992px) {
+  .featuredCategories > .allProductsBanner { margin-top: -4px !important; }
+}
+
+/* TÃ­tulos de secciÃ³n (Explora por tipo / Â¿Para quÃ© motor compras?) */
+.featuredTitle {
+  /* Igual que .allProductsBannerBox */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  /* Full-bleed a todo el ancho del viewport */
+  position: relative !important;
+  width: 100vw !important;
+  left: 50% !important;
+  right: 50% !important;
+  margin-left: -50vw !important;
+  margin-right: -50vw !important;
+  margin-bottom: 10px !important;
+  box-sizing: border-box !important;
+  padding: 16px 24px !important;
+  border-radius: 0 !important;
+  background: linear-gradient(135deg, var(--secondary-color, #2f0a4c) 0%, rgba(195, 0, 33, 0.85) 100%) !important;
+  color: #fff !important;
+  font-weight: 900 !important;
+  letter-spacing: .8px !important;
+  text-transform: uppercase !important;
+  box-shadow: 0 6px 18px rgba(148, 33, 146, 0.2), 0 3px 10px rgba(195, 0, 33, 0.12) !important;
+  border-top: 1px solid rgba(195, 0, 33, 0.25) !important;
+  border-bottom: 1px solid rgba(195, 0, 33, 0.25) !important;
+}
+
+@media (max-width: 520px) {
+  .allProductsBanner .allProductsBannerBox { padding: 12px 14px !important; font-size: 1.1rem !important; }
+  .featuredTitle { padding: 12px 14px !important; }
+}
+
+/* Quitar fondo blanco de la secciÃ³n principal para que los banners respiren */
+.productosMainSection { background: transparent !important; padding-top: 0 !important; overflow: visible !important; }
+
+/* Espaciado del primer bloque (Explora por tipo) */
+.featuredCategories { margin-top: 0 !important; }
+.featuredTitle { margin: 0 !important; }
+
+/* BotÃ³n Filtrar por reubicado debajo del banner */
+.filterBannerRow { display: flex; justify-content: center; margin: 12px 0 16px; position: static; z-index: auto; width: 100%; }
+.allProductsBanner .filterBannerRow { align-self: stretch; padding: 0 16px; box-sizing: border-box; }
+.filterBannerBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: min(720px, 92%);
+  padding: 14px 20px;
+  border-radius: 22px;
+  font-size: clamp(0.95rem, 2.2vw, 1.05rem);
+  font-weight: 800;
+  letter-spacing: .6px;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(135deg, #0b5ed7 0%, #4098ff 100%);
+  box-shadow: 0 8px 22px rgba(11,94,215,.18), 0 4px 12px rgba(64,152,255,.18);
+  border: none;
+  position: relative;
+  overflow: hidden;
+  transition: all .3s ease;
+}
+.filterBannerRow.withResults { justify-content: space-between; align-items: center; gap: 12px; }
+.filterBannerRow.withResults .filterBannerBtn { width: auto; max-width: 60%; }
+.filterBannerRow.withResults .searchResultsNotice {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+  text-align: right;
+  color: #222;
+  opacity: .95;
+  white-space: normal;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: 12px;
+}
+.filterBannerRow.withResults .searchResultsNotice .resultsCount { font-weight: 700; }
+.filterBannerRow.withResults .searchResultsNotice .resultsQuery { font-weight: 600; opacity: .9; }
+/* Estilo tipo "pÃ­ldora" para el aviso de resultados, inspirado en el hero */
+.filterBannerRow.withResults .searchResultsNotice .searchIndicator.searchIndicator--inline {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.75);
+  color: #111;
+  border: 1px solid rgba(0,0,0,0.12);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  text-shadow: none;
+}
+@media (max-width: 680px) {
+  .filterBannerRow.withResults { flex-direction: column; align-items: stretch; }
+  .filterBannerRow.withResults .filterBannerBtn { width: 100%; max-width: 100%; }
+  .filterBannerRow.withResults .searchResultsNotice { text-align: center; padding: 6px 10px; align-items: center; justify-content: center; }
+  .filterBannerRow.withResults .searchResultsNotice .searchIndicator.searchIndicator--inline { margin-top: 6px; }
+}
+.filterBannerBtn::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 30% 50%, rgba(255,255,255,.18), transparent 40%);
+  opacity: .0; transition: opacity .3s ease;
+}
+.filterBannerBtn:hover { transform: translateY(-1px); box-shadow: 0 10px 26px rgba(11,94,215,.22), 0 6px 16px rgba(64,152,255,.22); }
+.filterBannerBtn:hover::before { opacity: .8; }
+
+/* eliminar redefiniciÃ³n posterior que neutralizaba el banner */
+
+/* Dynamic viewport width fix for mobile (iOS/Android) */
+@supports (width: 100dvw) {
+  .allProductsBanner .allProductsBannerBox {
+    width: 100dvw !important;
+    margin-left: calc(50% - 50dvw) !important;
+    margin-right: calc(50% - 50dvw) !important;
+  }
+}
+
+/* Hero title responsive size override */
+.productos-page .heroSection .heroContent h1 { font-size: clamp(1.6rem, 3.2vw, 2.6rem) !important; }
+
+/* --- Overrides aÃ±adidos para compactar banners en mÃ³vil y desktop --- */
+/* Pegado al hero: sin espacio arriba en el primer banner */
+.featuredCategories > .allProductsBanner { margin-top: -14px !important; margin-bottom: 8px !important; }
+@media (min-width: 992px) { .featuredCategories > .allProductsBanner { margin-top: -10px !important; } }
+/* Subir banners siguientes */
+.shopByEngine > .allProductsBanner { margin-top: 6px !important; margin-bottom: 8px !important; }
+#todos-productos.allProductsBanner { margin-top: 8px !important; }
+/* --- Overrides añadidos para compactar banners en móvil y desktop --- */
+/* Pegado al hero: sin espacio arriba en el primer banner */
+.featuredCategories > .allProductsBanner { margin-top: -18px !important; margin-bottom: 6px !important; }
+@media (min-width: 992px) { .featuredCategories > .allProductsBanner { margin-top: -12px !important; } }
+/* Subir banners siguientes (reducir huecos visibles) */
+.shopByEngine > .allProductsBanner { margin-top: 2px !important; margin-bottom: 6px !important; }
+#todos-productos.allProductsBanner { margin-top: 4px !important; }
+
+/* En móvil, bajar ligeramente el primer banner para que respire bajo el hero */
+@media (max-width: 768px) {
+  .featuredCategories > .allProductsBanner { margin-top: 4px !important; }
+}
+

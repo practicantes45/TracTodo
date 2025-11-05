@@ -30,7 +30,11 @@ app.set('trust proxy', true);
 // CORS: SOLO frontend prod y localhost dev
 const allowedOrigins = [
   process.env.FRONTEND_URL,      // ej: https://tractodo-production-3e8e.up.railway.app
-  'http://localhost:3001'
+  'http://localhost:3001',
+  'http://127.0.0.1:3001',
+  // Variantes locales comunes
+  'http://localhost:3000',
+  'http://127.0.0.1:3000'
 ].filter(Boolean);
 
 app.use(cors({

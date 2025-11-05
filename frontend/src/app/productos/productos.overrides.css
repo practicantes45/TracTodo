@@ -1,0 +1,157 @@
+﻿/* Overrides y mejoras especÃ­ficas para Productos */
+
+/* Hero mÃ¡s arriba como antes, pero mÃ¡s bajo */
+.productos-page .heroSection {
+  position: absolute !important;
+  top: 90px !important; /* mantener anclado arriba como antes */
+  left: 0 !important;
+  width: 100% !important;
+  height: clamp(260px, 26vw, 360px) !important; /* altura responsiva */
+  background-image: url('https://i.postimg.cc/xjtSyQHQ/fondorojo.png') !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  color: white !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.heroOverlay {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  background: rgba(0, 0, 0, 0.3) !important;
+}
+
+.productos-page .mainContent {
+  flex: 1 !important;
+  width: 100% !important;
+  padding-top: clamp(260px, 26vw, 360px) !important; /* acompaña al alto del hero */
+}
+
+/* Animaciones de entrada para tipos (categorÃ­as y motores) */
+.featuredCard,
+.engineCard { opacity: 0; transform: translateY(14px); }
+.featuredGrid .featuredCard { animation: productos-fade-up 600ms ease forwards; }
+.engineGrid .engineCard { animation: productos-fade-up 600ms ease forwards; }
+
+/* Delays para tarjetas destacadas (primeras 12) */
+.featuredGrid .featuredCard:nth-child(1) { animation-delay: 40ms; }
+.featuredGrid .featuredCard:nth-child(2) { animation-delay: 120ms; }
+.featuredGrid .featuredCard:nth-child(3) { animation-delay: 200ms; }
+.featuredGrid .featuredCard:nth-child(4) { animation-delay: 280ms; }
+.featuredGrid .featuredCard:nth-child(5) { animation-delay: 360ms; }
+.featuredGrid .featuredCard:nth-child(6) { animation-delay: 440ms; }
+.featuredGrid .featuredCard:nth-child(7) { animation-delay: 520ms; }
+.featuredGrid .featuredCard:nth-child(8) { animation-delay: 600ms; }
+.featuredGrid .featuredCard:nth-child(9) { animation-delay: 680ms; }
+.featuredGrid .featuredCard:nth-child(10) { animation-delay: 760ms; }
+.featuredGrid .featuredCard:nth-child(11) { animation-delay: 840ms; }
+.featuredGrid .featuredCard:nth-child(12) { animation-delay: 920ms; }
+
+/* Delays para motores (primeras 8) */
+.engineGrid .engineCard:nth-child(1) { animation-delay: 60ms; }
+.engineGrid .engineCard:nth-child(2) { animation-delay: 160ms; }
+.engineGrid .engineCard:nth-child(3) { animation-delay: 260ms; }
+.engineGrid .engineCard:nth-child(4) { animation-delay: 360ms; }
+.engineGrid .engineCard:nth-child(5) { animation-delay: 460ms; }
+.engineGrid .engineCard:nth-child(6) { animation-delay: 560ms; }
+.engineGrid .engineCard:nth-child(7) { animation-delay: 660ms; }
+.engineGrid .engineCard:nth-child(8) { animation-delay: 760ms; }
+
+@keyframes productos-fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Banner de Todos los productos (full width) */
+.allProductsBanner { margin: 18px 0 10px 0; }
+.allProductsBannerBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  /* Reutiliza el estilo del botÃ³n verMasBtn pero como banner */
+  padding: 18px 40px;
+  border-radius: 25px;
+  background: linear-gradient(135deg, var(--primary-color, #002a5c) 0%, var(--accent-color, #C30021) 100%);
+  color: white;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  box-shadow: 0 8px 25px rgba(148, 33, 146, 0.2), 0 4px 15px rgba(195, 0, 33, 0.1);
+  border: 1px solid rgba(195, 0, 33, 0.2);
+}
+.allProductsBannerNote { font-weight: 600; color: #333; opacity: .85; }
+
+@media (max-width: 520px) {
+  .allProductsBannerBox { padding: 12px 14px; }
+}
+
+/* Hover animations mÃ¡s notorias en tipos */
+.featuredCard .featuredCardBg,
+.engineCard .engineCardBg { transition: transform .45s ease, filter .45s ease; }
+.featuredCard:hover .featuredCardBg,
+.engineCard:hover .engineCardBg { transform: scale(1.06); filter: brightness(1.06) saturate(1.06); }
+.featuredCard .featuredCardOverlay,
+.engineCard .engineCardOverlay { transition: transform .3s ease, opacity .3s ease; }
+.featuredCard:hover .featuredCardOverlay,
+.engineCard:hover .engineCardOverlay { transform: translateY(-4px); }
+
+/* Evitar que el banner parezca clickeable */
+.allProductsBannerBox { cursor: default; }
+.allProductsBannerBox:hover { transform: none !important; box-shadow: 0 8px 25px rgba(148,33,146,0.2), 0 4px 15px rgba(195, 0, 33, 0.1) !important; border-color: rgba(195, 0, 33, 0.2) !important; }
+
+/* TÃ­tulos con estilo del botÃ³n "Ver mÃ¡s productos" */
+.featuredTitle {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 10px 18px !important;
+  border-radius: 25px !important;
+  background: linear-gradient(135deg, var(--primary-color, #002a5c) 0%, var(--accent-color, #C30021) 100%) !important;
+  color: #fff !important;
+  font-weight: 800 !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  border: 1px solid rgba(195, 0, 33, 0.2) !important;
+  box-shadow: 0 8px 25px rgba(148, 33, 146, 0.18), 0 4px 15px rgba(195, 0, 33, 0.08) !important;
+}
+
+/* Ajustes solo móviles para que el contenido no pise el hero */
+@media (max-width: 768px) {
+  .productos-page .heroSection {
+    /* Recorte leve hacia arriba en móvil */
+    height: clamp(170px, 26vh, 220px) !important;
+  }
+  .productos-page .heroContent { gap: 8px !important; }
+  .productos-page .heroControls { margin-top: -6px !important; }
+  .productos-page .advisorQuick { transform: translateY(-2px); }
+  .productos-page .heroContent h1 {
+    /* Asegurar visibilidad del título en móvil */
+    font-size: clamp(1.2rem, 5.2vw, 1.8rem) !important;
+    margin-bottom: 8px !important;
+  }
+  .productos-page .mainContent {
+    /* El hero está anclado a top:90px; sumamos ese offset */
+    padding-top: calc(90px + clamp(170px, 26vh, 220px)) !important;
+  }
+}
+@media (max-width: 480px) {
+  .productos-page .heroSection {
+    height: clamp(160px, 32vh, 210px) !important;
+  }
+  .productos-page .heroControls { margin-top: -8px !important; }
+  .productos-page .heroContent h1 { font-size: clamp(1.1rem, 6vw, 1.6rem) !important; }
+  .productos-page .mainContent {
+    padding-top: calc(90px + clamp(160px, 32vh, 210px)) !important;
+  }
+}
+

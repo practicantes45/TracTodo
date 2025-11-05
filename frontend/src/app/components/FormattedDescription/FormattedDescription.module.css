@@ -27,7 +27,7 @@
   color: var(--primary-color, #002a5c);
   margin: 30px 0 20px 0;
   padding-bottom: 8px;
-  border-bottom: 3px solid var(--accent-color, #ff6d00);
+  border-bottom: 3px solid var(--accent-color, #C30021);
   font-family: var(--font-ubuntu, 'Ubuntu'), sans-serif;
   position: relative;
   text-transform: uppercase;
@@ -35,12 +35,12 @@
 }
 
 .sectionHeading::before {
-  content: '✓';
+content: '>';
   position: absolute;
   left: -25px;
   top: 50%;
   transform: translateY(-50%);
-  color: var(--accent-color, #ff6d00);
+  color: var(--accent-color, #C30021);
   font-size: 1.2rem;
   font-weight: 900;
 }
@@ -52,14 +52,14 @@
   list-style: none;
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   border-radius: 12px;
-  border-left: 4px solid var(--accent-color, #ff6d00);
-  box-shadow: 0 2px 8px rgba(255, 109, 0, 0.1);
+  border-left: 4px solid var(--accent-color, #C30021);
+  box-shadow: 0 2px 8px rgba(195, 0, 33, 0.1);
   overflow: hidden;
 }
 
 .advantageItem {
   padding: 16px 20px;
-  border-bottom: 1px solid rgba(255, 109, 0, 0.1);
+  border-bottom: 1px solid rgba(195, 0, 33, 0.1);
   position: relative;
   font-size: 1rem;
   line-height: 1.6;
@@ -74,20 +74,20 @@
 }
 
 .advantageItem:hover {
-  background: rgba(255, 109, 0, 0.05);
+  background: rgba(195, 0, 33, 0.05);
   transform: translateX(5px);
   color: #333;
 }
 
 /* Icono de check personalizado */
 .advantageItem::before {
-  content: '●';
+content: '>';
   position: absolute;
   left: -8px;
   top: 18px;
   width: 16px;
   height: 16px;
-  background: var(--accent-color, #ff6d00);
+  background: var(--accent-color, #C30021);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -95,7 +95,7 @@
   font-size: 8px;
   color: white;
   font-weight: 900;
-  box-shadow: 0 2px 4px rgba(255, 109, 0, 0.3);
+  box-shadow: 0 2px 4px rgba(195, 0, 33, 0.3);
   border: 2px solid white;
 }
 
@@ -277,13 +277,13 @@
 
 /* Hover effect para la lista completa */
 .advantagesList:hover {
-  box-shadow: 0 4px 15px rgba(255, 109, 0, 0.15);
+  box-shadow: 0 4px 15px rgba(195, 0, 33, 0.15);
   transform: translateY(-2px);
 }
 
 /* Efecto de gradiente en el encabezado */
 .sectionHeading {
-  background: linear-gradient(135deg, var(--primary-color, #002a5c) 0%, var(--accent-color, #ff6d00) 100%);
+  background: linear-gradient(135deg, var(--primary-color, #002a5c) 0%, var(--accent-color, #C30021) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

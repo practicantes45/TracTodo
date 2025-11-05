@@ -1,4 +1,4 @@
-/* ===== COMPONENTE VIDEO SECTION ===== */
+﻿/* ===== COMPONENTE VIDEO SECTION ===== */
 .videoSection {
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
@@ -6,9 +6,9 @@
   padding: 40px;
   box-shadow:
     0 20px 60px rgba(148, 33, 146, 0.08),
-    0 8px 25px rgba(255, 109, 0, 0.05),
+    0 8px 25px rgba(195, 0, 33, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(255, 109, 0, 0.1);
+  border: 1px solid rgba(195, 0, 33, 0.1);
   position: relative;
   overflow: hidden;
   transition: all 0.4s ease;
@@ -20,7 +20,7 @@
   transform: translateY(-5px);
   box-shadow:
     0 30px 80px rgba(148, 33, 146, 0.12),
-    0 12px 35px rgba(255, 109, 0, 0.08);
+    0 12px 35px rgba(195, 0, 33, 0.08);
 }
 
 .videoSection h2 {
@@ -380,7 +380,7 @@
   }
 }
 
-/* Optimización para dispositivos táctiles */
+/* OptimizaciÃ³n para dispositivos tÃ¡ctiles */
 @media (hover: none) and (pointer: coarse) {
   .videoSection:active {
     transform: scale(0.98);

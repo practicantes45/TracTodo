@@ -9,9 +9,22 @@
 .producto-individual-page .mainContent {
   flex: 1;
   width: 100%;
-  padding-top:20px; /* REDUCIDO: era 120px, ahora 90px igual que navbar */
+  padding-top:20px; /* base desktop; navbar desktop es sticky y ocupa flujo */
   background: linear-gradient(145deg, #f0f8ff 0%, #e6f3ff 30%, #ffffff 70%, #f8f9fa 100%);
   min-height: 100vh;
+}
+
+/* Compensar navbar móvil fijo para que no tape el botón de regreso */
+@media (max-width: 768px) {
+  .producto-individual-page .mainContent {
+    /* Altura aprox. del header móvil (contenedor + logo + padding/borde) */
+    padding-top: 76px !important;
+  }
+
+  /* Asegurar separación adicional inmediata del botón */
+  .producto-individual-page .backButtonContainer {
+    margin-top: 0;
+  }
 }
 
 /* ===== ESTADOS DE CARGA Y ERROR ===== */
@@ -63,9 +76,9 @@
   color: #111111;
   background: rgba(255, 240, 218, 0.95);
   padding: 12px 16px;
-  border-left: 3px solid rgba(255, 109, 0, 0.55);
+  border-left: 3px solid rgba(216, 58, 58, 0.55);
   border-radius: 12px;
-  box-shadow: 0 6px 14px rgba(255, 109, 0, 0.18);
+  box-shadow: 0 6px 14px rgba(216, 58, 58, 0.18);
 }
 
 /* ===== BOTÓN DE REGRESO - SIN MARGEN SUPERIOR ===== */
@@ -116,9 +129,9 @@
   padding: 40px;
   box-shadow: 
     0 20px 60px rgba(148, 33, 146, 0.08),
-    0 8px 25px rgba(255, 109, 0, 0.05),
+    0 8px 25px rgba(216, 58, 58, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(255, 109, 0, 0.1);
+  border: 1px solid rgba(216, 58, 58, 0.1);
 }
 
 /* ===== SECCIÓN DE IMAGEN ===== */
@@ -234,7 +247,7 @@
 .shareButton:hover,
 .copyButton:hover {
   transform: translateY(-2px) scale(1.1);
-  box-shadow: 0 8px 25px rgba(255, 109, 0, 0.4);
+  box-shadow: 0 8px 25px rgba(216, 58, 58, 0.4);
 }
 
 .copiedText {
@@ -280,7 +293,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 8px 0;
-  border-bottom: 1px solid rgba(255, 109, 0, 0.1);
+  border-bottom: 1px solid rgba(216, 58, 58, 0.1);
 }
 
 .metaItem:last-child {
@@ -380,7 +393,7 @@
   border-radius: 25px;
   padding: 40px;
   box-shadow: 0 15px 35px rgba(148, 33, 146, 0.08);
-  border: 1px solid rgba(255, 109, 0, 0.1);
+  border: 1px solid rgba(216, 58, 58, 0.1);
 }
 
 .descriptionContainer h2 {
@@ -400,7 +413,7 @@
   background: linear-gradient(90deg, var(--accent-color) 0%, #00d4ff 100%);
   margin: 15px 0 0 0;
   border-radius: 2px;
-  box-shadow: 0 2px 8px rgba(255, 109, 0, 0.3);
+  box-shadow: 0 2px 8px rgba(216, 58, 58, 0.3);
 }
 
 .descriptionContent {
@@ -433,7 +446,7 @@
   height: 100%;
   background-image:
     radial-gradient(2px 2px at 30px 40px, rgba(255, 255, 255, 0.1), transparent),
-    radial-gradient(1px 1px at 80px 80px, rgba(255, 109, 0, 0.15), transparent);
+    radial-gradient(1px 1px at 80px 80px, rgba(216, 58, 58, 0.15), transparent);
   background-repeat: repeat;
   background-size: 200px 160px;
   animation: floatingParticles 25s linear infinite;
@@ -631,7 +644,7 @@
   background: var(--accent-color);
   color: white;
   transform: translateY(-50%) scale(1.1);
-  box-shadow: 0 6px 20px rgba(255, 109, 0, 0.3);
+  box-shadow: 0 6px 20px rgba(216, 58, 58, 0.3);
   opacity: 1;
 }
 
@@ -1137,10 +1150,10 @@
 }
 
 .advisorSummaryNotice {
-    background: rgba(255, 166, 0, 0.08);
+    background: rgba(216, 58, 58, 0.08);
     padding: 12px 14px;
     border-radius: 12px;
-    border: 1px dashed rgba(255, 166, 0, 0.3);
+    border: 1px dashed rgba(216, 58, 58, 0.3);
 }
 
 .advisorReminder {
@@ -1149,9 +1162,9 @@
     color: #ffeede;
     background: linear-gradient(135deg, rgba(54, 20, 80, 0.78), rgba(98, 28, 143, 0.82));
     padding: 12px 16px;
-    border-left: 3px solid rgba(255, 166, 0, 0.6);
+    border-left: 3px solid rgba(216, 58, 58, 0.6);
     border-radius: 12px;
-    box-shadow: 0 0 16px rgba(255, 109, 0, 0.15);
+    box-shadow: 0 0 16px rgba(216, 58, 58, 0.15);
 }
 
 @media (max-width: 768px) {
@@ -1172,9 +1185,9 @@
     padding: 18px 24px;
     border-radius: 15px;
     border: none;
-    background: linear-gradient(135deg, #ff6d00 0%, #ff8928 50%, #ffb347 100%);
+    background: linear-gradient(135deg, #d83a3a 0%, #b91c1c 50%, #991b1b 100%);
     background-size: 200% 200%;
-    color: #2b1402;
+    color: #ffffff;
     font-size: 1.1rem;
     font-weight: 700;
     cursor: pointer;
@@ -1184,7 +1197,7 @@
     gap: 12px;
     text-transform: uppercase;
     letter-spacing: 0.03em;
-    box-shadow: 0 20px 40px rgba(255, 121, 0, 0.35);
+    box-shadow: 0 20px 40px rgba(216, 58, 58, 0.35);
     transition: transform 0.3s ease, background-position 0.3s ease, box-shadow 0.3s ease;
     overflow: hidden;
 }
@@ -1203,7 +1216,7 @@
 .cartButton:hover {
     transform: translateY(-3px);
     background-position: 100% 100%;
-    box-shadow: 0 25px 48px rgba(255, 121, 0, 0.42);
+    box-shadow: 0 25px 48px rgba(216, 58, 58, 0.42);
 }
 
 .cartButton:hover::before {
@@ -1212,7 +1225,7 @@
 
 .cartButton:active {
     transform: translateY(1px);
-    box-shadow: 0 12px 26px rgba(255, 109, 0, 0.3);
+    box-shadow: 0 12px 26px rgba(216, 58, 58, 0.3);
 }
 
 .cartFeedback {

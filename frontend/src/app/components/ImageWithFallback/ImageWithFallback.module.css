@@ -18,7 +18,7 @@
 }
 
 .imageNotFound::before {
-  content: '🖼️';
+content: 'X';
   font-size: 2rem;
   opacity: 0.5;
 }

@@ -1,0 +1,30 @@
+/* Mobile-only hard overrides to match Productos hero and show title */
+
+@media (max-width: 768px) {
+  .layout.ubicacion-page .heroSection {
+    position: absolute !important;
+    top: 56px !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: clamp(170px, 26vh, 220px) !important;
+  }
+  .layout.ubicacion-page .heroContent h1 {
+    display: block !important;
+    opacity: 1 !important;
+    animation: none !important;
+    transform: none !important;
+    margin: 0 0 8px 0 !important;
+    color: #ffffff !important;
+    font-size: clamp(1.2rem, 5.2vw, 1.8rem) !important;
+    text-shadow: 2px 2px 4px rgba(0,0,0,.8), 0 0 10px rgba(0,0,0,.6) !important;
+  }
+  .layout.ubicacion-page .mainContent {
+    padding-top: calc(56px + clamp(170px, 26vh, 220px)) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .layout.ubicacion-page .heroSection { height: clamp(160px, 32vh, 210px) !important; }
+  .layout.ubicacion-page .heroContent h1 { font-size: clamp(1.1rem, 6vw, 1.6rem) !important; }
+  .layout.ubicacion-page .mainContent { padding-top: calc(56px + clamp(160px, 32vh, 210px)) !important; }
+}

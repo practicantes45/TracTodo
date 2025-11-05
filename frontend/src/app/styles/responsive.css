@@ -1,180 +1,180 @@
-﻿/* ===== RESPONSIVE DESIGN MEJORADO CON MENÚ MÓVIL Y BENEFITS SECTION ===== */
-
-/* =============================================
-   PARTE 1: RESPONSIVE PARA TABLET (992px)
-   ============================================= */
-/* Tablet - Pantallas medianas como iPad Pro, tablets Android grandes */
-@media (max-width: 992px) {
-
-  /* Hero Section - Sección principal con imagen de fondo */
-  .heroSection {
-    top: 120px;
-    height: 520px;
-    background-position: center center;
-  }
-
-  /* Main Content - Contenido principal */
+﻿/* ===== RESPONSIVE DESIGN MEJORADO CON MENÚ MÓVIL Y BENEFITS SECTION ===== */
+
+/* =============================================
+   PARTE 1: RESPONSIVE PARA TABLET (992px)
+   ============================================= */
+/* Tablet - Pantallas medianas como iPad Pro, tablets Android grandes */
+@media (max-width: 992px) {
+
+  /* Hero Section - Sección principal con imagen de fondo */
+  .heroSection {
+    top: 120px;
+    height: 520px;
+    background-position: center center;
+  }
+
+  /* Main Content - Contenido principal */
+  .mainContent { padding-top: 680px; }
+  .logoImage {
+    position: static;
+    width: 330px;
+    max-width: 90vw;
+  }
+
+  /* Benefits Section - Sección de ventajas responsive para tablet */
+  .benefitsContainer {
+    grid-template-columns: repeat(3, 1fr);
+    /* 2 columnas en lugar de 4 */
+    gap: 35px;
+    /* Espacio entre tarjetas reducido */
+    max-width: 800px;
+    /* Ancho máximo del contenedor */
+  }
+
+  .card-container {
+    width: 280px;
+    /* Ancho de tarjetas ligeramente reducido */
+    height: 280px;
+    /* Altura de tarjetas reducida */
+  }
+}
+
+@media(max-width:840) {
+
+  .logoImage {
+    position: static;
+    /* Quita position:absolute o right si lo tienes */
+    width: 350px;
+    /* O el tamaño que desees */
+    max-width: 90vw;
+    /* Para que no se desborde en pantallas pequeñas */
+  }
+}
+
+/* =============================================
+   PARTE 2: RESPONSIVE PARA MÓVIL (768px)
+   ============================================= */
+/* Móvil - Smartphones en orientación vertical y tablets pequeñas */
+@media (max-width: 768px) {
+
+  .infoHeader {
+    flex-direction: column;
+    /* Cambia de horizontal a vertical */
+    gap: 8px;
+    /* Espacio entre elementos */
+    margin-bottom: 0px;
+    /* Sin margen inferior */
+    padding: 6px 15px;
+    /* Padding reducido para móvil */
+    text-align: center;
+    /* Texto centrado */
+    height: auto;
+    /* Altura automática */
+    min-height: 60px;
+    /* Altura mínima para evitar cortes */
+  }
+
+  /* Línea divisoria en el header */
+  .line {
+    width: 80%;
+    /* Ancho reducido al 80% */
+    height: 2px;
+    /* Altura de la línea */
+    margin: 5px auto;
+    /* Centrada horizontalmente */
+  }
+
+  /* ===== NAVBAR RESPONSIVE ===== */
+  /* Barra de navegación principal */
+  .appBar {
+    padding: 15px 20px;
+    /* Padding reducido para móvil */
+  }
+
   .mainContent { padding-top: 680px; }
-  .logoImage {
-    position: static;
-    width: 330px;
-    max-width: 90vw;
-  }
-
-  /* Benefits Section - Sección de ventajas responsive para tablet */
-  .benefitsContainer {
-    grid-template-columns: repeat(2, 1fr);
-    /* 2 columnas en lugar de 4 */
-    gap: 35px;
-    /* Espacio entre tarjetas reducido */
-    max-width: 800px;
-    /* Ancho máximo del contenedor */
-  }
-
-  .card-container {
-    width: 280px;
-    /* Ancho de tarjetas ligeramente reducido */
-    height: 280px;
-    /* Altura de tarjetas reducida */
-  }
-}
-
-@media(max-width:840) {
-
-  .logoImage {
-    position: static;
-    /* Quita position:absolute o right si lo tienes */
-    width: 350px;
-    /* O el tamaño que desees */
-    max-width: 90vw;
-    /* Para que no se desborde en pantallas pequeñas */
-  }
-}
-
-/* =============================================
-   PARTE 2: RESPONSIVE PARA MÓVIL (768px)
-   ============================================= */
-/* Móvil - Smartphones en orientación vertical y tablets pequeñas */
-@media (max-width: 768px) {
-
-  .infoHeader {
-    flex-direction: column;
-    /* Cambia de horizontal a vertical */
-    gap: 8px;
-    /* Espacio entre elementos */
-    margin-bottom: 0px;
-    /* Sin margen inferior */
-    padding: 6px 15px;
-    /* Padding reducido para móvil */
-    text-align: center;
-    /* Texto centrado */
-    height: auto;
-    /* Altura automática */
-    min-height: 60px;
-    /* Altura mínima para evitar cortes */
-  }
-
-  /* Línea divisoria en el header */
-  .line {
-    width: 80%;
-    /* Ancho reducido al 80% */
-    height: 2px;
-    /* Altura de la línea */
-    margin: 5px auto;
-    /* Centrada horizontalmente */
-  }
-
-  /* ===== NAVBAR RESPONSIVE ===== */
-  /* Barra de navegación principal */
-  .appBar {
-    padding: 15px 20px;
-    /* Padding reducido para móvil */
-  }
-
-  .mainContent { padding-top: 680px; }
-  /* ===== BENEFITS SECTION RESPONSIVE ===== */
-  /* Sección de ventajas para móvil */
-  .benefitsSection {
-    padding: 60px 15px;
-    /* Padding reducido para móvil */
-  }
-
-  .benefitsContainer {
-    grid-template-columns: 1fr;
-    /* Una sola columna en móvil */
-    gap: 30px;
-    /* Espacio entre tarjetas */
-    padding: 0 20px;
-    /* Padding lateral */
-    max-width: 100%;
-    /* Ancho completo disponible */
-  }
-
-  .card-container {
-    width: 100%;
-    /* Ancho completo del contenedor */
-    max-width: 350px;
-    /* Ancho máximo para evitar tarjetas muy anchas */
-    height: 260px;
-    /* Altura reducida para móvil */
-    margin: 0 auto;
-    /* Centrada horizontalmente */
-  }
-
-  /* Ajustes de contenido de las tarjetas */
-  .front-content .icon-container svg {
-    width: 50px;
-    /* Íconos más pequeños */
-    height: 50px;
-    /* Íconos más pequeños */
-  }
-
-  .front-content .benefit-title {
-    font-size: 20px;
-    /* Título más pequeño */
-  }
-
-  .content .heading {
-    font-size: 24px;
-    /* Encabezado más pequeño */
-  }
-
-  /* ===== BRAND SECTION RESPONSIVE ===== */
-  /* Sección de marcas responsive */
-  .brandGrid {
-    grid-template-columns: repeat(2, 1fr);
-    /* 2 columnas en móvil */
-    column-gap: 60px;
-    /* Espacio entre columnas */
-    row-gap: 40px;
-    /* Espacio entre filas */
-  }
-
-  .brandCard {
-    height: 140px;
-    /* Altura de tarjetas de marca */
-    max-width: 220px;
-    /* Ancho máximo */
-  }
-}
-
-/* =============================================
-   PARTE 3: RESPONSIVE PARA MÓVIL PEQUEÑO (480px)
-   ============================================= */
-/* Móvil pequeño - Smartphones más pequeños */
+  /* ===== BENEFITS SECTION RESPONSIVE ===== */
+  /* Sección de ventajas para móvil */
+  .benefitsSection {
+    padding: 60px 15px;
+    /* Padding reducido para móvil */
+  }
+
+  .benefitsContainer {
+    grid-template-columns: 1fr;
+    /* Una sola columna en móvil */
+    gap: 30px;
+    /* Espacio entre tarjetas */
+    padding: 0 20px;
+    /* Padding lateral */
+    max-width: 100%;
+    /* Ancho completo disponible */
+  }
+
+  .card-container {
+    width: 100%;
+    /* Ancho completo del contenedor */
+    max-width: 350px;
+    /* Ancho máximo para evitar tarjetas muy anchas */
+    height: 260px;
+    /* Altura reducida para móvil */
+    margin: 0 auto;
+    /* Centrada horizontalmente */
+  }
+
+  /* Ajustes de contenido de las tarjetas */
+  .front-content .icon-container svg {
+    width: 50px;
+    /* Íconos más pequeños */
+    height: 50px;
+    /* Íconos más pequeños */
+  }
+
+  .front-content .benefit-title {
+    font-size: 20px;
+    /* Título más pequeño */
+  }
+
+  .content .heading {
+    font-size: 24px;
+    /* Encabezado más pequeño */
+  }
+
+  /* ===== BRAND SECTION RESPONSIVE ===== */
+  /* Sección de marcas responsive */
+  .brandGrid {
+    grid-template-columns: repeat(3, 1fr);
+    /* 2 columnas en móvil */
+    column-gap: 16px;
+    /* Espacio entre columnas */
+    row-gap: 16px;
+    /* Espacio entre filas */
+  }
+
+  .brandCard {
+    height: 120px;
+    /* Altura de tarjetas de marca */
+    max-width: 100%;
+    /* Ancho máximo */
+  }
+}
+
+/* =============================================
+   PARTE 3: RESPONSIVE PARA MÓVIL PEQUEÑO (480px)
+   ============================================= */
+/* Móvil pequeño - Smartphones más pequeños */
 @media (max-width: 480px) {
-
-  /* ===== HEADER INFO MÁS COMPACTO ===== */
-  .infoHeader {
-    font-size: 0.8rem;
-    /* Texto más pequeño */
-    padding: 10px;
-    /* Padding reducido */
-    min-height: 90px;
-    /* Altura mínima aumentada */
-  }
-
-  /* ===== NAVBAR MÁS COMPACTA ===== */
+
+  /* ===== HEADER INFO MÁS COMPACTO ===== */
+  .infoHeader {
+    font-size: 0.8rem;
+    /* Texto más pequeño */
+    padding: 10px;
+    /* Padding reducido */
+    min-height: 90px;
+    /* Altura mínima aumentada */
+  }
+
+  /* ===== NAVBAR MÁS COMPACTA ===== */
   .appBar {
     padding: 12px 15px;
     /* Padding aún más reducido */
@@ -185,195 +185,216 @@
   /* ===== BENEFITS SECTION PARA MÓVIL PEQUEÑO ===== */
   /* Alinear main content con Hero en móviles pequeños */
   .mainContent { padding-top: 680px; }
-  .benefitsSection {
-    padding: 50px 10px;
-    /* Padding aún más reducido */
-  }
-
-  .benefitsContainer {
-    gap: 25px;
-    /* Espacio entre tarjetas reducido */
-    padding: 0 15px;
-    /* Padding lateral mínimo */
-  }
-
-  .card-container {
-    width: 100%;
-    /* Ancho completo */
-    max-width: 320px;
-    /* Ancho máximo reducido */
-    height: 240px;
-    /* Altura más compacta */
-  }
-
-  /* Contenido de tarjetas más compacto */
-  .front-content {
-    padding: 15px;
-    /* Padding interno reducido */
-  }
-
-  .front-content .icon-container svg {
-    width: 45px;
-    /* Íconos aún más pequeños */
-    height: 45px;
-    /* Íconos aún más pequeños */
-  }
-
-  .front-content .benefit-title {
-    font-size: 18px;
-    /* Título más pequeño */
-  }
-
-  .content {
-    padding: 20px;
-    /* Padding del contenido hover */
-  }
-
-  .content .heading {
-    font-size: 22px;
-    /* Encabezado más pequeño */
-  }
-
-  .content p {
-    font-size: 14px;
-    /* Texto más pequeño */
-    line-height: 1.4;
-    /* Interlineado más compacto */
-  }
-
-  /* ===== BRAND GRID EN UNA COLUMNA ===== */
+  .benefitsSection {
+    padding: 50px 10px;
+    /* Padding aún más reducido */
+  }
+
+  .benefitsContainer {
+    gap: 25px;
+    /* Espacio entre tarjetas reducido */
+    padding: 0 15px;
+    /* Padding lateral mínimo */
+  }
+
+  .card-container {
+    width: 100%;
+    /* Ancho completo */
+    max-width: 320px;
+    /* Ancho máximo reducido */
+    height: 240px;
+    /* Altura más compacta */
+  }
+
+  /* Contenido de tarjetas más compacto */
+  .front-content {
+    padding: 15px;
+    /* Padding interno reducido */
+  }
+
+  .front-content .icon-container svg {
+    width: 45px;
+    /* Íconos aún más pequeños */
+    height: 45px;
+    /* Íconos aún más pequeños */
+  }
+
+  .front-content .benefit-title {
+    font-size: 18px;
+    /* Título más pequeño */
+  }
+
+  .content {
+    padding: 20px;
+    /* Padding del contenido hover */
+  }
+
+  .content .heading {
+    font-size: 22px;
+    /* Encabezado más pequeño */
+  }
+
+  .content p {
+    font-size: 14px;
+    /* Texto más pequeño */
+    line-height: 1.4;
+    /* Interlineado más compacto */
+  }
+
+  /* ===== BRAND GRID EN TRES COLUMNAS (móvil pequeño) ===== */
   .brandGrid {
-    grid-template-columns: 1fr;
-    /* Una sola columna */
-    gap: 30px;
-    /* Espacio uniforme */
-    padding: 0 20px;
-    /* Padding lateral */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    padding: 0 12px;
   }
 
   .brandCard {
-    height: 120px;
-    /* Altura reducida */
-    max-width: 250px;
-    /* Ancho máximo */
-    margin: 0 auto;
-    /* Centrado */
-  }
-}
-
-/* =============================================
-   PARTE 4: MÓVILES MUY PEQUEÑOS (360px)
-   ============================================= */
-/* Dispositivos muy pequeños como iPhone SE, Android compactos */
+    height: 100px;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .brandCard {
+    height: 120px;
+    /* Altura reducida */
+    max-width: 250px;
+    /* Ancho máximo */
+    margin: 0 auto;
+    /* Centrado */
+  }
+}
+
+/* =============================================
+   PARTE 4: MÓVILES MUY PEQUEÑOS (360px)
+   ============================================= */
+/* Dispositivos muy pequeños como iPhone SE, Android compactos */
 @media (max-width: 360px) {
-
-  /* ===== BENEFITS PARA MÓVILES MUY PEQUEÑOS ===== */
+
+  /* ===== BENEFITS PARA MÓVILES MUY PEQUEÑOS ===== */
   .benefitsSection {
     padding: 40px 8px;
     /* Padding mínimo */
   }
   /* Alinear main content con Hero en móviles muy pequeños */
   .mainContent { padding-top: 680px; }
-
-  .card-container {
-    max-width: 280px;
-    /* Ancho máximo muy reducido */
-    height: 220px;
-    /* Altura mínima */
-  }
-
-  .front-content .benefit-title {
-    font-size: 16px;
-    /* Título muy pequeño */
-  }
-
-  .content .heading {
-    font-size: 20px;
-    /* Encabezado muy pequeño */
-  }
-
-  .content p {
-    font-size: 13px;
-    /* Texto muy pequeño */
-  }
+
+  .card-container {
+    max-width: 280px;
+    /* Ancho máximo muy reducido */
+    height: 220px;
+    /* Altura mínima */
+  }
+
+  .front-content .benefit-title {
+    font-size: 16px;
+    /* Título muy pequeño */
+  }
+
+  .content .heading {
+    font-size: 20px;
+    /* Encabezado muy pequeño */
+  }
+
+  .content p {
+    font-size: 13px;
+    /* Texto muy pequeño */
+  }
+}
+
+/* =============================================
+   PARTE 5: ORIENTACIÓN LANDSCAPE MÓVIL
+   ============================================= */
+/* Landscape móvil - Orientación horizontal en smartphones */
+@media (max-width: 768px) and (orientation: landscape) {
+  /* ===== BENEFITS EN LANDSCAPE ===== */
+  .benefitsContainer {
+    grid-template-columns: repeat(3, 1fr);
+    /* 2 columnas en landscape */
+    gap: 20px;
+    /* Espacio reducido */
+  }
+
+  .card-container {
+    height: 200px;
+    /* Altura reducida para landscape */
+    max-width: 300px;
+    /* Ancho controlado */
+  }
+}
+
+/* =============================================
+   PARTE 7: FOOTER RESPONSIVE
+   ============================================= */
+/* Footer para dispositivos móviles */
+@media (max-width: 768px) {
+  .footerContent {
+    grid-template-columns: 1fr;
+    /* Una columna en móvil */
+    gap: 25px;
+    /* Espacio entre secciones */
+    padding: 25px 20px 15px;
+    /* Padding del footer */
+    text-align: center;
+    /* Texto centrado */
+  }
+
+  .footerSection {
+    align-items: center;
+    /* Elementos centrados */
+  }
+
+  .socialContainer {
+    justify-content: center;
+    /* Redes sociales centradas */
+  }
+
+  .contactInfo {
+    align-items: center;
+    /* Información de contacto centrada */
+  }
+}
+
+/* =============================================
+   PARTE 8: AJUSTES PARA NAVEGACIÓN MÓVIL
+   ============================================= */
+/* Ajustes específicos para la nueva estructura de navegación */
+@media (max-width: 768px) {
+
+  /* Evitar scroll horizontal */
+  body {
+    overflow-x: hidden;
+    /* Sin scroll horizontal */
+  }
+
+  /* Estado cuando el menú móvil está activo */
+  body.menu-open {
+    overflow: hidden;
+    /* Sin scroll cuando menú abierto */
+  }
 }
-
-/* =============================================
-   PARTE 5: ORIENTACIÓN LANDSCAPE MÓVIL
-   ============================================= */
-/* Landscape móvil - Orientación horizontal en smartphones */
-@media (max-width: 768px) and (orientation: landscape) {
-  /* ===== BENEFITS EN LANDSCAPE ===== */
-  .benefitsContainer {
-    grid-template-columns: repeat(2, 1fr);
-    /* 2 columnas en landscape */
-    gap: 20px;
-    /* Espacio reducido */
-  }
-
-  .card-container {
-    height: 200px;
-    /* Altura reducida para landscape */
-    max-width: 300px;
-    /* Ancho controlado */
-  }
-}
-
-/* =============================================
-   PARTE 7: FOOTER RESPONSIVE
-   ============================================= */
-/* Footer para dispositivos móviles */
-@media (max-width: 768px) {
-  .footerContent {
-    grid-template-columns: 1fr;
-    /* Una columna en móvil */
-    gap: 25px;
-    /* Espacio entre secciones */
-    padding: 25px 20px 15px;
-    /* Padding del footer */
-    text-align: center;
-    /* Texto centrado */
-  }
-
-  .footerSection {
-    align-items: center;
-    /* Elementos centrados */
-  }
-
-  .socialContainer {
-    justify-content: center;
-    /* Redes sociales centradas */
-  }
-
-  .contactInfo {
-    align-items: center;
-    /* Información de contacto centrada */
-  }
-}
-
-/* =============================================
-   PARTE 8: AJUSTES PARA NAVEGACIÓN MÓVIL
-   ============================================= */
-/* Ajustes específicos para la nueva estructura de navegación */
-@media (max-width: 768px) {
-
-  /* Evitar scroll horizontal */
-  body {
-    overflow-x: hidden;
-    /* Sin scroll horizontal */
-  }
-
-  /* Estado cuando el menú móvil está activo */
-  body.menu-open {
-    overflow: hidden;
-    /* Sin scroll cuando menú abierto */
-  }
-}
-
+
 
 /* Overrides Home: eliminar padding extra del main en Home */
 .homeMainContent { padding-top: 0 !important; }
 @media (max-width: 992px) { .homeMainContent { padding-top: 0 !important; } }
 @media (max-width: 768px) { .homeMainContent { padding-top: 0 !important; } }
 @media (max-width: 480px) { .homeMainContent { padding-top: 0 !important; } }
+
+
+
 
+
+/* Overrides móviles específicos para marcas destacadas */
+@media (max-width: 768px) {
+  .brandGrid { grid-template-columns: repeat(3, 1fr) !important; column-gap: 12px !important; row-gap: 12px !important; }
+  .brandCardsContainer { padding: 0 10px; }
+  .brandCard { height: 110px; max-width: 100%; padding: 8px; }
+  .brandLogo { width: 80% !important; max-height: 56px; }
+  .brandLogo.large, .brandLogo.extraLarge { min-width: 0 !important; min-height: 0 !important; max-height: 56px !important; }
+}
+@media (max-width: 480px) {
+  .brandGrid { grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; padding: 0 8px; }
+  .brandCard { height: 100px; max-width: 100%; padding: 6px; }
+  .brandLogo { width: 78% !important; max-height: 50px; }
+  .brandLogo.large, .brandLogo.extraLarge { min-width: 0 !important; min-height: 0 !important; max-height: 50px !important; }
+}

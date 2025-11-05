@@ -1,0 +1,12 @@
+/* Fixes for garbled icon content in CTAs */
+.viewMoreButton::after {
+  content: '>' !important; /* › */
+}
+
+.viewMoreButton.shorts::after {
+  content: '>' !important; /* ▶ */
+}
+
+
+
+

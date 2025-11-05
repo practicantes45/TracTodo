@@ -1,5 +1,6 @@
 'use client';
 import './sobre.css';
+import './sobre.mobile.overrides.css';
 import { useState } from 'react';
 import { FaCalendarCheck, FaMapMarkedAlt } from "react-icons/fa";
 import Navbar from '../components/Navbar/Navbar';

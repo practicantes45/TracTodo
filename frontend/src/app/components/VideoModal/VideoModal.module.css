@@ -176,7 +176,7 @@
 }
 
 .error::before {
-  content: '⚠️';
+content: '!';
   font-size: 20px;
 }
 

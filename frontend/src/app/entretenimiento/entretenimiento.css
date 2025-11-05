@@ -1,8 +1,9 @@
-/* ===== ENTRETENIMIENTO - ESTILOS ESPECÍFICOS ===== */
+﻿/* ===== ENTRETENIMIENTO - ESTILOS ESPECÃFICOS ===== */
 
 /* Importar estilos globales */
 @import url('../styles/global.css');
 @import url('../styles/responsive.css');
+@import url('./entretenimiento.icons.fix.css');
 
 /* ===== HERO SECTION PARA ENTRETENIMIENTO - UNIFICADO ===== */
 .entretenimiento-page .heroSection {
@@ -67,14 +68,45 @@
   }
 }
 
-/* ===== MAIN CONTENT ADJUSTMENT - ESPECÍFICO PARA ENTRETENIMIENTO ===== */
+/* ===== MAIN CONTENT ADJUSTMENT - ESPECÃFICO PARA ENTRETENIMIENTO ===== */
 .entretenimiento-page .mainContent {
   flex: 1;
   width: 100%;
   padding-top: 580px;
 }
 
-/* ===== SECCIÓN PRINCIPAL DE ENTRETENIMIENTO ===== */
+/* --- Ajustes móviles: hero compacto con título visible --- */
+@media (max-width: 768px) {
+  .entretenimiento-page .heroSection {
+    height: clamp(170px, 26vh, 220px) !important;
+    z-index: 1 !important;
+  }
+  .entretenimiento-page .heroOverlay { z-index: 2 !important; }
+  .entretenimiento-page .heroContent { z-index: 3 !important; }
+  .entretenimiento-page .heroContent h1 {
+    font-size: clamp(1.2rem, 5.2vw, 1.8rem) !important;
+    margin-bottom: 8px !important;
+    margin-top: 0 !important;
+    opacity: 1 !important; animation: none !important; color: #fff !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.6) !important;
+  }
+  .entretenimiento-page .mainContent { padding-top: calc(90px + clamp(170px, 26vh, 220px)) !important; }
+  /* Evitar que el contenido tape al hero */
+  .entertainmentMainSection { margin-top: 0 !important; }
+}
+@media (max-width: 480px) {
+  .entretenimiento-page .heroSection {
+    height: clamp(160px, 32vh, 210px) !important;
+    z-index: 1 !important;
+  }
+  .entretenimiento-page .heroOverlay { z-index: 2 !important; }
+  .entretenimiento-page .heroContent { z-index: 3 !important; }
+  .entretenimiento-page .heroContent h1 { font-size: clamp(1.1rem, 6vw, 1.6rem) !important; opacity: 1 !important; animation: none !important; margin-top: 0 !important; }
+  .entretenimiento-page .mainContent { padding-top: calc(90px + clamp(160px, 32vh, 210px)) !important; }
+  .entertainmentMainSection { margin-top: 0 !important; }
+}
+
+/* ===== SECCIÃ“N PRINCIPAL DE ENTRETENIMIENTO ===== */
 .entertainmentMainSection {
   background: linear-gradient(145deg, #f0f8ff 0%, #e6f3ff 30%, #ffffff 70%, #f8f9fa 100%);
   padding: 40px 20px 80px 20px;
@@ -88,7 +120,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: url('/images/halloween-pattern.svg') repeat;
+  background: url('/images/christmas-pattern.svg') repeat;
   opacity: 0.14;
   pointer-events: none;
 }
@@ -102,7 +134,7 @@
   transform: translateX(-50%);
   width: 260px;
   height: 260px;
-  background: radial-gradient(circle, rgba(255, 109, 0, 0.2) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(195, 0, 33, 0.2) 0%, transparent 70%);
   opacity: 0.45;
   pointer-events: none;
 }
@@ -115,7 +147,7 @@
   z-index: 2;
 }
 
-/* ===== HEADERS DE SECCIÓN ===== */
+/* ===== HEADERS DE SECCIÃ“N ===== */
 .sectionHeader {
   text-align: center;
   margin-bottom: 40px;
@@ -141,7 +173,7 @@
   margin: 20px auto 0;
   border-radius: 2px;
   animation: expandUnderline 1.5s ease-out 0.5s forwards;
-  box-shadow: 0 2px 8px rgba(255, 109, 0, 0.3);
+  box-shadow: 0 2px 8px rgba(195, 0, 33, 0.3);
 }
 
 @keyframes expandUnderline {
@@ -164,7 +196,7 @@
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
 }
 
-/* ===== SECCIÓN DE SHORTS/VIDEOS ===== */
+/* ===== SECCIÃ“N DE SHORTS/VIDEOS ===== */
 .videosSection {
   margin-bottom: 80px;
 }
@@ -183,12 +215,12 @@
   overflow: hidden;
   box-shadow:
     0 8px 25px rgba(148, 33, 146, 0.1),
-    0 4px 15px rgba(255, 109, 0, 0.05),
+    0 4px 15px rgba(195, 0, 33, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
   transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
   cursor: pointer;
   position: relative;
-  border: 1px solid rgba(255, 109, 0, 0.15);
+  border: 1px solid rgba(195, 0, 33, 0.15);
   backdrop-filter: blur(10px);
 }
 
@@ -201,7 +233,7 @@
   height: 100%;
   background: linear-gradient(90deg,
       transparent 0%,
-      rgba(255, 109, 0, 0.1) 50%,
+      rgba(195, 0, 33, 0.1) 50%,
       transparent 100%);
   transition: left 1.5s ease;
   pointer-events: none;
@@ -212,9 +244,9 @@
   transform: translateY(-8px) scale(1.02);
   box-shadow:
     0 20px 40px rgba(148, 33, 146, 0.15),
-    0 8px 25px rgba(255, 109, 0, 0.1),
+    0 8px 25px rgba(195, 0, 33, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  border-color: rgba(255, 109, 0, 0.3);
+  border-color: rgba(195, 0, 33, 0.3);
 }
 
 .shortCard:hover::before {
@@ -292,7 +324,7 @@
   position: absolute;
   top: 10px;
   left: 10px;
-  background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+  background: linear-gradient(45deg, #ff6b6b, #C30021);
   color: white;
   padding: 4px 8px;
   border-radius: 12px;
@@ -303,7 +335,7 @@
   box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
 }
 
-/* ===== BOTÓN COMPARTIR ===== */
+/* ===== BOTÃ“N COMPARTIR ===== */
 .shareButton {
   position: absolute;
   top: 10px;
@@ -333,7 +365,7 @@
   transform: scale(1.1);
 }
 
-/* ===== INFORMACIÓN DE SHORT ===== */
+/* ===== INFORMACIÃ“N DE SHORT ===== */
 .shortInfo {
   padding: 15px;
   position: relative;
@@ -356,7 +388,7 @@
 }
 
 .shortCard:hover .shortTitle {
-  color: #ff6d00;
+  color: #C30021;
 }
 
 .shortMeta {
@@ -379,7 +411,7 @@
   font-size: 0.75rem;
 }
 
-/* ===== SECCIÓN DE BLOG ===== */
+/* ===== SECCIÃ“N DE BLOG ===== */
 .blogSection {
   margin-bottom: 50px;
 }
@@ -398,11 +430,11 @@
   overflow: hidden;
   box-shadow:
     0 10px 30px rgba(148, 33, 146, 0.08),
-    0 4px 15px rgba(255, 109, 0, 0.05),
+    0 4px 15px rgba(195, 0, 33, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
   transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
   cursor: pointer;
-  border: 1px solid rgba(255, 109, 0, 0.15);
+  border: 1px solid rgba(195, 0, 33, 0.15);
   position: relative;
   backdrop-filter: blur(10px);
 }
@@ -416,7 +448,7 @@
   height: 100%;
   background: linear-gradient(90deg,
       transparent 0%,
-      rgba(255, 109, 0, 0.1) 50%,
+      rgba(195, 0, 33, 0.1) 50%,
       transparent 100%);
   transition: left 1.5s ease;
   pointer-events: none;
@@ -427,9 +459,9 @@
   transform: translateY(-10px) scale(1.02);
   box-shadow:
     0 25px 50px rgba(148, 33, 146, 0.15),
-    0 10px 30px rgba(255, 109, 0, 0.1),
+    0 10px 30px rgba(195, 0, 33, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  border-color: rgba(255, 109, 0, 0.3);
+  border-color: rgba(195, 0, 33, 0.3);
 }
 
 .blogCard:hover::before {
@@ -459,7 +491,7 @@
   position: absolute;
   top: 15px;
   left: 15px;
-  background: linear-gradient(45deg, #ff6d00, #0077b6);
+  background: linear-gradient(45deg, #C30021, #0077b6);
   color: white;
   padding: 6px 14px;
   border-radius: 20px;
@@ -468,11 +500,11 @@
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  box-shadow: 0 4px 15px rgba(255, 109, 0, 0.3);
+  box-shadow: 0 4px 15px rgba(195, 0, 33, 0.3);
   z-index: 2;
 }
 
-/* ===== INDICADOR DE MÚLTIPLES IMÁGENES ===== */
+/* ===== INDICADOR DE MÃšLTIPLES IMÃGENES ===== */
 .imageCount {
   position: absolute;
   bottom: 10px;
@@ -511,10 +543,10 @@
 }
 
 .blogCard:hover .blogTitle {
-  color: #ff6d00;
+  color: #C30021;
 }
 
-/* ===== NUEVO: SUBTÍTULO DESTACADO EN TARJETAS DE BLOG ===== */
+/* ===== NUEVO: SUBTÃTULO DESTACADO EN TARJETAS DE BLOG ===== */
 .blogSubtitle {
   font-size: 1.1rem;
   font-weight: 600;
@@ -526,7 +558,7 @@
   border-left: 3px solid var(--accent-color);
   padding-left: 12px;
   background: linear-gradient(90deg, 
-    rgba(255, 109, 0, 0.05) 0%, 
+    rgba(195, 0, 33, 0.05) 0%, 
     transparent 100%);
   border-radius: 0 8px 8px 0;
   padding: 8px 0 8px 15px;
@@ -566,7 +598,7 @@
 }
 
 .readMoreButton {
-  background: linear-gradient(135deg, #ff6d00 0%, #0077b6 100%);
+  background: linear-gradient(135deg, #C30021 0%, #0077b6 100%);
   color: white;
   border: none;
   padding: 12px 24px;
@@ -605,7 +637,7 @@
 
 .readMoreButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(255, 109, 0, 0.4);
+  box-shadow: 0 8px 25px rgba(195, 0, 33, 0.4);
 }
 
 /* ===== ESTADOS DE CARGA Y ERROR ===== */
@@ -649,7 +681,7 @@
 
 .retryButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(255, 109, 0, 0.4);
+  box-shadow: 0 8px 25px rgba(195, 0, 33, 0.4);
 }
 
 .noVideosMessage, .noBlogMessage {
@@ -657,7 +689,7 @@
   padding: 60px 20px;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 20px;
-  border: 2px dashed rgba(255, 109, 0, 0.3);
+  border: 2px dashed rgba(195, 0, 33, 0.3);
   margin: 40px 0;
 }
 
@@ -682,7 +714,7 @@
   padding: 60px 20px;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 20px;
-  border: 2px dashed rgba(255, 109, 0, 0.3);
+  border: 2px dashed rgba(195, 0, 33, 0.3);
 }
 
 .noResults h3 {
@@ -698,7 +730,7 @@
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
 }
 
-/* ===== BOTONES "VER MÁS" REDISEÑADOS ===== */
+/* ===== BOTONES "VER MÃS" REDISEÃ‘ADOS ===== */
 .sectionFooter {
   text-align: center;
   margin-top: 50px;
@@ -709,7 +741,7 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  background: linear-gradient(135deg, #002a5c 0%, #00436e 50%, #ff6d00 100%);
+  background: linear-gradient(135deg, #002a5c 0%, #00436e 50%, #C30021 100%);
   color: white;
   text-decoration: none;
   padding: 18px 36px;
@@ -723,7 +755,7 @@
   transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
   box-shadow:
     0 8px 25px rgba(148, 33, 146, 0.2),
-    0 4px 15px rgba(255, 109, 0, 0.1);
+    0 4px 15px rgba(195, 0, 33, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
   cursor: pointer;
@@ -750,12 +782,12 @@
   transform: translateY(-4px) scale(1.05);
   box-shadow:
     0 15px 40px rgba(148, 33, 146, 0.3),
-    0 8px 25px rgba(255, 109, 0, 0.2);
+    0 8px 25px rgba(195, 0, 33, 0.2);
   border-color: rgba(255, 255, 255, 0.4);
 }
 
 .viewMoreButton::after {
-  content: '→';
+  content: 'â†’';
   font-size: 1.2rem;
   transition: transform 0.3s ease;
 }
@@ -764,13 +796,13 @@
   transform: translateX(5px);
 }
 
-/* Variante para botón de shorts */
+/* Variante para botÃ³n de shorts */
 .viewMoreButton.shorts {
-  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 50%, #ff6d00 100%);
+  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 50%, #C30021 100%);
 }
 
 .viewMoreButton.shorts::after {
-  content: '▶';
+  content: 'â–¶';
 }
 
 /* ===== FOOTER DE VIDEOS ===== */
@@ -848,14 +880,14 @@
   transform: translateY(-2px);
 }
 
-/* ===== BOTÓN STICKY PARA VER BLOG ===== */
+/* ===== BOTÃ“N STICKY PARA VER BLOG ===== */
 .more-content-sticky {
   position: fixed;
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
-  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  background: linear-gradient(135deg, #ff6b6b 0%, #C30021 100%);
   color: white;
   padding: 15px 25px;
   border-radius: 30px;
@@ -881,7 +913,7 @@
   transform: translateX(-50%) translateY(-5px) scale(1.05);
   box-shadow: 0 8px 25px rgba(238, 90, 36, 0.6);
   animation-play-state: paused;
-  background: linear-gradient(135deg, #ee5a24 0%, #ff6b6b 100%);
+  background: linear-gradient(135deg, #C30021 0%, #ff6b6b 100%);
 }
 
 .more-content-sticky:active {
@@ -917,13 +949,13 @@
  }
 }
 
-/* Solo mostrar en móvil y cuando NO se ha llegado al blog */
+/* Solo mostrar en mÃ³vil y cuando NO se ha llegado al blog */
 @media (max-width: 768px) {
  .more-content-sticky {
    display: flex;
  }
 
- /* Ocultar cuando el blog está visible */
+ /* Ocultar cuando el blog estÃ¡ visible */
  .more-content-sticky.hidden {
    opacity: 0;
    pointer-events: none;
@@ -931,7 +963,7 @@
  }
 }
 
-/* Variante con pulsación de brillo */
+/* Variante con pulsaciÃ³n de brillo */
 .more-content-sticky::before {
  content: '';
  position: absolute;
@@ -1233,7 +1265,7 @@
  }
 }
 
-/* Móvil */
+/* MÃ³vil */
 @media (max-width: 480px) {
  .entretenimiento-page .heroSection {
    height: 360px;
@@ -1317,7 +1349,7 @@
  }
 }
 
-/* Móvil muy pequeño */
+/* MÃ³vil muy pequeÃ±o */
 @media (max-width: 360px) {
  .entertainmentMainSection {
    padding: 10px 5px 40px 5px;
@@ -1362,7 +1394,7 @@
  }
 }
 
-/* ===== ARREGLO PARA INFORMACIÓN DE SHORT EN ENTRETENIMIENTO ===== */
+/* ===== ARREGLO PARA INFORMACIÃ“N DE SHORT EN ENTRETENIMIENTO ===== */
 .shortMeta {
  display: flex;
  justify-content: space-between;
@@ -1373,7 +1405,7 @@
 }
 
 .shortCategory {
- background: rgba(255, 109, 0, 0.1);
+ background: rgba(195, 0, 33, 0.1);
  color: var(--accent-color);
  padding: 4px 8px;
  border-radius: 12px;
@@ -1400,4 +1432,27 @@
  align-items: center;
  justify-content: center;
  position: relative;
+}
+/* ===== FINAL MOBILE OVERRIDES (ensure parity with Productos) ===== */
+@media (max-width: 768px) {
+  :root .entretenimiento-page .heroSection { height: clamp(170px, 26vh, 220px) !important; top: 56px !important; padding: 0 !important; }
+  :root .entretenimiento-page .mainContent { padding-top: calc(56px + clamp(170px, 26vh, 220px)) !important; }
+  :root .entretenimiento-page .entertainmentMainSection { margin-top: -36px !important; padding-top: 0 !important; }
+  :root .entretenimiento-page .entertainmentContainer { margin-top: 0 !important; padding-top: 0 !important; }
+  :root .entretenimiento-page .sectionHeader { margin-top: 0 !important; }
+  :root .entretenimiento-page .entertainmentMainSection > *:first-child { margin-top: 0 !important; }
+  :root .entretenimiento-page .heroOverlay { z-index: 2 !important; }
+  :root .entretenimiento-page .heroContent { z-index: 3 !important; margin: 0 !important; padding: 0 !important; }
+  :root .entretenimiento-page .heroContent h1 { opacity: 1 !important; animation: none !important; color: #fff !important; margin: 0 !important; display: block !important; }
+}
+@media (max-width: 480px) {
+  :root .entretenimiento-page .heroSection { height: clamp(160px, 32vh, 210px) !important; top: 56px !important; padding: 0 !important; }
+  :root .entretenimiento-page .mainContent { padding-top: calc(56px + clamp(160px, 32vh, 210px)) !important; }
+  :root .entretenimiento-page .entertainmentMainSection { margin-top: -36px !important; padding-top: 0 !important; }
+  :root .entretenimiento-page .entertainmentContainer { margin-top: 0 !important; padding-top: 0 !important; }
+  :root .entretenimiento-page .sectionHeader { margin-top: 0 !important; }
+  :root .entretenimiento-page .entertainmentMainSection > *:first-child { margin-top: 0 !important; }
+  :root .entretenimiento-page .heroOverlay { z-index: 2 !important; }
+  :root .entretenimiento-page .heroContent { z-index: 3 !important; margin: 0 !important; padding: 0 !important; }
+  :root .entretenimiento-page .heroContent h1 { opacity: 1 !important; animation: none !important; color: #fff !important; margin: 0 !important; display: block !important; }
 }

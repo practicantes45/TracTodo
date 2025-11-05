@@ -1,0 +1,272 @@
+/* Explora por tipo: mosaico cuadrado sin espacios, con tamaños variados */
+.featuredCategories .featuredGrid {
+  display: grid !important;
+  gap: 0 !important;
+  grid-template-columns: repeat(12, 1fr) !important;
+  grid-template-rows: repeat(12, 1fr) !important;
+  width: 100% !important;
+  margin: 0 auto !important; /* Centrar dentro del contenedor */
+  /* Altura fluida y responsiva similar a otras secciones */
+  aspect-ratio: auto !important;
+  height: clamp(520px, 56vw, 980px);
+}
+
+.featuredCategories .featuredCard {
+  border: none !important;
+  border-radius: 0 !important;
+  height: 100% !important; /* llenar el área asignada */
+  min-height: 0 !important;
+  width: 100% !important;
+}
+
+/* Posicionamiento por categoría (desktop, 12x12) */
+.featuredCategories .featuredCard[data-term*="cabeza"]   { grid-column: 1 / span 7;  grid-row: 1 / span 7; }
+.featuredCategories .featuredCard[data-term*="árbol"],
+.featuredCategories .featuredCard[data-term*="arbol"]     { grid-column: 8 / span 5;  grid-row: 1 / span 4; }
+/* Medias suben a la zona importante (antes Turbos) */
+.featuredCategories .featuredCard[data-term*="media"]     { grid-column: 8 / span 5;  grid-row: 5 / span 3; }
+.featuredCategories .featuredCard[data-term*="bomba"]     { grid-column: 1 / span 4;  grid-row: 8 / span 3; }
+.featuredCategories .featuredCard[data-term*="vgt"]       { grid-column: 5 / span 4;  grid-row: 8 / span 3; }
+.featuredCategories .featuredCard[data-term*="módulo"],
+.featuredCategories .featuredCard[data-term*="modulo"]    { grid-column: 9 / span 4;  grid-row: 8 / span 3; }
+/* Turbos bajan a la franja inferior (antes Medias) */
+.featuredCategories .featuredCard[data-term*="turbo"]     { grid-column: 1 / span 3;  grid-row: 11 / span 2; }
+.featuredCategories .featuredCard[data-term*="inyector"]  { grid-column: 4 / span 3;  grid-row: 11 / span 2; }
+.featuredCategories .featuredCard[data-term*="anillo"]    { grid-column: 7 / span 3;  grid-row: 11 / span 2; }
+.featuredCategories .featuredCard[data-term*="junta"]     { grid-column: 10 / span 3; grid-row: 11 / span 2; }
+
+/* Legibilidad: usar todo el arte dentro del bloque */
+.featuredCategories .featuredCardBg {
+  background-size: cover !important; /* Llenar para evitar franjas vacías */
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-color: transparent !important; /* Sin contorno negro */
+  filter: none !important;
+}
+
+/* Algunas imágenes son legibles con cover; mantenerlas llenando */
+/* Ajustes de encuadre para mejorar lectura del texto en las imágenes */
+.featuredCategories .featuredCard[data-term*="cabeza"] .featuredCardBg { background-position: 50% 45% !important; }
+.featuredCategories .featuredCard[data-term*="media"]  .featuredCardBg { background-position: 50% 45% !important; }
+
+/* No cubrir el texto incluido en la imagen con overlays locales */
+.featuredCategories .featuredCardOverlay { background: none !important; }
+.featuredCategories .featuredCardOverlay .featuredCardLabel,
+.featuredCategories .featuredCardOverlay .featuredCardCTA { display: none !important; }
+
+/* Para "junta": ocultar overlay y textos para no cubrir la imagen */
+.featuredCategories .featuredCard[data-term*="junta"] .featuredCardOverlay {
+  background: none !important;
+}
+.featuredCategories .featuredCard[data-term*="junta"] .featuredCardOverlay .featuredCardLabel,
+.featuredCategories .featuredCard[data-term*="junta"] .featuredCardOverlay .featuredCardCTA {
+  display: none !important;
+}
+
+/* Responsive: degradar a 2 columnas y 1 columna manteniendo sin espacios */
+@media (max-width: 1199px) {
+  .featuredCategories .featuredGrid {
+    grid-template-columns: repeat(6, 1fr) !important;
+    grid-template-rows: repeat(12, 1fr) !important;
+    /* Altura fluida para evitar recortes al hacer zoom */
+    aspect-ratio: auto !important;
+  }
+  .featuredCategories .featuredCard { grid-column: auto; grid-row: auto; }
+  /* Reacomodo simple en 6x12 sin espacios */
+  .featuredCategories .featuredCard:nth-child(1) { grid-column: 1 / span 6; grid-row: 1 / span 6; }
+  .featuredCategories .featuredCard:nth-child(2) { grid-column: 1 / span 6; grid-row: 7 / span 6; }
+  .featuredCategories .featuredCard:nth-child(n+3) { grid-column: span 3; grid-row: span 3; }
+  .featuredCategories .featuredCard { min-height: 22vw !important; }
+}
+
+@media (max-width: 768px) {
+  .featuredCategories .featuredGrid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-rows: none !important;
+    aspect-ratio: auto !important; /* Altura fluida en móvil */
+  }
+  .featuredCategories .featuredCard { min-height: 40vw !important; }
+}
+
+@media (max-width: 520px) {
+  .featuredCategories .featuredGrid { grid-template-columns: repeat(2, 1fr) !important; }
+  .featuredCategories .featuredCard { min-height: 44vw !important; }
+}
+
+/* Fallback visual para "junta" solo si NO trae background-image inline */
+.featuredCardBg[data-term*="junta"]:not([style*="background-image"]) {
+  background: linear-gradient(135deg, #fbc2eb, #a6c1ee) !important;
+}
+
+/* ================================ */
+/* ¿Para qué motor compras? (mosaico) */
+/* Igual estilo que "Explora por tipo": sin espacios, tamaños variados */
+.shopByEngine .engineGrid {
+  display: grid !important;
+  gap: 0 !important;
+  grid-template-columns: repeat(12, 1fr) !important;
+  grid-template-rows: repeat(12, 1fr) !important;
+  width: 100% !important;
+  margin: 0 auto !important;
+  aspect-ratio: auto !important;
+  height: clamp(520px, 56vw, 980px);
+}
+
+.shopByEngine .engineCard {
+  border: none !important;
+  border-radius: 0 !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  width: 100% !important;
+}
+
+/* Posicionamiento por item (desktop, 12x12) para 11 motores */
+.shopByEngine .engineCard:nth-child(1)  { grid-column: 1 / span 6;  grid-row: 1 / span 6; }
+.shopByEngine .engineCard:nth-child(2)  { grid-column: 7 / span 6;  grid-row: 1 / span 3; }
+.shopByEngine .engineCard:nth-child(3)  { grid-column: 7 / span 6;  grid-row: 4 / span 3; }
+.shopByEngine .engineCard:nth-child(4)  { grid-column: 1 / span 3;  grid-row: 7 / span 3; }
+.shopByEngine .engineCard:nth-child(5)  { grid-column: 4 / span 3;  grid-row: 7 / span 3; }
+.shopByEngine .engineCard:nth-child(6)  { grid-column: 7 / span 3;  grid-row: 7 / span 3; }
+.shopByEngine .engineCard:nth-child(7)  { grid-column: 10 / span 3; grid-row: 7 / span 3; }
+.shopByEngine .engineCard:nth-child(8)  { grid-column: 1 / span 3;  grid-row: 10 / span 3; }
+.shopByEngine .engineCard:nth-child(9)  { grid-column: 4 / span 3;  grid-row: 10 / span 3; }
+.shopByEngine .engineCard:nth-child(10) { grid-column: 7 / span 3;  grid-row: 10 / span 3; }
+.shopByEngine .engineCard:nth-child(11) { grid-column: 10 / span 3; grid-row: 10 / span 3; }
+
+/* Legibilidad: usar todo el arte y ocultar overlays */
+.shopByEngine .engineCardBg {
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  background-color: transparent !important;
+  filter: none !important;
+}
+.shopByEngine .engineCardOverlay { background: none !important; }
+.shopByEngine .engineCardOverlay .engineCardLabel,
+.shopByEngine .engineCardOverlay .engineCardCTA { display: none !important; }
+
+/* Responsive: degradar a rejillas simples manteniendo sin espacios */
+@media (max-width: 1199px) {
+  .shopByEngine .engineGrid {
+    grid-template-columns: repeat(6, 1fr) !important;
+    grid-template-rows: repeat(12, 1fr) !important;
+    aspect-ratio: auto !important;
+    height: auto;
+  }
+  .shopByEngine .engineCard { grid-column: auto; grid-row: auto; min-height: 22vw !important; }
+  .shopByEngine .engineCard:nth-child(1) { grid-column: 1 / span 6; grid-row: 1 / span 6; }
+  .shopByEngine .engineCard:nth-child(2) { grid-column: 1 / span 6; grid-row: 7 / span 6; }
+  .shopByEngine .engineCard:nth-child(n+3) { grid-column: span 3; grid-row: span 3; }
+}
+
+@media (max-width: 768px) {
+  .shopByEngine .engineGrid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-rows: none !important;
+    aspect-ratio: auto !important;
+  }
+  .shopByEngine .engineCard { min-height: 40vw !important; }
+}
+
+@media (max-width: 520px) {
+  .shopByEngine .engineGrid { grid-template-columns: repeat(2, 1fr) !important; }
+  .shopByEngine .engineCard { min-height: 44vw !important; }
+}
+
+/* Accesibilidad y fallback de visibilidad (iOS/Reduced Motion)
+   Si la animación no corre, aseguremos visibilidad de las tarjetas */
+@media (prefers-reduced-motion: reduce) {
+  .featuredGrid .featuredCard,
+  .engineGrid .engineCard {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* En móviles, forzar visibilidad de tarjetas por si se interrumpe la animación */
+@media (max-width: 768px) {
+  .featuredGrid .featuredCard,
+  .engineGrid .engineCard {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Ajustes extra de responsive para Featured: permitir alto auto en tablet/móvil */
+@media (max-width: 1199px) {
+  .featuredCategories .featuredGrid { height: auto !important; }
+}
+@media (max-width: 768px) {
+  .featuredCategories .featuredGrid { height: auto !important; }
+}
+
+/* Fuerza 2 columnas en móviles (<=540px) para reducir scroll */
+@media (max-width: 540px) {
+  .featuredCategories .featuredGrid,
+  .shopByEngine .engineGrid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    grid-auto-flow: row dense !important;
+    grid-auto-rows: 46vw !important; /* filas uniformes */
+    gap: 10px !important;
+    height: auto !important;
+  }
+  .featuredCategories .featuredCard,
+  .shopByEngine .engineCard {
+    grid-column: span 1 !important;
+    grid-row: auto !important; /* resetear spans heredados */
+    height: 46vw !important;
+    min-height: 46vw !important;
+  }
+  /* Excepciones: primeras grandes en ancho completo */
+  .featuredCategories .featuredCard[data-term*="cabeza"],
+  .featuredCategories .featuredCard[data-term*="Cabeza"],
+  .featuredCategories .featuredCard[data-term*="media"] {
+    grid-column: 1 / -1 !important; /* ocupar dos columnas */
+  }
+  .shopByEngine .engineCard:nth-child(1) {
+    grid-column: 1 / -1 !important; /* ISX ancho completo */
+  }
+  .featuredCategories .featuredCardBg,
+  .shopByEngine .engineCardBg {
+    background-size: cover !important;
+    background-position: center !important;
+  }
+}
+
+/* Productos: dos columnas en móvil y pegados al botón */
+@media (max-width: 540px) {
+  .productosGrid { grid-template-columns: 1fr 1fr !important; gap: 10px !important; justify-items: stretch !important; margin-top: 0 !important; }
+  .productoCard { max-width: none !important; min-width: 0 !important; }
+}
+
+/* Floating search FAB and modal */
+/* estilos del botón/flotante de búsqueda eliminados */
+
+/* HERO y banners: compactar espaciados en móvil */
+@media (max-width: 768px) {
+  .productos-page .heroSection { top: 48px !important; }
+  /* Ajuste moderado del espaciado inicial */
+  .productos-page .mainContent { padding-top: 450px !important; }
+  .shopByEngine { margin: 4px 0 6px 0 !important; }
+  .allProductsBanner { margin: 0 !important; }
+  /* Pegar primer banner al HERO y subir los demás */
+  .featuredCategories > .allProductsBanner { margin-top: -180px !important; margin-bottom: 2px !important; }
+  .shopByEngine > .allProductsBanner { margin-top: -12px !important; margin-bottom: 2px !important; }
+  #todos-productos.allProductsBanner { margin-top: -8px !important; }
+  /* Compactar banners y secciones contiguas */
+  .allProductsBanner .allProductsBannerBox { margin-bottom: 2px !important; padding: 12px 16px !important; }
+  .filterBannerRow { margin: 2px 0 6px !important; }
+  /* Reducir separación entre mosaicos y banners */
+  .featuredGrid { margin-bottom: 6px !important; }
+  .engineGrid { margin-bottom: 6px !important; }
+}
+@media (max-width: 480px) {
+  .productos-page .mainContent { padding-top: 418px !important; }
+}
+@media (max-width: 360px) {
+  .productos-page .mainContent { padding-top: 388px !important; }
+}
+
+/* Desktop: mantener escala 1 para evitar contornos visibles */

@@ -24,7 +24,7 @@
   border-radius: 28px;
   box-shadow: 
     0 30px 80px rgba(0, 0, 0, 0.2),
-    0 15px 40px rgba(255, 109, 0, 0.15),
+    0 15px 40px rgba(195, 0, 33, 0.15),
     inset 0 2px 4px rgba(255, 255, 255, 0.9);
   border: 3px solid transparent;
   background-clip: padding-box;
@@ -38,7 +38,7 @@
   content: '';
   position: absolute;
   inset: -3px;
-  background: linear-gradient(135deg, #ff6d00, #0096c7, #0077b6, #023047);
+  background: linear-gradient(135deg, #C30021, #0096c7, #0077b6, #023047);
   border-radius: 31px;
   z-index: -1;
 }
@@ -106,7 +106,7 @@
 }
 
 .form::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #ff6d00 0%, #0096c7 100%);
+  background: linear-gradient(135deg, #C30021 0%, #0096c7 100%);
   border-radius: 4px;
 }
 
@@ -141,7 +141,7 @@
   left: 0;
   width: 30px;
   height: 2px;
-  background: linear-gradient(90deg, #ff6d00 0%, #0096c7 100%);
+  background: linear-gradient(90deg, #C30021 0%, #0096c7 100%);
   border-radius: 1px;
 }
 
@@ -162,9 +162,9 @@
 .field input:focus,
 .field textarea:focus,
 .field select:focus {
-  border-color: #ff6d00;
+  border-color: #C30021;
   background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(255, 109, 0, 0.1);
+  box-shadow: 0 0 0 4px rgba(195, 0, 33, 0.1);
   transform: translateY(-2px);
 }
 
@@ -192,7 +192,7 @@
   left: 0;
   width: 40px;
   height: 2px;
-  background: linear-gradient(90deg, #ff6d00 0%, #0096c7 100%);
+  background: linear-gradient(90deg, #C30021 0%, #0096c7 100%);
   border-radius: 1px;
 }
 
@@ -211,9 +211,9 @@
 }
 
 .fullWidth textarea:focus {
-  border-color: #ff6d00;
+  border-color: #C30021;
   background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(255, 109, 0, 0.1);
+  box-shadow: 0 0 0 4px rgba(195, 0, 33, 0.1);
   transform: translateY(-2px);
 }
 
@@ -252,7 +252,7 @@
 .checkboxField input[type="checkbox"] {
   width: 24px;
   height: 24px;
-  accent-color: #ff6d00;
+  accent-color: #C30021;
   cursor: pointer;
   border-radius: 6px;
 }
@@ -297,7 +297,7 @@
 }
 
 .error::before {
-  content: '⚠️';
+content: '!';
   font-size: 20px;
 }
 
@@ -318,7 +318,7 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, transparent 0%, #ff6d00 50%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, #C30021 50%, transparent 100%);
   border-radius: 2px;
 }
 
@@ -349,15 +349,15 @@
 }
 
 .saveButton {
-  background: linear-gradient(135deg, #ff6d00 0%, #0096c7 50%, #0077b6 100%);
+  background: linear-gradient(135deg, #C30021 0%, #0096c7 50%, #0077b6 100%);
   color: white;
-  box-shadow: 0 6px 20px rgba(255, 109, 0, 0.5);
+  box-shadow: 0 6px 20px rgba(195, 0, 33, 0.5);
   position: relative;
 }
 
 .saveButton:hover:not(:disabled) {
   transform: translateY(-4px) scale(1.02);
-  box-shadow: 0 12px 35px rgba(255, 109, 0, 0.6);
+  box-shadow: 0 12px 35px rgba(195, 0, 33, 0.6);
 }
 
 .saveButton::after {
@@ -462,7 +462,7 @@
 }
 
 .addImageButton {
-  background: linear-gradient(135deg, #ff6d00 0%, #0096c7 100%);
+  background: linear-gradient(135deg, #C30021 0%, #0096c7 100%);
   color: white;
   border: none;
   padding: 10px 16px;
@@ -480,7 +480,7 @@
 .addImageButton:hover {
   background: linear-gradient(135deg, #0096c7 0%, #0077b6 100%);
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(255, 109, 0, 0.3);
+  box-shadow: 0 4px 15px rgba(195, 0, 33, 0.3);
 }
 
 .imageFields {
@@ -543,7 +543,7 @@
   padding: 16px;
   background: linear-gradient(135deg, #e6f3ff 0%, #cce7ff 100%);
   border-radius: 8px;
-  border-left: 4px solid #ff6d00;
+  border-left: 4px solid #C30021;
 }
 
 .imageHelp p {

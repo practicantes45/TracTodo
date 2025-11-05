@@ -1,4 +1,4 @@
-.overlay {
+﻿.overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -56,8 +56,8 @@
 
 @keyframes blink {
   0% {
-    background: linear-gradient(90deg, #ff6d00, #10b981);
-    box-shadow: 0 0 10px rgba(255, 109, 0, 0.6);
+    background: linear-gradient(90deg, #C30021, #10b981);
+    box-shadow: 0 0 10px rgba(216, 58, 58, 0.6);
   }
   25% {
     background: #271046;
@@ -74,7 +74,7 @@
   border-radius: 20px;
   background: linear-gradient(145deg, rgba(26, 26, 46, 0.98), rgba(15, 20, 25, 0.95));
   backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 109, 0, 0.3);
+  border: 1px solid rgba(216, 58, 58, 0.3);
   box-shadow: 
     0 8px 32px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
@@ -103,8 +103,8 @@
   top: 50%;
   transform: translateY(-50%);
   background: transparent;
-  border: 2px solid #ff6d00;
-  color: #ff6d00;
+  border: 2px solid #C30021;
+  color: #C30021;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -114,32 +114,32 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  box-shadow: 0 0 0 rgba(255, 109, 0, 0);
+  box-shadow: 0 0 0 rgba(216, 58, 58, 0);
 }
 
 .backButton:hover {
-  background: linear-gradient(135deg, #ff6d00, #10b981);
+  background: linear-gradient(135deg, #C30021, #10b981);
   color: #1f0a30;
   transform: translateY(-50%) scale(1.1);
-  box-shadow: 0 0 20px rgba(255, 109, 0, 0.5);
+  box-shadow: 0 0 20px rgba(216, 58, 58, 0.5);
 }
 
 .title {
   font-size: 1.5em;
-  color: #ff6d00;
+  color: #C30021;
   text-align: center;
   margin: 0;
   font-family: var(--font-montserrat);
-  text-shadow: 0 0 15px rgba(255, 109, 0, 0.5);
+  text-shadow: 0 0 15px rgba(216, 58, 58, 0.5);
   animation: titleGlow 2s ease-in-out infinite alternate;
 }
 
 @keyframes titleGlow {
   from {
-    text-shadow: 0 0 15px rgba(255, 109, 0, 0.5);
+    text-shadow: 0 0 15px rgba(216, 58, 58, 0.5);
   }
   to {
-    text-shadow: 0 0 25px rgba(255, 109, 0, 0.8);
+    text-shadow: 0 0 25px rgba(216, 58, 58, 0.8);
   }
 }
 
@@ -188,10 +188,10 @@
 }
 
 .input:focus {
-  border-color: #ff6d00;
+  border-color: #C30021;
   box-shadow: 
-    0 0 0 3px rgba(255, 109, 0, 0.2),
-    0 0 20px rgba(255, 109, 0, 0.1);
+    0 0 0 3px rgba(216, 58, 58, 0.2),
+    0 0 20px rgba(216, 58, 58, 0.1);
   transform: scale(1.02);
 }
 
@@ -201,7 +201,7 @@
   font-size: 0.8em;
   background: linear-gradient(90deg, #1f0a30, #271046);
   padding: 0 8px;
-  color: #ff6d00;
+  color: #C30021;
   border-radius: 4px;
   transform: translateY(0) scale(1);
 }
@@ -224,7 +224,7 @@
   transform: translateY(-50%);
   background: transparent;
   border: none;
-  color: #ff6d00;
+  color: #C30021;
   cursor: pointer;
   font-size: 16px;
   transition: all 0.3s ease;
@@ -235,7 +235,7 @@
 .togglePassword:hover {
   transform: translateY(-50%) scale(1.2);
   color: #10b981;
-  background: rgba(255, 109, 0, 0.1);
+  background: rgba(216, 58, 58, 0.1);
 }
 
 .errorMessage {
@@ -259,7 +259,7 @@
 .btn {
   width: 100%;
   height: 45px;
-  background: linear-gradient(135deg, #ff6d00, #10b981);
+  background: linear-gradient(135deg, #C30021, #10b981);
   border: none;
   outline: none;
   border-radius: 40px;
@@ -290,7 +290,7 @@
   background: linear-gradient(135deg, #0095b3, #059669);
   transform: translateY(-2px);
   box-shadow: 
-    0 8px 20px rgba(255, 109, 0, 0.4),
+    0 8px 20px rgba(216, 58, 58, 0.4),
     0 0 30px rgba(16, 185, 129, 0.3);
 }
 

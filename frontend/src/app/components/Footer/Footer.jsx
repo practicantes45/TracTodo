@@ -63,8 +63,8 @@ const Footer = () => {
   return (
     <footer className={styles.footer}>
       <div className={styles.footerContent}>
-        {/* Columna 1: Enlaces */}
-        <div className={styles.footerSection}>
+        {/* Columna 1: Enlaces (oculta en móvil) */}
+        <div className={`${styles.footerSection} ${styles.linksSection}`}>
           <h3 className={styles.sectionTitle}>Enlaces</h3>
           <ul className={styles.linksList}>
             {quickLinks.map((link, index) => (

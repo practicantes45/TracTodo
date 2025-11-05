@@ -8,6 +8,7 @@ import ScrollToTop from '../../components/ScrollToTop/ScrollToTop';
 import SEOHead from '../../components/SEOHead/SEOHead';
 import { useBlogSEO } from '../../../hooks/useSEO';
 import './blog-post.css';
+import './blog-post.overrides.css';
 
 export default function BlogPostClient({ post }) {
     const router = useRouter();

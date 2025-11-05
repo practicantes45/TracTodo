@@ -27,11 +27,12 @@ const montserrat = Montserrat({
 // ===== Metadata global (sin viewport aquí) =====
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_FRONTEND_URL || "https://tractodo.com"),
-  title: { template: "%s | Tractodo", default: "Tractodo - Especial Halloween de Refacciones" },
+  title: { template: "%s | Tractodo", default: "Tractodo - Especial de Navidad en Refacciones" },
   description: "Refaccionaria especializada en partes y componentes para tractocamión con edición especial de Halloween y Día de Muertos.",
   verification: { google: "google-site-verification-code" },
-  icons: { icon: "/favicon.ico", shortcut: "/favicon.ico", apple: "/apple-touch-icon.png" },
+  icons: { icon: "/christmas-favicon.svg", shortcut: "/christmas-favicon.svg", apple: "/christmas-favicon.svg" },
   manifest: "/site.webmanifest",
+  description: "Refaccionaria especializada en partes y componentes para tractocamion con edicion especial de Navidad.",
   robots: { index: true, follow: true },
 };
 
@@ -39,7 +40,7 @@ export const metadata = {
 export const viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#1a0b2e",
+  themeColor: "#0d3b2e",
 };
 
 export default function RootLayout({ children }) {
@@ -65,7 +66,7 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
 
         {/* Extras opcionales que ya traías */}
-        <meta name="msapplication-TileColor" content="#4c1d95" />
+        <meta name="msapplication-TileColor" content="#0b5d3b" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
         <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
         <link rel="preload" href="/images/tractodo-logo.jpg" as="image" />

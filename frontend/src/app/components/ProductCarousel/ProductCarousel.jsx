@@ -186,7 +186,32 @@ export default function ProductCarousel() {
               white-space: nowrap !important;
               letter-spacing: -0.18px;
             }
+          }
+          /* Mantener visible el h2 fallback en móviles para evitar ocultarlo junto con el overlay */
+          @media (min-width: 661px) {
             .${styles.withOverlay} > h2:not(.${styles.headlineItem}) { display: none !important; }
+          }
+
+          /* Arreglos móviles: asegurar visibilidad del overlay y priorizar la imagen */
+          @media (max-width: 660px) {
+            /* Mostrar explícitamente el h2 fallback en móviles */
+            .${styles.withOverlay} > h2 { display: block !important; }
+            /* Hacer el carrusel en columna para dar más espacio a la imagen */
+            .${styles.slideContent} { flex-direction: column; }
+            .${styles.mediaArea} { flex: 1 1 auto; width: 100%; height: auto; margin-bottom: 16px !important; }
+            .${styles.productImage} { width: 100%; height: 100%; max-height: 70vh; object-fit: contain; }
+            .${styles.productInfo} { flex: 0 0 auto; justify-content: flex-start !important; padding-top: 12px !important; }
+
+            /* Bajar textos y evitar superposición sobre la imagen */
+            .${styles.productName}, .${styles.productPrice} {
+              position: static !important;
+              transform: none !important;
+            }
+            .${styles.productName} { margin: 0 0 2px !important; }
+            .${styles.productPrice} { margin: 4px 0 8px !important; }
+            .${styles.mediaArea} img { margin-bottom: 0 !important; position: static !important; display: block !important; }
+            .${styles.buttonsContainer} { margin-top: 6px !important; }
+            .${styles.slideContent} { gap: 2px !important; }
           }
           @media (max-width: 360px) {
             .${styles.offerHeadline} .${styles.headlineItem} {
@@ -195,20 +220,69 @@ export default function ProductCarousel() {
           }`,
         }}
       />
+      <style
+        dangerouslySetInnerHTML={{
+          __html: `
+            /* Móvil: pegar banner al Hero y subir puntos y CTA */
+            @media (max-width: 768px) {
+              .${styles.offerBanner} { margin-top: -18px !important; margin-bottom: 10px !important; }
+              .${styles.carouselContainer} { margin-top: 4px !important; }
+              .${styles.productInfo} { justify-content: flex-start !important; padding-top: 4px !important; padding-bottom: 4px !important; transform: translateY(-18px); }
+              .${styles.productName} { margin-bottom: 4px !important; }
+              .${styles.productPrice} { margin-bottom: 8px !important; }
+              .${styles.buttonsContainer} { margin-top: 2px !important; }
+              .${styles.indicatorsInline} { margin-top: 0 !important; }
+              .${styles.slideContent} { padding-bottom: 0 !important; }
+            }
+            /* Desktop: evitar que el banner cubra la recomendación */
+            @media (min-width: 769px) {
+              .${styles.offerBanner} { margin-top: 0 !important; }
+            }
+          `,
+        }}
+      />
       <div
-        className={`${styles.offerBanner} ${styles.withOverlay} ${isTinyMobile ? styles.noMotion : ""}`}
-        style={{ marginBottom: isTinyMobile ? 0 : undefined }}
+        className={
+          isTinyMobile
+            ? `${styles.offerBanner} ${styles.noMotion}`
+            : `${styles.offerBanner} ${styles.withOverlay}`
+        }
+        style={{ marginBottom: isTinyMobile ? 12 : undefined, padding: isTinyMobile ? '12px 8px' : undefined }}
       >
-        <div className={styles.offerHeadline} aria-live="polite" aria-atomic="true">
-          <h2 className={styles.headlineItem}>PRODUCTOS DEL MES</h2>
-          <h2 className={styles.headlineItem}>{secondHeadline}</h2>
-        </div>
-        <h2>{secondHeadline}</h2>
+        {isTinyMobile ? (
+          // En móvil quitamos withOverlay y mostramos un solo h2 por encima del fondo
+          <h2
+            style={{
+              display: 'block',
+              position: 'relative',
+              zIndex: 2,
+              whiteSpace: 'nowrap',
+              fontSize: 'clamp(1rem, 5vw, 1.25rem)',
+              letterSpacing: '-0.2px'
+            }}
+          >
+            {headlineIndex === 0 ? 'PRODUCTOS DEL MES' : secondHeadline}
+          </h2>
+        ) : (
+          <>
+            <div className={styles.offerHeadline} aria-live="polite" aria-atomic="true">
+              <h2 className={styles.headlineItem}>PRODUCTOS DEL MES</h2>
+              <h2 className={styles.headlineItem}>{secondHeadline}</h2>
+            </div>
+            {/* Fallback desktop oculto por CSS module */}
+            <h2>{headlineIndex === 0 ? 'PRODUCTOS DEL MES' : secondHeadline}</h2>
+          </>
+        )}
       </div>
 
       <div
         className={`${styles.carouselContainer} ${isAdmin ? styles.adminMode : styles.userMode}`}
-        style={{ background: "transparent" }}
+        style={{
+          background: "transparent",
+          height: isTinyMobile ? 'auto' : undefined,
+          minHeight: isTinyMobile ? '520px' : undefined,
+          marginBottom: isTinyMobile ? '16px' : undefined,
+        }}
       >
         {products.length > 1 && (
           <button
@@ -216,11 +290,14 @@ export default function ProductCarousel() {
             onClick={prevSlide}
             aria-label="Producto anterior"
           >
-            &lt;
+            &#9664;
           </button>
         )}
 
-        <div className={styles.carouselSlides} style={{ willChange: "transform" }}>
+        <div
+          className={styles.carouselSlides}
+          style={{ willChange: "transform", height: isTinyMobile ? '100%' : undefined }}
+        >
           {products.map((product, index) => (
             <div
               key={product.id}
@@ -232,26 +309,51 @@ export default function ProductCarousel() {
             >
               <div
                 className={styles.slideContent}
-                style={{ background: "transparent", backdropFilter: "none", WebkitBackdropFilter: "none" }}
+                style={{
+                  background: "transparent",
+                  backdropFilter: "none",
+                  WebkitBackdropFilter: "none",
+                  gap: isTinyMobile ? '6px' : undefined,
+                  padding: isTinyMobile ? '12px' : undefined,
+                  alignItems: 'center',
+                  justifyContent: isTinyMobile ? 'flex-start' : undefined,
+                }}
               >
-                <div className={styles.mediaArea}>
+                <div
+                  className={styles.mediaArea}
+                  style={{
+                    height: isTinyMobile ? 'auto' : undefined,
+                    flex: isTinyMobile ? '0 0 auto' : undefined,
+                    marginBottom: isTinyMobile ? '2px' : undefined,
+                    alignSelf: 'stretch',
+                  }}
+                >
                   {product.image ? (
-                    <img
-                      src={product.image}
-                      alt={product.name}
-                      className={styles.productImage}
-                      loading="lazy"
-                      decoding="async"
-                      width="1200"
-                      height="900"
-                      onError={(e) => {
-                        const img = e.target;
-                        if (img && img.style) img.style.display = "none";
-                        if (img && img.nextElementSibling) {
-                          img.nextElementSibling.style.display = "flex";
-                        }
-                      }}
-                    />
+                    <>
+                      <img
+                        src={product.image}
+                        alt={product.name}
+                        className={styles.productImage}
+                        style={{ display: 'block', width: '100%', height: 'auto', maxHeight: isTinyMobile ? '38svh' : '100%' }}
+                        loading="lazy"
+                        decoding="async"
+                        width="1200"
+                        height="900"
+                        onError={(e) => {
+                          const img = e.target;
+                          if (img && img.style) img.style.display = "none";
+                          const sib = img && img.nextElementSibling;
+                          if (sib && sib.style) {
+                            sib.style.display = "flex";
+                          }
+                        }}
+                      />
+                      {/* Fallback visible si la imagen falla */}
+                      <div className={styles.imagePlaceholder} style={{ display: "none" }}>
+                        <div className={styles.noImageIcon} />
+                        <p>Imagen no disponible</p>
+                      </div>
+                    </>
                   ) : (
                     <div className={styles.imagePlaceholder}>
                       <div className={styles.noImageIcon} />
@@ -260,9 +362,22 @@ export default function ProductCarousel() {
                   )}
                 </div>
 
-                <div className={styles.productInfo} style={{ background: "transparent" }}>
-                  <h2 className={styles.productName}>{product.name}</h2>
-                  <p className={styles.productPrice}>{product.price}</p>
+                <div
+                  className={styles.productInfo}
+                  style={{ background: "transparent", marginTop: isTinyMobile ? '0px' : undefined, paddingTop: isTinyMobile ? '0px' : undefined, justifyContent: isTinyMobile ? 'flex-start' : undefined }}
+                >
+                  <h2
+                    className={styles.productName}
+                    style={{ position: 'static', marginTop: isTinyMobile ? -14 : undefined, transform: 'none' }}
+                  >
+                    {product.name}
+                  </h2>
+                  <p
+                    className={styles.productPrice}
+                    style={{ position: 'static', marginTop: isTinyMobile ? '8px' : undefined, transform: 'none' }}
+                  >
+                    {product.price}
+                  </p>
 
                   <div className={styles.buttonsContainer}>
                     <button
@@ -298,7 +413,7 @@ export default function ProductCarousel() {
             onClick={nextSlide}
             aria-label="Siguiente producto"
           >
-            &gt;
+            &#9654;
           </button>
         )}
       </div>

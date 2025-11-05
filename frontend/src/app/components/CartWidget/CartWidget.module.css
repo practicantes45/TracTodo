@@ -1,4 +1,4 @@
-.cartContainer {
+﻿.cartContainer {
   position: fixed;
   bottom: 120px;
   right: 30px;
@@ -13,7 +13,7 @@
   height: 56px;
   border: none;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(255, 109, 0, 0.95), rgba(98, 28, 143, 0.95));
+  background: linear-gradient(135deg, rgba(195, 0, 33, 0.95), rgba(98, 28, 143, 0.95));
   color: #ffffff;
   font-size: 1.5rem;
   display: flex;
@@ -21,13 +21,13 @@
   justify-content: center;
   position: relative;
   cursor: pointer;
-  box-shadow: 0 16px 30px rgba(255, 166, 0, 0.28);
+  box-shadow: 0 16px 30px rgba(195, 0, 33, 0.28);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .fabButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 20px 36px rgba(255, 166, 0, 0.32);
+  box-shadow: 0 20px 36px rgba(195, 0, 33, 0.32);
 }
 
 .badge {
@@ -37,7 +37,7 @@
   min-width: 22px;
   height: 22px;
   border-radius: 50%;
-  background: linear-gradient(135deg, rgba(255, 166, 0, 0.95), rgba(124, 43, 163, 0.95));
+  background: linear-gradient(135deg, rgba(195, 0, 33, 0.95), rgba(124, 43, 163, 0.95));
   color: #ffffff;
   font-size: 0.75rem;
   display: flex;
@@ -102,7 +102,7 @@
   gap: 12px;
   padding: 12px;
   border-radius: 14px;
-  background: rgba(255, 166, 0, 0.06);
+  background: rgba(195, 0, 33, 0.06);
 }
 
 .itemName {
@@ -183,14 +183,14 @@
 }
 
 .primaryAction {
-  background: linear-gradient(135deg, rgba(255, 109, 0, 0.95), rgba(98, 28, 143, 0.95));
+  background: linear-gradient(135deg, rgba(195, 0, 33, 0.95), rgba(98, 28, 143, 0.95));
   color: #ffffff;
-  box-shadow: 0 16px 28px rgba(255, 166, 0, 0.25);
+  box-shadow: 0 16px 28px rgba(195, 0, 33, 0.25);
 }
 
 .primaryAction:hover {
   transform: translateY(-1px);
-  box-shadow: 0 20px 32px rgba(255, 166, 0, 0.3);
+  box-shadow: 0 20px 32px rgba(195, 0, 33, 0.3);
 }
 
 .primaryAction:disabled {
@@ -232,14 +232,14 @@
 }
 
 .summaryRow strong {
-  color: #ffcf66;
+  color: #ffb3b3;
 }
 
 .advisorNote strong {
-  color: #ffcf66;
+  color: #ffb3b3;
 }
 
-/* Confirmación push tras enviar por WhatsApp */
+/* ConfirmaciÃ³n push tras enviar por WhatsApp */
 .confirmPush {
   display: flex;
   flex-direction: column;
@@ -251,7 +251,7 @@
 }
 
 .confirmText {
-  color: #ffcf66;
+  color: #ffb3b3;
   font-weight: 600;
   font-size: 0.95rem;
 }

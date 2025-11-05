@@ -1,4 +1,4 @@
-/* ===== BENEFITS SECTION - DISEÑO RESPONSIVO MEJORADO CON TÍTULO ===== */
+﻿/* ===== BENEFITS SECTION - DISEÃ‘O RESPONSIVO MEJORADO CON TÃTULO ===== */
 
 .benefitsSection {
   background-color: #f8f9fa;
@@ -8,7 +8,7 @@
   overflow-x: hidden; /* Evita scroll horizontal */
 }
 
-/* ===== NUEVO: HEADER DE SECCIÓN CON TÍTULO "¿POR QUÉ ELEGIRNOS?" ===== */
+/* ===== NUEVO: HEADER DE SECCIÃ“N CON TÃTULO "Â¿POR QUÃ‰ ELEGIRNOS?" ===== */
 .sectionHeader {
   text-align: center;
   margin-bottom: 50px;
@@ -253,7 +253,7 @@
   }
 }
 
-/* Móvil grande (481px - 768px) */
+/* MÃ³vil grande (481px - 768px) */
 @media (min-width: 481px) and (max-width: 768px) {
   .benefitsSection {
     padding: 50px 15px;
@@ -301,7 +301,7 @@
   }
 }
 
-/* Móvil pequeño (hasta 480px) */
+/* MÃ³vil pequeÃ±o (hasta 480px) */
 @media (max-width: 480px) {
   .benefitsSection {
     padding: 40px 10px;
@@ -352,7 +352,7 @@
   }
 }
 
-/* Móviles muy pequeños (hasta 360px) */
+/* MÃ³viles muy pequeÃ±os (hasta 360px) */
 @media (max-width: 360px) {
   .benefitsSection {
     padding: 35px 8px;
@@ -380,7 +380,7 @@
   }
 }
 
-/* Landscape móvil */
+/* Landscape mÃ³vil */
 @media (max-width: 768px) and (orientation: landscape) {
   .benefitsContainer {
     grid-template-columns: repeat(2, 1fr);
@@ -411,4 +411,18 @@
   .sectionHeader {
     margin-bottom: 25px;
   }
+}
+/* Dos columnas en móviles para Por qué elegirnos */
+@media (max-width: 768px) {
+  .benefitsContainer { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+}
+@media (max-width: 480px) {
+  .benefitsContainer { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; padding: 0 10px; }
+  .cardContainer { max-width: 100%; height: 200px; }
+  .frontContent { padding: 12px; }
+  .frontContent .iconContainer svg { width: 40px; height: 40px; }
+  .frontContent .benefitTitle { font-size: 16px; }
+  .content { padding: 14px; }
+  .content .heading { font-size: 18px; }
+  .content p:not(.heading) { font-size: 13px; }
 }

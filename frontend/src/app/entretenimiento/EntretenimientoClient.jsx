@@ -1,6 +1,7 @@
 "use client";
 
 import "./entretenimiento.css";
+import "./entretenimiento.mobile.overrides.css";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import {

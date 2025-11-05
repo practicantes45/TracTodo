@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from './components/Navbar/Navbar';
 import HeroSection from './components/HeroSection/HeroSection';
-import ContactNumbers from './components/ContactNumbers/ContactNumbers';
 import ProductCarousel from './components/ProductCarousel/ProductCarousel.jsx';
 import VerMarcas from './components/VerMarcas/VerMarcas';
 import BenefitsSection from './components/BenefitsSection/BenefitsSection';
@@ -110,14 +109,14 @@ export default function HomeClient() {
 
                     <section className="whatsappNotice">
                       <div className="whatsappNotice__content">
-                        <h2>Recomendacion para tus pedidos</h2>
+                        <h2>Recomendación</h2>
                         <p>
-                          Si navegas desde una computadora, te recomendamos usar WhatsApp Web. Desde un dispositivo movil puedes continuar en la app con total tranquilidad; disfruta tu experiencia en TracTodo.
-                        </p>
+En computadora, te sugerimos usar WhatsApp Web.
+Desde celular, continúa sin problema y disfruta tu experiencia en TracTodo.                        </p>
                       </div>
                     </section>
                     {/* Números de contacto*/}
-                    <ContactNumbers pageContext="home" />
+                    
 
                     <section className="carouselSection">
                         <ProductCarousel />
@@ -239,3 +238,4 @@ export default function HomeClient() {
         </>
     );
 }
+

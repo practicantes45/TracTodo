@@ -1,4 +1,4 @@
-/* ===== SOBRE NOSOTROS - ESTILOS ESPECÍFICOS ===== */
+﻿/* ===== SOBRE NOSOTROS - ESTILOS ESPECÃFICOS ===== */
 
 /* Importar estilos globales */
 @import url('../styles/global.css');
@@ -14,7 +14,7 @@
   background-image: url('https://i.postimg.cc/yxYC4QM2/fondoamarillo.png');
   background-size: cover;
   background-position: center center;
-  /* CORREGIDO: posición idéntica */
+  /* CORREGIDO: posiciÃ³n idÃ©ntica */
   background-repeat: no-repeat;
   color: white;
   top: 90px;
@@ -72,7 +72,7 @@
   }
 }
 
-/* ===== MAIN CONTENT ADJUSTMENT - ESPECÍFICO PARA SOBRE ===== */
+/* ===== MAIN CONTENT ADJUSTMENT - ESPECÃFICO PARA SOBRE ===== */
 .sobre-page .mainContent {
   flex: 1;
   width: 100%;
@@ -80,13 +80,30 @@
   /* IGUAL A LA ALTURA DEL HERO */
 }
 
-/* ===== SECCIÓN ¿QUIÉNES SOMOS? - DISEÑO DINÁMICO Y ATRACTIVO ===== */
+/* --- Ajustes móviles: hero compacto con título visible --- */
+@media (max-width: 768px) {
+  .sobre-page .heroSection { height: clamp(170px, 26vh, 220px) !important; }
+  .sobre-page .heroContent h1 {
+    font-size: clamp(1.2rem, 5.2vw, 1.8rem) !important;
+    margin-bottom: 8px !important;
+    opacity: 1 !important; animation: none !important; color: #fff !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.6) !important;
+  }
+  .sobre-page .mainContent { padding-top: calc(90px + clamp(170px, 26vh, 220px)) !important; }
+}
+@media (max-width: 480px) {
+  .sobre-page .heroSection { height: clamp(160px, 32vh, 210px) !important; }
+  .sobre-page .heroContent h1 { font-size: clamp(1.1rem, 6vw, 1.6rem) !important; opacity: 1 !important; animation: none !important; }
+  .sobre-page .mainContent { padding-top: calc(90px + clamp(160px, 32vh, 210px)) !important; }
+}
+
+/* ===== SECCIÃ“N Â¿QUIÃ‰NES SOMOS? - DISEÃ‘O DINÃMICO Y ATRACTIVO ===== */
 .aboutSection {
   background: linear-gradient(145deg, #f0f8ff 0%, #e6f3ff 30%, #ffffff 70%, #f8f9fa 100%);
   padding: 20px 20px 80px 20px;
   margin: 0;
   margin-top: -100px;
-  /* AJUSTE ESPECÍFICO UNIFICADO */
+  /* AJUSTE ESPECÃFICO UNIFICADO */
   position: relative;
   overflow: hidden;
 }
@@ -95,7 +112,7 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: url('/images/halloween-pattern.svg') repeat;
+  background: url('/images/christmas-pattern.svg') repeat;
   opacity: 0.16;
   pointer-events: none;
 }
@@ -132,9 +149,9 @@
   padding: 50px;
   box-shadow:
     0 20px 60px rgba(148, 33, 146, 0.08),
-    0 8px 25px rgba(255, 109, 0, 0.05),
+    0 8px 25px rgba(195, 0, 33, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(255, 109, 0, 0.1);
+  border: 1px solid rgba(195, 0, 33, 0.1);
   position: relative;
   overflow: hidden;
   transition: all 0.4s ease;
@@ -144,7 +161,7 @@
   transform: translateY(-5px);
   box-shadow:
     0 30px 80px rgba(148, 33, 146, 0.12),
-    0 12px 35px rgba(255, 109, 0, 0.08),
+    0 12px 35px rgba(195, 0, 33, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.95);
 }
 
@@ -158,7 +175,7 @@
   height: 100%;
   background: linear-gradient(90deg,
       transparent 0%,
-      rgba(255, 109, 0, 0.05) 50%,
+      rgba(195, 0, 33, 0.05) 50%,
       transparent 100%);
   transition: left 2s ease;
   pointer-events: none;
@@ -197,7 +214,7 @@
   margin: 20px 0 0 0;
   border-radius: 2px;
   animation: expandUnderline 1.5s ease-out 0.5s forwards;
-  box-shadow: 0 2px 8px rgba(255, 109, 0, 0.3);
+  box-shadow: 0 2px 8px rgba(195, 0, 33, 0.3);
 }
 
 @keyframes expandUnderline {
@@ -223,7 +240,7 @@
   transition: all 0.3s ease;
 }
 
-/* Indicador visual para los párrafos */
+/* Indicador visual para los pÃ¡rrafos */
 .aboutTextContent p::before {
   content: '';
   position: absolute;
@@ -233,7 +250,7 @@
   height: 4px;
   background: var(--accent-color);
   border-radius: 50%;
-  box-shadow: 0 0 10px rgba(255, 109, 0, 0.5);
+  box-shadow: 0 0 10px rgba(195, 0, 33, 0.5);
   animation: pulse 2s ease-in-out infinite;
 }
 
@@ -274,7 +291,7 @@
   border-radius: 18px;
   box-shadow:
     0 15px 40px rgba(148, 33, 146, 0.15),
-    0 5px 15px rgba(255, 109, 0, 0.1);
+    0 5px 15px rgba(195, 0, 33, 0.1);
   transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
   position: relative;
   z-index: 2;
@@ -285,11 +302,11 @@
   transform: translateY(-8px) scale(1.02);
   box-shadow:
     0 25px 60px rgba(148, 33, 146, 0.25),
-    0 10px 25px rgba(255, 109, 0, 0.15);
+    0 10px 25px rgba(195, 0, 33, 0.15);
   filter: brightness(1.05) contrast(1.08);
 }
 
-/* ===== SECCIÓN MISIÓN Y VISIÓN ===== */
+/* ===== SECCIÃ“N MISIÃ“N Y VISIÃ“N ===== */
 .missionVisionSection {
   background: linear-gradient(135deg, var(--primary-color) 0%, #4c1d95 100%);
   padding: 80px 20px;
@@ -307,7 +324,7 @@
   height: 100%;
   background-image:
     radial-gradient(2px 2px at 30px 40px, rgba(255, 255, 255, 0.1), transparent),
-    radial-gradient(1px 1px at 80px 80px, rgba(255, 109, 0, 0.15), transparent),
+    radial-gradient(1px 1px at 80px 80px, rgba(195, 0, 33, 0.15), transparent),
     radial-gradient(1px 1px at 150px 120px, rgba(255, 255, 255, 0.08), transparent);
   background-repeat: repeat;
   background-size: 200px 160px;
@@ -372,7 +389,7 @@
   text-align: justify;
 }
 
-/* ===== SECCIÓN VALORES ===== */
+/* ===== SECCIÃ“N VALORES ===== */
 .valuesSection {
   background-color: #ffffff;
   padding: 80px 20px;
@@ -430,7 +447,7 @@
   left: 0;
   width: 0;
   height: 100%;
-  background: rgba(255, 109, 0, 0.05);
+  background: rgba(195, 0, 33, 0.05);
   transition: width 0.3s ease;
 }
 
@@ -573,7 +590,7 @@
   }
 }
 
-/* Móvil (768px) - OCULTAR TÍTULO */
+/* MÃ³vil (768px) - OCULTAR TÃTULO */
 @media (max-width: 768px) {
   .sobre-page .heroSection {
     height: 420px;
@@ -661,7 +678,7 @@
   }
 }
 
-/* Móvil pequeño (480px) */
+/* MÃ³vil pequeÃ±o (480px) */
 @media (max-width: 480px) {
   .sobre-page .heroSection {
     height: 380px;
@@ -720,7 +737,7 @@
   }
 }
 
-/* Ajustes para pantallas muy pequeñas (360px) */
+/* Ajustes para pantallas muy pequeÃ±as (360px) */
 @media (max-width: 360px) {
   .sobre-page .heroSection {
     height: 350px;

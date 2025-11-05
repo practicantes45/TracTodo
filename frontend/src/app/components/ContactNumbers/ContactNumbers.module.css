@@ -1,4 +1,4 @@
-.contactNumbers {
+﻿.contactNumbers {
   display: flex;
   flex-direction: column;
   gap: 32px;
@@ -16,9 +16,9 @@
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(80px 80px at 10% 20%, rgba(255, 109, 0, 0.25), transparent),
+    radial-gradient(80px 80px at 10% 20%, rgba(216, 58, 58, 0.25), transparent),
     radial-gradient(100px 100px at 80% 0%, rgba(148, 33, 146, 0.18), transparent),
-    radial-gradient(120px 120px at 50% 100%, rgba(255, 166, 0, 0.16), transparent);
+    radial-gradient(120px 120px at 50% 100%, rgba(216, 58, 58, 0.16), transparent);
   opacity: 0.7;
   pointer-events: none;
 }
@@ -32,7 +32,7 @@
 
 .selectorIntro h2 {
   color: #fff7e6;
-  text-shadow: 0 0 14px rgba(255, 109, 0, 0.45);
+  text-shadow: 0 0 14px rgba(216, 58, 58, 0.45);
   margin: 0;
   font-size: clamp(1.8rem, 2.5vw, 2.4rem);
   font-weight: 700;
@@ -60,7 +60,7 @@
   gap: 10px;
   padding: 24px 20px;
   border-radius: 20px;
-  border: 1px solid rgba(255, 166, 0, 0.25);
+  border: 1px solid rgba(195, 0, 33, 0.25);
   background: linear-gradient(145deg, rgba(29, 9, 50, 0.88), rgba(54, 20, 80, 0.92));
   cursor: pointer;
   color: #111111;
@@ -70,7 +70,7 @@
 .advisorCard:hover {
   transform: translateY(-3px);
   box-shadow: 0 18px 36px rgba(9, 1, 20, 0.35);
-  border-color: rgba(255, 166, 0, 0.65);
+  border-color: rgba(195, 0, 33, 0.65);
 }
 
 .readonlyCard {
@@ -80,7 +80,7 @@
 }
 
 .activeCard.readonlyCard {
-  border: 2px solid rgba(255, 166, 0, 0.8);
+  border: 2px solid rgba(195, 0, 33, 0.8);
   box-shadow: 0 18px 36px rgba(9, 1, 20, 0.35);
 }
 
@@ -112,7 +112,7 @@
 
 .advisorPhone {
   font-size: 0.95rem;
-  color: #ff9f1c;
+  color: #C30021;
   font-weight: 600;
 }
 
@@ -123,8 +123,8 @@
   font-size: 0.8rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  background: rgba(255, 166, 0, 0.12);
-  color: #ff9f1c;
+  background: rgba(216, 58, 58, 0.12);
+  color: #C30021;
 }
 
 .actionPanel {
@@ -161,13 +161,13 @@
   font-weight: 700;
   font-size: 1rem;
   cursor: pointer;
-  box-shadow: 0 16px 28px rgba(255, 166, 0, 0.25);
+  box-shadow: 0 16px 28px rgba(195, 0, 33, 0.25);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .primaryButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 20px 34px rgba(255, 166, 0, 0.28);
+  box-shadow: 0 20px 34px rgba(195, 0, 33, 0.28);
 }
 
 .primaryButton:disabled {
@@ -216,5 +216,40 @@
 .selectedRole {
   color: #ffffff;
   font-weight: 600;
+}
+
+/* Compactar toda la secciÃ³n en mÃ³viles (<=480px) */
+@media (max-width: 480px) {
+  .selectorIntro h2 { font-size: clamp(1.1rem, 5.2vw, 1.35rem); }
+  .selectorIntro p { font-size: 0.85rem; max-width: 92%; }
+  .contactNumbers { padding: 14px 12px; }
+  .advisorGrid { gap: 10px; }
+  .advisorCard,
+  .readonlyCard { padding: 12px 10px; border-radius: 12px; gap: 6px; }
+  .avatar { width: 52px; height: 52px; font-size: 1.1rem; }
+  .advisorName { font-size: 0.95rem; }
+  .advisorRole { font-size: 0.85rem; }
+  .advisorPhone { font-size: 0.9rem; }
+  .currentBadge { margin-top: 4px; padding: 3px 10px; font-size: 0.7rem; }
+  .actionPanel { gap: 12px; margin-bottom: 24px; }
+  .selectedMessage { font-size: 0.9rem; }
+  .primaryButton { padding: 10px 18px; border-radius: 12px; font-size: 0.95rem; gap: 8px; }
+  .phoneIcon { font-size: 1rem; }
+}
+/* Vista iPhone / pantallas chicas: reducir espacio superior del bloque y padding */
+@media (max-width: 480px) {
+  .contactNumbers { padding: 20px 14px; }
+  .contactNumbersHome { margin-top: 12px; }
+  .selectorIntro p { margin-top: 8px; }
+}
+
+/* Dos columnas para asesores solo en mÃ³viles */
+@media (max-width: 480px) {
+  .advisorGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 480px) {
+  .actionPanel { margin-bottom: 0 !important; }
 }
 

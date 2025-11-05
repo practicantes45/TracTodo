@@ -1,5 +1,5 @@
-.manageButton {
-  background: linear-gradient(135deg, #ff6d00 0%, #0096c7 100%);
+﻿.manageButton {
+  background: linear-gradient(135deg, #C30021 0%, #0096c7 100%);
   color: white;
   border: none;
   padding: 12px 20px;
@@ -9,7 +9,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   z-index: 10;
-  box-shadow: 0 4px 15px rgba(255, 109, 0, 0.3);
+  box-shadow: 0 4px 15px rgba(195, 0, 33, 0.3);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -23,7 +23,7 @@
 .manageButton:hover {
   background: linear-gradient(135deg, #0096c7 0%, #0077b6 100%);
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(255, 109, 0, 0.4);
+  box-shadow: 0 8px 25px rgba(195, 0, 33, 0.4);
 }
 
 .manageButton:active {

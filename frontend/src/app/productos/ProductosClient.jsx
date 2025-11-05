@@ -1,7 +1,7 @@
-'use client';
+﻿'use client';
 import './productos.css';
 import { FaFilter, FaWhatsapp, FaSortAlphaDown, FaSortAlphaUp, FaTimes, FaEraser, FaChevronDown, FaShoppingCart } from "react-icons/fa";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
@@ -17,6 +17,10 @@ import { formatearPrecio, formatearPrecioWhatsApp } from '../../utils/priceUtils
 import { useCart } from '../../hooks/useCart';
 import { useWhatsAppContact } from '../../hooks/useWhatsAppContact';
 import AdvisorPickerModal from '../components/AdvisorPickerModal/AdvisorPickerModal';
+import './productos.overrides.css';
+import './productos.fullbleed.css';
+import './productos.featured.override.css';
+import './productos.navidad.overrides.css';
 // Constante para productos por página
 const PRODUCTOS_POR_PAGINA = 15;
 
@@ -33,6 +37,7 @@ export default function ProductosPage() {
   const [selectedOrden, setSelectedOrden] = useState('A-Z');
   const [marcasDisponibles, setMarcasDisponibles] = useState([]);
   const [filtrosInicializados, setFiltrosInicializados] = useState(false); // NUEVO estado
+  
 
   // Estados para paginación
   const [productosVisibles, setProductosVisibles] = useState([]);
@@ -49,14 +54,144 @@ export default function ProductosPage() {
   const busquedaParam = searchParams.get('busqueda');
   const marcaParam = searchParams.get('marca');
 
+  // Al realizar una búsqueda, desplazar suavemente a "Todos los productos"
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (!busquedaParam) return;
+
+    let cancelled = false;
+    let tries = 0;
+    const tryScroll = () => {
+      if (cancelled) return;
+      const anchor = document.getElementById('todos-productos');
+      if (anchor) {
+        const rect = anchor.getBoundingClientRect();
+        const currentY = window.pageYOffset || document.documentElement.scrollTop || 0;
+        const nav = document.querySelector('nav[role="navigation"]');
+        const navHeight = nav ? Math.ceil(nav.getBoundingClientRect().height) : 0;
+        // Ajuste: altura del navbar + margen extra para que el banner se lea completo
+        const offset = Math.max(200, navHeight + 140); // px
+        const targetY = currentY + rect.top - offset;
+        window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+      } else if (tries < 20) {
+        tries += 1;
+        setTimeout(tryScroll, 100);
+      }
+    };
+    // Ejecutar en el siguiente tick para esperar al DOM
+    setTimeout(tryScroll, 0);
+    return () => { cancelled = true; };
+  }, [busquedaParam, productos.length]);
+
   // Hook SEO para página de productos
   const { seoData } = useSEO('productos', { path: '/productos' });
 
-  console.log('🔍 Parámetro de búsqueda:', busquedaParam);
-  console.log('🏷️ Parámetro de marca:', marcaParam);
+  console.log('ðŸ” Parámetro de búsqueda:', busquedaParam);
+  console.log('ðŸ·ï¸ Parámetro de marca:', marcaParam);
 
   // Lista de marcas predefinidas
-  const marcasPredefinidas = ["Cummins", "Navistar", "Volvo", "Mercedes Benz", "Detroit", "Caterpillar", "Otros"];
+  const marcasPredefinidas = ["Cummins", "Navistar", "Volvo", "Mercedes Benz", "Detroit", "Caterpillar"];
+  // Orden de prioridad para "Todos los productos"
+  const PRIORIDAD_TIPOS = [
+    'cabeza',
+    'media reparacion',
+    'arbol de levas',
+    'turbo',
+    'vgt',
+    'modulo',
+    'bomba',
+    'anillos',
+    'inyector',
+    'junta'
+  ];
+
+  const normalizar = (s) => (s || '')
+    .toString()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+
+  const obtenerIndicePrioridad = (producto) => {
+    const texto = normalizar([
+      producto?.tipoProducto,
+      producto?.nombre,
+      producto?.descripcion,
+      producto?.numeroParte,
+    ].filter(Boolean).join(' '));
+
+    for (let i = 0; i < PRIORIDAD_TIPOS.length; i += 1) {
+      const term = PRIORIDAD_TIPOS[i];
+      if (texto.includes(term)) return i;
+
+      // Variantes comunes por tildes/plurales
+      if (term === 'media reparacion') {
+        if (texto.includes('media reparaci')) return i; // reparación / reparaciones
+      }
+      if (term === 'arbol de levas') {
+        if (texto.includes('arboles de levas') || texto.includes('arbol de leva')) return i;
+      }
+      if (term === 'modulo') {
+        if (texto.includes('modulos')) return i;
+      }
+      if (term === 'turbo') {
+        if (texto.includes('turbos')) return i;
+      }
+      if (term === 'bomba') {
+        if (texto.includes('bombas')) return i;
+      }
+      if (term === 'anillos') {
+        if (texto.includes('anillo')) return i;
+      }
+      if (term === 'inyector') {
+        if (texto.includes('inyectores')) return i;
+      }
+      if (term === 'junta') {
+        if (texto.includes('juntas')) return i;
+        if (texto.includes('kit de juntas') || texto.includes('kit juntas')) return i;
+      }
+    }
+    return PRIORIDAD_TIPOS.length + 1; // sin coincidencia => al final
+  };
+
+  const ordenarPorPrioridad = (items) => {
+    return [...items].sort((a, b) => {
+      const ai = obtenerIndicePrioridad(a);
+      const bi = obtenerIndicePrioridad(b);
+      if (ai !== bi) return ai - bi;
+      // Desempatar por nombre A-Z para consistencia visual
+      return normalizar(a?.nombre).localeCompare(normalizar(b?.nombre));
+    });
+  };
+
+  // Mezcla aleatoria ponderada por prioridad (variedad por visita)
+  const sessionSeedRef = useRef(null);
+  useEffect(() => {
+    if (sessionSeedRef.current == null) {
+      sessionSeedRef.current = (Date.now() ^ Math.floor(Math.random() * 1e9)) >>> 0;
+    }
+  }, []);
+
+  const seededRandom = () => {
+    // LCG 32-bit
+    let seed = sessionSeedRef.current >>> 0;
+    seed = (seed * 1664525 + 1013904223) >>> 0;
+    sessionSeedRef.current = seed;
+    return (seed & 0xffffffff) / 0x100000000;
+  };
+
+  const ordenarPorVariedad = (items) => {
+    // Efraimidis-Spirakis: key = u^(1/w), sort desc
+    return [...items]
+      .map((item) => {
+        const idx = obtenerIndicePrioridad(item);
+        const w = idx <= PRIORIDAD_TIPOS.length ? (PRIORIDAD_TIPOS.length - idx + 1) : 1; // >=1
+        const u = Math.max(1e-12, seededRandom());
+        const key = Math.pow(u, 1 / w);
+        return { item, key };
+      })
+      .sort((a, b) => b.key - a.key)
+      .map(({ item }) => item);
+  };
   const ordenarResultadosPorBusqueda = (items, termino) => {
     const query = termino?.trim().toLowerCase();
     if (!query) {
@@ -128,12 +263,12 @@ export default function ProductosPage() {
   // MODIFICADO: Efecto combinado para inicializar filtros y cargar productos
   useEffect(() => {
     const inicializarFiltrosYCargar = async () => {
-      console.log('🔄 Inicializando filtros desde URL...');
+      console.log('ðŸ”„ Inicializando filtros desde URL...');
 
       // Inicializar marca si viene desde URL
       let marcasIniciales = [];
       if (marcaParam && marcasPredefinidas.includes(marcaParam)) {
-        console.log('🔄 Inicializando con marca desde URL:', marcaParam);
+        console.log('ðŸ”„ Inicializando con marca desde URL:', marcaParam);
         marcasIniciales = [marcaParam];
         setSelectedMarcas([marcaParam]);
       }
@@ -146,12 +281,12 @@ export default function ProductosPage() {
     };
 
     inicializarFiltrosYCargar();
-  }, [marcaParam, busquedaParam]); // Solo depende de los parámetros de URL
+  }, [marcaParam, busquedaParam]); // Solo depende de los parÃ¡metros de URL
 
-  // MODIFICADO: Efecto para cargar productos cuando cambian los filtros (después de la inicialización)
+  // MODIFICADO: Efecto para cargar productos cuando cambian los filtros (despuÃ©s de la inicializaciÃ³n)
   useEffect(() => {
     if (filtrosInicializados) {
-      console.log('🔄 Filtros cambiados, recargando productos...');
+      console.log('ðŸ”„ Filtros cambiados, recargando productos...');
       cargarProductosConFiltros(selectedMarcas, selectedOrden, busquedaParam);
     }
   }, [selectedMarcas, selectedOrden, filtrosInicializados]);
@@ -161,7 +296,7 @@ export default function ProductosPage() {
     actualizarProductosVisibles();
   }, [productos, paginaActual]);
 
-  // Función para actualizar productos visibles basado en paginación
+  // FunciÃ³n para actualizar productos visibles basado en paginación
   const actualizarProductosVisibles = () => {
     const inicio = 0;
     const fin = paginaActual * PRODUCTOS_POR_PAGINA;
@@ -170,17 +305,16 @@ export default function ProductosPage() {
     setProductosVisibles(nuevosProductosVisibles);
     setHayMasProductos(fin < productos.length);
 
-    console.log(`📦 Mostrando ${nuevosProductosVisibles.length} de ${productos.length} productos (página ${paginaActual})`);
   };
 
-  // REVERTIDO: Función principal para cargar productos con filtros (usando servicios originales)
+  // REVERTIDO: FunciÃ³n principal para cargar productos con filtros (usando servicios originales)
   const cargarProductosConFiltros = async (marcas = selectedMarcas, orden = selectedOrden, busqueda = busquedaParam) => {
     try {
       setLoading(true);
       setError('');
       setPaginaActual(1);
 
-      console.log('🔄 Cargando productos con filtros:', {
+      console.log('ðŸ”„ Cargando productos con filtros:', {
         marcas,
         orden,
         busqueda
@@ -189,7 +323,7 @@ export default function ProductosPage() {
       let resultados;
 
       if (busqueda) {
-        console.log('🔍 Buscando con término y filtros:', {
+        console.log('ðŸ” Buscando con tÃ©rmino y filtros:', {
           q: busqueda,
           marcas: marcas,
           orden: orden
@@ -201,7 +335,7 @@ export default function ProductosPage() {
           orden: orden
         });
       } else {
-        console.log('📦 Cargando productos con filtros:', {
+        console.log('ðŸ“¦ Cargando productos con filtros:', {
           marcas: marcas,
           orden: orden
         });
@@ -216,37 +350,40 @@ export default function ProductosPage() {
 
       if (busqueda) {
         productosProcesados = ordenarResultadosPorBusqueda(productosProcesados, busqueda);
+      } else {
+        // Sección "Todos los productos": mezclar aleatoriamente con ponderación por prioridad
+        productosProcesados = ordenarPorVariedad(productosProcesados);
       }
 
       setProductos(productosProcesados);
 
-      // Extraer marcas únicas de los resultados para el filtro
+      // Extraer marcas Ãºnicas de los resultados para el filtro
       const marcasUnicas = [...new Set(productosProcesados.map(p => p.marca).filter(Boolean))];
       setMarcasDisponibles(marcasUnicas);
 
-      console.log(`✅ Cargados ${productosProcesados.length} productos con filtros del backend`);
+      console.log(`âœ… Cargados ${productosProcesados.length} productos con filtros del backend`);
     } catch (error) {
-      console.error("❌ Error al cargar productos:", error);
+      console.error("âŒ Error al cargar productos:", error);
       setError('No se pudieron cargar los productos');
     } finally {
       setLoading(false);
     }
   };
 
-  // Función para cargar más productos
+  // FunciÃ³n para cargar más productos
   const cargarMasProductos = async () => {
     setCargandoMas(true);
 
-    // Simular pequeña carga para mejor UX
+    // Simular pequeÃ±a carga para mejor UX
     await new Promise(resolve => setTimeout(resolve, 300));
 
     setPaginaActual(prev => prev + 1);
     setCargandoMas(false);
 
-    console.log('📄 Cargando página:', paginaActual + 1);
+    console.log('ðŸ“„ Cargando página:', paginaActual + 1);
   };
 
-  // Función para refrescar productos (llamada desde AdminButtons)
+  // FunciÃ³n para refrescar productos (llamada desde AdminButtons)
   const refetchProducts = () => {
     cargarProductosConFiltros();
   };
@@ -261,7 +398,7 @@ export default function ProductosPage() {
 
     // Requisito: solo agregar si ya hay asesor seleccionado previamente
     if (!isAdvisorReady) {
-      // Aún no carga el estado de asesor; marcar para abrir modal al estar listo
+      // AÃºn no carga el estado de asesor; marcar para abrir modal al estar listo
       setPendingAdvisorPrompt(true);
       setAdvisorSelectionReminder(true);
       return;
@@ -283,11 +420,11 @@ export default function ProductosPage() {
     const slug = getProductSlug(producto);
     const targetPath = `/productos/${slug}`;
 
-    // Esperar a que el hook cargue la selección persistida antes de decidir
+    // Esperar a que el hook cargue la selecciÃ³n persistida antes de decidir
     if (!isAdvisorReady) {
       setPendingProductPath(targetPath);
       setAdvisorSelectionReminder(true);
-      // No abrir modal todavía; se decidirá cuando isAdvisorReady sea true
+      // No abrir modal todavÃ­a; se decidirÃ¡ cuando isAdvisorReady sea true
       return;
     }
 
@@ -302,7 +439,7 @@ export default function ProductosPage() {
     setAdvisorModalOpen(true);
   };
 
-  // Si se selecciona asesor y hay un producto pendiente, navegar al detalle automáticamente
+  // Si se selecciona asesor y hay un producto pendiente, navegar al detalle automÃ¡ticamente
   useEffect(() => {
     if (selectedAdvisor && pendingProductPath) {
       setAdvisorModalOpen(false);
@@ -319,7 +456,7 @@ export default function ProductosPage() {
     }
   }, [isAdvisorReady, selectedAdvisor, pendingProductPath]);
 
-  // Si se agregó al carrito sin asesor cargado aún, abrir modal cuando esté listo
+  // Si se agregÃ³ al carrito sin asesor cargado aÃºn, abrir modal cuando estÃ© listo
   useEffect(() => {
     if (pendingAdvisorPrompt && isAdvisorReady && !selectedAdvisor) {
       setAdvisorSelectionReminder(true);
@@ -333,29 +470,29 @@ export default function ProductosPage() {
 
   const obtenerPrimeraImagen = (producto) => {
     if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object' && producto.imagenesUrl.frente) {
-      console.log('🖼️ Usando imagen frente:', producto.imagenesUrl.frente);
+      console.log('ðŸ–¼ï¸ Usando imagen frente:', producto.imagenesUrl.frente);
       return producto.imagenesUrl.frente;
     }
 
     if (producto.imagenUrl) {
-      console.log('🖼️ Usando imagenUrl:', producto.imagenUrl);
+      console.log('ðŸ–¼ï¸ Usando imagenUrl:', producto.imagenUrl);
       return producto.imagenUrl;
     }
 
     if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object') {
       const imagenes = Object.values(producto.imagenesUrl).filter(img => img && img.trim() !== '');
       if (imagenes.length > 0) {
-        console.log('🖼️ Usando primera imagen disponible:', imagenes[0]);
+        console.log('ðŸ–¼ï¸ Usando primera imagen disponible:', imagenes[0]);
         return imagenes[0];
       }
     }
 
     if (producto.imagen) {
-      console.log('🖼️ Usando imagen legacy:', producto.imagen);
+      console.log('ðŸ–¼ï¸ Usando imagen legacy:', producto.imagen);
       return producto.imagen;
     }
 
-    console.log('🚫 No se encontró imagen para el producto:', producto.nombre);
+    console.log('ðŸš« No se encontrÃ³ imagen para el producto:', producto.nombre);
     return null;
   };
 
@@ -370,34 +507,84 @@ export default function ProductosPage() {
 
   const handleMarcaChange = (marca) => {
     const nuevasMarcas = selectedMarcas.includes(marca)
-      ? [] // Deseleccionar - array vacío
+      ? [] // Deseleccionar - array vacÃ­o
       : [marca]; // Seleccionar solo esta marca
 
-    console.log('🔄 Cambiando filtro de marca (solo una):', { marca, nuevasMarcas });
+    console.log('ðŸ”„ Cambiando filtro de marca (solo una):', { marca, nuevasMarcas });
     setSelectedMarcas(nuevasMarcas);
   };
   const handleOrdenChange = (nuevoOrden) => {
-    console.log('🔄 Cambiando orden:', nuevoOrden);
+    console.log('ðŸ”„ Cambiando orden:', nuevoOrden);
     setSelectedOrden(nuevoOrden);
   };
 
   const clearAllFilters = () => {
-    console.log('🧹 Limpiando todos los filtros');
+    console.log('ðŸ§¹ Limpiando todos los filtros');
     setSelectedMarcas([]);
     setSelectedOrden('A-Z');
+    setIsMobileFilterOpen(false);
   };
 
   const clearSearch = () => {
-    console.log('🔄 Borrando búsqueda y reseteando filtros');
+    console.log('ðŸ”„ Borrando bÃºsqueda y reseteando filtros');
     router.push('/productos');
   };
 
   // Schema.org para la página de productos
+  
+  // Categorías destacadas (Explora por tipo) - Nuevo diseño con imágenes provistas
+  const featuredCategories = [
+    { label: 'Cabeza de Motor', term: 'cabeza', image: 'https://i.postimg.cc/d1tTjPF5/Anadir-un-titulo.png' },
+    { label: 'Árboles de levas', term: 'árbol de levas', image: 'https://i.postimg.cc/YSVT7kSL/Copia-de-Anadir-un-titulo-4.png' },
+    { label: 'Turbos', term: 'turbo', image: 'https://i.postimg.cc/3w6zh7w2/Copia-de-Anadir-un-titulo-5.png' },
+    { label: 'Bombas', term: 'bomba', image: 'https://i.postimg.cc/5tGDJ1tr/Copia-de-Anadir-un-titulo-6.png' },
+    { label: 'VGT', term: 'vgt', image: 'https://i.postimg.cc/k5ZLC95K/Copia-de-Anadir-un-titulo-7.png' },
+    { label: 'Inyectores', term: 'inyector', image: 'https://i.postimg.cc/zfM4N5fW/Copia-de-Anadir-un-titulo-8.png' },
+    { label: 'Módulos', term: 'módulo', image: 'https://i.postimg.cc/QddQqTqV/Copia-de-Anadir-un-titulo.png' },
+    { label: 'Medias Reparaciones', term: 'media reparación', image: 'https://i.postimg.cc/dVV29y9L/Copia-de-Anadir-un-titulo-1.png' },
+    { label: 'Anillos', term: 'anillo', image: 'https://i.postimg.cc/T33VcDcK/Copia-de-Anadir-un-titulo-2.png' },
+    { label: 'Kits de juntas', term: 'junta', image: 'https://i.postimg.cc/Df5cswF1/Kits-de-Juntas-4.png' }
+  ];
+
+  // Reordenar: colocar "Medias Reparaciones" en segunda posición para mobile layout
+  const featuredCategoriesOrdered = (() => {
+    const arr = [...featuredCategories];
+    const idx = arr.findIndex((c) => (c.label || '').toLowerCase().includes('medias'));
+    if (idx > -1) {
+      const [item] = arr.splice(idx, 1);
+      arr.splice(1, 0, item);
+    }
+    return arr;
+  })();
+
+  const handleFeaturedClick = (term) => {
+    router.push(`/productos?busqueda=${encodeURIComponent(term)}`);
+  };
+  // Motores destacados (para quién compras) - Usar imágenes provistas y búsqueda por motor
+  const engineBrands = [
+    { label: 'ISX', search: 'ISX', image: 'https://i.postimg.cc/gjN7xykF/MOTOR-ISX.png' },
+    { label: 'X-15', search: 'X-15', image: 'https://i.postimg.cc/J7qvY83g/MOTOR-X15.png' },
+    { label: 'N14', search: 'N14', image: 'https://i.postimg.cc/XN8m1WcM/MOTOR-N14.png' },
+    { label: 'PX8', search: 'PX8', image: 'https://i.postimg.cc/Wb1KQyXv/MOTOR-PX8.png' },
+    { label: 'D13', search: 'D13', image: 'https://i.postimg.cc/j2Z1D6dq/MOTOR-VOLVO-D13.png' },
+    { label: 'C15', search: 'C15', image: 'https://i.postimg.cc/8ctY7dPV/MOTOR-C15.png' },
+    { label: 'DD5', search: 'DD5', image: 'https://i.postimg.cc/hvpYX84H/MOTOR-DD5.png' },
+    { label: 'DD6', search: 'DD6', image: 'https://i.postimg.cc/MZDN3w0r/MOTOR-DD6.png' },
+    { label: 'ISM', search: 'ISM', image: 'https://i.postimg.cc/MZDN3w0F/MOTOR-ISM.png' },
+    { label: 'DT466', search: 'DT466', image: 'https://i.postimg.cc/GtPCqgJR/DT466.png' },
+    { label: 'OM906', search: 'OM906', image: 'https://i.postimg.cc/qvvTxLNm/OM906.png' }
+  ];
+
+  const handleBrandClick = (query) => {
+    router.push(`/productos?busqueda=${encodeURIComponent(query)}`);
+  };
+
+  
   const schemaProductCatalog = {
     "@context": "https://schema.org",
     "@type": "ItemList",
     "name": "Catálogo de Refacciones para Tractocamión",
-    "description": "Amplio catálogo de refacciones para tractocamión: turbos, cabezas de motor, árboles de levas y más",
+    "description": "Amplio Catálogo de Refacciones para Tractocamión: turbos, cabezas de motor, árboles de levas y más",
     "numberOfItems": productos.length,
     "itemListElement": productosVisibles.slice(0, 10).map((producto, index) => ({
       "@type": "ListItem",
@@ -504,11 +691,34 @@ export default function ProductosPage() {
             <div className="heroOverlay">
               <div className="heroContent">
                 <h1>Nuestros Productos</h1>
-                {busquedaParam && (
-                  <p className="searchIndicator">
-                    Resultados para: "{busquedaParam}" ({productos.length} productos encontrados)
-                  </p>
-                )}
+                {/* Resultado de búsqueda movido a la sección de "Todos los productos" */}
+                <div className="heroControls">
+                  <div className="advisorQuick">
+                    {selectedAdvisor ? (
+                      <>
+                        <span className="advisorQuickText">Te atenderá <strong>{selectedAdvisor.name}</strong></span>
+                        <button
+                          type="button"
+                          className="advisorQuickButton"
+                          onClick={() => { setAdvisorSelectionReminder(true); setAdvisorModalOpen(true); }}
+                        >
+                          Cambiar asesor
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <span className="advisorQuickText">Elige un asesor</span>
+                        <button
+                          type="button"
+                          className="advisorQuickButton"
+                          onClick={() => { setAdvisorSelectionReminder(true); setAdvisorModalOpen(true); }}
+                        >
+                          Elegir asesor
+                        </button>
+                      </>
+                    )}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -516,15 +726,7 @@ export default function ProductosPage() {
           {/* Aviso retirado: ahora se abre el modal de asesores directamente */}
 
           {/* Botón Filtrar móvil */}
-          <div className="mobileFilterToggle">
-            <button
-              className="mobileFilterButton"
-              onClick={toggleMobileFilter}
-            >
-              <FaFilter />
-              Filtrar por
-            </button>
-          </div>
+          
 
           {/* Overlay para filtro móvil */}
           <div
@@ -545,7 +747,7 @@ export default function ProductosPage() {
             </div>
 
             <div className="mobileFilterContent">
-              {/* Botón borrar búsqueda en móvil */}
+              {/* Botón Borrar búsqueda en móvil */}
               {busquedaParam && (
                 <div className="mobileFilterGroup">
                   <button
@@ -576,40 +778,21 @@ export default function ProductosPage() {
                 </div>
               </div>
 
-              {/* Ordenamiento solo visible cuando NO hay búsqueda */}
+              {/* Ordenamiento solo visible cuando NO hay bÃºsqueda */}
               {!busquedaParam && (
                 <div className="mobileFilterGroup">
-                  <h4>Ordenar Por</h4>
-                  <div className="mobileOrdenamientoList">
-                    <label className="mobileOrdenamientoRadio">
-                      <input
-                        type="radio"
-                        name="orden"
-                        value="A-Z"
-                        checked={selectedOrden === 'A-Z'}
-                        onChange={(e) => handleOrdenChange(e.target.value)}
-                      />
-                      <span className="mobileRadiomark"></span>
-                      <FaSortAlphaDown className="sortIcon" />
-                      Alfabéticamente, A-Z
-                    </label>
-                    <label className="mobileOrdenamientoRadio">
-                      <input
-                        type="radio"
-                        name="orden"
-                        value="Z-A"
-                        checked={selectedOrden === 'Z-A'}
-                        onChange={(e) => handleOrdenChange(e.target.value)}
-                      />
-                      <span className="mobileRadiomark"></span>
-                      <FaSortAlphaUp className="sortIcon" />
-                      Alfabéticamente, Z-A
-                    </label>
+                  <h4>Variedad por visita</h4>
+                  <div className="searchPriorityInfo">
+                    <p>
+                      Mezclamos los productos aleatoriamente, ponderando por prioridad para
+                      mostrar primero: Cabeza, Media reparación, Árboles de levas, Turbos, VGT,
+                      Módulos, Bombas, Anillos, Inyectores y Juntas.
+                    </p>
                   </div>
                 </div>
               )}
 
-              {/* Mensaje explicativo cuando hay búsqueda */}
+              {/* Mensaje explicativo cuando hay bÃºsqueda */}
               {busquedaParam && (
                 <div className="searchPriorityInfo">
                   <h3>Orden de Relevancia</h3>
@@ -640,11 +823,86 @@ export default function ProductosPage() {
             </div>
           </div>
 
-          {/* Sección principal de productos */}
+          {/* SecciÃ³n principal de productos */}
           <section className="productosMainSection">
             <div className="productosContainer">
 
+
               {/* Sidebar - Filtros DESKTOP */}
+              
+              {/* Categorías destacadas */}
+              <section className="featuredCategories">
+                <div className="allProductsBanner">
+                  <div className="allProductsBannerBox">Explora por tipo</div>
+                </div>
+                <div className="featuredGrid">
+                  {featuredCategoriesOrdered.map(({ label, term, image }, i) => (
+                    <button
+                      key={label}
+                      type="button"
+                      className={`featuredCard ${i % 6 === 0 ? 'featuredCard--wide' : i % 6 === 1 ? 'featuredCard--tall' : i % 6 === 2 ? 'featuredCard--large' : ''}`}
+                      data-term={term}
+                      onClick={() => handleFeaturedClick(term)}
+                      aria-label={`Explorar ${label}`}
+                    >
+                      <div
+                        className="featuredCardBg"
+                        data-term={term}
+                        style={image ? { backgroundImage: `url('${image}')` } : undefined}
+                        aria-hidden="true"
+                      />
+                      <div className="featuredCardOverlay">
+                        <span className="featuredCardLabel">{label}</span>
+                        <span className="featuredCardCTA">Ver {label}</span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </section>
+
+              {/* ¿Para qué motor compras? */}
+              <section className="shopByEngine">
+                <div className="allProductsBanner">
+                  <div className="allProductsBannerBox">¿Para qué motor compras?</div>
+                </div>
+                <div className="engineGrid">
+                  {engineBrands.map(({ label, search, image }) => (
+                    <button
+                      key={label}
+                      type="button"
+                      className="engineCard"
+                      onClick={() => handleBrandClick(search)}
+                      aria-label={`Explorar ${label}`}
+                    >
+                      <div
+                        className="engineCardBg"
+                        data-engine={label}
+                        style={image ? { backgroundImage: `url('${image}')` } : undefined}
+                        aria-hidden="true"
+                      />
+                      <div className="engineCardOverlay">
+                        <span className="engineCardLabel">{label}</span>
+                        <span className="engineCardCTA">Ver {label}</span>
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              </section>
+              {/* Banner Todos los productos (solo informativo, sin acción) */}
+              <div className="allProductsBanner" id="todos-productos">
+                <div className="allProductsBannerBox">Todos los productos</div>
+                <div className={`filterBannerRow ${busquedaParam ? 'withResults' : ''}`}>
+                  <button className="filterBannerBtn" onClick={toggleMobileFilter}>
+                    <FaFilter /> Filtrar por
+                  </button>
+                  {busquedaParam && (
+                    <div className="searchResultsNotice" aria-live="polite">
+                      <span className="resultsQuery searchIndicator searchIndicator--inline">Resultados para: "{busquedaParam}" ({productos.length} productos encontrados)</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
               <aside className="filtrosSidebar">
                 <div className="filtrosHeader">
                   <h2>Filtros</h2>
@@ -656,7 +914,7 @@ export default function ProductosPage() {
                   </button>
                 </div>
 
-                {/* Botón borrar búsqueda en desktop */}
+                {/* Botón Borrar búsqueda en desktop */}
                 {busquedaParam && (
                   <div className="clearSearchSection">
                     <button
@@ -690,40 +948,20 @@ export default function ProductosPage() {
                   </div>
                 </div>
 
-                {/* Ordenamiento solo visible cuando NO hay búsqueda */}
+                {/* Ordenamiento solo visible cuando NO hay bÃºsqueda */}
                 {!busquedaParam && (
                   <div className="filtroGroup">
-                    <h3>Ordenar Por</h3>
-                    <div className="ordenamientoList">
-                      <label className="ordenamientoRadio">
-                        <input
-                          type="radio"
-                          name="ordenamiento"
-                          value="A-Z"
-                          checked={selectedOrden === 'A-Z'}
-                          onChange={(e) => handleOrdenChange(e.target.value)}
-                        />
-                        <span className="radiomark"></span>
-                        <FaSortAlphaDown className="sortIcon" />
-                        Alfabéticamente, A-Z
-                      </label>
-                      <label className="ordenamientoRadio">
-                        <input
-                          type="radio"
-                          name="ordenamiento"
-                          value="Z-A"
-                          checked={selectedOrden === 'Z-A'}
-                          onChange={(e) => handleOrdenChange(e.target.value)}
-                        />
-                        <span className="radiomark"></span>
-                        <FaSortAlphaUp className="sortIcon" />
-                        Alfabéticamente, Z-A
-                      </label>
+                    <h3>Variedad por visita</h3>
+                    <div className="searchPriorityInfo">
+                      <p>
+                        La lista se mezcla en cada visita usando una recomendación dinámica
+                        aleatoria ponderada por prioridad (los tipos clave aparecen antes).
+                      </p>
                     </div>
                   </div>
                 )}
 
-                {/* Información de prioridad de búsqueda */}
+                {/* InformaciÃ³n de prioridad de bÃºsqueda */}
                 {busquedaParam && (
                   <div className="searchPriorityInfo">
                     <h3>Orden de Relevancia</h3>
@@ -782,7 +1020,7 @@ export default function ProductosPage() {
                               className="imageNotFound"
                               style={{ display: imagenUrl ? 'none' : 'flex' }}
                             >
-                              <div className="noImageIcon">📷</div>
+                              
                               <p>Imagen no detectada</p>
                             </div>
                           </div>
@@ -798,11 +1036,7 @@ export default function ProductosPage() {
                             {/* Requerimiento: ocultar acciones en listado. 
                                 Las acciones "Agregar al carrito" y "Compra por WhatsApp"
                                 solo deben mostrarse en la página del producto individual. */}
-                            {selectedAdvisor && (
-                              <div className="advisorSummary">
-                                <span className="advisorSummaryLabel">Te atendera {selectedAdvisor.name}</span>
-                              </div>
-                            )}
+                            {/* Aviso de asesor removido de cada tarjeta */}
                           </div>
                           <button
                             type="button"
@@ -839,7 +1073,7 @@ export default function ProductosPage() {
                           )}
                         </button>
                         <div className="paginacionInfo">
-                          Mostrando {productosVisibles.length} de {productos.length} productos
+                         Mostrando {productosVisibles.length} de {productos.length} productos
                         </div>
                       </div>
                     )}
@@ -852,11 +1086,27 @@ export default function ProductosPage() {
 
         <Footer />
         <ScrollToTop />
+        
         <AdvisorPickerModal isOpen={advisorModalOpen} onClose={() => setAdvisorModalOpen(false)} />
       </div>
     </>
   );
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

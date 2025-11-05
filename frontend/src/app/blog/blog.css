@@ -255,7 +255,7 @@
 .categoryButton.active {
   color: white;
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(255, 109, 0, 0.3);
+  box-shadow: 0 4px 15px rgba(216, 58, 58, 0.3);
 }
 
 .categoryCount {
@@ -288,12 +288,12 @@
   overflow: hidden;
   box-shadow: 
     0 10px 30px rgba(148, 33, 146, 0.08),
-    0 4px 15px rgba(255, 109, 0, 0.05),
+    0 4px 15px rgba(195, 0, 33, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
   transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
   cursor: pointer;
   position: relative;
-  border: 1px solid rgba(255, 109, 0, 0.15);
+  border: 1px solid rgba(195, 0, 33, 0.15);
   backdrop-filter: blur(10px);
   animation: cardFadeIn 0.6s ease-out;
   animation-fill-mode: both;
@@ -308,7 +308,7 @@
   height: 100%;
   background: linear-gradient(90deg,
     transparent 0%,
-    rgba(255, 109, 0, 0.1) 50%,
+    rgba(195, 0, 33, 0.1) 50%,
     transparent 100%);
   transition: left 1.5s ease;
   pointer-events: none;
@@ -319,9 +319,9 @@
   transform: translateY(-8px) scale(1.02);
   box-shadow: 
     0 25px 50px rgba(148, 33, 146, 0.15),
-    0 10px 30px rgba(255, 109, 0, 0.1),
+    0 10px 30px rgba(216, 58, 58, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  border-color: rgba(255, 109, 0, 0.3);
+  border-color: rgba(216, 58, 58, 0.3);
 }
 
 .postCard:hover::before {
@@ -368,7 +368,7 @@
   position: absolute;
   top: 15px;
   left: 15px;
-  background: linear-gradient(45deg, #ff6d00, #0077b6);
+  background: linear-gradient(45deg, #C30021, #0077b6);
   color: white;
   padding: 6px 14px;
   border-radius: 20px;
@@ -376,7 +376,7 @@
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  box-shadow: 0 4px 15px rgba(255, 109, 0, 0.3);
+  box-shadow: 0 4px 15px rgba(195, 0, 33, 0.3);
   z-index: 2;
 }
 
@@ -417,7 +417,7 @@
 }
 
 .postCard:hover .postTitle {
-  color: #ff6d00;
+  color: #d83a3a;
 }
 
 .postSubtitle {
@@ -431,7 +431,7 @@
   border-left: 3px solid var(--accent-color);
   padding-left: 12px;
   background: linear-gradient(90deg, 
-    rgba(255, 109, 0, 0.05) 0%, 
+    rgba(216, 58, 58, 0.05) 0%, 
     transparent 100%);
   border-radius: 0 8px 8px 0;
   padding: 8px 0 8px 15px;
@@ -484,7 +484,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  background: rgba(255, 109, 0, 0.1);
+  background: rgba(216, 58, 58, 0.12);
   color: var(--accent-color);
   padding: 4px 8px;
   border-radius: 12px;
@@ -493,7 +493,7 @@
 }
 
 .readMoreButton {
-  background: linear-gradient(135deg, #ff6d00 0%, #0077b6 100%);
+  background: linear-gradient(135deg, #C30021 0%, #0077b6 100%);
   color: white;
   border: none;
   padding: 12px 24px;
@@ -532,7 +532,7 @@
 
 .readMoreButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(255, 109, 0, 0.4);
+  box-shadow: 0 8px 25px rgba(216, 58, 58, 0.4);
 }
 
 /* ===== BOTONES "VER MÁS" ===== */
@@ -546,7 +546,7 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  background: linear-gradient(135deg, #002a5c 0%, #00436e 50%, #ff6d00 100%);
+  background: linear-gradient(135deg, #002a5c 0%, #00436e 50%, #C30021 100%);
   color: white;
   text-decoration: none;
   padding: 18px 36px;
@@ -560,7 +560,7 @@
   transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
   box-shadow: 
     0 8px 25px rgba(148, 33, 146, 0.2),
-    0 4px 15px rgba(255, 109, 0, 0.1);
+    0 4px 15px rgba(216, 58, 58, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.2);
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
 }
@@ -586,12 +586,12 @@
   transform: translateY(-4px) scale(1.05);
   box-shadow: 
     0 15px 40px rgba(148, 33, 146, 0.3),
-    0 8px 25px rgba(255, 109, 0, 0.2);
+    0 8px 25px rgba(216, 58, 58, 0.25);
   border-color: rgba(255, 255, 255, 0.4);
 }
 
 .viewMoreButton::after {
-  content: '→';
+content: '>';
   font-size: 1.2rem;
   transition: transform 0.3s ease;
 }
@@ -641,7 +641,7 @@
 
 .retryButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(255, 109, 0, 0.4);
+  box-shadow: 0 8px 25px rgba(216, 58, 58, 0.4);
 }
 
 .noPostsContainer {
@@ -649,7 +649,7 @@
   padding: 60px 20px;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 20px;
-  border: 2px dashed rgba(255, 109, 0, 0.3);
+  border: 2px dashed rgba(216, 58, 58, 0.3);
   margin: 40px 0;
 }
 
@@ -800,7 +800,7 @@
 }
 
 .errorMessage {
-  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+  background: linear-gradient(135deg, #ff6b6b 0%, #C30021 100%);
   color: white;
 }
 
@@ -841,13 +841,13 @@
   overflow: hidden;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
-  border: 1px solid rgba(255, 109, 0, 0.1);
+  border: 1px solid rgba(216, 58, 58, 0.1);
 }
 
 .postItem:hover {
   transform: translateY(-2px);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  border-color: rgba(255, 109, 0, 0.3);
+  border-color: rgba(216, 58, 58, 0.3);
 }
 
 .postItemImage {
@@ -901,7 +901,7 @@
 }
 
 .postItemContent .imageCount {
-  background: rgba(255, 109, 0, 0.1);
+  background: rgba(216, 58, 58, 0.1);
   padding: 4px 8px;
   border-radius: 12px;
   width: fit-content;
@@ -1040,7 +1040,7 @@
 .formGroup input, .formGroup select, .formGroup textarea {
   width: 100%;
   padding: 15px;
-  border: 2px solid rgba(255, 109, 0, 0.2);
+  border: 2px solid rgba(216, 58, 58, 0.2);
   border-radius: 10px;
   font-size: 1rem;
   font-family: inherit;
@@ -1051,7 +1051,7 @@
 .formGroup input:focus, .formGroup select:focus, .formGroup textarea:focus {
   outline: none;
   border-color: var(--accent-color);
-  box-shadow: 0 0 0 3px rgba(255, 109, 0, 0.1);
+  box-shadow: 0 0 0 3px rgba(216, 58, 58, 0.1);
   background: white;
 }
 
@@ -1071,7 +1071,7 @@
 .imageInputs input {
   width: 100%;
   padding: 12px;
-  border: 2px solid rgba(255, 109, 0, 0.2);
+  border: 2px solid rgba(216, 58, 58, 0.2);
   border-radius: 8px;
   font-size: 0.9rem;
   transition: all 0.3s ease;
@@ -1080,7 +1080,7 @@
 .imageInputs input:focus {
   outline: none;
   border-color: var(--accent-color);
-  box-shadow: 0 0 0 3px rgba(255, 109, 0, 0.1);
+  box-shadow: 0 0 0 3px rgba(216, 58, 58, 0.1);
 }
 
 .imageInputs input:first-child {
@@ -1101,7 +1101,7 @@
 }
 
 .contentHelp {
-  background: rgba(255, 109, 0, 0.05);
+  background: rgba(216, 58, 58, 0.05);
   padding: 10px;
   border-radius: 8px;
   border-left: 4px solid var(--accent-color);
@@ -1175,7 +1175,7 @@
 .blogSearchInput {
   width: 100%;
   padding: 15px 20px 15px 40px;
-  border: 2px solid rgba(255, 109, 0, 0.3);
+  border: 2px solid rgba(216, 58, 58, 0.3);
   border-radius: 30px;
   font-size: 1rem;
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
@@ -1188,7 +1188,7 @@
 
 .blogSearchInput:focus {
   border-color: var(--accent-color);
-  box-shadow: 0 0 0 3px rgba(255, 109, 0, 0.1), 0 8px 25px rgba(148, 33, 146, 0.15);
+  box-shadow: 0 0 0 3px rgba(216, 58, 58, 0.1), 0 8px 25px rgba(148, 33, 146, 0.15);
   background: rgba(255, 255, 255, 1);
   transform: translateY(-1px);
 }
@@ -1223,9 +1223,9 @@
   bottom: 0;
   border-radius: 30px;
   background: linear-gradient(45deg, 
-    rgba(255, 109, 0, 0.1) 0%, 
+    rgba(216, 58, 58, 0.1) 0%, 
     rgba(148, 33, 146, 0.05) 50%, 
-    rgba(255, 109, 0, 0.1) 100%);
+    rgba(216, 58, 58, 0.1) 100%);
   animation: searchPulse 2s ease-in-out infinite;
   pointer-events: none;
 }

@@ -14,10 +14,8 @@ const HeroSection = () => {
           />
 
           <h1 className={styles.heroTitle}>
-Si el motor se detiene, Tractodo la refacción te tiene          </h1>
-          <p className={styles.heroSubtitle}>
-            Tu mejor aliado en refacciones diésel
-          </p>
+            TU MEJOR OPCIÓN EN REFACCIONES DIÉSEL
+          </h1>
           <div className={styles.heroCTAs}>
             <Link href="/productos" className={styles.secondaryBtn} aria-label="Ver refacciones">
               Ver refacciones
@@ -36,3 +34,4 @@ Si el motor se detiene, Tractodo la refacción te tiene          </h1>
 };
 
 export default HeroSection;
+

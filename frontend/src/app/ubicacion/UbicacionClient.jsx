@@ -1,5 +1,6 @@
 'use client';
 import './ubicacion.css';
+import './ubicacion.mobile.overrides.css';
 import { useState } from 'react';
 import { FaCalendarCheck, FaMapMarkedAlt, FaCar, FaBuilding, FaShoppingCart, FaClock, FaPlay, FaInfoCircle, FaTimes, FaTruck } from "react-icons/fa";
 import Navbar from '../components/Navbar/Navbar';

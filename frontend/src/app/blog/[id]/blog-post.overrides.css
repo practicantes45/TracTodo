@@ -1,0 +1,7 @@
+/* Overrides: corrige glifos/emoji en pseudo-elementos que aparecían corruptos */
+
+.contentText h3::before {
+  content: '>'; /* single right-pointing angle quotation mark › */
+}
+
+
