@@ -36,6 +36,15 @@
   padding-top: clamp(260px, 26vw, 360px) !important; /* acompaña al alto del hero */
 }
 
+@media (min-width: 993px) {
+  .productos-page .heroSection { height: clamp(140px, 14vw, 190px) !important; }
+  .productos-page .mainContent { padding-top: clamp(140px, 14vw, 190px) !important; }
+  .productos-page .heroContent { padding-top: 12px !important; }
+  .productos-page .heroControls { margin-top: -6px !important; }
+  .advisorQuick { margin-top: -6px !important; }
+  .productosMainSection { margin-top: -22px !important; }
+}
+
 /* Animaciones de entrada para tipos (categorÃ­as y motores) */
 .featuredCard,
 .engineCard { opacity: 0; transform: translateY(14px); }
@@ -129,10 +138,10 @@
 @media (max-width: 768px) {
   .productos-page .heroSection {
     /* Recorte leve hacia arriba en móvil */
-    height: clamp(170px, 26vh, 220px) !important;
+    height: clamp(85px, 13vh, 110px) !important;
   }
-  .productos-page .heroContent { gap: 8px !important; }
-  .productos-page .heroControls { margin-top: -6px !important; }
+  .productos-page .heroContent { gap: 8px !important; justify-content: center !important; padding-top: 0 !important; }
+  .productos-page .heroControls { margin-top: 4px !important; }
   .productos-page .advisorQuick { transform: translateY(-2px); }
   .productos-page .heroContent h1 {
     /* Asegurar visibilidad del título en móvil */
@@ -141,17 +150,24 @@
   }
   .productos-page .mainContent {
     /* El hero está anclado a top:90px; sumamos ese offset */
-    padding-top: calc(90px + clamp(170px, 26vh, 220px)) !important;
+    padding-top: calc(90px + clamp(47px, 9.4vh, 67px)) !important;
   }
+  .allProductsBanner { margin: -21px 0 0 0 !important; }
+  .productosMainSection { margin-top: -84px !important; padding-top: 0 !important; }
+  .mobileFilterToggle { margin-top: 0 !important; }
 }
 @media (max-width: 480px) {
   .productos-page .heroSection {
-    height: clamp(160px, 32vh, 210px) !important;
+    height: clamp(80px, 16vh, 105px) !important;
   }
-  .productos-page .heroControls { margin-top: -8px !important; }
+  .productos-page .heroContent { justify-content: center !important; padding-top: 0 !important; }
+  .productos-page .heroControls { margin-top: 6px !important; }
+  .productos-page .advisorQuick { transform: translateY(-2px); }
   .productos-page .heroContent h1 { font-size: clamp(1.1rem, 6vw, 1.6rem) !important; }
   .productos-page .mainContent {
-    padding-top: calc(90px + clamp(160px, 32vh, 210px)) !important;
+    padding-top: calc(90px + clamp(41px, 9.4vh, 61px)) !important;
   }
+  .allProductsBanner { margin: -21px 0 0 0 !important; }
+  .productosMainSection { margin-top: -84px !important; padding-top: 0 !important; }
+  .mobileFilterToggle { margin-top: 0 !important; }
 }
-

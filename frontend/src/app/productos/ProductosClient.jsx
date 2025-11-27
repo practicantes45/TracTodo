@@ -69,8 +69,8 @@ export default function ProductosPage() {
         const currentY = window.pageYOffset || document.documentElement.scrollTop || 0;
         const nav = document.querySelector('nav[role="navigation"]');
         const navHeight = nav ? Math.ceil(nav.getBoundingClientRect().height) : 0;
-        // Ajuste: altura del navbar + margen extra para que el banner se lea completo
-        const offset = Math.max(200, navHeight + 140); // px
+        // Ajuste afinado: dejar el banner más cerca del navbar
+        const offset = Math.max(50, navHeight + 25); // px
         const targetY = currentY + rect.top - offset;
         window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
       } else if (tries < 20) {
@@ -82,6 +82,35 @@ export default function ProductosPage() {
     setTimeout(tryScroll, 0);
     return () => { cancelled = true; };
   }, [busquedaParam, productos.length]);
+
+  // Al llegar con una marca seleccionada (por ejemplo, desde "Marcas destacadas"),
+  // desplazar suavemente a la secci�n de "Todos los productos"
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (!marcaParam) return;
+
+    let cancelled = false;
+    let tries = 0;
+    const tryScroll = () => {
+      if (cancelled) return;
+      const anchor = document.getElementById('todos-productos');
+      if (anchor) {
+        const rect = anchor.getBoundingClientRect();
+        const currentY = window.pageYOffset || document.documentElement.scrollTop || 0;
+        const nav = document.querySelector('nav[role=\"navigation\"]');
+        const navHeight = nav ? Math.ceil(nav.getBoundingClientRect().height) : 0;
+        const offset = Math.max(50, navHeight + 25);
+        const targetY = currentY + rect.top - offset;
+        window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+      } else if (tries < 20) {
+        tries += 1;
+        setTimeout(tryScroll, 100);
+      }
+    };
+
+    setTimeout(tryScroll, 0);
+    return () => { cancelled = true; };
+  }, [marcaParam, productos.length]);
 
   // Hook SEO para página de productos
   const { seoData } = useSEO('productos', { path: '/productos' });
@@ -558,7 +587,26 @@ export default function ProductosPage() {
   })();
 
   const handleFeaturedClick = (term) => {
-    router.push(`/productos?busqueda=${encodeURIComponent(term)}`);
+    const current = (busquedaParam || '').toLowerCase();
+    const next = (term || '').toLowerCase();
+
+    if (current !== next) {
+      router.push(`/productos?busqueda=${encodeURIComponent(term)}`);
+    }
+
+    if (typeof window !== 'undefined') {
+      const anchor = document.getElementById('todos-productos');
+      if (!anchor) return;
+
+      const rect = anchor.getBoundingClientRect();
+      const currentY = window.pageYOffset || document.documentElement.scrollTop || 0;
+      const nav = document.querySelector('nav[role="navigation"]');
+      const navHeight = nav ? Math.ceil(nav.getBoundingClientRect().height) : 0;
+      const offset = Math.max(50, navHeight + 25);
+      const targetY = currentY + rect.top - offset;
+
+      window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+    }
   };
   // Motores destacados (para quién compras) - Usar imágenes provistas y búsqueda por motor
   const engineBrands = [
@@ -576,7 +624,26 @@ export default function ProductosPage() {
   ];
 
   const handleBrandClick = (query) => {
-    router.push(`/productos?busqueda=${encodeURIComponent(query)}`);
+    const current = (busquedaParam || '').toLowerCase();
+    const next = (query || '').toLowerCase();
+
+    if (current !== next) {
+      router.push(`/productos?busqueda=${encodeURIComponent(query)}`);
+    }
+
+    if (typeof window !== 'undefined') {
+      const anchor = document.getElementById('todos-productos');
+      if (!anchor) return;
+
+      const rect = anchor.getBoundingClientRect();
+      const currentY = window.pageYOffset || document.documentElement.scrollTop || 0;
+      const nav = document.querySelector('nav[role="navigation"]');
+      const navHeight = nav ? Math.ceil(nav.getBoundingClientRect().height) : 0;
+      const offset = Math.max(50, navHeight + 25);
+      const targetY = currentY + rect.top - offset;
+
+      window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+    }
   };
 
   
@@ -769,7 +836,10 @@ export default function ProductosPage() {
                       <input
                         type="checkbox"
                         checked={selectedMarcas.includes(marca)}
-                        onChange={() => handleMarcaChange(marca)}
+                        onChange={() => {
+                          handleMarcaChange(marca);
+                          closeMobileFilter();
+                        }}
                       />
                       <span className="mobileCheckmark"></span>
                       {marca}
@@ -891,13 +961,22 @@ export default function ProductosPage() {
               {/* Banner Todos los productos (solo informativo, sin acción) */}
               <div className="allProductsBanner" id="todos-productos">
                 <div className="allProductsBannerBox">Todos los productos</div>
-                <div className={`filterBannerRow ${busquedaParam ? 'withResults' : ''}`}>
+                <div className={`filterBannerRow ${(busquedaParam || (selectedMarcas && selectedMarcas.length > 0)) ? 'withResults' : ''}`}>
                   <button className="filterBannerBtn" onClick={toggleMobileFilter}>
                     <FaFilter /> Filtrar por
                   </button>
-                  {busquedaParam && (
+                  {(busquedaParam || (selectedMarcas && selectedMarcas.length > 0)) && (
                     <div className="searchResultsNotice" aria-live="polite">
-                      <span className="resultsQuery searchIndicator searchIndicator--inline">Resultados para: "{busquedaParam}" ({productos.length} productos encontrados)</span>
+                      {busquedaParam && (
+                        <span className="resultsQuery searchIndicator searchIndicator--inline">
+                          Resultados para: "{busquedaParam}" ({productos.length} productos encontrados)
+                        </span>
+                      )}
+                      {selectedMarcas && selectedMarcas.length > 0 && (
+                        <span className="brandFilterIndicator">
+                          Marca seleccionada: {selectedMarcas.join(', ')}
+                        </span>
+                      )}
                     </div>
                   )}
                 </div>

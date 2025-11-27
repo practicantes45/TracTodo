@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './AdvisorPickerModal.module.css';
 import ContactNumbers from '../ContactNumbers/ContactNumbers';
@@ -7,11 +7,22 @@ import { useAdvisorSelection } from '../../../hooks/useAdvisorSelection';
 
 export default function AdvisorPickerModal({ isOpen, onClose }) {
   const { selectedAdvisor } = useAdvisorSelection();
+  const initialSelectedIdRef = useRef(null);
+
+  // Track the selection present when the modal opens so we only auto-close after a change
+  useEffect(() => {
+    if (isOpen) {
+      initialSelectedIdRef.current = selectedAdvisor?.id || null;
+    }
+  }, [isOpen, selectedAdvisor]);
 
   useEffect(() => {
     if (!isOpen) return;
     // Cerrar al seleccionar un asesor
-    if (selectedAdvisor) {
+    const initialId = initialSelectedIdRef.current;
+    const currentId = selectedAdvisor?.id || null;
+
+    if (currentId && currentId !== initialId) {
       onClose?.();
     }
   }, [selectedAdvisor, isOpen, onClose]);

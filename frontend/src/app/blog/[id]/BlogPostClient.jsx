@@ -12,7 +12,6 @@ import './blog-post.overrides.css';
 
 export default function BlogPostClient({ post }) {
     const router = useRouter();
-    const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
     // Hook SEO para artículo individual
     const { seoData, loading: seoLoading } = useBlogSEO(post?.id, post);
@@ -31,11 +30,13 @@ export default function BlogPostClient({ post }) {
         e.target.alt = 'Imagen no encontrada';
     };
 
+    const shareUrl = typeof window !== 'undefined' ? `${window.location.origin}/blog/${post.id}` : `${process.env.NEXT_PUBLIC_FRONTEND_URL}/blog/${post.id}`;
+
     const handleShare = async () => {
         const shareData = {
             title: post.title,
-            text: `Lee este artículo de TracTodo: ${post.title}`,
-            url: window.location.href
+            text: `Lee este articulo de TracTodo: ${post.title}`,
+            url: shareUrl
         };
 
         if (navigator.share) {
@@ -51,14 +52,17 @@ export default function BlogPostClient({ post }) {
     };
 
     const copyToClipboard = () => {
-        navigator.clipboard.writeText(window.location.href).then(() => {
+        navigator.clipboard.writeText(shareUrl).then(() => {
             alert('Enlace copiado al portapapeles');
         });
     };
 
     // Dividir el contenido en párrafos
     const splitContentIntoParagraphs = (content) => {
-        return content.split('\n\n').filter(paragraph => paragraph.trim().length > 0);
+        return content
+            .split(/\n\s*\n/)
+            .map(paragraph => paragraph.trim())
+            .filter(paragraph => paragraph.length > 0);
     };
 
     const formatParagraph = (paragraph) => {
@@ -71,8 +75,37 @@ export default function BlogPostClient({ post }) {
             .replace(/\n/g, '<br>');
     };
 
-    const paragraphs = splitContentIntoParagraphs(post.content || '');
-    const images = post.images || [];
+    const bloques = Array.isArray(post.bloques)
+        ? post.bloques.filter(bloque =>
+            bloque &&
+            ((bloque.texto && bloque.texto.trim().length > 0) ||
+             (bloque.imagen && bloque.imagen.trim().length > 0) ||
+             (bloque.subtitulo && bloque.subtitulo.trim().length > 0)))
+        : [];
+
+    const hasBloques = bloques.length > 0;
+
+    const contenidoDesdeBloques = hasBloques
+        ? bloques
+            .map(bloque => {
+                const subtitulo = (bloque.subtitulo || '').trim();
+                const texto = bloque.texto || '';
+                const piezas = [];
+                if (subtitulo) piezas.push(`## ${subtitulo}`);
+                if (texto.trim()) piezas.push(texto);
+                return piezas.join('\n');
+            })
+            .filter(Boolean)
+            .join('\n\n')
+        : '';
+
+    const paragraphs = hasBloques
+        ? splitContentIntoParagraphs(contenidoDesdeBloques)
+        : splitContentIntoParagraphs(post.content || '');
+
+    const images = hasBloques
+        ? bloques.map((bloque) => bloque.imagen).filter(Boolean)
+        : post.images || [];
 
     // Schema.org para artículo individual
     const schemaArticle = {
@@ -201,78 +234,120 @@ export default function BlogPostClient({ post }) {
 
                                 {/* Layout alternado de contenido */}
                                 <div className="magazineBody">
-                                    {paragraphs.map((paragraph, index) => {
-                                        const isEven = index % 2 === 0;
-                                        const imageIndex = Math.floor(index / 2) % images.length;
-                                        const hasImage = images.length > 0 && index < images.length * 2;
+                                    {hasBloques ? (
+                                        bloques.map((bloque, index) => {
+                                            const isEven = index % 2 === 0;
+                                            const hasImage = Boolean(bloque.imagen);
+                                            const subtitle = (bloque.subtitulo || '').trim();
+                                            const texto = bloque.texto || '';
+                                            const bloqueEnriquecido = `${subtitle ? `## ${subtitle}\n` : ''}${texto}`;
 
-                                        return (
-                                            <div key={index} className={`contentRow ${isEven ? 'row-left-image' : 'row-right-image'}`}>
-                                                {isEven ? (
-                                                    // Imagen izquierda, texto derecha
-                                                    <>
-                                                        <div className="contentImageContainer">
-                                                            {hasImage && (
-                                                                <img
-                                                                    src={images[imageIndex]}
-                                                                    alt={`${post.title} - Imagen ${imageIndex + 1}`}
-                                                                    className="contentImage"
-                                                                    onError={handleImageError}
+                                            return (
+                                                <div key={index} className={`contentRow ${isEven ? 'row-left-image' : 'row-right-image'}`}>
+                                                    {isEven ? (
+                                                        <>
+                                                            <div className="contentImageContainer">
+                                                                {hasImage && (
+                                                                    <img
+                                                                        src={bloque.imagen}
+                                                                        alt={`${post.title} - Imagen ${index + 1}`}
+                                                                        className="contentImage"
+                                                                        onError={handleImageError}
+                                                                    />
+                                                                )}
+                                                            </div>
+                                                            <div className="contentTextContainer">
+                                                                <div className="contentText">
+                                                                    <div
+                                                                        dangerouslySetInnerHTML={{ 
+                                                                            __html: formatParagraph(bloqueEnriquecido) 
+                                                                        }}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <div className="contentTextContainer">
+                                                                <div className="contentText">
+                                                                    <div
+                                                                        dangerouslySetInnerHTML={{ 
+                                                                            __html: formatParagraph(bloqueEnriquecido) 
+                                                                        }}
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                            <div className="contentImageContainer">
+                                                                {hasImage && (
+                                                                    <img
+                                                                        src={bloque.imagen}
+                                                                        alt={`${post.title} - Imagen ${index + 1}`}
+                                                                        className="contentImage"
+                                                                        onError={handleImageError}
+                                                                    />
+                                                                )}
+                                                            </div>
+                                                        </>
+                                                    )}
+                                                </div>
+                                            );
+                                        })
+                                    ) : (
+                                        paragraphs.map((paragraph, index) => {
+                                            const isEven = index % 2 === 0;
+                                            const imageIndex = Math.floor(index / 2) % images.length;
+                                            const hasImage = images.length > 0 && index < images.length * 2;
+
+                                            return (
+                                                <div key={index} className={`contentRow ${isEven ? 'row-left-image' : 'row-right-image'}`}>
+                                                    {isEven ? (
+                                                        <>
+                                                            <div className="contentImageContainer">
+                                                                {hasImage && (
+                                                                    <img
+                                                                        src={images[imageIndex]}
+                                                                        alt={`${post.title} - Imagen ${imageIndex + 1}`}
+                                                                        className="contentImage"
+                                                                        onError={handleImageError}
+                                                                    />
+                                                                )}
+                                                            </div>
+                                                            <div className="contentTextContainer">
+                                                                <div 
+                                                                    className="contentText"
+                                                                    dangerouslySetInnerHTML={{ 
+                                                                        __html: formatParagraph(paragraph) 
+                                                                    }}
                                                                 />
-                                                            )}
-                                                        </div>
-                                                        <div className="contentTextContainer">
-                                                            <div 
-                                                                className="contentText"
-                                                                dangerouslySetInnerHTML={{ 
-                                                                    __html: formatParagraph(paragraph) 
-                                                                }}
-                                                            />
-                                                        </div>
-                                                    </>
-                                                ) : (
-                                                    // Texto izquierda, imagen derecha
-                                                    <>
-                                                        <div className="contentTextContainer">
-                                                            <div 
-                                                                className="contentText"
-                                                                dangerouslySetInnerHTML={{ 
-                                                                    __html: formatParagraph(paragraph) 
-                                                                }}
-                                                            />
-                                                        </div>
-                                                        <div className="contentImageContainer">
-                                                            {hasImage && (
-                                                                <img
-                                                                    src={images[imageIndex]}
-                                                                    alt={`${post.title} - Imagen ${imageIndex + 1}`}
-                                                                    className="contentImage"
-                                                                    onError={handleImageError}
+                                                            </div>
+                                                        </>
+                                                    ) : (
+                                                        <>
+                                                            <div className="contentTextContainer">
+                                                                <div 
+                                                                    className="contentText"
+                                                                    dangerouslySetInnerHTML={{ 
+                                                                        __html: formatParagraph(paragraph) 
+                                                                    }}
                                                                 />
-                                                            )}
-                                                        </div>
-                                                    </>
-                                                )}
-                                            </div>
-                                        );
-                                    })}
+                                                            </div>
+                                                            <div className="contentImageContainer">
+                                                                {hasImage && (
+                                                                    <img
+                                                                        src={images[imageIndex]}
+                                                                        alt={`${post.title} - Imagen ${imageIndex + 1}`}
+                                                                        className="contentImage"
+                                                                        onError={handleImageError}
+                                                                    />
+                                                                )}
+                                                            </div>
+                                                        </>
+                                                    )}
+                                                </div>
+                                            );
+                                        })
+                                    )}
                                 </div>
-
-                                {/* Imágenes restantes si hay más que párrafos */}
-                                {images.length > paragraphs.length && (
-                                    <div className="extraImages">
-                                        {images.slice(paragraphs.length).map((image, index) => (
-                                            <div key={`extra-${index}`} className="extraImageContainer">
-                                                <img
-                                                    src={image}
-                                                    alt={`${post.title} - Imagen adicional ${index + 1}`}
-                                                    className="extraImage"
-                                                    onError={handleImageError}
-                                                />
-                                            </div>
-                                        ))}
-                                    </div>
-                                )}
                             </div>
 
                             {/* Footer del artículo */}

@@ -1,20 +1,27 @@
-PS D:\TracTodo\TracTodo\frontend>
-      npm run dev
+Error: ./src/app/productos/[nombre]/ProductoIndividualClient.jsx
+Error:   [31m×[0m Expected corresponding JSX closing tag for <section>
+     ╭─[[36;1;4mD:\TracTodo\TracTodo\frontend\src\app\productos\[nombre]\ProductoIndividualClient.jsx[0m:908:1]
+ [2m905[0m │                                     </div>
+ [2m906[0m │                                 )}
+ [2m907[0m │                             </div>
+ [2m908[0m │                         </div>
+     · [35;1m                        ──────[0m
+ [2m909[0m │                     </section>
+ [2m910[0m │ 
+ [2m910[0m │                     <section className="descriptionSection">
+     ╰────
 
-> frontend@0.1.0 dev        
-> next dev --turbopack -p 3001
-
-   ▲ Next.js 15.3.2 (Turbopack)
-   - Local:        http://localhost:3001
-   - Network:      http://192.168.100.35:3001
-al folder. If you have an antivirus enabled, consider excluding your project directory.
- ✓ Ready in 1528ms
- ○ Compiling / ...
- ✓ Compiled / in 2.5s
- ○ Compiling /_error ...
- ✓ Compiled /_error in 1319ms
- GET / 500 in 4156ms
-
- Error: An unexpected Turbopack error occurred. Please see the output of `next dev` for more details.
-    at getServerError (http://localhost:3001/_next/static/chunks/%5Broot-of-the-server%5D__e2c08166._.js:11049:62)
-    at http://localhost:3001/_next/static/chunks/%5Broot-of-the-server%5D__e2c08166._.js:21318:27
+Caused by:
+    Syntax Error
+    at BuildError (webpack-internal:///(pages-dir-browser)/./node_modules/next/dist/client/components/react-dev-overlay/ui/container/build-error.js:43:41)
+    at Object.react_stack_bottom_frame (webpack-internal:///(pages-dir-browser)/./node_modules/react-dom/cjs/react-dom-client.development.js:23864:20)
+    at renderWithHooks (webpack-internal:///(pages-dir-browser)/./node_modules/react-dom/cjs/react-dom-client.development.js:5530:22)
+    at updateFunctionComponent (webpack-internal:///(pages-dir-browser)/./node_modules/react-dom/cjs/react-dom-client.development.js:8898:19)
+    at beginWork (webpack-internal:///(pages-dir-browser)/./node_modules/react-dom/cjs/react-dom-client.development.js:10523:18)
+    at runWithFiberInDEV (webpack-internal:///(pages-dir-browser)/./node_modules/react-dom/cjs/react-dom-client.development.js:1520:30)
+    at performUnitOfWork (webpack-internal:///(pages-dir-browser)/./node_modules/react-dom/cjs/react-dom-client.development.js:15133:22)
+    at workLoopSync (webpack-internal:///(pages-dir-browser)/./node_modules/react-dom/cjs/react-dom-client.development.js:14957:41)
+    at renderRootSync (webpack-internal:///(pages-dir-browser)/./node_modules/react-dom/cjs/react-dom-client.development.js:14937:11)
+    at performWorkOnRoot (webpack-internal:///(pages-dir-browser)/./node_modules/react-dom/cjs/react-dom-client.development.js:14420:13)
+    at performWorkOnRootViaSchedulerTask (webpack-internal:///(pages-dir-browser)/./node_modules/react-dom/cjs/react-dom-client.development.js:16217:7)
+    at MessagePort.performWorkUntilDeadline (webpack-internal:///(pages-dir-browser)/./node_modules/scheduler/cjs/scheduler.development.js:45:48)

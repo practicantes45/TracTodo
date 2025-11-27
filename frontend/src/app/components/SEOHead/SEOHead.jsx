@@ -24,6 +24,8 @@ export default function SEOHead({
         ELIMINADO: Meta title y description básicos 
         (ahora se manejan server-side para evitar duplicación)
       */}
+      {title && <title>{title}</title>}
+      {description && <meta name="description" content={description} />}
       
       {/* Keywords solo si no están en server-side */}
       {keywordsString && <meta name="keywords" content={keywordsString} />}
@@ -55,6 +57,16 @@ export default function SEOHead({
       <meta name="geo.placename" content="San Juan del Río" />
       <meta name="geo.position" content="20.3881;-99.9968" />
       <meta name="ICBM" content="20.3881, -99.9968" />
+
+      {/* Open Graph */}
+      {ogTitle && <meta property="og:title" content={ogTitle} />}
+      {ogDescription && <meta property="og:description" content={ogDescription} />}
+      {ogImage && <meta property="og:image" content={ogImage} />}
+      {ogUrl && <meta property="og:url" content={ogUrl} />}
+      <meta property="og:type" content="product" />
+
+      {/* Canonical */}
+      {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
       
       {/* Preload de recursos críticos */}
       <link rel="dns-prefetch" href="//fonts.googleapis.com" />

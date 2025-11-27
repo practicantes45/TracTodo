@@ -7,7 +7,7 @@
 /* ===== HERO SECTION PARA SOBRE NOSOTROS - UNIFICADO ===== */
 .sobre-page .heroSection {
   position: absolute;
-  height: 580px;
+  height: 290px;
   /* ALTURA UNIFICADA */
   width: 100%;
   left: 0;
@@ -38,6 +38,13 @@
 
 }
 
+/* Desktop: suavizar overlay para evitar tinte morado en la imagen */
+@media (min-width: 769px) {
+  .sobre-page .heroOverlay {
+    background: linear-gradient(0deg, rgba(20, 8, 36, 0.36), rgba(12, 4, 20, 0.14)) !important;
+  }
+}
+
 .heroContent {
   max-width: 800px;
   padding: 0 20px;
@@ -45,6 +52,9 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  display: flex;
+  text-align: center;
+  gap: 8px;
 }
 
 .heroContent h1 {
@@ -76,25 +86,36 @@
 .sobre-page .mainContent {
   flex: 1;
   width: 100%;
-  padding-top: 580px;
+  padding-top: 290px;
   /* IGUAL A LA ALTURA DEL HERO */
+}
+
+/* Desktop: centra verticalmente el bloque de texto del hero */
+@media (min-width: 769px) {
+  .sobre-page .heroContent { transform: translateY(14px); }
+}
+
+@media (min-width: 993px) {
+  .sobre-page .heroSection { height: 145px; }
+  .sobre-page .mainContent { padding-top: 165px; }
+  .aboutSection { margin-top: -55px; }
 }
 
 /* --- Ajustes móviles: hero compacto con título visible --- */
 @media (max-width: 768px) {
-  .sobre-page .heroSection { height: clamp(170px, 26vh, 220px) !important; }
+  .sobre-page .heroSection { height: clamp(85px, 13vh, 110px) !important; }
   .sobre-page .heroContent h1 {
     font-size: clamp(1.2rem, 5.2vw, 1.8rem) !important;
     margin-bottom: 8px !important;
     opacity: 1 !important; animation: none !important; color: #fff !important;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.6) !important;
   }
-  .sobre-page .mainContent { padding-top: calc(90px + clamp(170px, 26vh, 220px)) !important; }
+  .sobre-page .mainContent { padding-top: calc(90px + clamp(85px, 13vh, 110px)) !important; }
 }
 @media (max-width: 480px) {
-  .sobre-page .heroSection { height: clamp(160px, 32vh, 210px) !important; }
+  .sobre-page .heroSection { height: clamp(80px, 16vh, 105px) !important; }
   .sobre-page .heroContent h1 { font-size: clamp(1.1rem, 6vw, 1.6rem) !important; opacity: 1 !important; animation: none !important; }
-  .sobre-page .mainContent { padding-top: calc(90px + clamp(160px, 32vh, 210px)) !important; }
+  .sobre-page .mainContent { padding-top: calc(90px + clamp(80px, 16vh, 105px)) !important; }
 }
 
 /* ===== SECCIÃ“N Â¿QUIÃ‰NES SOMOS? - DISEÃ‘O DINÃMICO Y ATRACTIVO ===== */
@@ -102,7 +123,7 @@
   background: linear-gradient(145deg, #f0f8ff 0%, #e6f3ff 30%, #ffffff 70%, #f8f9fa 100%);
   padding: 20px 20px 80px 20px;
   margin: 0;
-  margin-top: -100px;
+  margin-top: -50px;
   /* AJUSTE ESPECÃFICO UNIFICADO */
   position: relative;
   overflow: hidden;
@@ -507,7 +528,7 @@
 @media (max-width: 1023px) {
   .aboutSection {
     padding: 15px 15px 70px 15px;
-    margin-top: -60px;
+    margin-top: -30px;
   }
 
   .aboutContentWithImage {
@@ -553,16 +574,16 @@
 /* Tablet (992px) */
 @media (max-width: 992px) {
   .sobre-page .heroSection {
-    height: 540px;
+    height: 270px;
     background-position: center center;
   }
 
   .sobre-page .mainContent {
-    padding-top: 540px;
+    padding-top: 270px;
   }
 
   .heroContent h1 {
-    margin-top: -150px;
+    margin-top: 0;
     font-size: 2.8rem;
     text-shadow:
       2px 2px 4px rgba(0, 0, 0, 0.9),
@@ -571,7 +592,7 @@
   }
 
   .aboutSection {
-    margin-top: -60px;
+    margin-top: -30px;
   }
 
   .missionVisionContainer {
@@ -593,7 +614,7 @@
 /* MÃ³vil (768px) - OCULTAR TÃTULO */
 @media (max-width: 768px) {
   .sobre-page .heroSection {
-    height: 420px;
+    height: 210px;
     top: 60px;
     background-position: center center;
   }
@@ -603,11 +624,11 @@
   }
 
   .sobre-page .mainContent {
-    padding-top: 480px;
+    padding-top: 270px;
   }
 
   .aboutSection {
-    margin-top: -20px;
+    margin-top: -10px;
   }
 
   .aboutContentWithImage {
@@ -681,7 +702,7 @@
 /* MÃ³vil pequeÃ±o (480px) */
 @media (max-width: 480px) {
   .sobre-page .heroSection {
-    height: 380px;
+    height: 190px;
     top: 60px;
     background-position: center center;
   }
@@ -691,11 +712,11 @@
   }
 
   .sobre-page .mainContent {
-    padding-top: 430px;
+    padding-top: 250px;
   }
 
   .aboutSection {
-    margin-top: -60px;
+    margin-top: -30px;
     padding: 20px 10px;
   }
 
@@ -740,13 +761,13 @@
 /* Ajustes para pantallas muy pequeÃ±as (360px) */
 @media (max-width: 360px) {
   .sobre-page .heroSection {
-    height: 350px;
+    height: 175px;
     top: 60px;
     background-position: center center;
   }
 
   .sobre-page .mainContent {
-    padding-top: 400px;
+    padding-top: 235px;
   }
 
   .sobre-page .heroContent h1 {
@@ -754,7 +775,7 @@
   }
 
   .aboutSection {
-    margin-top: -40px;
+    margin-top: -20px;
     padding: 10px 3px;
   }
 }

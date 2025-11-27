@@ -1,5 +1,6 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { FaTimes, FaChevronLeft, FaChevronRight, FaSearchPlus, FaSearchMinus, FaRedo } from 'react-icons/fa';
 import styles from './ProductImageModal.module.css';
 
@@ -13,6 +14,7 @@ const ProductImageModal = ({ images, isOpen, onClose, initialIndex = 0 }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const modalImageRef = useRef(null);
+  const [modalImageError, setModalImageError] = useState(false);
 
   useEffect(() => {
     setCurrentIndex(initialIndex);
@@ -36,6 +38,7 @@ const ProductImageModal = ({ images, isOpen, onClose, initialIndex = 0 }) => {
     setModalRotation(0);
     setModalPanX(0);
     setModalPanY(0);
+    setModalImageError(false);
   }, [currentIndex]);
 
   const handleKeyDown = (e) => {
@@ -216,25 +219,32 @@ const ProductImageModal = ({ images, isOpen, onClose, initialIndex = 0 }) => {
             <FaTimes />
           </button>
 
-          <img
-            ref={modalImageRef}
-            src={images[currentIndex]}
-            alt={`Imagen ${currentIndex + 1}`}
-            className={`${styles.modalImage} ${styles.horizontalImage}`}
-            style={{
-              transform: `translate(${modalPanX}px, ${modalPanY}px) scale(${modalZoom / 100}) rotate(${modalRotation}deg)`,
-              transition: isDragging ? 'none' : 'transform 0.3s ease',
-              cursor: modalZoom > 100 ? (isDragging ? 'grabbing' : 'grab') : 'default'
-            }}
-            onLoad={handleImageLoad}
-            onError={(e) => {
-              e.target.style.display = 'none';
-              e.target.nextElementSibling.style.display = 'flex';
-            }}
-            draggable={false}
-          />
+          {!modalImageError ? (
+            <Image
+              ref={modalImageRef}
+              src={images[currentIndex]}
+              alt={`Imagen ${currentIndex + 1}`}
+              className={`${styles.modalImage} ${styles.horizontalImage}`}
+              fill
+              sizes="90vw"
+              priority
+              style={{
+                objectFit: 'contain',
+                transform: `translate(${modalPanX}px, ${modalPanY}px) scale(${modalZoom / 100}) rotate(${modalRotation}deg)`,
+                transition: isDragging ? 'none' : 'transform 0.3s ease',
+                cursor: modalZoom > 100 ? (isDragging ? 'grabbing' : 'grab') : 'default'
+              }}
+              onLoad={(e) => {
+                handleImageLoad(e);
+                setModalImageError(false);
+              }}
+              onError={() => setModalImageError(true)}
+              draggable={false}
+              fetchPriority="high"
+            />
+          ) : null}
           
-          <div className={styles.imageNotFound} style={{ display: 'none' }}>
+          <div className={styles.imageNotFound} style={{ display: modalImageError ? 'flex' : 'none' }}>
             <div className={styles.noImageIcon}>📷</div>
             <p>Imagen no disponible</p>
           </div>

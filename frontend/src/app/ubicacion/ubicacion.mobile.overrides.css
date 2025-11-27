@@ -6,7 +6,14 @@
     top: 56px !important;
     left: 0 !important;
     width: 100% !important;
-    height: clamp(170px, 26vh, 220px) !important;
+    height: clamp(85px, 13vh, 110px) !important;
+  }
+  .layout.ubicacion-page .heroContent {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-direction: column !important;
+    transform: translateY(-8px);
   }
   .layout.ubicacion-page .heroContent h1 {
     display: block !important;
@@ -19,12 +26,13 @@
     text-shadow: 2px 2px 4px rgba(0,0,0,.8), 0 0 10px rgba(0,0,0,.6) !important;
   }
   .layout.ubicacion-page .mainContent {
-    padding-top: calc(56px + clamp(170px, 26vh, 220px)) !important;
+    padding-top: calc(56px + clamp(85px, 13vh, 110px)) !important;
   }
 }
 
 @media (max-width: 480px) {
-  .layout.ubicacion-page .heroSection { height: clamp(160px, 32vh, 210px) !important; }
+  .layout.ubicacion-page .heroSection { height: clamp(80px, 16vh, 105px) !important; }
+  .layout.ubicacion-page .heroContent { transform: translateY(-8px); }
   .layout.ubicacion-page .heroContent h1 { font-size: clamp(1.1rem, 6vw, 1.6rem) !important; }
-  .layout.ubicacion-page .mainContent { padding-top: calc(56px + clamp(160px, 32vh, 210px)) !important; }
+  .layout.ubicacion-page .mainContent { padding-top: calc(56px + clamp(80px, 16vh, 105px)) !important; }
 }

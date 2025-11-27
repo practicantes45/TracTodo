@@ -7,7 +7,6 @@ import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
 import ScrollToTop from '../components/ScrollToTop/ScrollToTop';
 import BlogManager from '../components/BlogManager/BlogManager';
-import BlogPostModal from '../components/BlogPostModal/BlogPostModal';
 import SEOHead from '../components/SEOHead/SEOHead';
 import { useAuth } from '../../hooks/useAuth';
 import { obtenerPosts } from '../../services/blogService';
@@ -22,8 +21,6 @@ export default function BlogClient() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [showBlogManager, setShowBlogManager] = useState(false);
-    const [selectedPostId, setSelectedPostId] = useState(null);
-    const [showPostModal, setShowPostModal] = useState(false);
 
     // Hook SEO para página de blog
     const { seoData } = useSEO('blog', { path: '/blog' });
@@ -240,20 +237,11 @@ export default function BlogClient() {
         return matchesCategory && matchesSearch;
     });
 
-    // Abrir modal en lugar de navegar
+    // Navegar a la p�gina compartible del post
     const handlePostClick = (post) => {
-        setSelectedPostId(post.id);
-        setShowPostModal(true);
-        // Prevenir scroll del body cuando el modal está abierto
-        document.body.style.overflow = 'hidden';
-    };
-
-    // Cerrar modal
-    const handleCloseModal = () => {
-        setShowPostModal(false);
-        setSelectedPostId(null);
-        // Restaurar scroll del body
-        document.body.style.overflow = 'unset';
+        if (!post || !post.id) return;
+        const target = `/blog/${String(post.id)}`;
+        router.push(target);
     };
 
     const formatDate = (dateString) => {
@@ -554,12 +542,6 @@ export default function BlogClient() {
                     />
                 )}
 
-                {/* Modal para mostrar artículo */}
-                <BlogPostModal
-                    postId={selectedPostId}
-                    isOpen={showPostModal}
-                    onClose={handleCloseModal}
-                />
             </div>
         </>
     );

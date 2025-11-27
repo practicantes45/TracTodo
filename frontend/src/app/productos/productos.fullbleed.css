@@ -126,6 +126,11 @@
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
   text-shadow: none;
 }
+.filterBannerRow.withResults .searchResultsNotice .brandFilterIndicator {
+  font-size: 0.9rem;
+  font-weight: 600;
+  opacity: .9;
+}
 @media (max-width: 680px) {
   .filterBannerRow.withResults { flex-direction: column; align-items: stretch; }
   .filterBannerRow.withResults .filterBannerBtn { width: 100%; max-width: 100%; }
@@ -173,5 +178,30 @@
 /* En móvil, bajar ligeramente el primer banner para que respire bajo el hero */
 @media (max-width: 768px) {
   .featuredCategories > .allProductsBanner { margin-top: 4px !important; }
+}
+
+/* Final gap fix: pegamos "Explora por tipo" al hero en todos los tamaños */
+.featuredCategories > .allProductsBanner {
+  margin-top: clamp(-14px, -2vw, -6px) !important;
+  margin-bottom: 6px !important;
+}
+@media (min-width: 992px) {
+  .featuredCategories > .allProductsBanner { margin-top: clamp(-12px, -1.4vw, -6px) !important; }
+}
+@media (max-width: 900px) {
+  .featuredCategories > .allProductsBanner { margin-top: -6px !important; }
+}
+@media (max-width: 768px) {
+  .productosMainSection { margin-top: -24px !important; padding-top: 0 !important; }
+  .featuredCategories > .allProductsBanner { margin-top: -2px !important; }
+}
+@media (max-width: 540px) {
+  .productosMainSection { margin-top: -32px !important; }
+  .featuredCategories > .allProductsBanner { margin-top: 0 !important; }
+}
+
+/* Desktop: pegar aÆºn mÄs el primer banner al hero */
+@media (min-width: 992px) {
+  .featuredCategories > .allProductsBanner { margin-top: -30px !important; }
 }
 

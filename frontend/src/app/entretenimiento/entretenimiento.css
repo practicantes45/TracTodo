@@ -8,7 +8,7 @@
 /* ===== HERO SECTION PARA ENTRETENIMIENTO - UNIFICADO ===== */
 .entretenimiento-page .heroSection {
   position: absolute;
-  height: 580px;
+  height: 290px;
   width: 100%;
   left: 0;
   background-image: url('https://i.postimg.cc/SNFcd0pZ/entretenimiento3.png');
@@ -19,9 +19,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 2;
 }
 
-.heroOverlay {
+.entretenimiento-page .heroOverlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -32,18 +33,28 @@
   justify-content: center;
   text-align: center;
   background: linear-gradient(0deg, rgba(26, 11, 46, 0.72), rgba(14, 4, 28, 0.45));
+  z-index: 3;
 }
 
-.heroContent {
+/* Desktop: suavizar overlay para evitar tinte morado */
+@media (min-width: 769px) {
+  .entretenimiento-page .heroOverlay {
+    background: linear-gradient(0deg, rgba(20, 8, 36, 0.36), rgba(12, 4, 20, 0.14)) !important;
+  }
+}
+
+.entretenimiento-page .heroContent {
   max-width: 800px;
   padding: 0 20px;
-  z-index: 2;
+  z-index: 4;
+  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  text-align: center;
 }
 
-.heroContent h1 {
+.entretenimiento-page .heroContent h1 {
   font-size: 3.5rem;
   margin-bottom: 15px;
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
@@ -72,38 +83,58 @@
 .entretenimiento-page .mainContent {
   flex: 1;
   width: 100%;
-  padding-top: 580px;
+  padding-top: 290px;
+}
+
+/* Laptop desktop intermedio */
+@media (min-width: 993px) and (max-width: 1199px) {
+  .entretenimiento-page .heroSection { height: 200px; top: 90px; background-position: center 34%; }
+  .entretenimiento-page .mainContent { padding-top: 230px; }
+  .entretenimiento-page .heroContent { transform: translateY(4px); }
+  .entertainmentMainSection { margin-top: -40px; }
+}
+
+/* Desktop ancho */
+@media (min-width: 1200px) {
+  .entretenimiento-page .heroSection { height: 220px; top: 90px; background-position: center 32%; }
+  .entretenimiento-page .mainContent { padding-top: 240px; }
+  .entretenimiento-page .heroContent { transform: translateY(0); }
+  .entertainmentMainSection { margin-top: -50px; }
 }
 
 /* --- Ajustes móviles: hero compacto con título visible --- */
 @media (max-width: 768px) {
   .entretenimiento-page .heroSection {
-    height: clamp(170px, 26vh, 220px) !important;
+    height: clamp(110px, 18vh, 150px) !important;
+    position: relative !important;
+    top: 0 !important;
     z-index: 1 !important;
   }
   .entretenimiento-page .heroOverlay { z-index: 2 !important; }
   .entretenimiento-page .heroContent { z-index: 3 !important; }
   .entretenimiento-page .heroContent h1 {
-    font-size: clamp(1.2rem, 5.2vw, 1.8rem) !important;
+    font-size: clamp(1rem, 4.8vw, 1.5rem) !important;
     margin-bottom: 8px !important;
     margin-top: 0 !important;
     opacity: 1 !important; animation: none !important; color: #fff !important;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.6) !important;
   }
-  .entretenimiento-page .mainContent { padding-top: calc(90px + clamp(170px, 26vh, 220px)) !important; }
+  .entretenimiento-page .mainContent { padding-top: 0 !important; }
   /* Evitar que el contenido tape al hero */
-  .entertainmentMainSection { margin-top: 0 !important; }
+  .entertainmentMainSection { margin-top: -10px !important; padding: 12px 12px 60px 12px !important; }
 }
 @media (max-width: 480px) {
   .entretenimiento-page .heroSection {
-    height: clamp(160px, 32vh, 210px) !important;
+    height: clamp(100px, 17vh, 140px) !important;
+    position: relative !important;
+    top: 0 !important;
     z-index: 1 !important;
   }
   .entretenimiento-page .heroOverlay { z-index: 2 !important; }
   .entretenimiento-page .heroContent { z-index: 3 !important; }
-  .entretenimiento-page .heroContent h1 { font-size: clamp(1.1rem, 6vw, 1.6rem) !important; opacity: 1 !important; animation: none !important; margin-top: 0 !important; }
-  .entretenimiento-page .mainContent { padding-top: calc(90px + clamp(160px, 32vh, 210px)) !important; }
-  .entertainmentMainSection { margin-top: 0 !important; }
+  .entretenimiento-page .heroContent h1 { font-size: clamp(1.05rem, 5.8vw, 1.55rem) !important; opacity: 1 !important; animation: none !important; margin-top: 0 !important; }
+  .entretenimiento-page .mainContent { padding-top: 0 !important; }
+  .entertainmentMainSection { margin-top: -8px !important; padding: 12px 12px 60px 12px !important; }
 }
 
 /* ===== SECCIÃ“N PRINCIPAL DE ENTRETENIMIENTO ===== */
@@ -111,7 +142,7 @@
   background: linear-gradient(145deg, #f0f8ff 0%, #e6f3ff 30%, #ffffff 70%, #f8f9fa 100%);
   padding: 40px 20px 80px 20px;
   margin: 0;
-  margin-top: -100px;
+  margin-top: -60px;
   position: relative;
   overflow: hidden;
 }
@@ -1182,16 +1213,16 @@
 /* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 992px) {
  .entretenimiento-page .heroSection {
-   height: 540px;
+   height: 270px;
    background-position: center center;
  }
 
  .entretenimiento-page .mainContent {
-   padding-top: 540px;
+   padding-top: 270px;
  }
  
  .heroContent h1 {
-   margin-top: -150px;
+   margin-top: -75px;
    font-size: 2.8rem;
    text-shadow:
      2px 2px 4px rgba(0, 0, 0, 0.9),
@@ -1199,23 +1230,23 @@
      0 0 16px rgba(148, 33, 146, 0.5);
  }
  
- .entertainmentMainSection{
-   padding: 40px 20px 80px 20px;
-   margin-top: -250px;
+.entertainmentMainSection{
+  padding: 40px 20px 80px 20px;
+  margin-top: -125px;
  }
 }
 
 /* Tablet */
 @media (max-width: 768px) {
  .entretenimiento-page .heroSection {
-   height: 420px;
-   margin-top: -30px;
+   height: 210px;
+   margin-top: -15px;
    background-position: center center;
  }
  
  .entertainmentMainSection {
-   padding: 30px 15px 60px 15px;
-   margin-top: -230px;
+  padding: 30px 15px 60px 15px;
+   margin-top: -115px;
  }
 
  .entertainmentContainer {
@@ -1268,13 +1299,13 @@
 /* MÃ³vil */
 @media (max-width: 480px) {
  .entretenimiento-page .heroSection {
-   height: 360px;
+   height: 180px;
    background-position: center center;
  }
  
  .entertainmentMainSection {
    padding: 20px 10px 50px 10px;
-   margin-top: -230px;
+   margin-top: -115px;
  }
 
  .entertainmentContainer {
@@ -1435,24 +1466,62 @@
 }
 /* ===== FINAL MOBILE OVERRIDES (ensure parity with Productos) ===== */
 @media (max-width: 768px) {
-  :root .entretenimiento-page .heroSection { height: clamp(170px, 26vh, 220px) !important; top: 56px !important; padding: 0 !important; }
-  :root .entretenimiento-page .mainContent { padding-top: calc(56px + clamp(170px, 26vh, 220px)) !important; }
-  :root .entretenimiento-page .entertainmentMainSection { margin-top: -36px !important; padding-top: 0 !important; }
+  :root .entretenimiento-page .heroSection { height: clamp(90px, 17vh, 120px) !important; top: 0 !important; padding: 0 !important; z-index: 2 !important; position: relative !important; left: 0 !important; right: 0 !important; }
+  :root .entretenimiento-page .mainContent { padding-top: 0 !important; position: relative !important; z-index: 4 !important; }
+  :root .entretenimiento-page .entertainmentMainSection { margin-top: -40px !important; padding: 12px 12px 60px 12px !important; z-index: 4 !important; position: relative !important; }
   :root .entretenimiento-page .entertainmentContainer { margin-top: 0 !important; padding-top: 0 !important; }
   :root .entretenimiento-page .sectionHeader { margin-top: 0 !important; }
   :root .entretenimiento-page .entertainmentMainSection > *:first-child { margin-top: 0 !important; }
-  :root .entretenimiento-page .heroOverlay { z-index: 2 !important; }
+  :root .entretenimiento-page .heroOverlay { z-index: 2 !important; pointer-events: none !important; background: linear-gradient(0deg, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0)) !important; }
   :root .entretenimiento-page .heroContent { z-index: 3 !important; margin: 0 !important; padding: 0 !important; }
-  :root .entretenimiento-page .heroContent h1 { opacity: 1 !important; animation: none !important; color: #fff !important; margin: 0 !important; display: block !important; }
+  :root .entretenimiento-page .heroContent h1 {
+    opacity: 1 !important;
+    animation: none !important;
+    color: #fff !important;
+    margin: 0 !important;
+    display: block !important;
+    font-size: clamp(1.1rem, 4.8vw, 1.55rem) !important;
+    line-height: 1.2 !important;
+    visibility: visible !important;
+    max-height: none !important;
+  }
+  :root .entretenimiento-page .categoryFilters,
+  :root .entretenimiento-page .categoryFilters *,
+  :root .entretenimiento-page .categoryButton,
+  :root .entretenimiento-page .categoryCount { display: none !important; }
+  :root .entretenimiento-page .blogCategory,
+  :root .entretenimiento-page .shortCategory,
+  :root .entretenimiento-page .shortBadge,
+  :root .entretenimiento-page .shortMeta,
+  :root .entretenimiento-page .shortMeta * { display: none !important; }
 }
 @media (max-width: 480px) {
-  :root .entretenimiento-page .heroSection { height: clamp(160px, 32vh, 210px) !important; top: 56px !important; padding: 0 !important; }
-  :root .entretenimiento-page .mainContent { padding-top: calc(56px + clamp(160px, 32vh, 210px)) !important; }
-  :root .entretenimiento-page .entertainmentMainSection { margin-top: -36px !important; padding-top: 0 !important; }
+  :root .entretenimiento-page .heroSection { height: clamp(80px, 17vh, 110px) !important; top: 0 !important; padding: 0 !important; z-index: 2 !important; position: relative !important; left: 0 !important; right: 0 !important; }
+  :root .entretenimiento-page .mainContent { padding-top: 0 !important; position: relative !important; z-index: 4 !important; }
+  :root .entretenimiento-page .entertainmentMainSection { margin-top: -36px !important; padding: 12px 12px 60px 12px !important; z-index: 4 !important; position: relative !important; }
   :root .entretenimiento-page .entertainmentContainer { margin-top: 0 !important; padding-top: 0 !important; }
   :root .entretenimiento-page .sectionHeader { margin-top: 0 !important; }
   :root .entretenimiento-page .entertainmentMainSection > *:first-child { margin-top: 0 !important; }
-  :root .entretenimiento-page .heroOverlay { z-index: 2 !important; }
+  :root .entretenimiento-page .heroOverlay { z-index: 2 !important; pointer-events: none !important; background: linear-gradient(0deg, rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0)) !important; }
   :root .entretenimiento-page .heroContent { z-index: 3 !important; margin: 0 !important; padding: 0 !important; }
-  :root .entretenimiento-page .heroContent h1 { opacity: 1 !important; animation: none !important; color: #fff !important; margin: 0 !important; display: block !important; }
+  :root .entretenimiento-page .heroContent h1 {
+    opacity: 1 !important;
+    animation: none !important;
+    color: #fff !important;
+    margin: 0 !important;
+    display: block !important;
+    font-size: clamp(0.95rem, 5.8vw, 1.35rem) !important;
+    line-height: 1.25 !important;
+    visibility: visible !important;
+    max-height: none !important;
+  }
+  :root .entretenimiento-page .categoryFilters,
+  :root .entretenimiento-page .categoryFilters *,
+  :root .entretenimiento-page .categoryButton,
+  :root .entretenimiento-page .categoryCount { display: none !important; }
+  :root .entretenimiento-page .blogCategory,
+  :root .entretenimiento-page .shortCategory,
+  :root .entretenimiento-page .shortBadge,
+  :root .entretenimiento-page .shortMeta,
+  :root .entretenimiento-page .shortMeta * { display: none !important; }
 }

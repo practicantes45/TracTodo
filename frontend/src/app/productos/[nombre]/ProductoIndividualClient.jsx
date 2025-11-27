@@ -1,6 +1,7 @@
 'use client';
 import './producto-individual.css';
 import { useState, useEffect, useRef } from 'react';
+import Image from 'next/image';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { FaArrowLeft, FaWhatsapp, FaShare, FaCopy, FaCheckCircle, FaChevronLeft, FaChevronRight, FaSearchPlus, FaSearchMinus, FaRedo } from "react-icons/fa";
 import Navbar from '../../components/Navbar/Navbar';
@@ -10,7 +11,7 @@ import ProductImageModal from '../../components/ProductImageModal/ProductImageMo
 import SEOHead from '../../components/SEOHead/SEOHead';
 import { obtenerProductoPorId, obtenerProductoPorNombre } from '@/services/productoService';
 import { registrarVista } from '../../../services/trackingService';
-import { getProductSlug, extractIdFromSlug } from '../../../utils/slugUtils';
+import { getProductSlug, extractIdFromSlug, generateSlug } from '../../../utils/slugUtils';
 import { useProductSEO } from '../../../hooks/useSEO';
 import FormattedDescription from '../../components/FormattedDescription/FormattedDescription';
 import { formatearPrecio, formatearPrecioWhatsApp } from '../../../utils/priceUtils';
@@ -29,6 +30,10 @@ export default function ProductoIndividualPage({ params }) {
     const [error, setError] = useState('');
     const [copied, setCopied] = useState(false);
     const [pendingAdvisorPrompt, setPendingAdvisorPrompt] = useState(false);
+    const [quantity, setQuantity] = useState(1);
+    const [imageError, setImageError] = useState(false);
+    const [canonicalSlug, setCanonicalSlug] = useState('');
+    const [hasCanonicalRedirected, setHasCanonicalRedirected] = useState(false);
 
     // Estados para el carrusel de imágenes del producto principal
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -121,6 +126,14 @@ export default function ProductoIndividualPage({ params }) {
     }, [productosRelacionados, itemsPerSlide]);
 
     useEffect(() => {
+        setImageError(false);
+    }, [imagenesProducto]);
+
+    useEffect(() => {
+        setImageError(false);
+    }, [imagenesProducto]);
+
+    useEffect(() => {
         if (params?.nombre) {
             cargarProducto();
         }
@@ -132,7 +145,40 @@ export default function ProductoIndividualPage({ params }) {
         setCarouselRotation(0);
         setCarouselPanX(0);
         setCarouselPanY(0);
+        setImageError(false);
     }, [currentImageIndex]);
+
+    useEffect(() => {
+        if (typeof window === 'undefined') return;
+        if (!imagenesProducto || imagenesProducto.length === 0) return;
+
+        const len = imagenesProducto.length;
+        const preloadIndex = (idx) => {
+            if (idx < 0 || idx >= len) return;
+            const url = imagenesProducto[idx];
+            if (!url) return;
+            const img = new window.Image();
+            img.src = url;
+        };
+
+        const nextIndex = (currentImageIndex + 1) % len;
+        const prevIndex = (currentImageIndex - 1 + len) % len;
+
+        preloadIndex(nextIndex);
+        preloadIndex(prevIndex);
+    }, [currentImageIndex, imagenesProducto]);
+
+    useEffect(() => {
+        if (!producto || !canonicalSlug || hasCanonicalRedirected) {
+            return;
+        }
+
+        const currentSlug = params?.nombre ? decodeURIComponent(params.nombre) : '';
+        if (currentSlug && currentSlug !== canonicalSlug) {
+            setHasCanonicalRedirected(true);
+            router.replace(`/productos/${canonicalSlug}`);
+        }
+    }, [producto, canonicalSlug, hasCanonicalRedirected, params?.nombre, router]);
 
     const cargarProducto = async () => {
         try {
@@ -144,6 +190,7 @@ export default function ProductoIndividualPage({ params }) {
             const posibleId = rawSlug ? extractIdFromSlug(rawSlug) : null;
             let data = null;
             let nombreParaBusqueda = '';
+            let slugBaseNormalizado = '';
 
             if (posibleId) {
                 try {
@@ -179,6 +226,7 @@ export default function ProductoIndividualPage({ params }) {
                     .replace(/\s+/g, ' ')
                     .trim()
                     .toLowerCase();
+                slugBaseNormalizado = generateSlug(nombreParaBusqueda);
 
                 console.log('🔍 Buscando producto con nombre:', nombreParaBusqueda);
                 if (nombreParaBusqueda) {
@@ -192,8 +240,22 @@ export default function ProductoIndividualPage({ params }) {
             }
 
             const productoBase = data.producto;
+            const canonical = getProductSlug(productoBase) || (productoBase.id ? String(productoBase.id) : '');
+
+            if (slugBaseNormalizado) {
+                const productoSlugBase = generateSlug(productoBase.nombre || '');
+                if (productoSlugBase && slugBaseNormalizado !== productoSlugBase) {
+                    throw new Error('Producto no encontrado');
+                }
+            }
+
+            if (canonical && canonical !== canonicalSlug) {
+                setCanonicalSlug(canonical);
+                setHasCanonicalRedirected(false);
+            }
             setProducto(productoBase);
             setProductosRelacionados(data.recomendados || []);
+            setQuantity(1);
 
             const imagenes = procesarImagenesProducto(productoBase);
             setImagenesProducto(imagenes);
@@ -389,6 +451,18 @@ export default function ProductoIndividualPage({ params }) {
         startAdvisorContact({ product: producto }, e);
     };
 
+    const handleQuantityChange = (value) => {
+        const parsed = Number(value);
+        if (Number.isNaN(parsed)) {
+            setQuantity(1);
+            return;
+        }
+        setQuantity(Math.max(1, Math.floor(parsed)));
+    };
+
+    const incrementQuantity = () => setQuantity((prev) => Math.max(1, Math.floor(prev) + 1));
+    const decrementQuantity = () => setQuantity((prev) => Math.max(1, Math.floor(prev) - 1));
+
     const handleAddToCart = (producto) => {
         if (!producto) {
             return;
@@ -409,8 +483,9 @@ export default function ProductoIndividualPage({ params }) {
 
         const price = Number(producto.precioVentaSugerido || producto.precio || producto.precioLista || 0);
         const itemId = producto.id || producto.slug || producto.nombre;
-        addItem({ id: itemId, name: producto.nombre || 'Producto', price });
-        setCartConfirmation(`${producto.nombre || 'Producto'} agregado al carrito.`);
+        const safeQuantity = Math.max(1, Math.floor(Number(quantity) || 1));
+        addItem({ id: itemId, name: producto.nombre || 'Producto', price, quantity: safeQuantity });
+        setCartConfirmation(`${producto.nombre || 'Producto'} x${safeQuantity} agregado al carrito.`);
         if (cartMessageTimeout.current) {
             clearTimeout(cartMessageTimeout.current);
         }
@@ -687,27 +762,30 @@ export default function ProductoIndividualPage({ params }) {
                                         onTouchMove={handleCarouselTouchMove}
                                         onTouchEnd={handleCarouselTouchEnd}
                                     >
-                                        {imagenesProducto.length > 0 ? (
-                                            <img
+                                        {imagenesProducto.length > 0 && !imageError ? (
+                                            <Image
                                                 ref={carouselImageRef}
                                                 src={imagenesProducto[currentImageIndex]}
                                                 alt={`${producto.nombre} - Imagen ${currentImageIndex + 1}`}
                                                 className="productImage horizontalImage"
+                                                fill
+                                                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 60vw, 680px"
+                                                priority={currentImageIndex === 0}
                                                 style={{
+                                                    objectFit: 'contain',
                                                     transform: `translate(${carouselPanX}px, ${carouselPanY}px) scale(${carouselZoom / 100}) rotate(${carouselRotation}deg)`,
                                                     transition: isDragging ? 'none' : 'transform 0.3s ease',
                                                     cursor: carouselZoom > 100 ? (isDragging ? 'grabbing' : 'grab') : 'pointer'
                                                 }}
-                                                onError={(e) => {
-                                                    e.target.style.display = 'none';
-                                                    e.target.nextElementSibling.style.display = 'flex';
-                                                }}
+                                                onError={() => setImageError(true)}
+                                                onLoad={() => setImageError(false)}
                                                 draggable={false}
+                                                fetchPriority={currentImageIndex === 0 ? 'high' : 'auto'}
                                             />
                                         ) : null}
                                         <div
                                             className="imageNotFound"
-                                            style={{ display: imagenesProducto.length > 0 ? 'none' : 'flex' }}
+                                            style={{ display: imagenesProducto.length > 0 && !imageError ? 'none' : 'flex' }}
                                         >
                                             <div className="noImageIcon">📷</div>
                                             <p>Imagen no detectada</p>
@@ -798,9 +876,12 @@ export default function ProductoIndividualPage({ params }) {
                                         </div>
                                     )}
                                 </div>
+                                <div className="productGuarantee productGuaranteeBelowImage productGuaranteeDesktop">
+                                    Los productos vendidos por TracTodo cuentan con una garantía por defectos de fabricación o fallas de origen. Esta garantía no aplica en casos de fisuras causadas por sobrecalentamiento, mala instalación o uso inadecuado.
+                                </div>
                             </div>
 
-                            <div className="productInfoSection">
+                        <div className="productInfoSection">
                                 <div className="productHeader">
                                     <h1 className="productTitle">{producto.nombre}</h1>
                                     <div className="productActions">
@@ -817,13 +898,14 @@ export default function ProductoIndividualPage({ params }) {
                                             title="Copiar enlace"
                                         >
                                             {copied ? <FaCheckCircle /> : <FaCopy />}
-                                            {copied && <span className="copiedText">¡Copiado!</span>}
+                                            {copied && <span className="copiedText">¡Enlace copiado!</span>}
                                         </button>
                                     </div>
                                 </div>
                                 <div className="productPrice">
                                     {formatearPrecio(producto.precioVentaSugerido || 0)}
                                 </div>
+                                <p className="priceNote">Precio mostrado no incluye IVA.</p>
 
                                 <div className="productMeta">
                                     {producto.numeroParte && (
@@ -840,6 +922,24 @@ export default function ProductoIndividualPage({ params }) {
                                     </div>
                                     <div className="shippingInfo">
                                         <span>Envíos a toda la república mexicana.</span>
+                                    </div>
+                                </div>
+                                <div className="productGuarantee productGuaranteeInfo">
+                                    Los productos vendidos por TracTodo cuentan con una garantía por defectos de fabricación o fallas de origen. Esta garantía no aplica en casos de fisuras causadas por sobrecalentamiento, mala instalación o uso inadecuado.
+                                </div>
+                                <div className="quantitySelector" aria-label="Selector de cantidad">
+                                    <span className="quantityLabel">Cantidad</span>
+                                    <div className="quantityControls">
+                                        <button type="button" className="quantityButton" onClick={decrementQuantity} aria-label="Disminuir cantidad">-</button>
+                                        <input
+                                            type="number"
+                                            min="1"
+                                            inputMode="numeric"
+                                            className="quantityInput"
+                                            value={quantity}
+                                            onChange={(e) => handleQuantityChange(e.target.value)}
+                                        />
+                                        <button type="button" className="quantityButton" onClick={incrementQuantity} aria-label="Aumentar cantidad">+</button>
                                     </div>
                                 </div>
 

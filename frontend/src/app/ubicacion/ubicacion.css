@@ -7,7 +7,7 @@
 /* ===== HERO SECTION PARA UBICACIÃ“N - UNIFICADO ===== */
 .ubicacion-page .heroSection {
   position: absolute;
-  height: 580px;
+  height: 290px;
   /* ALTURA UNIFICADA */
   width: 100%;
   left: 0;
@@ -37,10 +37,28 @@
   background: linear-gradient(0deg, rgba(26, 11, 46, 0.72), rgba(14, 4, 28, 0.45));
 }
 
+/* Desktop: suavizar overlay para evitar tinte morado en la imagen */
+@media (min-width: 769px) {
+  .ubicacion-page .heroOverlay {
+    background: linear-gradient(0deg, rgba(20, 8, 36, 0.36), rgba(12, 4, 20, 0.14)) !important;
+  }
+}
+
 .heroContent {
   max-width: 800px;
   padding: 0 20px;
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 8px;
+}
+
+/* Desktop: centra verticalmente el bloque de texto del hero */
+@media (min-width: 769px) {
+  .ubicacion-page .heroContent { transform: translateY(14px); }
 }
 
 .heroContent h1 {
@@ -72,25 +90,31 @@
 .ubicacion-page .mainContent {
   flex: 1;
   width: 100%;
-  padding-top: 580px;
+  padding-top: 290px;
   /* IGUAL A LA ALTURA DEL HERO */
+}
+
+@media (min-width: 993px) {
+  .ubicacion-page .heroSection { height: 145px; }
+  .ubicacion-page .mainContent { padding-top: 165px; }
+  .locationMainSection { margin-top: -55px; }
 }
 
 /* --- Ajustes móviles: hero compacto con título visible --- */
 @media (max-width: 768px) {
-  .ubicacion-page .heroSection { height: clamp(170px, 26vh, 220px) !important; }
+  .ubicacion-page .heroSection { height: clamp(85px, 13vh, 110px) !important; }
   .ubicacion-page .heroContent h1 {
     font-size: clamp(1.2rem, 5.2vw, 1.8rem) !important;
     margin-bottom: 8px !important;
     opacity: 1 !important; animation: none !important; color: #fff !important;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(0, 0, 0, 0.6) !important;
   }
-  .ubicacion-page .mainContent { padding-top: calc(90px + clamp(170px, 26vh, 220px)) !important; }
+  .ubicacion-page .mainContent { padding-top: calc(90px + clamp(85px, 13vh, 110px)) !important; }
 }
 @media (max-width: 480px) {
-  .ubicacion-page .heroSection { height: clamp(160px, 32vh, 210px) !important; }
+  .ubicacion-page .heroSection { height: clamp(80px, 16vh, 105px) !important; }
   .ubicacion-page .heroContent h1 { font-size: clamp(1.1rem, 6vw, 1.6rem) !important; opacity: 1 !important; animation: none !important; }
-  .ubicacion-page .mainContent { padding-top: calc(90px + clamp(160px, 32vh, 210px)) !important; }
+  .ubicacion-page .mainContent { padding-top: calc(90px + clamp(80px, 16vh, 105px)) !important; }
 }
 
 /* ===== SECCIÃ“N PRINCIPAL CON VIDEO Y MAPA ===== */
@@ -98,7 +122,7 @@
   background: linear-gradient(145deg, #f0f8ff 0%, #e6f3ff 30%, #ffffff 70%, #f8f9fa 100%);
   padding: 20px 20px 80px 20px;
   margin: 0;
-  margin-top: -100px;
+  margin-top: -50px;
   /* AJUSTE ESPECÃFICO UNIFICADO */
   position: relative;
   overflow: hidden;
@@ -1038,16 +1062,16 @@
 /* Tablet (992px) */
 @media (max-width: 992px) {
   .ubicacion-page .heroSection {
-    height: 540px;
+    height: 270px;
     background-position: center center;
   }
 
   .ubicacion-page .mainContent {
-    padding-top: 540px;
+    padding-top: 270px;
   }
 
   .heroContent h1 {
-    margin-top: -120px;
+    margin-top: 0;
     font-size: 2.8rem;
   }
 
@@ -1057,7 +1081,7 @@
   }
 
   .locationMainSection {
-    margin-top: -60px;
+    margin-top: -30px;
   }
 
   .referenceImageContainer {
@@ -1079,7 +1103,7 @@
 /* MÃ³vil (768px) */
 @media (max-width: 768px) {
   .ubicacion-page .heroSection {
-    height: 420px;
+    height: 210px;
     top: 60px;
     background-position: center center;
   }
@@ -1089,11 +1113,11 @@
   }
 
   .ubicacion-page .mainContent {
-    padding-top: 480px;
+    padding-top: 270px;
   }
 
   .locationMainSection {
-    margin-top: -20px;
+    margin-top: -10px;
   }
 
   .locationContainer {
@@ -1235,13 +1259,13 @@
   }
 
   .ubicacion-page .heroSection {
-    height: 380px;
+    height: 190px;
     top: 60px;
     background-position: center center;
   }
 
   .ubicacion-page .mainContent {
-    padding-top: 430px;
+    padding-top: 250px;
   }
 
   .ubicacion-page .heroContent h1 {
@@ -1249,7 +1273,7 @@
   }
 
   .locationMainSection {
-    margin-top: -60px;
+    margin-top: -30px;
     padding: 20px 5px 50px 5px;
   }
 
@@ -1351,13 +1375,13 @@
   }
 
   .ubicacion-page .heroSection {
-    height: 350px;
+    height: 175px;
     top: 60px;
     background-position: center center;
   }
 
   .ubicacion-page .mainContent {
-    padding-top: 400px;
+    padding-top: 235px;
   }
 
   .ubicacion-page .heroContent h1 {
@@ -1365,7 +1389,7 @@
   }
 
   .locationMainSection {
-    margin-top: -40px;
+    margin-top: -20px;
     padding: 10px 3px 40px 3px;
   }
 

@@ -73,6 +73,7 @@ export default async function BlogPostPage({ params }) {
       publishDate: postData.fechaPublicacion || postData.fecha || postData.publishDate,
       category: postData.categoria || postData.category || 'Tracto-Consejos',
       author: postData.autor || 'TracTodo',
+      bloques: postData.bloques || [],
     };
   } catch (err) {
     console.error('❌ Error al cargar post:', err);

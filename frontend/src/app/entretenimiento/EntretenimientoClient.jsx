@@ -276,6 +276,27 @@ export default function EntretenimientoClient() {
     }
   };
 
+  // Ocultar el botón sticky "Ver Blog" cuando la sección blog ya es visible
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const handleScroll = () => {
+      const blogSection = document.querySelector(".blogSection");
+      if (!blogSection) return;
+      const rect = blogSection.getBoundingClientRect();
+      const inView = rect.top <= window.innerHeight * 0.35;
+      setShowStickyButton(!inView);
+    };
+
+    handleScroll();
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, []);
+
   const goToVideos = () => router.push("/videos");
   const goToBlog = () => router.push("/blog");
 

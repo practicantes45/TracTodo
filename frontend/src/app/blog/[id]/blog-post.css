@@ -10,8 +10,8 @@
 }
 
 .magazineMainContent {
-  padding-top: 120px;
-  min-height: calc(100vh - 120px);
+  padding-top: 0;
+  min-height: 100vh;
 }
 
 .magazineWrapper {
@@ -83,9 +83,7 @@
 
 /* ===== CATEGORÍA MEJORADA ===== */
 .magazineCategory {
-  position: absolute;
-  top: 25px;
-  left: 25px;
+  position: relative;
   background: linear-gradient(45deg, #C30021, #0077b6);
   color: white;
   padding: 10px 20px;
@@ -99,6 +97,9 @@
   box-shadow: 0 6px 20px rgba(195, 0, 33, 0.4);
   border: 2px solid rgba(255, 255, 255, 0.3);
   animation: categoryPulse 3s ease-in-out infinite;
+  display: inline-flex;
+  align-self: flex-start;
+  margin: 26px 20px 0 20px;
 }
 
 @keyframes categoryPulse {
@@ -114,7 +115,7 @@
 
 /* ===== HEADER DEL MAGAZINE ESPECTACULAR ===== */
 .magazineHeader {
-  padding: 80px 40px 50px 40px;
+  padding: 28px 40px 30px 40px;
   text-align: center;
   background: linear-gradient(135deg, 
     rgba(148, 33, 146, 0.03) 0%, 
@@ -552,7 +553,7 @@
 /* Tablet */
 @media (max-width: 768px) {
   .magazineMainContent {
-    padding-top: 140px;
+    padding-top: 20px;
   }
 
   .magazineWrapper {
@@ -560,14 +561,13 @@
   }
 
   .magazineCategory {
-    top: 20px;
-    left: 20px;
+    margin: 20px 15px 0 15px;
     padding: 8px 16px;
     font-size: 0.75rem;
   }
 
   .magazineHeader {
-    padding: 60px 30px 40px 30px;
+    padding: 22px 24px 22px 24px;
   }
 
   .magazineTitle {
@@ -636,19 +636,23 @@
     padding: 15px 10px;
   }
 
+  .magazineBackSection {
+    margin-top: 32px;
+  }
+
   .magazineCategory {
-    top: 15px;
-    left: 15px;
+    margin: 18px 12px 0 12px;
     font-size: 0.7rem;
     padding: 6px 12px;
   }
 
   .magazineHeader {
-    padding: 50px 20px 30px 20px;
+    padding: 38px 20px 26px 20px;
   }
 
   .magazineTitle {
-    font-size: 2rem;
+    font-size: 1.6rem;
+    line-height: 1.2;
   }
 
   .magazineMeta {

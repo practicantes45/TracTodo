@@ -1,24 +1,49 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'i.postimg.cc',
+      },
+    ],
+    formats: ['image/avif', 'image/webp'],
   },
-  // Configuraci√≥n para evitar cach√© excesivo
+  // ConfiguraciÛn para evitar cachÈ excesivo
   generateEtags: false,
   poweredByHeader: false,
   
   // CORREGIDO: serverExternalPackages en lugar de experimental.serverComponentsExternalPackages
   serverExternalPackages: [],
   
-  // Headers personalizados para controlar el cach√©
+  // Headers personalizados para controlar el cachÈ
   async headers() {
     return [
       {
-        source: '/(.*)',
+        source: '/:path*\\.(png|jpg|jpeg|gif|webp|avif|svg)$',
         headers: [
           {
             key: 'Cache-Control',
-            value: 'no-cache, no-store, must-revalidate, max-age=0',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      // Para archivos est·ticos especÌficos (CSS, JS)
+      {
+        source: '/(.*)\\.(css|js)$',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=3600, must-revalidate', // 1 hora con revalidaciÛn
+          },
+        ],
+      },
+      {
+        source: '/((?!.*\\.(?:css|js|png|jpg|jpeg|gif|webp|avif|svg)$).*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=60, stale-while-revalidate=300',
           },
           {
             key: 'Pragma',
@@ -27,16 +52,6 @@ const nextConfig = {
           {
             key: 'Expires',
             value: '0',
-          },
-        ],
-      },
-      // Para archivos est√°ticos espec√≠ficos (CSS, JS)
-      {
-        source: '/(.*)\\.(css|js)$',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=3600, must-revalidate', // 1 hora con revalidaci√≥n
           },
         ],
       },
