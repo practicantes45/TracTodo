@@ -156,7 +156,7 @@ export const useAdvisorSelection = () => {
     try {
       router?.refresh?.();
     } catch {}
-  }, []);
+  }, [router]);
 
   const selectAdvisor = useCallback(
     (advisorIdOrPhone) => {
@@ -204,7 +204,7 @@ export const useAdvisorSelection = () => {
     try {
       router?.refresh?.();
     } catch {}
-  }, []);
+  }, [router]);
 
   const advisors = useMemo(() => ADVISORS, []);
 

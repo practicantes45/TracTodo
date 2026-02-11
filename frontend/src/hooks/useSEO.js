@@ -3,6 +3,87 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { obtenerSEOProducto, obtenerSchemaProducto, generarMetaTags } from '../services/seoService';
 import { getProductSlug } from '../utils/slugUtils';
 
+const normalizePrice = (value) => {
+  const num = Number(value);
+  return Number.isFinite(num) ? Number(num.toFixed(2)) : undefined;
+};
+
+const buildProductSchema = (producto, productUrl) => {
+  if (!producto) return null;
+
+  const price = normalizePrice(producto.precioVentaSugerido ?? producto.precio);
+  const imagenes = [];
+
+  if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object') {
+    imagenes.push(...Object.values(producto.imagenesUrl).filter(Boolean));
+  }
+
+  if (producto.imagen) {
+    imagenes.unshift(producto.imagen);
+  }
+
+  const uniqueImages = [...new Set(imagenes.filter(Boolean))];
+
+  const schemaBase = {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: producto.nombre || 'Producto',
+    description: producto.descripcion || undefined,
+    sku: producto.numeroParte || undefined,
+    brand: producto.marca ? { '@type': 'Brand', name: producto.marca } : undefined,
+    image: uniqueImages.length > 0 ? uniqueImages : undefined,
+  };
+
+  if (price) {
+    schemaBase.offers = {
+      '@type': 'Offer',
+      priceCurrency: 'MXN',
+      price,
+      availability: 'https://schema.org/InStock',
+      url: productUrl,
+    };
+  }
+
+  return schemaBase;
+};
+
+const ensureSchemaCurrency = (schemaData, productUrl, producto) => {
+  if (!schemaData) return buildProductSchema(producto, productUrl);
+
+  const normalizedSchema = { ...schemaData };
+  const offers = normalizedSchema.offers;
+
+  if (offers) {
+    if (Array.isArray(offers)) {
+      normalizedSchema.offers = offers.map((offer) => ({
+        ...offer,
+        priceCurrency: offer.priceCurrency || 'MXN',
+        url: offer.url || productUrl,
+      }));
+    } else {
+      normalizedSchema.offers = {
+        ...offers,
+        priceCurrency: offers.priceCurrency || 'MXN',
+        url: offers.url || productUrl,
+      };
+    }
+  } else {
+    const fallbackSchema = buildProductSchema(producto, productUrl);
+    if (fallbackSchema?.offers) {
+      normalizedSchema.offers = fallbackSchema.offers;
+    }
+  }
+
+  if (!normalizedSchema.image) {
+    const fallbackSchema = buildProductSchema(producto, productUrl);
+    if (fallbackSchema?.image) {
+      normalizedSchema.image = fallbackSchema.image;
+    }
+  }
+
+  return normalizedSchema;
+};
+
 export const useSEO = (pageKey, options = {}) => {
   const [seoData, setSeoData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -41,87 +122,6 @@ export const useProductSEO = (productId, productData = {}) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const baseUrl = process.env.NEXT_PUBLIC_FRONTEND_URL || 'https://tractodo.com';
-
-  const normalizePrice = (value) => {
-    const num = Number(value);
-    return Number.isFinite(num) ? Number(num.toFixed(2)) : undefined;
-  };
-
-  const buildProductSchema = (producto, productUrl) => {
-    if (!producto) return null;
-
-    const price = normalizePrice(producto.precioVentaSugerido ?? producto.precio);
-    const imagenes = [];
-
-    if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object') {
-      imagenes.push(...Object.values(producto.imagenesUrl).filter(Boolean));
-    }
-
-    if (producto.imagen) {
-      imagenes.unshift(producto.imagen);
-    }
-
-    const uniqueImages = [...new Set(imagenes.filter(Boolean))];
-
-    const schemaBase = {
-      '@context': 'https://schema.org',
-      '@type': 'Product',
-      name: producto.nombre || 'Producto',
-      description: producto.descripcion || undefined,
-      sku: producto.numeroParte || undefined,
-      brand: producto.marca ? { '@type': 'Brand', name: producto.marca } : undefined,
-      image: uniqueImages.length > 0 ? uniqueImages : undefined,
-    };
-
-    if (price) {
-      schemaBase.offers = {
-        '@type': 'Offer',
-        priceCurrency: 'MXN',
-        price,
-        availability: 'https://schema.org/InStock',
-        url: productUrl,
-      };
-    }
-
-    return schemaBase;
-  };
-
-  const ensureSchemaCurrency = (schemaData, productUrl, producto) => {
-    if (!schemaData) return buildProductSchema(producto, productUrl);
-
-    const normalizedSchema = { ...schemaData };
-    const offers = normalizedSchema.offers;
-
-    if (offers) {
-      if (Array.isArray(offers)) {
-        normalizedSchema.offers = offers.map((offer) => ({
-          ...offer,
-          priceCurrency: offer.priceCurrency || 'MXN',
-          url: offer.url || productUrl,
-        }));
-      } else {
-        normalizedSchema.offers = {
-          ...offers,
-          priceCurrency: offers.priceCurrency || 'MXN',
-          url: offers.url || productUrl,
-        };
-      }
-    } else {
-      const fallbackSchema = buildProductSchema(producto, productUrl);
-      if (fallbackSchema?.offers) {
-        normalizedSchema.offers = fallbackSchema.offers;
-      }
-    }
-
-    if (!normalizedSchema.image) {
-      const fallbackSchema = buildProductSchema(producto, productUrl);
-      if (fallbackSchema?.image) {
-        normalizedSchema.image = fallbackSchema.image;
-      }
-    }
-
-    return normalizedSchema;
-  };
 
   // Serializar productData para dependencia estable
   const productDataString = JSON.stringify(productData);

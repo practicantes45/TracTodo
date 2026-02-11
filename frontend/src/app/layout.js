@@ -88,7 +88,9 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <CartProvider>
             <SEOProvider>
-              <NavigationSplash />
+              <Suspense fallback={null}>
+                <NavigationSplash />
+              </Suspense>
               {children}
               <CartWidget />
               <CookieConsent />
