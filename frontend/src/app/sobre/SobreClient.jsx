@@ -84,15 +84,6 @@ export default function SobrePage() {
 
                 {/* Contenido principal */}
                 <main className="mainContent">
-                    {/* Hero Section con imagen de fondo */}
-                    <div className="heroSection">
-                        <div className="heroOverlay">
-                            <div className="heroContent">
-                                <h1>Conoce Nuestra Historia</h1>
-                            </div>
-                        </div>
-                    </div>
-
                     {/* Sección ¿Quiénes Somos? - MODIFICADA para layout horizontal */}
                     <section className="aboutSection">
                         <div className="aboutContainer">

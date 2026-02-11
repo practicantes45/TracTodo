@@ -1,6 +1,6 @@
-﻿/* Overrides y mejoras especÃ­ficas para Productos */
+/* Overrides y mejoras específicas para Productos */
 
-/* Hero mÃ¡s arriba como antes, pero mÃ¡s bajo */
+/* Hero más arriba como antes, pero más bajo */
 .productos-page .heroSection {
   position: absolute !important;
   top: 90px !important; /* mantener anclado arriba como antes */
@@ -33,7 +33,7 @@
 .productos-page .mainContent {
   flex: 1 !important;
   width: 100% !important;
-  padding-top: clamp(260px, 26vw, 360px) !important; /* acompaña al alto del hero */
+  padding-top: clamp(260px, 26vw, 360px) !important; /* acompa�a al alto del hero */
 }
 
 @media (min-width: 993px) {
@@ -45,7 +45,7 @@
   .productosMainSection { margin-top: -22px !important; }
 }
 
-/* Animaciones de entrada para tipos (categorÃ­as y motores) */
+/* Animaciones de entrada para tipos (categorías y motores) */
 .featuredCard,
 .engineCard { opacity: 0; transform: translateY(14px); }
 .featuredGrid .featuredCard { animation: productos-fade-up 600ms ease forwards; }
@@ -87,15 +87,15 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  /* Reutiliza el estilo del botÃ³n verMasBtn pero como banner */
+  /* Reutiliza el estilo del botón verMasBtn pero como banner */
   padding: 18px 40px;
   border-radius: 25px;
-  background: linear-gradient(135deg, var(--primary-color, #002a5c) 0%, var(--accent-color, #C30021) 100%);
+  background: linear-gradient(135deg, var(--primary-color, #2b0d12) 0%, var(--accent-color, #C30021) 100%);
   color: white;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
-  box-shadow: 0 8px 25px rgba(148, 33, 146, 0.2), 0 4px 15px rgba(195, 0, 33, 0.1);
+  box-shadow: 0 8px 25px rgba(225, 6, 47, 0.2), 0 4px 15px rgba(195, 0, 33, 0.1);
   border: 1px solid rgba(195, 0, 33, 0.2);
 }
 .allProductsBannerNote { font-weight: 600; color: #333; opacity: .85; }
@@ -104,7 +104,7 @@
   .allProductsBannerBox { padding: 12px 14px; }
 }
 
-/* Hover animations mÃ¡s notorias en tipos */
+/* Hover animations más notorias en tipos */
 .featuredCard .featuredCardBg,
 .engineCard .engineCardBg { transition: transform .45s ease, filter .45s ease; }
 .featuredCard:hover .featuredCardBg,
@@ -118,38 +118,38 @@
 .allProductsBannerBox { cursor: default; }
 .allProductsBannerBox:hover { transform: none !important; box-shadow: 0 8px 25px rgba(148,33,146,0.2), 0 4px 15px rgba(195, 0, 33, 0.1) !important; border-color: rgba(195, 0, 33, 0.2) !important; }
 
-/* TÃ­tulos con estilo del botÃ³n "Ver mÃ¡s productos" */
+/* Títulos con estilo del botón "Ver más productos" */
 .featuredTitle {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   padding: 10px 18px !important;
   border-radius: 25px !important;
-  background: linear-gradient(135deg, var(--primary-color, #002a5c) 0%, var(--accent-color, #C30021) 100%) !important;
+  background: linear-gradient(135deg, var(--primary-color, #2b0d12) 0%, var(--accent-color, #C30021) 100%) !important;
   color: #fff !important;
   font-weight: 800 !important;
   letter-spacing: 1px !important;
   text-transform: uppercase !important;
   border: 1px solid rgba(195, 0, 33, 0.2) !important;
-  box-shadow: 0 8px 25px rgba(148, 33, 146, 0.18), 0 4px 15px rgba(195, 0, 33, 0.08) !important;
+  box-shadow: 0 8px 25px rgba(225, 6, 47, 0.18), 0 4px 15px rgba(195, 0, 33, 0.08) !important;
 }
 
-/* Ajustes solo móviles para que el contenido no pise el hero */
+/* Ajustes solo m�viles para que el contenido no pise el hero */
 @media (max-width: 768px) {
   .productos-page .heroSection {
-    /* Recorte leve hacia arriba en móvil */
+    /* Recorte leve hacia arriba en m�vil */
     height: clamp(85px, 13vh, 110px) !important;
   }
   .productos-page .heroContent { gap: 8px !important; justify-content: center !important; padding-top: 0 !important; }
   .productos-page .heroControls { margin-top: 4px !important; }
   .productos-page .advisorQuick { transform: translateY(-2px); }
   .productos-page .heroContent h1 {
-    /* Asegurar visibilidad del título en móvil */
+    /* Asegurar visibilidad del t�tulo en m�vil */
     font-size: clamp(1.2rem, 5.2vw, 1.8rem) !important;
     margin-bottom: 8px !important;
   }
   .productos-page .mainContent {
-    /* El hero está anclado a top:90px; sumamos ese offset */
+    /* El hero est� anclado a top:90px; sumamos ese offset */
     padding-top: calc(90px + clamp(47px, 9.4vh, 67px)) !important;
   }
   .allProductsBanner { margin: -21px 0 0 0 !important; }
@@ -170,4 +170,425 @@
   .allProductsBanner { margin: -21px 0 0 0 !important; }
   .productosMainSection { margin-top: -84px !important; padding-top: 0 !important; }
   .mobileFilterToggle { margin-top: 0 !important; }
+}
+
+
+
+.productos-page .advisorQuickButton,
+.productos-page .verMasBtn {
+  background: #ffffff;
+  color: #2a0a12;
+  border: 2px solid #ffffff;
+  border-radius: 500px;
+  letter-spacing: 0.05rem;
+  font-weight: 600;
+  text-transform: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.productos-page .advisorQuickButton::before,
+.productos-page .verMasBtn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -10%;
+  width: 120%;
+  height: 100%;
+  background: linear-gradient(135deg, #2a0a12, #2b0d12);
+  transform: skew(30deg) translateX(-100%);
+  transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 0;
+}
+
+.productos-page .advisorQuickButton:hover,
+.productos-page .verMasBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  color: #ffffff !important;
+}
+
+.productos-page .advisorQuickButton:hover *,
+.productos-page .verMasBtn:hover * {
+  color: #ffffff !important;
+}
+
+.productos-page .advisorQuickButton:hover::before,
+.productos-page .verMasBtn:hover::before {
+  transform: skew(30deg) translateX(0);
+  width: 120%;
+  height: 100%;
+  left: -10%;
+  background: linear-gradient(135deg, #2a0a12, #2b0d12);
+}
+
+.productos-page .advisorQuickButton:active,
+.productos-page .verMasBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.productos-page .verMasBtn > *,
+.productos-page .advisorQuickButton > * {
+  position: relative;
+  z-index: 1;
+}
+
+.productos-page .verMasBtn:hover svg {
+  transform: none;
+  animation: none;
+}
+
+.productos-page .advisorQuickButton,
+.productos-page .verMasBtn {
+  background: #ffffff;
+  color: #2a0a12;
+  border: 2px solid #ffffff;
+  border-radius: 500px;
+  letter-spacing: 0.05rem;
+  font-weight: 600;
+  text-transform: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.productos-page .advisorQuickButton::before,
+.productos-page .verMasBtn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -10%;
+  width: 120%;
+  height: 100%;
+  background: linear-gradient(135deg, #2a0a12, #2b0d12);
+  transform: skew(30deg) translateX(-100%);
+  transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.productos-page .advisorQuickButton:hover,
+.productos-page .verMasBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  color: #ffffff !important;
+}
+
+.productos-page .advisorQuickButton:hover *,
+.productos-page .verMasBtn:hover * {
+  color: #ffffff !important;
+}
+
+.productos-page .advisorQuickButton:hover::before,
+.productos-page .verMasBtn:hover::before {
+  transform: skew(30deg) translateX(0);
+}
+
+.productos-page .advisorQuickButton:active,
+.productos-page .verMasBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.productos-page .verMasBtn > *,
+.productos-page .advisorQuickButton > * {
+  position: relative;
+  z-index: 1;
+}
+
+.productos-page .verMasBtn:hover svg {
+  transform: translateY(0) scale(1.05);
+  animation: none;
+}
+
+/* Match "Ver mas marcas" button style */
+.productos-page .advisorQuickButton,
+.productos-page .verMasBtn {
+  background: #ffffff;
+  color: #2a0a12;
+  border: 2px solid #ffffff;
+  border-radius: 500px;
+  letter-spacing: 0.05rem;
+  font-weight: 600;
+  text-transform: none;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.productos-page .advisorQuickButton::before,
+.productos-page .verMasBtn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -10%;
+  width: 120%;
+  height: 100%;
+  background: linear-gradient(135deg, #2a0a12, #2b0d12);
+  transform: skew(30deg) translateX(-100%);
+  transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 0;
+}
+
+.productos-page .advisorQuickButton:hover,
+.productos-page .verMasBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  color: #ffffff !important;
+}
+
+.productos-page .advisorQuickButton:hover *,
+.productos-page .verMasBtn:hover * {
+  color: #ffffff !important;
+}
+
+.productos-page .advisorQuickButton:hover::before,
+.productos-page .verMasBtn:hover::before {
+  transform: skew(30deg) translateX(0);
+  width: 120%;
+  height: 100%;
+  left: -10%;
+  background: linear-gradient(135deg, #2a0a12, #2b0d12);
+}
+
+.productos-page .advisorQuickButton:active,
+.productos-page .verMasBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.productos-page .verMasBtn > *,
+.productos-page .advisorQuickButton > * {
+  position: relative;
+  z-index: 1;
+}
+
+.productos-page .verMasBtn:hover svg {
+  transform: none;
+  animation: none;
+}
+
+
+/* Mobile: compact advisor bar to keep single line (iPhone 12 Pro) */
+@media (max-width: 768px) {
+  .productos-page .advisorQuick {
+    flex-wrap: nowrap;
+    gap: 6px;
+    padding: 6px 8px;
+    width: 100%;
+    justify-content: space-between;
+  }
+  .productos-page .advisorQuickText {
+    font-size: 0.83rem;
+    white-space: nowrap;
+    flex: 1 1 auto;
+  }
+  .productos-page .advisorQuickButton {
+    padding: 4px 8px;
+    font-size: 0.74rem;
+    white-space: nowrap;
+    flex: 0 0 auto;
+  }
+}
+@media (max-width: 480px) {
+  .productos-page .advisorQuickText {
+    font-size: 0.8rem;
+  }
+  .productos-page .advisorQuickButton {
+    padding: 4px 7px;
+    font-size: 0.72rem;
+  }
+}
+/* Filter panel refresh: match cart panel look (all screens) */
+.productos-page .filtrosSidebar {
+  background: linear-gradient(145deg, rgba(245, 245, 245, 0.98), rgba(225, 230, 238, 0.98));
+  animation: none;
+  background-size: auto;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.productos-page .filtrosSidebar::before {
+  display: none;
+}
+
+.productos-page .filtrosHeader h2,
+.productos-page .filtroGroup h3 {
+  color: #1b1b1b;
+  text-shadow: none;
+}
+
+.productos-page .filtroGroup h3::after {
+  background: #1b1b1b;
+  box-shadow: none;
+}
+
+.productos-page .limpiarFiltrosBtn {
+  background: rgba(0, 0, 0, 0.06);
+  color: #1b1b1b;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.productos-page .limpiarFiltrosBtn:hover {
+  background: rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 0, 0, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+}
+
+.productos-page .marcaCheckbox,
+.productos-page .ordenamientoRadio {
+  color: #1b1b1b;
+}
+
+.productos-page .marcaCheckbox:hover,
+.productos-page .ordenamientoRadio:hover {
+  color: #1b1b1b;
+}
+
+.productos-page .checkmark,
+.productos-page .radiomark {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.productos-page .marcaCheckbox:hover .checkmark,
+.productos-page .ordenamientoRadio:hover .radiomark {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.35);
+}
+
+.productos-page .marcaCheckbox input:checked~.checkmark,
+.productos-page .ordenamientoRadio input:checked~.radiomark {
+  background: #1b1b1b;
+  border-color: #1b1b1b;
+  box-shadow: none;
+}
+
+/* Mobile filter sheet */
+.productos-page .mobileFilterMenu {
+  background: linear-gradient(145deg, rgba(245, 245, 245, 0.98), rgba(225, 230, 238, 0.98));
+  animation: none;
+  background-size: auto;
+  box-shadow: 0 -16px 32px rgba(0, 0, 0, 0.2);
+}
+
+.productos-page .mobileFilterHeader {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  background: transparent;
+}
+
+.productos-page .mobileFilterHeader h3,
+.productos-page .mobileFilterGroup h4 {
+  color: #1b1b1b;
+  text-shadow: none;
+}
+
+.productos-page .closeMobileFilter {
+  color: #1b1b1b;
+}
+
+.productos-page .closeMobileFilter:hover {
+  background: rgba(0, 0, 0, 0.08);
+  color: #1b1b1b;
+  transform: none;
+}
+
+.productos-page .mobileMarcaCheckbox,
+.productos-page .mobileOrdenamientoRadio {
+  color: #1b1b1b;
+}
+
+.productos-page .mobileMarcaCheckbox:hover,
+.productos-page .mobileOrdenamientoRadio:hover {
+  color: #1b1b1b;
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.productos-page .mobileCheckmark,
+.productos-page .mobileRadiomark {
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.productos-page .mobileMarcaCheckbox:hover .mobileCheckmark,
+.productos-page .mobileOrdenamientoRadio:hover .mobileRadiomark {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.35);
+}
+
+.productos-page .mobileMarcaCheckbox input:checked~.mobileCheckmark,
+.productos-page .mobileOrdenamientoRadio input:checked~.mobileRadiomark {
+  background: #1b1b1b;
+  border-color: #1b1b1b;
+  box-shadow: none;
+}
+
+.productos-page .mobileFilterContent .searchPriorityInfo,
+.productos-page .mobileFilterContent .searchPriorityInfo p,
+.productos-page .mobileFilterContent .searchPriorityInfo h3,
+.productos-page .mobileFilterContent .searchPriorityInfo li,
+.productos-page .mobileFilterContent .searchPriorityInfo li strong {
+  color: #1b1b1b;
+}
+
+.productos-page .mobileFilterActions {
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.productos-page .clearMobileFilters {
+  background: rgba(0, 0, 0, 0.06);
+  color: #1b1b1b;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.productos-page .clearMobileFilters:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: #1b1b1b;
+  border-color: rgba(0, 0, 0, 0.2);
+}
+
+.productos-page .applyMobileFilters {
+  background: linear-gradient(135deg, #1e5f3a 0%, #2bb673 55%, #0f4d2c 100%);
+  color: #ffffff;
+  box-shadow: 0 16px 28px rgba(43, 182, 115, 0.25);
+}
+
+.productos-page .applyMobileFilters:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 20px 32px rgba(43, 182, 115, 0.3);
+}
+/* Boton Filtrar por con estilo carrito */
+.productos-page .filterBannerBtn,
+.productos-page .mobileFilterButton {
+  background: linear-gradient(145deg, rgba(245, 245, 245, 0.98), rgba(225, 230, 238, 0.98)) !important;
+  color: #1b1b1b !important;
+  border: 1px solid rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12) !important;
+}
+
+.productos-page .filterBannerBtn:hover,
+.productos-page .mobileFilterButton:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.16) !important;
+}
+
+/* Boton borrar busqueda en filtros */
+.productos-page .clearSearchButtonMobile {
+  background: linear-gradient(135deg, #2b2b2b 0%, #1a1a1a 50%, #2f2f2f 100%) !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.4) !important;
+}
+
+.productos-page .clearSearchButtonMobile svg {
+  color: #ffffff !important;
 }

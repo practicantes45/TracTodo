@@ -227,8 +227,8 @@
 }
 
 .removeHistoryBtn:hover {
-  color: #ff4757;
-  background-color: #fff5f5;
+  color: var(--text-accent);
+  background-color: #eef3ff;
 }
 
 /* ===== RESPONSIVE DESIGN ===== */

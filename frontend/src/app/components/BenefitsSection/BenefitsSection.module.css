@@ -1,14 +1,14 @@
-﻿/* ===== BENEFITS SECTION - DISEÃ‘O RESPONSIVO MEJORADO CON TÃTULO ===== */
+/* ===== BENEFITS SECTION - DISEÑO RESPONSIVO MEJORADO CON TÍTULO ===== */
 
 .benefitsSection {
-  background-color: #f8f9fa;
+  background: linear-gradient(135deg, #e1e8f2 0%, #cfd9e6 100%);
   padding: 80px 20px;
   margin: 0;
   width: 100%;
   overflow-x: hidden; /* Evita scroll horizontal */
 }
 
-/* ===== NUEVO: HEADER DE SECCIÃ“N CON TÃTULO "Â¿POR QUÃ‰ ELEGIRNOS?" ===== */
+/* ===== NUEVO: HEADER DE SECCIÓN CON TÍTULO "¿POR QUÉ ELEGIRNOS?" ===== */
 .sectionHeader {
   text-align: center;
   margin-bottom: 50px;
@@ -16,7 +16,7 @@
 
 .sectionTitle {
   font-size: 3rem;
-  color: var(--primary-color);
+  color: var(--text-accent);
   margin-bottom: 0;
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
   font-weight: 700;
@@ -96,7 +96,7 @@
 .frontContent .benefitTitle {
   font-size: 24px;
   font-weight: 700;
-  color: var(--primary-color);
+  color: var(--text-accent);
   opacity: 1;
   margin: 0;
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
@@ -253,7 +253,7 @@
   }
 }
 
-/* MÃ³vil grande (481px - 768px) */
+/* Móvil grande (481px - 768px) */
 @media (min-width: 481px) and (max-width: 768px) {
   .benefitsSection {
     padding: 50px 15px;
@@ -301,7 +301,7 @@
   }
 }
 
-/* MÃ³vil pequeÃ±o (hasta 480px) */
+/* Móvil pequeño (hasta 480px) */
 @media (max-width: 480px) {
   .benefitsSection {
     padding: 40px 10px;
@@ -352,7 +352,7 @@
   }
 }
 
-/* MÃ³viles muy pequeÃ±os (hasta 360px) */
+/* Móviles muy pequeños (hasta 360px) */
 @media (max-width: 360px) {
   .benefitsSection {
     padding: 35px 8px;
@@ -380,7 +380,7 @@
   }
 }
 
-/* Landscape mÃ³vil */
+/* Landscape móvil */
 @media (max-width: 768px) and (orientation: landscape) {
   .benefitsContainer {
     grid-template-columns: repeat(2, 1fr);
@@ -412,7 +412,7 @@
     margin-bottom: 25px;
   }
 }
-/* Dos columnas en móviles para Por qué elegirnos */
+/* Dos columnas en m�viles para Por qu� elegirnos */
 @media (max-width: 768px) {
   .benefitsContainer { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 }

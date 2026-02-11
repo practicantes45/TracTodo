@@ -30,7 +30,7 @@ export default function VideoSection({
           {titleIcon && <span className={styles.titleIcon}>{titleIcon}</span>}
           {title}
         </h2>
-        <p className={styles.videoDescription}>
+        <p className={`${styles.videoDescription} videoDescriptionText`}>
           {description}
         </p>
 

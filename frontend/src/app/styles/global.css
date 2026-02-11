@@ -1,12 +1,15 @@
-﻿/* Global Styles - VersiÃ³n Mejorada con Headers Animados */
+/* Global Styles - Versión Mejorada con Headers Animados */
 
 :root {
-  --primary-color: #0b5d3b;
-  --secondary-color: #0d3b2e;
-  --accent-color: #C30021;
-  --light-color: #fff8e1;
-  --dark-color: #0a1f1a;
-  --success-color: #d4a017;
+  --primary-color: var(--text-accent);
+  --secondary-color: #2b2b2b;
+  --accent-color: var(--text-accent);
+  --text-accent: #1f5aa6;
+  --button-grad-start: #2b2b2b;
+  --button-grad-end: #d9d9d9;
+  --light-color: #f6f6f6;
+  --dark-color: #1e1e1e;
+  --success-color: #c1121f;
 }
 
 * {
@@ -18,23 +21,23 @@
 body {
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
   line-height: 1.5;
-  background: radial-gradient(circle at 10% 20%, rgba(216, 58, 58, 0.16), transparent 55%),
-              radial-gradient(circle at 85% 15%, rgba(11, 93, 59, 0.18), transparent 60%),
-              radial-gradient(circle at 20% 80%, rgba(212, 160, 23, 0.12), transparent 60%),
-              linear-gradient(180deg, #061a16 0%, #0a1f1a 40%, #0d3b2e 100%);
+  background: radial-gradient(circle at 12% 18%, rgba(225, 6, 47, 0.16), transparent 55%),
+              radial-gradient(circle at 85% 12%, rgba(176, 0, 32, 0.16), transparent 60%),
+              radial-gradient(circle at 20% 82%, rgba(255, 255, 255, 0.06), transparent 60%),
+              linear-gradient(180deg, #b00020 0%, #3b151b 45%, #2b2b2b 100%);
   position: relative;
   min-height: 100vh;
-  color: #f9f5ff;
+  color: #f7f3f3;
 }
 
 body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background-image: radial-gradient(1px 1px at 20% 30%, rgba(255, 255, 255, 0.08), transparent 60%),
-                    radial-gradient(1px 1px at 70% 60%, rgba(216, 58, 58, 0.12), transparent 65%),
-                    radial-gradient(2px 2px at 15% 75%, rgba(11, 93, 59, 0.18), transparent 70%),
-                    linear-gradient(120deg, rgba(216, 58, 58, 0.05), rgba(11, 93, 59, 0.08));
+  background-image: radial-gradient(1px 1px at 20% 30%, rgba(255, 255, 255, 0.06), transparent 60%),
+                    radial-gradient(1px 1px at 70% 60%, rgba(225, 6, 47, 0.14), transparent 65%),
+                    radial-gradient(2px 2px at 15% 75%, rgba(255, 255, 255, 0.05), transparent 70%),
+                    linear-gradient(120deg, rgba(225, 6, 47, 0.05), rgba(40, 40, 40, 0.08));
   pointer-events: none;
   z-index: -1;
   mix-blend-mode: screen;
@@ -44,9 +47,9 @@ body::after {
   content: "";
   position: fixed;
   inset: 0;
-  background-image: url('/images/christmas-pattern.svg'),
-                    repeating-linear-gradient(45deg, rgba(76, 29, 149, 0.08), rgba(76, 29, 149, 0.08) 1px, transparent 1px, transparent 10px),
-                    radial-gradient(circle at 5% 5%, rgba(216, 58, 58, 0.08), transparent 45%);
+  background-image: repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.03) 1px, transparent 1px, transparent 12px),
+                    radial-gradient(circle at 5% 5%, rgba(176, 0, 32, 0.1), transparent 45%),
+                    radial-gradient(circle at 82% 30%, rgba(225, 6, 47, 0.07), transparent 50%);
   opacity: 0.35;
   pointer-events: none;
   z-index: -2;
@@ -62,11 +65,11 @@ body::after {
 
 /* ===== NAVIGATION BAR CON EFECTOS MEJORADOS ===== */
 .appBar {
-  background: linear-gradient(130deg, #0d3b2e 0%, #0b5d3b 45%, var(--accent-color) 100%);
+  background: linear-gradient(90deg, #ffffff 0%, #f7f7f7 30%, #e0e0e0 65%, #c8c8c8 100%);
   background-size: 300% 300%;
   animation: navGradientFlow 10s ease infinite;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
   padding: 15px 20px;
   display: flex;
   justify-content: space-between;
@@ -75,7 +78,7 @@ body::after {
   z-index: 100;
   position: relative;
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(216, 58, 58, 0.3);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 @keyframes navGradientFlow {
@@ -92,7 +95,7 @@ body::after {
   }
 }
 
-/* Efecto de ondas mÃ¡s sutil para la navbar */
+/* Efecto de ondas más sutil para la navbar */
 .appBar::before {
   content: '';
   position: absolute;
@@ -101,9 +104,9 @@ body::after {
   width: 100%;
   height: 100%;
   background-image:
-    radial-gradient(1px 1px at 30px 25px, rgba(216, 58, 58, 0.25), transparent),
-    radial-gradient(1px 1px at 80px 35px, rgba(216, 58, 58, 0.18), transparent),
-    radial-gradient(1px 1px at 150px 20px, rgba(140, 53, 191, 0.25), transparent);
+    radial-gradient(1px 1px at 30px 25px, rgba(0, 0, 0, 0.08), transparent),
+    radial-gradient(1px 1px at 80px 35px, rgba(31, 90, 166, 0.08), transparent),
+    radial-gradient(1px 1px at 150px 20px, rgba(255, 255, 255, 0.3), transparent);
   background-repeat: repeat;
   background-size: 180px 60px;
   animation: navSparkle 20s linear infinite;
@@ -120,7 +123,7 @@ body::after {
   }
 }
 
-/* LÃ­nea brillante en la parte superior de la navbar */
+/* Línea brillante en la parte superior de la navbar */
 .appBar::after {
   content: '';
   position: absolute;
@@ -130,9 +133,9 @@ body::after {
   height: 2px;
   background: linear-gradient(90deg,
       transparent 0%,
-      rgba(216, 58, 58, 0.75) 20%,
-      rgba(216, 58, 58, 0.55) 45%,
-      rgba(107, 27, 138, 0.55) 80%,
+      rgba(225, 6, 47, 0.85) 20%,
+      rgba(225, 6, 47, 0.6) 45%,
+      rgba(255, 255, 255, 0.18) 80%,
       transparent 100%);
   animation: navTopGlow 4s ease-in-out infinite;
 }
@@ -182,7 +185,7 @@ body::after {
   overflow: hidden;
 }
 
-/* Efecto hover mejorado y mÃ¡s sutil para los enlaces de navegaciÃ³n */
+/* Efecto hover mejorado y más sutil para los enlaces de navegación */
 .navItem a::before {
   content: '';
   position: absolute;
@@ -202,15 +205,15 @@ body::after {
   left: 50%;
   width: 0;
   height: 2px;
-  background: var(--accent-color);
+  background: #000000;
   transition: all 0.25s ease;
   transform: translateX(-50%);
   border-radius: 1px;
 }
 
 .navItem a:hover {
-  color: #ffe7cc;
-  text-shadow: 0 0 8px rgba(216, 58, 58, 0.45);
+  color: #fff1f1;
+  text-shadow: 0 0 8px rgba(225, 6, 47, 0.45);
 }
 
 .navItem a:hover::before {
@@ -232,7 +235,7 @@ body::after {
 .searchInput {
   padding: 10px 15px;
   border-radius: 25px;
-  border: 2px solid rgba(216, 58, 58, 0.35);
+  border: 2px solid rgba(225, 6, 47, 0.35);
   width: 300px;
   background: rgba(255, 255, 255, 0.95);
   color: var(--dark-color);
@@ -247,8 +250,8 @@ body::after {
 
 .searchInput:focus {
   outline: none;
-  border-color: var(--accent-color);
-  box-shadow: 0 0 20px rgba(216, 58, 58, 0.35);
+  border-color: var(--text-accent);
+  box-shadow: 0 0 20px rgba(225, 6, 47, 0.35);
   background: rgba(255, 255, 255, 1);
 }
 
@@ -257,14 +260,14 @@ body::after {
   border: none;
   margin-left: -35px;
   cursor: pointer;
-  color: var(--accent-color);
+  color: var(--text-accent);
   transition: all 0.3s ease;
   padding: 5px;
   border-radius: 50%;
 }
 
 .searchButton:hover {
-  background: rgba(216, 58, 58, 0.18);
+  background: rgba(225, 6, 47, 0.18);
   transform: scale(1.1);
 }
 
@@ -275,7 +278,7 @@ body::after {
   padding-top: 530px;
 }
 
-/* Contact Numbers - POSICIÃ“N BASE */
+/* Contact Numbers - POSICIÓN BASE */
 .contactNumbers {
   display: flex;
   justify-content: space-around;
@@ -297,7 +300,7 @@ body::after {
 
 .contactItem {
   display: flex;
-  background: linear-gradient(135deg, rgba(216, 58, 58, 0.9), rgba(120, 22, 150, 0.9));
+  background: linear-gradient(135deg, #2b2b2b, #d9d9d9);
   gap: 10px;
   padding: 12px 23px;
   border-radius: 18px;
@@ -310,9 +313,9 @@ body::after {
 }
 
 .contactItem:hover {
-  background: linear-gradient(135deg, rgba(216, 58, 58, 0.95), rgba(148, 33, 146, 0.95));
+  background: linear-gradient(135deg, #3a3a3a, #ededed);
   transform: scale(1.05);
-  box-shadow: 0 6px 12px rgba(216, 58, 58, 0.25);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
 }
 
 /* Tooltip text */
@@ -354,16 +357,16 @@ body::after {
 
 /*  */
 
-/* SecciÃ³n de carrusel */
+/* Sección de carrusel */
 .carouselSection {
   padding: 0;
   margin-top: 20px;
   margin-bottom: 40px;
 }
 
-/* SecciÃ³n de marcas destacadas */
+/* Sección de marcas destacadas */
 .brandSection {
-  background-color: #0e86ca;
+  background: linear-gradient(135deg, #dbe7fb 0%, #cfe0f6 55%, #c2d7f2 100%);
   padding: 20px 0 50px 0;
   text-align: center;
   position: relative;
@@ -372,18 +375,28 @@ body::after {
 
 
 .brandSection h2 {
-  font-size: 2.5rem;
-  margin-bottom: 30px;
-  color: white;
+  font-size: 3rem;
+  margin-bottom: 0;
+  color: #1b1b1b;
   text-align: center;
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
   /* AGREGADO */
   font-weight: 700;
   /* Ubuntu tiene 300, 400, 500, 700 */
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.18);
   position: relative;
   z-index: 3;
   padding: 0 20px;
+}
+
+.brandSection h2::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 4px;
+  background: #000000;
+  margin: 15px auto 30px;
+  border-radius: 2px;
 }
 
 /* Contenedor para imagen de fondo - 100% width */
@@ -433,7 +446,8 @@ body::after {
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
   border: none;
   backdrop-filter: blur(5px);
-  color: #1f0a30;
+  color: #2b0d12;
+  cursor: pointer;
 }
 
 .brandCard:hover {
@@ -484,7 +498,7 @@ body::after {
 
 /* Benefits Section */
 .benefitsSection {
-  background-color: #f8f9fa;
+  background: linear-gradient(180deg, #1e1e1e 0%, #2b2b2b 100%);
   padding: 80px 20px;
   margin: 0;
 }
@@ -545,7 +559,7 @@ body::after {
 .front-content .benefit-title {
   font-size: 24px;
   font-weight: 700;
-  color: var(--primary-color);
+  color: var(--text-accent);
   opacity: 1;
   margin: 0;
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
@@ -565,7 +579,7 @@ body::after {
   justify-content: center;
   text-align: center;
   gap: 15px;
-  background: linear-gradient(-45deg, #1f0a30 0%, #152656 50%, var(--primary-color) 100%);
+  background: linear-gradient(-45deg, #2b2b2b 0%, #1a1a1a 55%, var(--primary-color) 100%);
   color: #e8e8e8;
   padding: 30px;
   line-height: 1.5;
@@ -580,7 +594,7 @@ body::after {
   font-weight: 700;
   margin: 0;
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
-  background: linear-gradient(-45deg, #44d3ef 0%, #95edff 100%);
+  background: linear-gradient(-45deg, #ffffff 0%, #ff9aa9 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -623,10 +637,10 @@ body::after {
   max-width: 960px;
   margin: 0 auto 40px;
   padding: 24px 28px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 245, 233, 0.92));
-  border: 1px solid rgba(216, 58, 58, 0.25);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(255, 232, 236, 0.92));
+  border: 1px solid rgba(225, 6, 47, 0.25);
   border-radius: 18px;
-  box-shadow: 0 14px 28px rgba(148, 33, 146, 0.08);
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.15);
 }
 
 .whatsappNotice__content {
@@ -638,12 +652,12 @@ body::after {
 .whatsappNotice__content h2 {
   font-size: 1.6rem;
   font-weight: 700;
-  color: #2b143b;
+  color: #4a0c14;
   margin: 0;
 }
 .whatsappNotice__content p {
   font-size: 1.15rem;
-  color: #3c2a4d;
+  color: #3a2a2a;
   margin: 0;
   line-height: 1.6;
 }
@@ -673,12 +687,12 @@ body::after {
   .whatsappNotice__content h2 { font-size: 1.05rem; line-height: 1.2; }
   .whatsappNotice__content p { font-size: 0.9rem; line-height: 1.35; }
 }
-/* Reducir gap entre asesores y banner del carrusel en móviles */
+/* Reducir gap entre asesores y banner del carrusel en mviles */
 @media (max-width: 480px) {
   .carouselSection { margin-top: 0; }
 }
 
-/* Desktop: ajustar tamaño y espaciado mínimo para la recomendación */
+/* Desktop: ajustar tamao y espaciado mnimo para la recomendacin */
 @media (min-width: 769px) {
   .whatsappNotice {
     max-width: 1200px;       /* ampliar contenedor en desktop */
@@ -689,7 +703,7 @@ body::after {
   }
   .whatsappNotice__content {
     gap: 6px;
-    /* Forzar una sola línea si es posible */
+    /* Forzar una sola lnea si es posible */
     flex-direction: row;
     align-items: center;
     justify-content: center;
@@ -706,17 +720,21 @@ body::after {
     margin: 0;
     white-space: nowrap;
     overflow: hidden;          /* recorta si no cabe */
-    text-overflow: ellipsis;   /* muestra … al final */
+    text-overflow: ellipsis;   /* muestra  al final */
     min-width: 0;              /* necesario para ellipsis en flex */
     flex: 1 1 auto;            /* permite que se ajuste */
   }
   .carouselSection { margin-top: 3px; }
 }
 
-/* Ocultar recomendación en móviles y tablets */
+/* Ocultar recomendacin en mviles y tablets */
 @media (max-width: 768px) {
   .whatsappNotice { display: none !important; }
 }
+
+
+
+
 
 
 

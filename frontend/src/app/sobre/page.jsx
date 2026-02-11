@@ -9,7 +9,7 @@ export async function generateMetadata() {
 
 export default function SobrePageWrapper() {
   return (
-    <Suspense fallback={<div>Cargando sobre...</div>}>
+    <Suspense fallback={null}>
       <SobreClient />
     </Suspense>
   );

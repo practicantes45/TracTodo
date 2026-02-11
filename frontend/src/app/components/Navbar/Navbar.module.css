@@ -1,19 +1,19 @@
-﻿/* Navbar.module.css â€” Verde bandera + alto contraste + logo grande ðŸ‡²ðŸ‡½
+/* Navbar.module.css — Verde bandera + alto contraste + logo grande 🇲🇽
    FIX: variables definidas en clases locales (no :root) para CSS Modules
 */
 
-/* ===== Barra mÃ³vil (<768px) ===== */
+/* ===== Barra móvil (<768px) ===== */
 .mobileSearchWrapper {
-  /* Vars locales (tambiÃ©n aquÃ­ porque usa var() en este bloque) */
-  --ink: #fdf7ff;
-  --ink-dim: #ffeede;
-  --bg: linear-gradient(135deg, #2f0a4c 0%, #4c1d95 50%, #d83a3a 100%);          /* verde bandera */
-  --bg-2: linear-gradient(135deg, #4c1d95 0%, #d83a3a 50%, #e05858 100%);        /* verde mÃ¡s oscuro para hover/activo */
-  --shadow: 0 8px 20px rgba(44, 6, 69, 0.35);
+  /* Vars locales (también aquí porque usa var() en este bloque) */
+  --ink: #f6f6f6;
+  --ink-dim: #d9d9d9;
+  --bg: linear-gradient(90deg, #b5b5b5 0%, #9a9a9a 40%, #6d6d6d 70%, #2f2f2f 100%);
+  --bg-2: linear-gradient(90deg, #bdbdbd 0%, #8d8d8d 50%, #4f4f4f 100%);
+  --shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 
-  --mx-green: #2f0a4c;
-  --mx-white: #d83a3a;
-  --mx-red:   #e05858;
+  --mx-green: #f2f2f2;
+  --mx-white: #dcdcdc;
+  --mx-red:   #bdbdbd;
 
   display: none;
   background: var(--bg);
@@ -26,20 +26,20 @@
 .mobileMenuButton { flex: 0 0 auto; }
 .mobileSearchBar { flex: 1 1 auto; min-width: 0; max-width: 55%; margin-left: auto; }
 .mobileBrand { display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; text-decoration: none; }
-.mobileLogoImg { height: 44px; width: auto; object-fit: contain; display: block; filter: drop-shadow(0 2px 6px rgba(0,0,0,.25)); }
+.mobileLogoImg { height: 44px; width: auto; object-fit: contain; display: block; filter: drop-shadow(0 2px 6px rgba(0,0,0,.2)); }
 
-/* ===== AppBar desktop (â‰¥768px) ===== */
+/* ===== AppBar desktop (≥768px) ===== */
 .appBar {
   /* Vars locales disponibles para todo lo dentro del nav */
-  --ink: #fdf7ff;
-  --ink-dim: #ffeede;
-  --bg: linear-gradient(135deg, #2f0a4c 0%, #4c1d95 50%, #C30021 100%);
-  --bg-2: linear-gradient(135deg, #4c1d95 0%, #C30021 50%, #e05858 100%);
-  --shadow: 0 8px 20px rgba(44, 6, 69, 0.35);
+  --ink: #f6f6f6;
+  --ink-dim: #d9d9d9;
+  --bg: linear-gradient(90deg, #b5b5b5 0%, #9a9a9a 40%, #6d6d6d 70%, #2f2f2f 100%);
+  --bg-2: linear-gradient(90deg, #bdbdbd 0%, #8d8d8d 50%, #4f4f4f 100%);
+  --shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 
-  --mx-green: #2f0a4c;
-  --mx-white: #C30021;
-  --mx-red:   #e05858;
+  --mx-green: #f2f2f2;
+  --mx-white: #dcdcdc;
+  --mx-red:   #bdbdbd;
 
   position: sticky; top: 0; z-index: 1000; width: 100%;
   background: var(--bg);
@@ -61,9 +61,9 @@
   width: 100%;
   height: 100%;
   background-image:
-    radial-gradient(1px 1px at 30px 25px, rgba(216, 58, 58, 0.25), transparent),
-    radial-gradient(1px 1px at 80px 35px, rgba(216, 58, 58, 0.18), transparent),
-    radial-gradient(1px 1px at 150px 20px, rgba(140, 53, 191, 0.25), transparent);
+    radial-gradient(1px 1px at 30px 25px, rgba(0, 0, 0, 0.08), transparent),
+    radial-gradient(1px 1px at 80px 35px, rgba(31, 90, 166, 0.08), transparent),
+    radial-gradient(1px 1px at 150px 20px, rgba(255, 255, 255, 0.12), transparent);
   background-repeat: repeat;
   background-size: 180px 60px;
   animation: navSparkleX 20s linear infinite;
@@ -84,9 +84,9 @@
   height: 2px;
   background: linear-gradient(90deg,
     transparent 0%,
-    rgba(216, 58, 58, 0.75) 20%,
-    rgba(216, 58, 58, 0.55) 45%,
-    rgba(107, 27, 138, 0.55) 80%,
+    rgba(0, 0, 0, 0.12) 20%,
+    rgba(31, 90, 166, 0.18) 45%,
+    rgba(255, 255, 255, 0.4) 80%,
     transparent 100%);
   animation: navTopGlowX 4s ease-in-out infinite;
 }
@@ -96,7 +96,7 @@
   50% { opacity: 1; }
 }
 
-/* En mÃ³vil, permitir que el navbar se desplace con el contenido (no sticky) */
+/* En móvil, permitir que el navbar se desplace con el contenido (no sticky) */
 @media (max-width: 768px) {
   .appBar { position: static !important; top: auto !important; }
   .mobileSearchWrapper { position: fixed !important; top: 0 !important; left: 0; right: 0; z-index: 1001; }
@@ -108,10 +108,11 @@
   text-decoration: none; color: var(--ink);
 }
 
-/* LOGO MÃS GRANDE (responsive) */
+/* LOGO MÁS GRANDE (responsive) */
 .logoImg {
   height: clamp(48px, 7vw, 88px);
   width: auto; object-fit: contain; display: block;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,.2));
 }
 
 /* Acento tricolor opcional al lado del logo */
@@ -123,7 +124,7 @@
   box-shadow: 0 0 6px rgba(255,255,255,.18);
 }
 
-/* ===== NavegaciÃ³n ===== */
+/* ===== Navegación ===== */
 .navList {
   list-style: none; margin: 0; padding: 0;
   display: flex; gap: 8px;
@@ -143,13 +144,13 @@
 .navLink::after {
   content: ''; position: absolute; left: 50%; bottom: 6px;
   width: 0; height: 2px; border-radius: 1px;
-  background: linear-gradient(90deg, rgba(216, 58, 58, 0.9), rgba(216, 58, 58, 0.6), rgba(76, 29, 149, 0.75));
+  background: linear-gradient(90deg, rgba(31, 90, 166, 0.9), rgba(31, 90, 166, 0.6), rgba(255, 255, 255, 0.45));
   transform: translateX(-50%);
   transition: width .2s ease;
 }
-.navLink:hover { color: #ffeede; background: var(--bg-2); transform: translateY(-1px); box-shadow: 0 8px 18px rgba(44, 6, 69, 0.25); }
+.navLink:hover { color: #1f5aa6; background: var(--bg-2); transform: translateY(-1px); box-shadow: 0 8px 18px rgba(0, 0, 0, 0.18); }
 .navLink:hover::after { width: 70%; }
-.navLink.active { background: var(--bg-2); box-shadow: inset 0 0 0 1px rgba(255, 233, 214, 0.3); }
+.navLink.active { background: var(--bg-2); box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.12); }
 .navLink.active::after { width: 80%; }
 
 /* ===== Search desktop ===== */
@@ -186,28 +187,3 @@
 @media (prefers-reduced-motion: reduce) {
   .navLink { transition: none; }
 }
-
-/* ===== Navidad: Overrides de tema para navbar (desktop y mÃ³vil) ===== */
-.mobileSearchWrapper {
-  --bg: linear-gradient(135deg, #0d3b2e 0%, #0b5d3b 50%, #C30021 100%);
-  --bg-2: linear-gradient(135deg, #0b5d3b 0%, #C30021 50%, #b91c1c 100%);
-  --shadow: 0 8px 20px rgba(11, 93, 59, 0.35);
-  --mx-green: #0b5d3b;
-  --mx-white: #ffffff;
-  --mx-red:   #C30021;
-}
-
-.appBar {
-  --bg: linear-gradient(135deg, #0d3b2e 0%, #0b5d3b 50%, #C30021 100%);
-  --bg-2: linear-gradient(135deg, #0b5d3b 0%, #C30021 50%, #b91c1c 100%);
-  --shadow: 0 8px 20px rgba(11, 93, 59, 0.35);
-  --mx-green: #0b5d3b;
-  --mx-white: #ffffff;
-  --mx-red:   #C30021;
-}
-
-.navLink::after {
-  background: linear-gradient(90deg, rgba(216, 58, 58, 0.95), rgba(216, 58, 58, 0.65), rgba(11, 93, 59, 0.8));
-}
-
-.navLink:hover { box-shadow: 0 8px 18px rgba(11, 93, 59, 0.25); }

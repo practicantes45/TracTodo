@@ -6,7 +6,7 @@
 /* ===== ESTRUCTURA PRINCIPAL ===== */
 .blog-post-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 50%, #f0f7ff 100%);
+  background: linear-gradient(135deg, #2b2b2b 0%, #3a3a3a 50%, #1e0c10 100%);
 }
 
 .magazineMainContent {
@@ -29,7 +29,7 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: linear-gradient(135deg, rgba(44, 5, 66, 0.9) 0%, rgba(74, 11, 110, 0.84) 55%, rgba(195, 0, 33, 0.78) 100%);
+  background: linear-gradient(135deg, rgba(11, 11, 11, 0.95) 0%, rgba(42, 10, 18, 0.9) 55%, rgba(195, 0, 33, 0.82) 100%);
   color: white;
   border: none;
   padding: 14px 28px;
@@ -39,7 +39,7 @@
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
   cursor: pointer;
   transition: all 0.4s ease;
-  box-shadow: 0 4px 15px rgba(148, 33, 146, 0.2);
+  box-shadow: 0 4px 15px rgba(225, 6, 47, 0.2);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   position: relative;
@@ -58,7 +58,7 @@
 }
 
 .magazineBackButton:hover {
-  background: linear-gradient(135deg, var(--accent-color) 0%, #0077b6 100%);
+  background: linear-gradient(135deg, var(--accent-color) 0%, #1a1a1a 100%);
   transform: translateY(-3px);
   box-shadow: 0 8px 25px rgba(195, 0, 33, 0.4);
 }
@@ -74,7 +74,7 @@
   overflow: hidden;
   box-shadow: 
     0 20px 60px rgba(0, 0, 0, 0.15),
-    0 8px 25px rgba(148, 33, 146, 0.1),
+    0 8px 25px rgba(225, 6, 47, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
   position: relative;
   border: 1px solid rgba(195, 0, 33, 0.1);
@@ -84,7 +84,7 @@
 /* ===== CATEGORÍA MEJORADA ===== */
 .magazineCategory {
   position: relative;
-  background: linear-gradient(45deg, #C30021, #0077b6);
+  background: linear-gradient(45deg, #C30021, #1a1a1a);
   color: white;
   padding: 10px 20px;
   border-radius: 20px;
@@ -118,7 +118,7 @@
   padding: 28px 40px 30px 40px;
   text-align: center;
   background: linear-gradient(135deg, 
-    rgba(148, 33, 146, 0.03) 0%, 
+    rgba(225, 6, 47, 0.03) 0%, 
     rgba(195, 0, 33, 0.05) 30%, 
     rgba(255, 255, 255, 0.9) 70%, 
     rgba(248, 249, 250, 1) 100%);
@@ -141,13 +141,13 @@
 .magazineTitle {
   font-size: 3.5rem;
   font-weight: 800;
-  color: #002a5c;
+  color: #2b0d12;
   line-height: 1.2;
   margin: 0;
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
   max-width: 1000px;
   margin: 0 auto;
-  text-shadow: 0 2px 4px rgba(148, 33, 146, 0.1);
+  text-shadow: 0 2px 4px rgba(225, 6, 47, 0.1);
   position: relative;
   z-index: 2;
   animation: titleSlideIn 1s ease-out;
@@ -169,7 +169,7 @@
   display: block;
   width: 0;
   height: 4px;
-  background: linear-gradient(90deg, var(--accent-color) 0%, #00d4ff 50%, var(--accent-color) 100%);
+  background: linear-gradient(90deg, var(--accent-color) 0%, #ffffff 50%, var(--accent-color) 100%);
   margin: 25px auto 0;
   border-radius: 2px;
   animation: titleUnderline 1.5s ease-out 0.5s forwards;
@@ -218,7 +218,7 @@
 }
 
 .metaAuthor svg, .metaDate svg {
-  color: var(--accent-color);
+  color: var(--text-accent);
   font-size: 0.9rem;
 }
 
@@ -226,7 +226,7 @@
   display: flex;
   align-items: center;
   gap: 10px;
-  background: linear-gradient(135deg, var(--accent-color) 0%, #0077b6 100%);
+  background: linear-gradient(135deg, var(--accent-color) 0%, #1a1a1a 100%);
   color: white;
   border: none;
   padding: 12px 20px;
@@ -242,7 +242,7 @@
 }
 
 .metaShare:hover {
-  background: linear-gradient(135deg, #0077b6 0%, #2f0a4c 100%);
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a0a12 100%);
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(216, 58, 58, 0.4);
 }
@@ -305,7 +305,7 @@
   background: linear-gradient(45deg, 
     rgba(216, 58, 58, 0.05) 0%, 
     transparent 50%, 
-    rgba(148, 33, 146, 0.03) 100%);
+    rgba(225, 6, 47, 0.03) 100%);
   pointer-events: none;
 }
 
@@ -317,7 +317,7 @@
   border-radius: 15px;
   box-shadow: 
     0 15px 35px rgba(0, 0, 0, 0.15),
-    0 5px 15px rgba(148, 33, 146, 0.1);
+    0 5px 15px rgba(225, 6, 47, 0.1);
   transition: transform 0.5s ease;
   position: relative;
   z-index: 2;
@@ -357,17 +357,17 @@
 
 .contentText h1 {
   font-size: 2.2rem;
-  color: #002a5c;
+  color: #2b0d12;
   margin: 0 0 25px 0;
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
   font-weight: 800;
   line-height: 1.3;
-  text-shadow: 0 2px 4px rgba(148, 33, 146, 0.1);
+  text-shadow: 0 2px 4px rgba(225, 6, 47, 0.1);
 }
 
 .contentText h2 {
   font-size: 1.8rem;
-  color: #002a5c;
+  color: #2b0d12;
   margin: 30px 0 20px 0;
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
   font-weight: 700;
@@ -388,7 +388,7 @@
   top: 0;
   bottom: 0;
   width: 5px;
-  background: linear-gradient(180deg, var(--accent-color) 0%, #0077b6 100%);
+  background: linear-gradient(180deg, var(--accent-color) 0%, #1a1a1a 100%);
   border-radius: 3px;
 }
 
@@ -406,7 +406,7 @@
   content: '>';
   position: absolute;
   left: 0;
-  color: var(--accent-color);
+  color: var(--text-accent);
   font-size: 0.8rem;
 }
 
@@ -420,7 +420,7 @@
 }
 
 .contentText strong {
-  color: #002a5c;
+  color: #2b0d12;
   font-weight: 700;
   background: linear-gradient(120deg, rgba(216, 58, 58, 0.1) 0%, transparent 100%);
   padding: 2px 4px;
@@ -475,7 +475,7 @@
 .magazineFooter {
   padding: 50px 40px;
   background: linear-gradient(135deg, 
-    rgba(148, 33, 146, 0.03) 0%, 
+    rgba(225, 6, 47, 0.03) 0%, 
     rgba(216, 58, 58, 0.05) 30%, 
     rgba(248, 249, 250, 0.9) 100%);
   border-top: 3px solid rgba(216, 58, 58, 0.1);
@@ -539,11 +539,11 @@
 .magazineAction.blog {
   background: linear-gradient(135deg, rgba(44, 5, 66, 0.9) 0%, rgba(74, 11, 110, 0.84) 55%, rgba(216, 58, 58, 0.78) 100%);
   color: white;
-  box-shadow: 0 8px 25px rgba(148, 33, 146, 0.4);
+  box-shadow: 0 8px 25px rgba(225, 6, 47, 0.4);
 }
 
 .magazineAction.blog:hover {
-  background: linear-gradient(135deg, var(--accent-color) 0%, #0077b6 100%);
+  background: linear-gradient(135deg, var(--accent-color) 0%, #1a1a1a 100%);
   transform: translateY(-4px);
   box-shadow: 0 15px 40px rgba(216, 58, 58, 0.5);
 }

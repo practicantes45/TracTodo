@@ -38,14 +38,14 @@
   content: '';
   position: absolute;
   inset: -3px;
-  background: linear-gradient(135deg, #C30021, #0096c7, #0077b6, #023047);
+  background: linear-gradient(135deg, #C30021, #1a1a1a, #1a1a1a, #2b2b2b);
   border-radius: 31px;
   z-index: -1;
 }
 
 /* ===== HEADER ===== */
 .header {
-  background: linear-gradient(135deg, #0a1021 0%, #1a2332 25%, #0096c7 50%, #0077b6 75%, #023047 100%);
+  background: linear-gradient(135deg, #2b2b2b 0%, #1a1a1a 25%, #1a1a1a 50%, #1a1a1a 75%, #2b2b2b 100%);
   color: white;
   display: flex;
   justify-content: space-between;
@@ -106,7 +106,7 @@
 }
 
 .form::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #C30021 0%, #0096c7 100%);
+  background: linear-gradient(135deg, #C30021 0%, #1a1a1a 100%);
   border-radius: 4px;
 }
 
@@ -125,7 +125,7 @@
 
 .field label {
   font-weight: 700;
-  color: #023047;
+  color: #2b2b2b;
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -141,7 +141,7 @@
   left: 0;
   width: 30px;
   height: 2px;
-  background: linear-gradient(90deg, #C30021 0%, #0096c7 100%);
+  background: linear-gradient(90deg, #C30021 0%, #1a1a1a 100%);
   border-radius: 1px;
 }
 
@@ -162,7 +162,7 @@
 .field input:focus,
 .field textarea:focus,
 .field select:focus {
-  border-color: #C30021;
+  border-color: var(--text-accent);
   background: #ffffff;
   box-shadow: 0 0 0 4px rgba(195, 0, 33, 0.1);
   transform: translateY(-2px);
@@ -177,7 +177,7 @@
   display: block;
   margin-bottom: 12px;
   font-weight: 700;
-  color: #023047;
+  color: #2b2b2b;
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -192,7 +192,7 @@
   left: 0;
   width: 40px;
   height: 2px;
-  background: linear-gradient(90deg, #C30021 0%, #0096c7 100%);
+  background: linear-gradient(90deg, #C30021 0%, #1a1a1a 100%);
   border-radius: 1px;
 }
 
@@ -211,7 +211,7 @@
 }
 
 .fullWidth textarea:focus {
-  border-color: #C30021;
+  border-color: var(--text-accent);
   background: #ffffff;
   box-shadow: 0 0 0 4px rgba(195, 0, 33, 0.1);
   transform: translateY(-2px);
@@ -252,7 +252,7 @@
 .checkboxField input[type="checkbox"] {
   width: 24px;
   height: 24px;
-  accent-color: #C30021;
+  accent-color: var(--text-accent);
   cursor: pointer;
   border-radius: 6px;
 }
@@ -269,7 +269,7 @@
 
 .imagesSection h3 {
   margin: 0 0 24px 0;
-  color: #023047;
+  color: #2b2b2b;
   font-size: 20px;
   font-weight: 700;
   text-align: center;
@@ -349,7 +349,7 @@ content: '!';
 }
 
 .saveButton {
-  background: linear-gradient(135deg, #C30021 0%, #0096c7 50%, #0077b6 100%);
+  background: linear-gradient(135deg, #C30021 0%, #1a1a1a 50%, #1a1a1a 100%);
   color: white;
   box-shadow: 0 6px 20px rgba(195, 0, 33, 0.5);
   position: relative;
@@ -450,7 +450,7 @@ content: '!';
 
 .imagesSectionHeader h3 {
   margin: 0;
-  color: #023047;
+  color: #2b2b2b;
   font-size: 20px;
   font-weight: 700;
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
@@ -462,7 +462,7 @@ content: '!';
 }
 
 .addImageButton {
-  background: linear-gradient(135deg, #C30021 0%, #0096c7 100%);
+  background: linear-gradient(135deg, #C30021 0%, #1a1a1a 100%);
   color: white;
   border: none;
   padding: 10px 16px;
@@ -478,7 +478,7 @@ content: '!';
 }
 
 .addImageButton:hover {
-  background: linear-gradient(135deg, #0096c7 0%, #0077b6 100%);
+  background: linear-gradient(135deg, #1a1a1a 0%, #1a1a1a 100%);
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(195, 0, 33, 0.3);
 }
@@ -549,12 +549,12 @@ content: '!';
 .imageHelp p {
   margin: 0;
   font-size: 14px;
-  color: #023047;
+  color: #2b2b2b;
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
 }
 
 .imageHelp strong {
-  color: #0077b6;
+  color: #1a1a1a;
 }
 
 /* ===== RESPONSIVE PARA CAMPOS DE IMAGEN ===== */

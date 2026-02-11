@@ -1,4 +1,4 @@
-﻿/* Full-bleed banners and differentiated styles */
+/* Full-bleed banners and differentiated styles */
 
 /* Todos los productos: banner full-width (viewport), sin desplazamiento en hover */
 .allProductsBanner { display: flex; flex-direction: column; align-items: center; width: 100%; }
@@ -11,28 +11,28 @@
   box-sizing: border-box !important;
   padding: 16px 24px !important;
   border-radius: 0 !important;
-  background: linear-gradient(135deg, var(--secondary-color, #2f0a4c) 0%, rgba(195, 0, 33, 0.85) 100%) !important;
+  background: linear-gradient(135deg, var(--secondary-color, #2a0a12) 0%, rgba(195, 0, 33, 0.85) 100%) !important;
   color: #fff !important;
   font-size: clamp(1.15rem, 2.4vw, 1.6rem) !important;
   line-height: 1.25 !important;
   font-weight: 900 !important;
   letter-spacing: .8px !important;
   text-transform: uppercase !important;
-  box-shadow: 0 6px 18px rgba(148, 33, 146, 0.2), 0 3px 10px rgba(195, 0, 33, 0.12) !important;
+  box-shadow: 0 6px 18px rgba(225, 6, 47, 0.2), 0 3px 10px rgba(195, 0, 33, 0.12) !important;
   border-top: 1px solid rgba(195, 0, 33, 0.25) !important;
   border-bottom: 1px solid rgba(195, 0, 33, 0.25) !important;
   cursor: default !important;
   z-index: auto;
 }
-/* Hover estable: sin traslaciÃ³n horizontal */
+/* Hover estable: sin traslación horizontal */
 .allProductsBanner .allProductsBannerBox:hover { transform: none !important; }
-/* Pegado al hero: el primer banner no tiene separaciÃ³n superior */
+/* Pegado al hero: el primer banner no tiene separación superior */
 .featuredCategories > .allProductsBanner { margin-top: -2px !important; }
 @media (min-width: 992px) {
   .featuredCategories > .allProductsBanner { margin-top: -4px !important; }
 }
 
-/* TÃ­tulos de secciÃ³n (Explora por tipo / Â¿Para quÃ© motor compras?) */
+/* Títulos de sección (Explora por tipo / ¿Para qué motor compras?) */
 .featuredTitle {
   /* Igual que .allProductsBannerBox */
   display: flex !important;
@@ -49,12 +49,12 @@
   box-sizing: border-box !important;
   padding: 16px 24px !important;
   border-radius: 0 !important;
-  background: linear-gradient(135deg, var(--secondary-color, #2f0a4c) 0%, rgba(195, 0, 33, 0.85) 100%) !important;
+  background: linear-gradient(135deg, var(--secondary-color, #2a0a12) 0%, rgba(195, 0, 33, 0.85) 100%) !important;
   color: #fff !important;
   font-weight: 900 !important;
   letter-spacing: .8px !important;
   text-transform: uppercase !important;
-  box-shadow: 0 6px 18px rgba(148, 33, 146, 0.2), 0 3px 10px rgba(195, 0, 33, 0.12) !important;
+  box-shadow: 0 6px 18px rgba(225, 6, 47, 0.2), 0 3px 10px rgba(195, 0, 33, 0.12) !important;
   border-top: 1px solid rgba(195, 0, 33, 0.25) !important;
   border-bottom: 1px solid rgba(195, 0, 33, 0.25) !important;
 }
@@ -64,14 +64,14 @@
   .featuredTitle { padding: 12px 14px !important; }
 }
 
-/* Quitar fondo blanco de la secciÃ³n principal para que los banners respiren */
+/* Quitar fondo blanco de la sección principal para que los banners respiren */
 .productosMainSection { background: transparent !important; padding-top: 0 !important; overflow: visible !important; }
 
 /* Espaciado del primer bloque (Explora por tipo) */
 .featuredCategories { margin-top: 0 !important; }
 .featuredTitle { margin: 0 !important; }
 
-/* BotÃ³n Filtrar por reubicado debajo del banner */
+/* Botón Filtrar por reubicado debajo del banner */
 .filterBannerRow { display: flex; justify-content: center; margin: 12px 0 16px; position: static; z-index: auto; width: 100%; }
 .allProductsBanner .filterBannerRow { align-self: stretch; padding: 0 16px; box-sizing: border-box; }
 .filterBannerBtn {
@@ -114,7 +114,7 @@
 }
 .filterBannerRow.withResults .searchResultsNotice .resultsCount { font-weight: 700; }
 .filterBannerRow.withResults .searchResultsNotice .resultsQuery { font-weight: 600; opacity: .9; }
-/* Estilo tipo "pÃ­ldora" para el aviso de resultados, inspirado en el hero */
+/* Estilo tipo "píldora" para el aviso de resultados, inspirado en el hero */
 .filterBannerRow.withResults .searchResultsNotice .searchIndicator.searchIndicator--inline {
   display: inline-block;
   margin-top: 4px;
@@ -146,7 +146,7 @@
 .filterBannerBtn:hover { transform: translateY(-1px); box-shadow: 0 10px 26px rgba(11,94,215,.22), 0 6px 16px rgba(64,152,255,.22); }
 .filterBannerBtn:hover::before { opacity: .8; }
 
-/* eliminar redefiniciÃ³n posterior que neutralizaba el banner */
+/* eliminar redefinición posterior que neutralizaba el banner */
 
 /* Dynamic viewport width fix for mobile (iOS/Android) */
 @supports (width: 100dvw) {
@@ -160,14 +160,14 @@
 /* Hero title responsive size override */
 .productos-page .heroSection .heroContent h1 { font-size: clamp(1.6rem, 3.2vw, 2.6rem) !important; }
 
-/* --- Overrides aÃ±adidos para compactar banners en mÃ³vil y desktop --- */
+/* --- Overrides añadidos para compactar banners en móvil y desktop --- */
 /* Pegado al hero: sin espacio arriba en el primer banner */
 .featuredCategories > .allProductsBanner { margin-top: -14px !important; margin-bottom: 8px !important; }
 @media (min-width: 992px) { .featuredCategories > .allProductsBanner { margin-top: -10px !important; } }
 /* Subir banners siguientes */
 .shopByEngine > .allProductsBanner { margin-top: 6px !important; margin-bottom: 8px !important; }
 #todos-productos.allProductsBanner { margin-top: 8px !important; }
-/* --- Overrides añadidos para compactar banners en móvil y desktop --- */
+/* --- Overrides a�adidos para compactar banners en m�vil y desktop --- */
 /* Pegado al hero: sin espacio arriba en el primer banner */
 .featuredCategories > .allProductsBanner { margin-top: -18px !important; margin-bottom: 6px !important; }
 @media (min-width: 992px) { .featuredCategories > .allProductsBanner { margin-top: -12px !important; } }
@@ -175,12 +175,12 @@
 .shopByEngine > .allProductsBanner { margin-top: 2px !important; margin-bottom: 6px !important; }
 #todos-productos.allProductsBanner { margin-top: 4px !important; }
 
-/* En móvil, bajar ligeramente el primer banner para que respire bajo el hero */
+/* En m�vil, bajar ligeramente el primer banner para que respire bajo el hero */
 @media (max-width: 768px) {
   .featuredCategories > .allProductsBanner { margin-top: 4px !important; }
 }
 
-/* Final gap fix: pegamos "Explora por tipo" al hero en todos los tamaños */
+/* Final gap fix: pegamos "Explora por tipo" al hero en todos los tama�os */
 .featuredCategories > .allProductsBanner {
   margin-top: clamp(-14px, -2vw, -6px) !important;
   margin-bottom: 6px !important;
@@ -200,7 +200,7 @@
   .featuredCategories > .allProductsBanner { margin-top: 0 !important; }
 }
 
-/* Desktop: pegar aÆºn mÄs el primer banner al hero */
+/* Desktop: pegar aƺn mās el primer banner al hero */
 @media (min-width: 992px) {
   .featuredCategories > .allProductsBanner { margin-top: -30px !important; }
 }

@@ -1,4 +1,4 @@
-﻿.contactNumbers {
+.contactNumbers {
   display: flex;
   flex-direction: column;
   gap: 32px;
@@ -216,6 +216,145 @@
   margin-top: 24px;
 }
 
+.contactNumbersModal {
+  padding: 28px 22px 32px;
+  background: linear-gradient(135deg, rgba(210, 210, 210, 0.28), rgba(120, 130, 145, 0.45), rgba(60, 65, 75, 0.55));
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 22px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.contactNumbersModal::before {
+  background-image:
+    radial-gradient(160px 160px at 18% 12%, rgba(255, 255, 255, 0.1), transparent),
+    radial-gradient(200px 200px at 85% 8%, rgba(31, 90, 166, 0.22), transparent),
+    radial-gradient(240px 240px at 50% 100%, rgba(195, 0, 33, 0.22), transparent),
+    radial-gradient(260px 220px at 25% 85%, rgba(200, 200, 200, 0.12), transparent);
+  opacity: 0.6;
+}
+
+.contactNumbersModal .selectorIntro h2 {
+  color: #f7f7f7;
+  text-shadow: 0 14px 30px rgba(0, 0, 0, 0.45);
+  font-size: clamp(1.6rem, 2.4vw, 2.1rem);
+}
+
+.contactNumbersModal .selectorIntro p {
+  color: rgba(245, 247, 255, 0.92);
+  font-size: 1.15rem;
+}
+
+.contactNumbersModal .selectorIntro {
+  background: linear-gradient(135deg, rgba(210, 210, 210, 0.22), rgba(120, 130, 145, 0.35), rgba(60, 65, 75, 0.4));
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 16px;
+  padding: 16px 18px;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.22);
+}
+
+.contactNumbersModal .advisorCard {
+  background:
+    linear-gradient(150deg, #1b2433 0%, #232f42 55%, #1b2433 100%),
+    radial-gradient(140% 140% at 80% 0%, rgba(255, 255, 255, 0.08), transparent 45%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+}
+
+.contactNumbersModal .advisorCard:hover {
+  border-color: rgba(200, 200, 200, 0.5);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.45), 0 12px 22px rgba(90, 96, 110, 0.25);
+}
+
+.contactNumbersModal .avatar {
+  background: linear-gradient(145deg, #0e0e0e 0%, #2a2a2a 45%, #141414 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.45), inset 0 2px 8px rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.contactNumbersModal .avatar::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -60%;
+  width: 80%;
+  height: 200%;
+  background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.45) 50%, transparent 100%);
+  transform: skewX(-12deg);
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.contactNumbersModal .advisorName,
+.contactNumbersModal .advisorRole,
+.contactNumbersModal .advisorPhone {
+  color: #f2f4f8;
+}
+.contactNumbersModal .advisorName { font-size: 1.25rem; }
+.contactNumbersModal .advisorRole { font-size: 1.1rem; }
+.contactNumbersModal .advisorPhone { font-size: 1.05rem; }
+
+.contactNumbersModal .currentBadge {
+  background: linear-gradient(135deg, #c30021 0%, #6f0b16 100%);
+  box-shadow: 0 8px 18px rgba(195, 0, 33, 0.35);
+}
+
+.contactNumbersModal .primaryButton {
+  background: linear-gradient(135deg, #1e5f3a 0%, #2bb673 55%, #0f4d2c 100%);
+  color: #f7fff9;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 14px 28px rgba(43, 182, 115, 0.28);
+}
+
+.contactNumbersModal .primaryButton::before {
+  content: "";
+  position: absolute;
+  top: -60%;
+  left: -120%;
+  width: 60%;
+  height: 220%;
+  background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.6) 50%, transparent 100%);
+  transform: skewX(-12deg);
+  transition: left 0.6s ease;
+  opacity: 0;
+}
+
+.contactNumbersModal .primaryButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.42), 0 10px 24px rgba(43, 182, 115, 0.25);
+}
+
+.contactNumbersModal .primaryButton:hover::before {
+  left: 140%;
+  opacity: 0.9;
+}
+
+.contactNumbersModal .selectedName,
+.contactNumbersModal .selectedRole {
+  color: #c30021;
+}
+
+.contactNumbersModal .selectedMessage,
+.contactNumbersModal .pendingMessage {
+  font-size: 1.2rem;
+}
+
+.contactNumbersModal .hint,
+.contactNumbersModal .pendingMessage {
+  background: linear-gradient(135deg, rgba(200, 200, 200, 0.18), rgba(90, 96, 110, 0.32));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+  padding: 12px 14px;
+}
+
+.contactNumbersModal .currentBadge {
+  font-size: 0.9rem;
+}
+
 
 .selectedName {
   color: #1f7ae0;
@@ -226,7 +365,7 @@
   font-weight: 600;
 }
 
-/* Compactar toda la secciÃ³n en mÃ³viles (<=480px) */
+/* Compactar toda la sección en móviles (<=480px) */
 @media (max-width: 480px) {
   .selectorIntro h2 { font-size: clamp(1.1rem, 5.2vw, 1.35rem); }
   .selectorIntro p { font-size: 0.85rem; max-width: 92%; }
@@ -251,7 +390,7 @@
   .selectorIntro p { margin-top: 8px; }
 }
 
-/* Dos columnas para asesores solo en mÃ³viles */
+/* Dos columnas para asesores solo en móviles */
 @media (max-width: 480px) {
   .advisorGrid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -259,5 +398,59 @@
 }
 @media (max-width: 480px) {
   .actionPanel { margin-bottom: 0 !important; }
+}
+
+/* Modal compacto en móviles para evitar scroll */
+@media (max-width: 480px) {
+  .contactNumbersModal {
+    padding: 14px 12px 16px;
+    border-radius: 16px;
+  }
+  .contactNumbersModal .selectorIntro {
+    padding: 10px 12px;
+    border-radius: 12px;
+  }
+  .contactNumbersModal .selectorIntro h2 {
+    font-size: 1.05rem;
+  }
+  .contactNumbersModal .selectorIntro p {
+    font-size: 0.78rem;
+  }
+  .contactNumbersModal .advisorGrid {
+    gap: 8px;
+  }
+  .contactNumbersModal .advisorCard,
+  .contactNumbersModal .readonlyCard {
+    padding: 10px 8px;
+    border-radius: 12px;
+    gap: 6px;
+  }
+  .contactNumbersModal .avatar {
+    width: 44px;
+    height: 44px;
+    font-size: 0.95rem;
+  }
+  .contactNumbersModal .advisorName {
+    font-size: 0.92rem;
+  }
+  .contactNumbersModal .advisorRole {
+    font-size: 0.78rem;
+  }
+  .contactNumbersModal .advisorPhone {
+    font-size: 0.8rem;
+  }
+  .contactNumbersModal .currentBadge {
+    font-size: 0.65rem;
+    padding: 2px 8px;
+  }
+  .contactNumbersModal .selectedMessage,
+  .contactNumbersModal .pendingMessage {
+    font-size: 0.85rem;
+  }
+  .contactNumbersModal .primaryButton {
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    border-radius: 12px;
+  }
 }
 

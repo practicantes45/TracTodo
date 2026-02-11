@@ -8,6 +8,7 @@ import { CartProvider } from "../context/CartContext";
 import CartWidget from "./components/CartWidget/CartWidgetRoot";
 import CookieConsent from "./components/CookieConsent/CookieConsent";
 import Analytics from "./Analytics"; // empuja page_view al dataLayer
+import NavigationSplash from "./components/NavigationSplash/NavigationSplash";
 
 import "./styles/global.css";
 
@@ -27,12 +28,11 @@ const montserrat = Montserrat({
 // ===== Metadata global (sin viewport aquí) =====
 export const metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_FRONTEND_URL || "https://tractodo.com"),
-  title: { template: "%s | Tractodo", default: "Tractodo - Especial de Navidad en Refacciones" },
-  description: "Refaccionaria especializada en partes y componentes para tractocamión con edición especial de Halloween y Día de Muertos.",
+  title: { template: "%s | Tractodo", default: "Tractodo - Refacciones para Tractocamión" },
+  description: "Refaccionaria especializada en partes y componentes para tractocamión.",
   verification: { google: "google-site-verification-code" },
-  icons: { icon: "/christmas-favicon.svg", shortcut: "/christmas-favicon.svg", apple: "/christmas-favicon.svg" },
+  icons: { icon: "/favicon.ico", shortcut: "/favicon-32x32.png", apple: "/apple-touch-icon.png" },
   manifest: "/site.webmanifest",
-  description: "Refaccionaria especializada en partes y componentes para tractocamion con edicion especial de Navidad.",
   robots: { index: true, follow: true },
 };
 
@@ -40,7 +40,7 @@ export const metadata = {
 export const viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0d3b2e",
+  themeColor: "#b00020",
 };
 
 export default function RootLayout({ children }) {
@@ -66,7 +66,7 @@ export default function RootLayout({ children }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
 
         {/* Extras opcionales que ya traías */}
-        <meta name="msapplication-TileColor" content="#0b5d3b" />
+        <meta name="msapplication-TileColor" content="#b00020" />
         <meta name="msapplication-config" content="/browserconfig.xml" />
         <link rel="sitemap" type="application/xml" href="/sitemap.xml" />
         <link rel="preload" href="/images/tractodo-logo.jpg" as="image" />
@@ -88,6 +88,7 @@ export default function RootLayout({ children }) {
         <AuthProvider>
           <CartProvider>
             <SEOProvider>
+              <NavigationSplash />
               {children}
               <CartWidget />
               <CookieConsent />

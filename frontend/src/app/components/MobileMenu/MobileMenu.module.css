@@ -62,7 +62,7 @@
 .mobileMenu {
   position: fixed; top: 0; left: -100%;
   width: 320px; height: 100vh;
-  background: linear-gradient(135deg, #120019 0%, #1f0a30 25%, var(--primary-color, #002a5c) 50%, #271046 75%, #1a0b2e 100%);
+  background: linear-gradient(135deg, #2b2b2b 0%, #3a3a3a 35%, #2a0a12 70%, #b00020 100%);
   background-size: 400% 400%; animation: menuGradientFlow 12s ease infinite;
   z-index: 10020;         /* por encima del overlay */
   transition: left 0.4s cubic-bezier(0.23, 1, 0.320, 1);
@@ -103,14 +103,19 @@
 /* ===== HEADER DEL MENÚ ===== */
 .menuHeader {
   display: flex; align-items: center; justify-content: space-between;
-  padding: 25px; border-bottom: 1px solid rgba(195, 0, 33, 0.2);
-  position: relative; z-index: 2; min-height: 100px;
+  padding: 12px 18px; border-bottom: 1px solid rgba(195, 0, 33, 0.2);
+  position: relative; z-index: 2; min-height: 0;
+  background: linear-gradient(180deg, #eef1f5 0%, #e1e6ec 100%);
 }
 
 .logoContainer { flex-shrink: 0; display: flex; align-items: center; }
 
 .menuLogo {
-  height: 55px; width: auto; filter: brightness(1.1);
+  height: 70px; width: auto; filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4)) drop-shadow(0 0 6px rgba(255,255,255,0.35));
+}
+
+.menuHeader .closeButton {
+  color: #1b1b1b;
 }
 
 /* ===== BOTÓN DE CERRAR ===== */
@@ -127,7 +132,7 @@
   transform: scale(0); transition: transform 0.3s ease; z-index: -1;
 }
 .closeButton:hover {
-  color: #ff4757; transform: rotate(90deg);
+  color: var(--text-accent); transform: rotate(90deg);
   background: rgba(255, 71, 87, 0.1); border: 1px solid rgba(255, 71, 87, 0.3);
 }
 .closeButton:hover::before { transform: scale(1); }
@@ -138,19 +143,6 @@
   0%, 100% { box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.4); }
   50%     { box-shadow: 0 0 0 8px rgba(255, 71, 87, 0); }
 }
-
-/* ===== Navidad: Overrides de tema para MobileMenu ===== */
-.mobileMenu {
-  background: linear-gradient(135deg, #061a16 0%, #0a1f1a 25%, #0d3b2e 60%, #0b5d3b 100%);
-}
-.mobileMenu::before {
-  background-image:
-    radial-gradient(2px 2px at 30px 40px, rgba(195, 0, 33, 0.35), transparent),
-    radial-gradient(1px 1px at 80px 80px, rgba(255, 255, 255, 0.18), transparent),
-    radial-gradient(1px 1px at 120px 120px, rgba(212, 160, 23, 0.3), transparent),
-    radial-gradient(2px 2px at 200px 160px, rgba(255, 255, 255, 0.1), transparent);
-}
-.menuHeader { border-bottom: 1px solid rgba(195, 0, 33, 0.2); }
 
 /* ===== LISTA DE NAVEGACIÓN ===== */
 .menuList {
@@ -174,8 +166,8 @@
   background: rgba(195, 0, 33, 0.12); transition: width 0.3s ease; z-index: -1;
 }
 .menuLink:hover {
-  color: var(--accent-color, #C30021);
-  border-left-color: var(--accent-color, #C30021);
+  color: var(--text-accent);
+  border-left-color: var(--text-accent);
   text-shadow: 0 0 8px rgba(195, 0, 33, 0.4);
   transform: translateX(8px);
 }
@@ -183,8 +175,8 @@
 
 /* Enlace activo */
 .menuLink.activeLink {
-  color: var(--accent-color, #C30021);
-  border-left-color: var(--accent-color, #C30021);
+  color: var(--text-accent);
+  border-left-color: var(--text-accent);
   background: rgba(195, 0, 33, 0.15);
   text-shadow: 0 0 10px rgba(195, 0, 33, 0.6);
   font-weight: 700; position: relative;
@@ -192,7 +184,7 @@
   .menuLink.activeLink::before { width: 100%; background: rgba(195, 0, 33, 0.2); }
 .menuLink.activeLink::after {
 content: '>';
-  transform: translateY(-50%); color: var(--accent-color, #C30021);
+  transform: translateY(-50%); color: var(--text-accent);
   font-size: 1rem; animation: activeArrow 2s ease-in-out infinite;
 }
 @keyframes activeArrow {
@@ -210,7 +202,7 @@ content: '>';
   font-family: var(--font-montserrat), 'Montserrat', sans-serif; font-weight: 300;
 }
   .brandName {
-  color: var(--accent-color, #C30021); font-weight: 700; text-transform: uppercase;
+  color: var(--text-accent); font-weight: 700; text-transform: uppercase;
   letter-spacing: 1px; text-shadow: 0 0 8px rgba(195, 0, 33, 0.4);
 }
 
@@ -221,9 +213,9 @@ content: '>';
 @media (max-width: 480px) {
   .mobileMenu { width: 100%; max-width: 350px; }
   .menuLink { padding: 20px 25px; font-size: 1.2rem; }
-  .menuLogo { height: 60px; }
+  .menuLogo { height: 74px; }
   .closeButton { font-size: 2rem; width: 60px; height: 60px; }
-  .menuHeader { padding: 20px; min-height: 90px; }
+  .menuHeader { padding: 10px 16px; min-height: 0; }
   .menuSlogan { font-size: 1rem; }
 }
 
@@ -252,7 +244,7 @@ content: '>';
   .menuOpen .menuItem, .menuOpen .closeButton { animation: none; opacity: 1; transform: none; }
 }
 @media (prefers-contrast: high) {
-  .mobileMenu { background: #000; border-right: 2px solid #fff; }
+  .mobileMenu { background: #1e1e1e; border-right: 2px solid #fff; }
   .menuLink { color: #fff; }
   .menuLink.activeLink { background: #fff; color: #000; }
   .hamburgerLine { background: #fff; }

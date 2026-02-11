@@ -23,7 +23,7 @@ export default function NotFound() {
     }}>
       <h1>404 - Página no encontrada</h1>
       <p>La página que buscas no existe o ha sido movida.</p>
-      <Link href="/" style={{ color: '#002a5c', textDecoration: 'underline' }}>
+      <Link href="/" style={{ color: '#b00020', textDecoration: 'underline' }}>
         Volver al inicio
       </Link>
     </div>

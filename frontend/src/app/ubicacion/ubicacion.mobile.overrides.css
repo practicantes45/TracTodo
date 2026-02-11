@@ -36,3 +36,27 @@
   .layout.ubicacion-page .heroContent h1 { font-size: clamp(1.1rem, 6vw, 1.6rem) !important; }
   .layout.ubicacion-page .mainContent { padding-top: calc(56px + clamp(80px, 16vh, 105px)) !important; }
 }
+
+/* Mobile: quitar hueco bajo barra superior y ajustar título del mapa */
+@media (max-width: 768px) {
+  .layout.ubicacion-page .mainContent {
+    padding-top: calc(56px + env(safe-area-inset-top)) !important;
+  }
+  .locationMainSection {
+    margin-top: 0 !important;
+  }
+  .mapSection h2 {
+    font-size: 1.7rem !important;
+    text-align: center !important;
+    margin-bottom: 16px !important;
+  }
+  .mapSection h2::after {
+    margin: 10px auto 0 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .mapSection h2 {
+    font-size: 1.55rem !important;
+  }
+}

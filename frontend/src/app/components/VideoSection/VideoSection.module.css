@@ -1,4 +1,4 @@
-﻿/* ===== COMPONENTE VIDEO SECTION ===== */
+/* ===== COMPONENTE VIDEO SECTION ===== */
 .videoSection {
   background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(10px);
@@ -25,7 +25,7 @@
 
 .videoSection h2 {
   font-size: 2.5rem;
-  color: var(--primary-color);
+  color: var(--text-accent);
   margin-bottom: 20px;
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
   font-weight: 700;
@@ -38,7 +38,7 @@
 }
 
 .titleIcon {
-  color: var(--accent-color);
+  color: var(--text-accent);
   font-size: 2.2rem;
   transition: all 0.3s ease;
 }
@@ -83,7 +83,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #000;
+  background: #1e1e1e;
   border-radius: 20px;
   overflow: hidden;
 }
@@ -112,7 +112,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ff0000;
+  color: var(--text-accent);
   font-size: 2rem;
   transition: all 0.3s ease;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
@@ -155,7 +155,7 @@
   height: 90vh;
   max-width: 1200px;
   max-height: 675px;
-  background: #000;
+  background: #1e1e1e;
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 25px 80px rgba(0, 0, 0, 0.7);
@@ -380,7 +380,7 @@
   }
 }
 
-/* OptimizaciÃ³n para dispositivos tÃ¡ctiles */
+/* Optimización para dispositivos táctiles */
 @media (hover: none) and (pointer: coarse) {
   .videoSection:active {
     transform: scale(0.98);

@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 import './productos.css';
 import { FaFilter, FaWhatsapp, FaSortAlphaDown, FaSortAlphaUp, FaTimes, FaEraser, FaChevronDown, FaShoppingCart } from "react-icons/fa";
 import { useState, useEffect, useRef } from 'react';
@@ -20,7 +20,7 @@ import AdvisorPickerModal from '../components/AdvisorPickerModal/AdvisorPickerMo
 import './productos.overrides.css';
 import './productos.fullbleed.css';
 import './productos.featured.override.css';
-import './productos.navidad.overrides.css';
+import './productos.theme.overrides.css';
 // Constante para productos por página
 const PRODUCTOS_POR_PAGINA = 15;
 
@@ -84,7 +84,7 @@ export default function ProductosPage() {
   }, [busquedaParam, productos.length]);
 
   // Al llegar con una marca seleccionada (por ejemplo, desde "Marcas destacadas"),
-  // desplazar suavemente a la secci�n de "Todos los productos"
+  // desplazar suavemente a la secci?n de "Todos los productos"
   useEffect(() => {
     if (typeof window === 'undefined') return;
     if (!marcaParam) return;
@@ -384,6 +384,8 @@ export default function ProductosPage() {
         productosProcesados = ordenarPorVariedad(productosProcesados);
       }
 
+      productosProcesados = priorizarConImagen(productosProcesados);
+
       setProductos(productosProcesados);
 
       // Extraer marcas Ãºnicas de los resultados para el filtro
@@ -523,6 +525,31 @@ export default function ProductosPage() {
 
     console.log('ðŸš« No se encontrÃ³ imagen para el producto:', producto.nombre);
     return null;
+  };
+
+  const tieneImagen = (producto) => {
+    if (!producto) return false;
+    if (producto.imagenesUrl && typeof producto.imagenesUrl === 'object') {
+      if (producto.imagenesUrl.frente) return true;
+      const imagenes = Object.values(producto.imagenesUrl).filter(img => img && img.trim() !== '');
+      if (imagenes.length > 0) return true;
+    }
+    if (producto.imagenUrl) return true;
+    if (producto.imagen) return true;
+    return false;
+  };
+
+  const priorizarConImagen = (items) => {
+    const conImagen = [];
+    const sinImagen = [];
+    (items || []).forEach((item) => {
+      if (tieneImagen(item)) {
+        conImagen.push(item);
+      } else {
+        sinImagen.push(item);
+      }
+    });
+    return [...conImagen, ...sinImagen];
   };
 
   // Funciones para filtros móviles
@@ -692,12 +719,7 @@ export default function ProductosPage() {
         )}
         <div className="layout productos-page">
           <Navbar />
-          <main className="mainContent">
-            <div className="loadingContainer">
-              <div className="spinner"></div>
-              <p>Cargando productos...</p>
-            </div>
-          </main>
+          <main className="mainContent" aria-busy="true"></main>
           <Footer />
         </div>
       </>
@@ -769,7 +791,7 @@ export default function ProductosPage() {
                           className="advisorQuickButton"
                           onClick={() => { setAdvisorSelectionReminder(true); setAdvisorModalOpen(true); }}
                         >
-                          Cambiar asesor
+                          <span className="buttonText">Cambiar asesor</span>
                         </button>
                       </>
                     ) : (
@@ -780,7 +802,7 @@ export default function ProductosPage() {
                           className="advisorQuickButton"
                           onClick={() => { setAdvisorSelectionReminder(true); setAdvisorModalOpen(true); }}
                         >
-                          Elegir asesor
+                          <span className="buttonText">Elegir asesor</span>
                         </button>
                       </>
                     )}
@@ -1142,12 +1164,12 @@ export default function ProductosPage() {
                           {cargandoMas ? (
                             <>
                               <div className="verMasSpinner"></div>
-                              Cargando...
+                              <span className="buttonText">Cargando...</span>
                             </>
                           ) : (
                             <>
-                              <FaChevronDown />
-                              Ver más productos
+                              <FaChevronDown className="buttonIcon" />
+                              <span className="buttonText">Ver más productos</span>
                             </>
                           )}
                         </button>

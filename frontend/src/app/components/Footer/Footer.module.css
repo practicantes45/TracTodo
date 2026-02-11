@@ -1,6 +1,6 @@
 /* Footer Styles - Versión Compacta con Estado Activo y Copy to Clipboard */
 .footer {
-  background: linear-gradient(135deg, #061a16 0%, #0a1f1a 25%, #0d3b2e 50%, #0b5d3b 75%, #000000 100%);
+  background: linear-gradient(135deg, #2b2b2b 0%, #3a3a3a 35%, #2a0a12 70%, #1e1e1e 100%);
   background-size: 400% 400%;
   animation: gradientFlow 15s ease infinite;
   color: white;
@@ -26,11 +26,11 @@
   width: 100%;
   height: 100%;
   background-image: 
-    radial-gradient(2px 2px at 20px 30px, rgba(195, 0, 33, 0.4), transparent),
+    radial-gradient(2px 2px at 20px 30px, rgba(31, 90, 166, 0.4), transparent),
     radial-gradient(2px 2px at 40px 70px, rgba(255, 255, 255, 0.2), transparent),
-    radial-gradient(1px 1px at 90px 40px, rgba(195, 0, 33, 0.6), transparent),
+    radial-gradient(1px 1px at 90px 40px, rgba(31, 90, 166, 0.6), transparent),
     radial-gradient(1px 1px at 130px 80px, rgba(255, 255, 255, 0.1), transparent),
-    radial-gradient(2px 2px at 160px 30px, rgba(195, 0, 33, 0.3), transparent);
+    radial-gradient(2px 2px at 160px 30px, rgba(31, 90, 166, 0.3), transparent);
   background-repeat: repeat;
   background-size: 200px 100px;
   animation: sparkle 20s linear infinite;
@@ -52,9 +52,9 @@
   height: 100%;
   background: linear-gradient(90deg, 
       transparent 0%, 
-      rgba(195, 0, 33, 0.05) 25%, 
-      rgba(195, 0, 33, 0.1) 50%, 
-      rgba(195, 0, 33, 0.05) 75%, 
+      rgba(31, 90, 166, 0.05) 25%, 
+      rgba(31, 90, 166, 0.1) 50%, 
+      rgba(31, 90, 166, 0.05) 75%, 
       transparent 100%);
   transform: translateX(-100%);
   animation: wave 8s ease-in-out infinite;
@@ -129,12 +129,12 @@
   color: #ffffff;
   font-family: var(--font-montserrat, 'Montserrat'), sans-serif;
   position: relative;
-  text-shadow: 0 0 10px rgba(195, 0, 33, 0.35);
+  text-shadow: 0 0 10px rgba(31, 90, 166, 0.35);
   transition: all 0.3s ease;
 }
 
 .sectionTitle:hover {
-  text-shadow: 0 0 20px rgba(195, 0, 33, 0.6);
+  text-shadow: 0 0 20px rgba(31, 90, 166, 0.6);
   transform: translateY(-2px);
 }
 
@@ -145,7 +145,7 @@
   left: 0;
   width: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--accent-color, #C30021), #00d4ff, #44d3ef);
+  background: linear-gradient(90deg, var(--text-accent, #1f5aa6), #ffffff, #d7e6ff);
   background-size: 200% 100%;
   border-radius: 2px;
   animation: expandLine 2s ease-out forwards, shimmer 3s ease-in-out infinite;
@@ -171,7 +171,7 @@
 }
 
 .footerLink {
-  color: #b8b8b8;
+  color: #ffffff;
   text-decoration: none;
   font-size: 1rem;
   font-weight: 400;
@@ -188,7 +188,7 @@
 
 .footerLink::before {
   content: '>';
-  color: var(--accent-color, #C30021);
+  color: var(--text-accent);
   margin-right: 12px;
   font-weight: bold;
   opacity: 0;
@@ -206,15 +206,15 @@
   left: 0;
   width: 0;
   height: 100%;
-  background: rgba(195, 0, 33, 0.1);
+  background: rgba(31, 90, 166, 0.1);
   transition: width 0.3s ease;
   z-index: -1;
 }
 
 .footerLink:hover {
-  color: var(--accent-color, #C30021);
+  color: var(--text-accent);
   transform: translateX(8px);
-  text-shadow: 0 0 8px rgba(195, 0, 33, 0.4);
+  text-shadow: 0 0 8px rgba(31, 90, 166, 0.4);
 }
 
 .footerLink:hover::before {
@@ -228,12 +228,12 @@
 
 /* ===== ESTADO ACTIVO PARA ENLACES DEL FOOTER ===== */
 .footerLink.activeLink {
-  color: var(--accent-color, #C30021);
-  background: rgba(195, 0, 33, 0.12);
+  color: var(--text-accent);
+  background: rgba(31, 90, 166, 0.12);
   font-weight: 600;
-  text-shadow: 0 0 8px rgba(195, 0, 33, 0.5);
+  text-shadow: 0 0 8px rgba(31, 90, 166, 0.5);
   transform: translateX(5px);
-  border-left: 3px solid var(--accent-color, #C30021);
+  border-left: 3px solid var(--text-accent, #1f5aa6);
   padding-left: 12px;
   margin-left: 3px;
 }
@@ -241,14 +241,14 @@
 .footerLink.activeLink::before {
   opacity: 1;
   transform: translateX(0);
-  color: #00d4ff;
-  text-shadow: 0 0 6px rgba(0, 212, 255, 0.6);
+  color: #ffffff;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
 }
 
 .footerLink.activeLink::after {
   width: 100%;
-  background: rgba(195, 0, 33, 0.15);
-  box-shadow: 0 0 10px rgba(195, 0, 33, 0.3);
+  background: rgba(31, 90, 166, 0.15);
+  box-shadow: 0 0 10px rgba(31, 90, 166, 0.3);
 }
 
 /* Animación especial para el enlace activo */
@@ -258,12 +258,12 @@
 
 @keyframes activeFooterPulse {
   0%, 100% { 
-    text-shadow: 0 0 8px rgba(195, 0, 33, 0.5);
-    border-left-color: var(--accent-color, #C30021);
+    text-shadow: 0 0 8px rgba(31, 90, 166, 0.5);
+    border-left-color: var(--text-accent);
   }
   50% { 
-    text-shadow: 0 0 15px rgba(195, 0, 33, 0.8);
-    border-left-color: #00d4ff;
+    text-shadow: 0 0 15px rgba(31, 90, 166, 0.8);
+    border-left-color: #ffffff;
   }
 }
 
@@ -274,11 +274,11 @@
 
 /* Hover sobre enlace activo del footer */
 .footerLink.activeLink:hover {
-  color: #00d4ff;
+  color: #ffffff;
   transform: translateX(10px);
-  text-shadow: 0 0 15px rgba(0, 212, 255, 0.7);
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
   border-left-color: #ffffff;
-  background: rgba(195, 0, 33, 0.18);
+  background: rgba(31, 90, 166, 0.18);
 }
 
 .footerLink.activeLink:hover::before {
@@ -303,7 +303,7 @@
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.04));
   border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
-  color: #b8b8b8;
+  color: #ffffff;
   text-decoration: none;
   font-size: 1.3rem;
   transition: all 0.4s ease;
@@ -409,9 +409,9 @@
     inset 0 0 0 2px rgba(255, 255, 255, 0.1);
 }
 
-/* TikTok - #000000 con acentos rojos */
+/* TikTok - #1e1e1e con acentos rojos */
 .socialLink:nth-child(5)::before {
-  background: linear-gradient(135deg, #000000, #FF0050, #000000);
+  background: linear-gradient(135deg, #1e1e1e, #FF0050, #1e1e1e);
 }
 
 .socialLink:nth-child(5):hover {
@@ -433,7 +433,7 @@
   display: flex;
   align-items: flex-start;
   gap: 16px;
-  color: #b8b8b8;
+  color: #ffffff;
   font-size: 1rem;
   line-height: 1.5;
   padding: 0;
@@ -458,17 +458,17 @@
 }
 
 .contactIcon {
-  color: var(--accent-color, #C30021);
+  color: var(--text-accent);
   font-size: 1.5rem;
   margin-top: 3px;
   flex-shrink: 0;
   transition: all 0.3s ease;
-  filter: drop-shadow(0 0 4px rgba(195, 0, 33, 0.3));
+  filter: drop-shadow(0 0 4px rgba(31, 90, 166, 0.3));
 }
 
 .contactItem:hover .contactIcon {
   transform: scale(1.1);
-  filter: drop-shadow(0 0 8px rgba(195, 0, 33, 0.6));
+  filter: drop-shadow(0 0 8px rgba(31, 90, 166, 0.6));
 }
 
 /* ===== ESTILOS PARA NÚMEROS DE TELÉFONO - DISEÑO LIMPIO ===== */
@@ -498,9 +498,9 @@
 
 .phoneName {
   font-weight: 600;
-  color: var(--accent-color, #C30021);
+  color: var(--text-accent);
   margin-right: 6px;
-  text-shadow: 0 0 4px rgba(195, 0, 33, 0.3);
+  text-shadow: 0 0 4px rgba(31, 90, 166, 0.3);
   font-size: 1rem;
 }
 
@@ -523,9 +523,9 @@
 .clickableContact:hover {
   color: #ffffff;
   transform: translateX(3px);
-  text-shadow: 0 0 8px rgba(195, 0, 33, 0.4);
-  background: rgba(195, 0, 33, 0.1);
-  box-shadow: 0 2px 8px rgba(195, 0, 33, 0.2);
+  text-shadow: 0 0 8px rgba(31, 90, 166, 0.4);
+  background: rgba(31, 90, 166, 0.1);
+  box-shadow: 0 2px 8px rgba(31, 90, 166, 0.2);
 }
 
 /* Quitar el ícono de copia */
@@ -539,7 +539,7 @@
   bottom: 120%;
   left: 50%;
   transform: translateX(-50%);
-  background: linear-gradient(135deg, #28a745, #20c997);
+  background: linear-gradient(135deg, #1f5aa6, #2a0a12);
   color: white;
   padding: 8px 16px;
   border-radius: 8px;
@@ -548,7 +548,7 @@
   white-space: nowrap;
   z-index: 1000;
   box-shadow: 
-    0 4px 15px rgba(40, 167, 69, 0.3),
+    0 4px 15px rgba(225, 6, 47, 0.3),
     0 0 0 1px rgba(255, 255, 255, 0.1);
   animation: tooltipSlideIn 0.3s ease-out;
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -562,7 +562,7 @@
   transform: translateX(-50%);
   border-width: 6px 6px 0 6px;
   border-style: solid;
-  border-color: #28a745 transparent transparent transparent;
+  border-color: #1f5aa6 transparent transparent transparent;
 }
 
 @keyframes tooltipSlideIn {
@@ -626,17 +626,17 @@
 
 .brandName {
   font-weight: 700;
-  color: var(--accent-color, #C30021);
+  color: var(--text-accent);
   text-transform: uppercase;
   letter-spacing: 2px;
-  text-shadow: 0 0 10px rgba(195, 0, 33, 0.5);
+  text-shadow: 0 0 10px rgba(31, 90, 166, 0.5);
   display: inline-block;
   transition: all 0.3s ease;
 }
 
 .brandName:hover {
   transform: scale(1.05);
-  text-shadow: 0 0 20px rgba(195, 0, 33, 0.8);
+  text-shadow: 0 0 20px rgba(31, 90, 166, 0.8);
 }
 
 .copyright {
@@ -657,7 +657,7 @@
 }
 
 .copyright p:hover {
-  color: #b8b8b8;
+  color: #ffffff;
 }
 
 /* Responsive Design */
@@ -734,7 +734,7 @@
   .footerLink.activeLink {
     transform: none;
     border-left: none;
-    border-bottom: 2px solid var(--accent-color, #C30021);
+    border-bottom: 2px solid var(--text-accent, #1f5aa6);
     padding-left: 0;
     margin-left: 0;
     padding-bottom: 8px;
@@ -867,7 +867,7 @@
 /* Modo de alto contraste */
 @media (prefers-contrast: high) {
   .footer {
-    background: #000000;
+    background: #1e1e1e;
   }
   
   .sectionTitle {
@@ -881,8 +881,8 @@
   
   .footerLink.activeLink {
     background: #ffffff;
-    color: #000000;
-    border-left-color: #000000;
+    color: #1e1e1e;
+    border-left-color: #1e1e1e;
   }
   
   .socialLink {
@@ -897,8 +897,8 @@
 
   .copyTooltip {
     background: #ffffff;
-    color: #000000;
-    border-color: #000000;
+    color: #1e1e1e;
+    border-color: #1e1e1e;
   }
 }
 

@@ -314,14 +314,9 @@ export default function BlogClient() {
                             </div>
                         </div>
                     </div>
-                    <main className="mainContent">
+                    <main className="mainContent" aria-busy="true">
                         <section className="blogMainSection">
-                            <div className="blogContainer">
-                                <div className="loadingContainer">
-                                    <h2>Cargando artículos...</h2>
-                                    <p>Obteniendo contenido desde la base de datos...</p>
-                                </div>
-                            </div>
+                            <div className="blogContainer"></div>
                         </section>
                     </main>
                     <Footer />
@@ -358,7 +353,7 @@ export default function BlogClient() {
                                     <h2>Error al cargar artículos</h2>
                                     <p>{error}</p>
                                     <button onClick={cargarPosts} className="retryButton">
-                                        Intentar de nuevo
+                                        <span>Intentar de nuevo</span>
                                     </button>
                                 </div>
                             </div>
@@ -413,7 +408,7 @@ export default function BlogClient() {
                                     aria-label="Regresar a la página anterior"
                                 >
                                     <FaArrowLeft className="backIcon" />
-                                    Regresar a entretenimiento
+                                    <span>Regresar a entretenimiento</span>
                                 </button>
                             </div>
 
@@ -433,7 +428,7 @@ export default function BlogClient() {
                                             title="Gestionar artículos del blog"
                                         >
                                             <FaCog className="manageIcon" />
-                                            Gestionar Blog
+                                            <span>Gestionar Blog</span>
                                         </button>
                                     </div>
                                 )}

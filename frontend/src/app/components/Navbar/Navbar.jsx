@@ -39,7 +39,7 @@ const Navbar = () => {
             />
           </Link>
           <div className={styles.mobileSearchBar}>
-            <Suspense fallback={<div>Cargando...</div>}>
+            <Suspense fallback={null}>
               <SearchBar />
             </Suspense>
           </div>
@@ -80,7 +80,7 @@ const Navbar = () => {
 
         {/* Buscador Desktop */}
         <div className={styles.searchSection}>
-          <Suspense fallback={<div>Cargando...</div>}>
+          <Suspense fallback={null}>
             <SearchBar />
           </Suspense>
         </div>

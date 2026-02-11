@@ -1,4 +1,4 @@
-﻿/* ===== ENTRETENIMIENTO - ESTILOS ESPECÃFICOS ===== */
+/* ===== ENTRETENIMIENTO - ESTILOS ESPECÍFICOS ===== */
 
 /* Importar estilos globales */
 @import url('../styles/global.css');
@@ -32,14 +32,14 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: linear-gradient(0deg, rgba(26, 11, 46, 0.72), rgba(14, 4, 28, 0.45));
+  background: linear-gradient(0deg, rgba(10, 10, 10, 0.78), rgba(60, 0, 10, 0.45));
   z-index: 3;
 }
 
 /* Desktop: suavizar overlay para evitar tinte morado */
 @media (min-width: 769px) {
   .entretenimiento-page .heroOverlay {
-    background: linear-gradient(0deg, rgba(20, 8, 36, 0.36), rgba(12, 4, 20, 0.14)) !important;
+    background: linear-gradient(0deg, rgba(10, 10, 10, 0.45), rgba(30, 0, 8, 0.18)) !important;
   }
 }
 
@@ -62,7 +62,7 @@
   text-shadow:
     2px 2px 4px rgba(0, 0, 0, 0.8),
     0 0 10px rgba(0, 0, 0, 0.6),
-    0 0 20px rgba(148, 33, 146, 0.4);
+    0 0 20px rgba(225, 6, 47, 0.35);
   opacity: 0;
   animation: fadeInUp 1s ease-out 0.5s forwards;
 }
@@ -79,7 +79,7 @@
   }
 }
 
-/* ===== MAIN CONTENT ADJUSTMENT - ESPECÃFICO PARA ENTRETENIMIENTO ===== */
+/* ===== MAIN CONTENT ADJUSTMENT - ESPECÍFICO PARA ENTRETENIMIENTO ===== */
 .entretenimiento-page .mainContent {
   flex: 1;
   width: 100%;
@@ -102,7 +102,7 @@
   .entertainmentMainSection { margin-top: -50px; }
 }
 
-/* --- Ajustes móviles: hero compacto con título visible --- */
+/* --- Ajustes m�viles: hero compacto con t�tulo visible --- */
 @media (max-width: 768px) {
   .entretenimiento-page .heroSection {
     height: clamp(110px, 18vh, 150px) !important;
@@ -137,9 +137,9 @@
   .entertainmentMainSection { margin-top: -8px !important; padding: 12px 12px 60px 12px !important; }
 }
 
-/* ===== SECCIÃ“N PRINCIPAL DE ENTRETENIMIENTO ===== */
+/* ===== SECCIÓN PRINCIPAL DE ENTRETENIMIENTO ===== */
 .entertainmentMainSection {
-  background: linear-gradient(145deg, #f0f8ff 0%, #e6f3ff 30%, #ffffff 70%, #f8f9fa 100%);
+  background: linear-gradient(145deg, #b32638 0%, #5f6f86 55%, #3a3f46 100%);
   padding: 40px 20px 80px 20px;
   margin: 0;
   margin-top: -60px;
@@ -151,8 +151,9 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: url('/images/christmas-pattern.svg') repeat;
-  opacity: 0.14;
+  background: radial-gradient(1px 1px at 25px 35px, rgba(31, 90, 166, 0.16), transparent),
+              radial-gradient(1px 1px at 90px 90px, rgba(255, 255, 255, 0.08), transparent);
+  opacity: 0.2;
   pointer-events: none;
 }
 
@@ -165,7 +166,7 @@
   transform: translateX(-50%);
   width: 260px;
   height: 260px;
-  background: radial-gradient(circle, rgba(195, 0, 33, 0.2) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(31, 90, 166, 0.25) 0%, transparent 70%);
   opacity: 0.45;
   pointer-events: none;
 }
@@ -178,7 +179,7 @@
   z-index: 2;
 }
 
-/* ===== HEADERS DE SECCIÃ“N ===== */
+/* ===== HEADERS DE SECCIÓN ===== */
 .sectionHeader {
   text-align: center;
   margin-bottom: 40px;
@@ -187,12 +188,12 @@
 
 .sectionHeader h2 {
   font-size: 3rem;
-  color: var(--primary-color);
+  color: var(--text-accent);
   margin-bottom: 15px;
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
   font-weight: 700;
   position: relative;
-  text-shadow: 0 2px 4px rgba(148, 33, 146, 0.1);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .sectionHeader h2::after {
@@ -200,11 +201,11 @@
   display: block;
   width: 0;
   height: 4px;
-  background: linear-gradient(90deg, var(--accent-color) 0%, #00d4ff 50%, var(--accent-color) 100%);
+  background: #ffffff;
   margin: 20px auto 0;
   border-radius: 2px;
   animation: expandUnderline 1.5s ease-out 0.5s forwards;
-  box-shadow: 0 2px 8px rgba(195, 0, 33, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
 
 @keyframes expandUnderline {
@@ -219,7 +220,7 @@
 
 .sectionDescription {
   font-size: 1.2rem;
-  color: #666;
+  color: #c9c9c9;
   max-width: 600px;
   margin: 0 auto;
   line-height: 1.6;
@@ -227,7 +228,7 @@
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
 }
 
-/* ===== SECCIÃ“N DE SHORTS/VIDEOS ===== */
+/* ===== SECCIÓN DE SHORTS/VIDEOS ===== */
 .videosSection {
   margin-bottom: 80px;
 }
@@ -241,12 +242,12 @@
 }
 
 .shortCard {
-  background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 50%, #f0f7ff 100%);
+  background: linear-gradient(145deg, #ffffff 0%, #f7f1f1 50%, #fdf6f7 100%);
   border-radius: 20px;
   overflow: hidden;
   box-shadow:
-    0 8px 25px rgba(148, 33, 146, 0.1),
-    0 4px 15px rgba(195, 0, 33, 0.05),
+    0 8px 25px rgba(0, 0, 0, 0.2),
+    0 4px 15px rgba(225, 6, 47, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
   transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
   cursor: pointer;
@@ -274,10 +275,10 @@
 .shortCard:hover {
   transform: translateY(-8px) scale(1.02);
   box-shadow:
-    0 20px 40px rgba(148, 33, 146, 0.15),
-    0 8px 25px rgba(195, 0, 33, 0.1),
+    0 20px 40px rgba(0, 0, 0, 0.25),
+    0 8px 25px rgba(225, 6, 47, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  border-color: rgba(195, 0, 33, 0.3);
+  border-color: rgba(0, 0, 0, 0.2);
 }
 
 .shortCard:hover::before {
@@ -303,7 +304,7 @@
 .thumbnailPlaceholder {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2b2b2b 0%, #2a0a12 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -327,7 +328,7 @@
 }
 
 .playIcon {
-  color: var(--primary-color);
+  color: var(--text-accent);
   font-size: 1.5rem;
   margin-left: 3px;
 }
@@ -366,7 +367,7 @@
   box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
 }
 
-/* ===== BOTÃ“N COMPARTIR ===== */
+/* ===== BOTÓN COMPARTIR ===== */
 .shareButton {
   position: absolute;
   top: 10px;
@@ -396,7 +397,7 @@
   transform: scale(1.1);
 }
 
-/* ===== INFORMACIÃ“N DE SHORT ===== */
+/* ===== INFORMACIÓN DE SHORT ===== */
 .shortInfo {
   padding: 15px;
   position: relative;
@@ -408,7 +409,7 @@
 .shortTitle {
   font-size: 1rem;
   font-weight: 700;
-  color: #002a5c;
+  color: #2b0d12;
   margin-bottom: 8px;
   line-height: 1.3;
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
@@ -419,7 +420,7 @@
 }
 
 .shortCard:hover .shortTitle {
-  color: #C30021;
+  color: var(--text-accent);
 }
 
 .shortMeta {
@@ -442,7 +443,7 @@
   font-size: 0.75rem;
 }
 
-/* ===== SECCIÃ“N DE BLOG ===== */
+/* ===== SECCIÓN DE BLOG ===== */
 .blogSection {
   margin-bottom: 50px;
 }
@@ -456,12 +457,12 @@
 }
 
 .blogCard {
-  background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 50%, #f0f7ff 100%);
+  background: linear-gradient(145deg, #ffffff 0%, #f7f1f1 50%, #fdf6f7 100%);
   border-radius: 20px;
   overflow: hidden;
   box-shadow:
-    0 10px 30px rgba(148, 33, 146, 0.08),
-    0 4px 15px rgba(195, 0, 33, 0.05),
+    0 10px 30px rgba(0, 0, 0, 0.2),
+    0 4px 15px rgba(225, 6, 47, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.8);
   transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
   cursor: pointer;
@@ -489,10 +490,10 @@
 .blogCard:hover {
   transform: translateY(-10px) scale(1.02);
   box-shadow:
-    0 25px 50px rgba(148, 33, 146, 0.15),
-    0 10px 30px rgba(195, 0, 33, 0.1),
+    0 25px 50px rgba(0, 0, 0, 0.25),
+    0 10px 30px rgba(225, 6, 47, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  border-color: rgba(195, 0, 33, 0.3);
+  border-color: rgba(0, 0, 0, 0.2);
 }
 
 .blogCard:hover::before {
@@ -504,7 +505,7 @@
   width: 100%;
   height: 200px;
   overflow: hidden;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2b2b2b 0%, #2a0a12 100%);
 }
 
 .blogImage {
@@ -522,7 +523,7 @@
   position: absolute;
   top: 15px;
   left: 15px;
-  background: linear-gradient(45deg, #C30021, #0077b6);
+  background: linear-gradient(45deg, #C30021, #1a1a1a);
   color: white;
   padding: 6px 14px;
   border-radius: 20px;
@@ -531,11 +532,11 @@
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
   text-transform: uppercase;
   letter-spacing: 0.5px;
-  box-shadow: 0 4px 15px rgba(195, 0, 33, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
   z-index: 2;
 }
 
-/* ===== INDICADOR DE MÃšLTIPLES IMÃGENES ===== */
+/* ===== INDICADOR DE MÚLTIPLES IMÁGENES ===== */
 .imageCount {
   position: absolute;
   bottom: 10px;
@@ -562,7 +563,7 @@
 .blogTitle {
   font-size: 1.3rem;
   font-weight: 700;
-  color: #002a5c;
+  color: #2b0d12;
   margin-bottom: 12px;
   line-height: 1.4;
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
@@ -574,14 +575,14 @@
 }
 
 .blogCard:hover .blogTitle {
-  color: #C30021;
+  color: var(--text-accent);
 }
 
-/* ===== NUEVO: SUBTÃTULO DESTACADO EN TARJETAS DE BLOG ===== */
+/* ===== NUEVO: SUBTÍTULO DESTACADO EN TARJETAS DE BLOG ===== */
 .blogSubtitle {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--accent-color);
+  color: var(--text-accent);
   margin: 0 0 12px 0;
   line-height: 1.3;
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
@@ -629,8 +630,8 @@
 }
 
 .readMoreButton {
-  background: linear-gradient(135deg, #C30021 0%, #0077b6 100%);
-  color: white;
+  background: linear-gradient(135deg, var(--button-grad-start) 0%, var(--button-grad-end) 100%);
+  color: #1b1b1b;
   border: none;
   padding: 12px 24px;
   border-radius: 25px;
@@ -653,7 +654,7 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #0077b6 0%, #2f0a4c 100%);
+  background: linear-gradient(135deg, #3a3a3a 0%, #f2f2f2 100%);
   transition: left 0.3s ease;
 }
 
@@ -668,7 +669,7 @@
 
 .readMoreButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(195, 0, 33, 0.4);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
 }
 
 /* ===== ESTADOS DE CARGA Y ERROR ===== */
@@ -677,13 +678,13 @@
   padding: 60px 20px;
   background: rgba(255, 255, 255, 0.9);
   border-radius: 20px;
-  box-shadow: 0 10px 30px rgba(148, 33, 146, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
   margin: 40px 0;
 }
 
 .loadingContainer h3, .errorContainer h3 {
   font-size: 1.8rem;
-  color: var(--primary-color);
+  color: var(--text-accent);
   margin-bottom: 15px;
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
 }
@@ -696,8 +697,8 @@
 }
 
 .retryButton {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
-  color: white;
+  background: linear-gradient(135deg, var(--button-grad-start) 0%, var(--button-grad-end) 100%);
+  color: #1b1b1b;
   border: none;
   padding: 15px 30px;
   border-radius: 25px;
@@ -712,7 +713,7 @@
 
 .retryButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(195, 0, 33, 0.4);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
 }
 
 .noVideosMessage, .noBlogMessage {
@@ -720,13 +721,13 @@
   padding: 60px 20px;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 20px;
-  border: 2px dashed rgba(195, 0, 33, 0.3);
+  border: 2px dashed rgba(0, 0, 0, 0.2);
   margin: 40px 0;
 }
 
 .noVideosMessage h3, .noBlogMessage h3 {
   font-size: 1.8rem;
-  color: var(--primary-color);
+  color: var(--text-accent);
   margin-bottom: 15px;
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
 }
@@ -745,12 +746,12 @@
   padding: 60px 20px;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 20px;
-  border: 2px dashed rgba(195, 0, 33, 0.3);
+  border: 2px dashed rgba(0, 0, 0, 0.2);
 }
 
 .noResults h3 {
   font-size: 1.8rem;
-  color: var(--primary-color);
+  color: var(--text-accent);
   margin-bottom: 10px;
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
 }
@@ -761,7 +762,7 @@
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
 }
 
-/* ===== BOTONES "VER MÃS" REDISEÃ‘ADOS ===== */
+/* ===== BOTONES "VER MÁS" REDISEÑADOS ===== */
 .sectionFooter {
   text-align: center;
   margin-top: 50px;
@@ -772,7 +773,7 @@
   align-items: center;
   justify-content: center;
   gap: 12px;
-  background: linear-gradient(135deg, #002a5c 0%, #00436e 50%, #C30021 100%);
+  background: linear-gradient(135deg, #2b2b2b 0%, #1a1a1a 50%, #C30021 100%);
   color: white;
   text-decoration: none;
   padding: 18px 36px;
@@ -785,8 +786,8 @@
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
   box-shadow:
-    0 8px 25px rgba(148, 33, 146, 0.2),
-    0 4px 15px rgba(195, 0, 33, 0.1);
+    0 8px 25px rgba(0, 0, 0, 0.25),
+    0 4px 15px rgba(225, 6, 47, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.2);
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
   cursor: pointer;
@@ -812,13 +813,13 @@
 .viewMoreButton:hover {
   transform: translateY(-4px) scale(1.05);
   box-shadow:
-    0 15px 40px rgba(148, 33, 146, 0.3),
-    0 8px 25px rgba(195, 0, 33, 0.2);
+    0 15px 40px rgba(0, 0, 0, 0.3),
+    0 8px 25px rgba(31, 90, 166, 0.25);
   border-color: rgba(255, 255, 255, 0.4);
 }
 
 .viewMoreButton::after {
-  content: 'â†’';
+  content: '→';
   font-size: 1.2rem;
   transition: transform 0.3s ease;
 }
@@ -827,18 +828,18 @@
   transform: translateX(5px);
 }
 
-/* Variante para botÃ³n de shorts */
+/* Variante para botón de shorts */
 .viewMoreButton.shorts {
-  background: linear-gradient(135deg, #6a11cb 0%, #2575fc 50%, #C30021 100%);
+  background: linear-gradient(135deg, #3a3a3a 0%, #f2f2f2 100%);
 }
 
 .viewMoreButton.shorts::after {
-  content: 'â–¶';
+  content: '▶';
 }
 
 /* ===== FOOTER DE VIDEOS ===== */
 .videosFooter {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  background: linear-gradient(135deg, var(--button-grad-start) 0%, var(--button-grad-end) 100%);
   border-radius: 20px;
   padding: 50px;
   margin-top: 60px;
@@ -911,7 +912,7 @@
   transform: translateY(-2px);
 }
 
-/* ===== BOTÃ“N STICKY PARA VER BLOG ===== */
+/* ===== BOTÓN STICKY PARA VER BLOG ===== */
 .more-content-sticky {
   position: fixed;
   bottom: 20px;
@@ -944,7 +945,7 @@
   transform: translateX(-50%) translateY(-5px) scale(1.05);
   box-shadow: 0 8px 25px rgba(238, 90, 36, 0.6);
   animation-play-state: paused;
-  background: linear-gradient(135deg, #C30021 0%, #ff6b6b 100%);
+  background: linear-gradient(135deg, var(--button-grad-start) 0%, var(--button-grad-end) 100%);
 }
 
 .more-content-sticky:active {
@@ -980,13 +981,13 @@
  }
 }
 
-/* Solo mostrar en mÃ³vil y cuando NO se ha llegado al blog */
+/* Solo mostrar en móvil y cuando NO se ha llegado al blog */
 @media (max-width: 768px) {
  .more-content-sticky {
    display: flex;
  }
 
- /* Ocultar cuando el blog estÃ¡ visible */
+ /* Ocultar cuando el blog está visible */
  .more-content-sticky.hidden {
    opacity: 0;
    pointer-events: none;
@@ -994,7 +995,7 @@
  }
 }
 
-/* Variante con pulsaciÃ³n de brillo */
+/* Variante con pulsación de brillo */
 .more-content-sticky::before {
  content: '';
  position: absolute;
@@ -1076,7 +1077,7 @@
  width: 100% !important;
  height: 500px !important;
  position: relative !important;
- background: #000 !important;
+ background: #1e1e1e !important;
 }
 
 .videoContainer iframe {
@@ -1091,7 +1092,7 @@
  align-items: center;
  justify-content: center;
  height: 100%;
- background: #000;
+ background: #1e1e1e;
  color: white;
  font-size: 1.2rem;
  text-align: center;
@@ -1184,7 +1185,7 @@
 }
 
 .blogAuthor svg {
-  color: var(--accent-color);
+  color: var(--text-accent);
   font-size: 0.9rem;
 }
 
@@ -1206,7 +1207,7 @@
 }
 
 .blogDate svg {
-  color: var(--accent-color);
+  color: var(--text-accent);
   font-size: 0.9rem;
 }
 
@@ -1227,7 +1228,7 @@
    text-shadow:
      2px 2px 4px rgba(0, 0, 0, 0.9),
      0 0 8px rgba(0, 0, 0, 0.7),
-     0 0 16px rgba(148, 33, 146, 0.5);
+     0 0 16px rgba(225, 6, 47, 0.45);
  }
  
 .entertainmentMainSection{
@@ -1296,7 +1297,7 @@
  }
 }
 
-/* MÃ³vil */
+/* Móvil */
 @media (max-width: 480px) {
  .entretenimiento-page .heroSection {
    height: 180px;
@@ -1380,7 +1381,7 @@
  }
 }
 
-/* MÃ³vil muy pequeÃ±o */
+/* Móvil muy pequeño */
 @media (max-width: 360px) {
  .entertainmentMainSection {
    padding: 10px 5px 40px 5px;
@@ -1425,7 +1426,7 @@
  }
 }
 
-/* ===== ARREGLO PARA INFORMACIÃ“N DE SHORT EN ENTRETENIMIENTO ===== */
+/* ===== ARREGLO PARA INFORMACIÓN DE SHORT EN ENTRETENIMIENTO ===== */
 .shortMeta {
  display: flex;
  justify-content: space-between;
@@ -1437,7 +1438,7 @@
 
 .shortCategory {
  background: rgba(195, 0, 33, 0.1);
- color: var(--accent-color);
+ color: var(--text-accent);
  padding: 4px 8px;
  border-radius: 12px;
  font-size: 0.75rem;
@@ -1457,8 +1458,8 @@
 .thumbnailPlaceholder {
  width: 100%;
  height: 100%;
- background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
- background-color: #000 !important;
+ background: linear-gradient(135deg, #2b2b2b 0%, #2a0a12 100%);
+ background-color: #1e1e1e !important;
  display: flex;
  align-items: center;
  justify-content: center;
@@ -1524,4 +1525,173 @@
   :root .entretenimiento-page .shortBadge,
   :root .entretenimiento-page .shortMeta,
   :root .entretenimiento-page .shortMeta * { display: none !important; }
+}
+
+
+
+/* Ajuste sin hero */
+.entretenimiento-page .mainContent { padding-top: 0 !important; }
+.entertainmentMainSection { margin-top: 0 !important; }
+
+/* ===== Overrides: botones estilo "Ver más marcas" ===== */
+.entretenimiento-page .viewMoreButton,
+.entretenimiento-page .readMoreButton,
+.entretenimiento-page .retryButton,
+.entretenimiento-page .youtubeButton,
+.entretenimiento-page .more-content-sticky {
+  outline: none;
+  cursor: pointer;
+  border: 2px solid #ffffff;
+  padding: 1rem 2rem;
+  margin: 0;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  font-size: 1.2rem;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  letter-spacing: 0.05rem;
+  font-weight: 600;
+  border-radius: 500px;
+  overflow: hidden;
+  background: #ffffff;
+  color: #2a0a12;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-transform: none;
+}
+
+.entretenimiento-page .readMoreButton {
+  width: 100%;
+}
+
+.entretenimiento-page .viewMoreButton::before,
+.entretenimiento-page .readMoreButton::before,
+.entretenimiento-page .retryButton::before,
+.entretenimiento-page .youtubeButton::before,
+.entretenimiento-page .more-content-sticky::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 120%;
+  height: 100%;
+  background: linear-gradient(135deg, #2a0a12, #2b0d12);
+  left: -10%;
+  transform: skew(30deg) translateX(-100%);
+  transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
+  z-index: 0;
+}
+
+.entretenimiento-page .viewMoreButton:hover::before,
+.entretenimiento-page .readMoreButton:hover::before,
+.entretenimiento-page .retryButton:hover::before,
+.entretenimiento-page .youtubeButton:hover::before,
+.entretenimiento-page .more-content-sticky:hover::before {
+  transform: skew(30deg) translateX(0);
+}
+
+.entretenimiento-page .viewMoreButton:hover,
+.entretenimiento-page .readMoreButton:hover,
+.entretenimiento-page .retryButton:hover,
+.entretenimiento-page .youtubeButton:hover,
+.entretenimiento-page .more-content-sticky:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+}
+
+.entretenimiento-page .viewMoreButton:active,
+.entretenimiento-page .readMoreButton:active,
+.entretenimiento-page .retryButton:active,
+.entretenimiento-page .youtubeButton:active,
+.entretenimiento-page .more-content-sticky:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.entretenimiento-page .viewMoreButton > *,
+.entretenimiento-page .readMoreButton > *,
+.entretenimiento-page .retryButton > *,
+.entretenimiento-page .youtubeButton > *,
+.entretenimiento-page .more-content-sticky > * {
+  position: relative;
+  z-index: 1;
+}
+
+.entretenimiento-page .viewMoreButton::after,
+.entretenimiento-page .viewMoreButton.shorts::after {
+  content: '' !important;
+}
+
+@media (max-width: 768px) {
+  .entretenimiento-page .viewMoreButton,
+  .entretenimiento-page .readMoreButton,
+  .entretenimiento-page .retryButton,
+  .entretenimiento-page .youtubeButton,
+  .entretenimiento-page .more-content-sticky {
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+  }
+}
+
+/* ===== Quitar hueco entre barra de menú y contenido ===== */
+.entretenimiento-page .heroSection {
+  top: 0 !important;
+  margin-top: 0 !important;
+}
+
+.entretenimiento-page .mainContent {
+  padding-top: 0 !important;
+}
+
+.entretenimiento-page .entertainmentMainSection {
+  margin-top: 0 !important;
+}
+/* ===== Overrides extra: títulos blancos y texto visible sobre animación ===== */
+.entretenimiento-page .sectionHeader h2 {
+  color: #ffffff !important;
+}
+
+.entretenimiento-page .sectionHeader h2::after {
+  background: #ffffff !important;
+}
+
+.entretenimiento-page .viewMoreButton,
+.entretenimiento-page .readMoreButton,
+.entretenimiento-page .retryButton,
+.entretenimiento-page .youtubeButton,
+.entretenimiento-page .more-content-sticky {
+  isolation: isolate;
+  z-index: 1;
+  color: #2a0a12;
+}
+
+.entretenimiento-page .viewMoreButton::before,
+.entretenimiento-page .readMoreButton::before,
+.entretenimiento-page .retryButton::before,
+.entretenimiento-page .youtubeButton::before,
+.entretenimiento-page .more-content-sticky::before {
+  z-index: 0;
+}
+
+.entretenimiento-page .viewMoreButton > *,
+.entretenimiento-page .readMoreButton > *,
+.entretenimiento-page .retryButton > *,
+.entretenimiento-page .youtubeButton > *,
+.entretenimiento-page .more-content-sticky > * {
+  position: relative;
+  z-index: 2;
+}
+
+.entretenimiento-page .viewMoreButton:hover,
+.entretenimiento-page .readMoreButton:hover,
+.entretenimiento-page .retryButton:hover,
+.entretenimiento-page .youtubeButton:hover,
+.entretenimiento-page .more-content-sticky:hover {
+  color: #ffffff;
+}
+.entretenimiento-page .sectionDescription {
+  color: #ffffff !important;
 }

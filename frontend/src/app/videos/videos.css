@@ -1,4 +1,4 @@
-﻿/* ===== VIDEOS PAGE - ESTILOS ESPECÃFICOS ===== */
+/* ===== VIDEOS PAGE - ESTILOS ESPECÍFICOS ===== */
 
 /* Importar estilos globales */
 @import url('../styles/global.css');
@@ -31,10 +31,10 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: linear-gradient(0deg, rgba(26, 11, 46, 0.72), rgba(14, 4, 28, 0.45));
+  background: linear-gradient(0deg, rgba(10, 10, 10, 0.78), rgba(60, 0, 10, 0.45));
 }
 
-/* Móvil: suavizar overlay para evitar tinte morado */
+/* M�vil: suavizar overlay para evitar tinte morado */
 @media (max-width: 768px) {
   .videos-page .heroOverlay {
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.02)) !important;
@@ -61,7 +61,7 @@
   text-shadow:
     2px 2px 4px rgba(0, 0, 0, 0.8),
     0 0 10px rgba(0, 0, 0, 0.6),
-    0 0 20px rgba(148, 33, 146, 0.4);
+    0 0 20px rgba(225, 6, 47, 0.35);
   opacity: 0;
   animation: fadeInUp 1s ease-out 0.5s forwards;
 }
@@ -84,9 +84,9 @@
   padding-top: 580px;
 }
 
-/* ===== SECCIÃ“N PRINCIPAL DE VIDEOS ===== */
+/* ===== SECCIÓN PRINCIPAL DE VIDEOS ===== */
 .videosMainSection {
-  background: linear-gradient(145deg, #f0f8ff 0%, #e6f3ff 30%, #ffffff 70%, #f8f9fa 100%);
+  background: linear-gradient(145deg, #b32638 0%, #5f6f86 55%, #3a3f46 100%);
   padding: 40px 20px 80px 20px;
   margin: 0;
   margin-top: -100px;
@@ -116,7 +116,7 @@
   z-index: 2;
 }
 
-/* ===== BOTÃ“N DE REGRESO ===== */
+/* ===== BOTÓN DE REGRESO ===== */
 .backButtonContainer {
   margin-bottom: 30px;
 }
@@ -125,8 +125,8 @@
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-  color: white;
+  background: linear-gradient(135deg, var(--button-grad-start) 0%, var(--button-grad-end) 100%);
+  color: #1b1b1b;
   border: none;
   padding: 12px 24px;
   border-radius: 25px;
@@ -135,13 +135,13 @@
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(148, 33, 146, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .backButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(148, 33, 146, 0.3);
-  background: linear-gradient(135deg, var(--accent-color) 0%, #00d4ff 100%);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(135deg, #3a3a3a 0%, #f2f2f2 100%);
 }
 
 .backIcon {
@@ -160,7 +160,7 @@
 
 .videosStats h2 {
   font-size: 2.5rem;
-  color: var(--primary-color);
+  color: var(--text-accent);
   margin-bottom: 5px;
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
   font-weight: 700;
@@ -172,7 +172,7 @@
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
 }
 
-/* ===== BOTÃ“N DE AGREGAR VIDEO INTEGRADO ===== */
+/* ===== BOTÓN DE AGREGAR VIDEO INTEGRADO ===== */
 .adminActionsContainer {
   display: flex;
   align-items: center;
@@ -183,8 +183,8 @@
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 50%, #6d28d9 100%);
-  color: white;
+  background: linear-gradient(135deg, var(--button-grad-start) 0%, var(--button-grad-end) 100%);
+  color: #1b1b1b;
   border: none;
   padding: 16px 28px;
   border-radius: 30px;
@@ -194,14 +194,14 @@
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
   box-shadow: 
-    0 8px 25px rgba(124, 58, 237, 0.25),
-    0 4px 15px rgba(139, 92, 246, 0.15),
+    0 8px 25px rgba(0, 0, 0, 0.2),
+    0 4px 15px rgba(0, 0, 0, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
   text-transform: uppercase;
   letter-spacing: 1px;
   position: relative;
   overflow: hidden;
-  border: 2px solid rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(0, 0, 0, 0.12);
   background-size: 200% 200%;
   animation: gradientShift 4s ease infinite;
 }
@@ -244,11 +244,11 @@
 .addVideoButton:hover {
   transform: translateY(-3px) scale(1.02);
   box-shadow: 
-    0 15px 40px rgba(124, 58, 237, 0.35),
-    0 8px 25px rgba(139, 92, 246, 0.25),
-    0 0 30px rgba(168, 85, 247, 0.3),
+    0 15px 40px rgba(0, 0, 0, 0.25),
+    0 8px 25px rgba(0, 0, 0, 0.18),
+    0 0 30px rgba(0, 0, 0, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  background: linear-gradient(135deg, #9333ea 0%, #8b5cf6 50%, #7c3aed 100%);
+  background: linear-gradient(135deg, #3a3a3a 0%, #f2f2f2 100%);
   animation: none;
 }
 
@@ -291,7 +291,7 @@
   }
 }
 
-/* ===== FILTROS DE CATEGORÃAS ===== */
+/* ===== FILTROS DE CATEGORÍAS ===== */
 .categoryFilters {
   display: flex;
   justify-content: center;
@@ -305,9 +305,9 @@
   align-items: center;
   gap: 8px;
   padding: 12px 25px;
-  border: 2px solid var(--accent-color);
-  background: transparent;
-  color: var(--accent-color);
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  background: linear-gradient(135deg, var(--button-grad-start) 0%, var(--button-grad-end) 100%);
+  color: #1b1b1b;
   border-radius: 25px;
   font-size: 1rem;
   font-weight: 600;
@@ -325,7 +325,7 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: var(--accent-color);
+  background: linear-gradient(135deg, #3a3a3a 0%, #f2f2f2 100%);
   transition: left 0.3s ease;
   z-index: -1;
 }
@@ -337,9 +337,9 @@
 
 .categoryButton:hover,
 .categoryButton.active {
-  color: white;
+  color: #1b1b1b;
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(195, 0, 33, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .categoryCount {
@@ -366,7 +366,7 @@
   background: white;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(148, 33, 146, 0.1);
+  box-shadow: 0 10px 30px rgba(225, 6, 47, 0.1);
   transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
   cursor: pointer;
   border: 1px solid rgba(195, 0, 33, 0.1);
@@ -377,8 +377,8 @@
 
 .shortCard:hover {
   transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 25px 50px rgba(148, 33, 146, 0.15);
-  border-color: rgba(195, 0, 33, 0.3);
+  box-shadow: 0 25px 50px rgba(225, 6, 47, 0.15);
+  border-color: rgba(0, 0, 0, 0.2);
 }
 
 .shortCard:nth-child(1) { animation-delay: 0.1s; }
@@ -412,7 +412,7 @@
 .thumbnailPlaceholder {
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2b2b2b 0%, #2a0a12 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -436,7 +436,7 @@
 }
 
 .playIcon {
-  color: var(--primary-color);
+  color: var(--text-accent);
   font-size: 1.8rem;
   margin-left: 4px;
 }
@@ -476,7 +476,7 @@
   box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
 }
 
-/* ===== BOTÃ“N COMPARTIR ===== */
+/* ===== BOTÓN COMPARTIR ===== */
 .shareButton {
   position: absolute;
   top: 12px;
@@ -501,12 +501,12 @@
 }
 
 .shareButton:hover {
-  background: var(--accent-color);
+  background: linear-gradient(135deg, #3a3a3a 0%, #f2f2f2 100%);
   color: white;
   transform: scale(1.1);
 }
 
-/* ===== INFORMACIÃ“N DE SHORT ===== */
+/* ===== INFORMACIÓN DE SHORT ===== */
 .shortInfo {
   padding: 25px;
 }
@@ -514,7 +514,7 @@
 .shortTitle {
   font-size: 1.2rem;
   font-weight: 700;
-  color: var(--primary-color);
+  color: var(--text-accent);
   margin-bottom: 12px;
   line-height: 1.4;
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
@@ -562,12 +562,12 @@
   padding: 60px 20px;
   background: rgba(255, 255, 255, 0.8);
   border-radius: 20px;
-  border: 2px dashed rgba(195, 0, 33, 0.3);
+  border: 2px dashed rgba(0, 0, 0, 0.2);
 }
 
 .noResults h3 {
   font-size: 1.8rem;
-  color: var(--primary-color);
+  color: var(--text-accent);
   margin-bottom: 10px;
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
 }
@@ -580,7 +580,7 @@
 
 /* ===== FOOTER DE VIDEOS ===== */
 .videosFooter {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+  background: linear-gradient(135deg, #b32638 0%, #5f6f86 55%, #3a3f46 100%);
   border-radius: 25px;
   padding: 60px 40px;
   margin-top: 60px;
@@ -676,14 +676,14 @@
   }
 }
 
-/* ===== BOTÃ“N YOUTUBE ===== */
+/* ===== BOTÓN YOUTUBE ===== */
 .youtubeButton {
   display: inline-flex;
   align-items: center;
   gap: 15px;
   padding: 18px 35px;
-  background: linear-gradient(135deg, #FF0000 0%, #CC0000 50%, #990000 100%);
-  color: white;
+  background: linear-gradient(135deg, #b32638 0%, #e0566a 50%, #7a1f2f 100%);
+  color: #ffffff;
   border: none;
   border-radius: 50px;
   font-size: 1.2rem;
@@ -695,8 +695,8 @@
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
   box-shadow:
-    0 8px 25px rgba(255, 0, 0, 0.3),
-    0 4px 15px rgba(255, 0, 0, 0.2);
+    0 8px 25px rgba(0, 0, 0, 0.2),
+    0 4px 15px rgba(0, 0, 0, 0.12);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -719,10 +719,10 @@
 .youtubeButton:hover {
   transform: translateY(-5px) scale(1.05);
   box-shadow:
-    0 15px 40px rgba(255, 0, 0, 0.4),
-    0 8px 25px rgba(255, 0, 0, 0.3),
-    0 0 30px rgba(255, 0, 0, 0.2);
-  background: linear-gradient(135deg, #FF1A1A 0%, #E60000 50%, #B30000 100%);
+    0 15px 40px rgba(0, 0, 0, 0.28),
+    0 8px 25px rgba(0, 0, 0, 0.2),
+    0 0 30px rgba(0, 0, 0, 0.12);
+  background: linear-gradient(135deg, #c83446 0%, #f06a7e 55%, #8a2335 100%);
 }
 
 .youtubeButton:active {
@@ -745,14 +745,14 @@
   }
 }
 
-/* ===== BOTÃ“N TIKTOK ===== */
+/* ===== BOTÓN TIKTOK ===== */
 .tiktokButton {
   display: inline-flex;
   align-items: center;
   gap: 15px;
   padding: 18px 35px;
-  background: linear-gradient(135deg, #000000 0%, #FF0050 30%, #00F2EA 70%, #000000 100%);
-  color: white;
+  background: linear-gradient(135deg, var(--button-grad-start) 0%, var(--button-grad-end) 100%);
+  color: #1b1b1b;
   border: none;
   border-radius: 50px;
   font-size: 1.2rem;
@@ -764,8 +764,8 @@
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
   box-shadow:
-    0 8px 25px rgba(255, 0, 80, 0.3),
-    0 4px 15px rgba(0, 242, 234, 0.2);
+    0 8px 25px rgba(0, 0, 0, 0.2),
+    0 4px 15px rgba(0, 0, 0, 0.12);
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -779,8 +779,8 @@
   height: 100%;
   background: linear-gradient(45deg,
       transparent 20%,
-      rgba(255, 0, 80, 0.3) 40%,
-      rgba(0, 242, 234, 0.3) 60%,
+      rgba(0, 0, 0, 0.2) 40%,
+      rgba(0, 0, 0, 0.2) 60%,
       transparent 80%);
   transition: left 1s ease;
 }
@@ -792,10 +792,10 @@
 .tiktokButton:hover {
   transform: translateY(-5px) scale(1.05);
   box-shadow:
-    0 15px 40px rgba(255, 0, 80, 0.4),
-    0 8px 25px rgba(0, 242, 234, 0.3),
-    0 0 30px rgba(255, 0, 80, 0.2);
-  background: linear-gradient(135deg, #1A1A1A 0%, #FF1A6B 30%, #1AFFEF 70%, #1A1A1A 100%);
+    0 15px 40px rgba(0, 0, 0, 0.28),
+    0 8px 25px rgba(0, 0, 0, 0.2),
+    0 0 30px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #3a3a3a 0%, #f2f2f2 100%);
 }
 
 .tiktokButton:active {
@@ -810,7 +810,7 @@
 @keyframes tiktokIconDance {
   0%, 100% {
     transform: rotate(-5deg) scale(1);
-    filter: drop-shadow(2px 2px 4px rgba(255, 0, 80, 0.4));
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.28));
   }
   25% {
     transform: rotate(5deg) scale(1.05);
@@ -818,7 +818,7 @@
   }
   50% {
     transform: rotate(-3deg) scale(1.1);
-    filter: drop-shadow(2px -2px 4px rgba(255, 0, 80, 0.4));
+    filter: drop-shadow(2px -2px 4px rgba(0, 0, 0, 0.28));
   }
   75% {
     transform: rotate(3deg) scale(1.05);
@@ -843,7 +843,7 @@
     0 0 20px rgba(0, 242, 234, 0.6);
 }
 
-/* ===== BOTONES DE SUSCRIPCIÃ“N ===== */
+/* ===== BOTONES DE SUSCRIPCIÓN ===== */
 .subscribeButtonContainer {
   display: flex;
   gap: 15px;
@@ -868,9 +868,9 @@
 }
 
 .subscribeButton {
-  background: linear-gradient(45deg, #ff4757, #ff6b9d);
-  color: white;
-  box-shadow: 0 4px 15px rgba(255, 71, 87, 0.4);
+  background: linear-gradient(135deg, var(--button-grad-start) 0%, var(--button-grad-end) 100%);
+  color: #1b1b1b;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .subscribeButton::before {
@@ -891,23 +891,23 @@
 
 .subscribeButton:hover {
   transform: translateY(-3px) scale(1.05);
-  box-shadow: 0 8px 25px rgba(255, 71, 87, 0.6);
-  background: linear-gradient(45deg, #ff3742, #ff5582);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  background: linear-gradient(135deg, #3a3a3a 0%, #f2f2f2 100%);
 }
 
 .viewChannelButton {
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: linear-gradient(135deg, var(--button-grad-start) 0%, var(--button-grad-end) 100%);
+  color: #1b1b1b;
+  border: 2px solid rgba(0, 0, 0, 0.12);
 }
 
 .viewChannelButton:hover {
-  background: rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.5);
+  background: linear-gradient(135deg, #3a3a3a 0%, #f2f2f2 100%);
+  border-color: rgba(0, 0, 0, 0.2);
   transform: translateY(-2px);
 }
 
-/* ===== MODAL DE SUSCRIPCIÃ“N ===== */
+/* ===== MODAL DE SUSCRIPCIÓN ===== */
 .subscriptionModal {
   position: fixed;
   top: 0;
@@ -951,13 +951,13 @@
 }
 
 .subscriptionModalClose:hover {
-  background: #ff4757;
-  color: white;
+  background: #d9d9d9;
+  color: #ffffff;
 }
 
 .subscriptionForm h3 {
   font-size: 1.8rem;
-  color: var(--primary-color);
+  color: var(--text-accent);
   margin-bottom: 10px;
   text-align: center;
 }
@@ -980,15 +980,15 @@
 
 .subscriptionInput:focus {
   outline: none;
-  border-color: var(--accent-color);
+  border-color: var(--text-accent);
   box-shadow: 0 0 0 3px rgba(195, 0, 33, 0.1);
 }
 
 .subscriptionSubmitButton {
   width: 100%;
   padding: 15px;
-  background: linear-gradient(45deg, var(--accent-color), #00d4ff);
-  color: white;
+  background: linear-gradient(135deg, var(--button-grad-start), var(--button-grad-end));
+  color: #ffffff;
   border: none;
   border-radius: 25px;
   font-size: 1.1rem;
@@ -1000,11 +1000,11 @@
 
 .subscriptionSubmitButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(195, 0, 33, 0.4);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
 }
 
 .subscriptionBenefits h4 {
-  color: var(--primary-color);
+  color: var(--text-accent);
   margin-bottom: 15px;
   font-size: 1.1rem;
 }
@@ -1097,7 +1097,7 @@
   width: 100%;
   height: 500px;
   position: relative;
-  background: #000;
+  background: #1e1e1e;
 }
 
 .videoContainer iframe {
@@ -1113,7 +1113,7 @@
 
 .videoModalInfo h3 {
   font-size: 1.5rem;
-  color: var(--primary-color);
+  color: var(--text-accent);
   margin-bottom: 10px;
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
   font-weight: 700;
@@ -1153,7 +1153,7 @@
 
 .loadingContainer h2 {
   font-size: 2rem;
-  color: var(--primary-color);
+  color: var(--text-accent);
   margin-bottom: 15px;
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
 }
@@ -1188,8 +1188,8 @@
 }
 
 .retryButton {
-  background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
-  color: white;
+  background: linear-gradient(135deg, var(--button-grad-start) 0%, var(--button-grad-end) 100%);
+  color: #1b1b1b;
   border: none;
   padding: 14px 28px;
   border-radius: 25px;
@@ -1198,12 +1198,12 @@
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(148, 33, 146, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .retryButton:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(148, 33, 146, 0.3);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
 }
 
 /* ===== RESPONSIVE DESIGN ===== */
@@ -1419,7 +1419,7 @@
   }
 }
 
-/* Landscape mÃ³vil */
+/* Landscape móvil */
 @media (max-width: 768px) and (orientation: landscape) {
   .videos-page .heroSection {
     height: 300px;
@@ -1444,7 +1444,7 @@
   }
 }
 
-/* MÃ³vil pequeÃ±o (480px y menores) */
+/* Móvil pequeño (480px y menores) */
 @media (max-width: 480px) {
   .videos-page .heroSection {
     height: 280px;
@@ -1577,7 +1577,7 @@
   }
 }
 
-/* MÃ³viles muy pequeÃ±os (360px y menores) */
+/* Móviles muy pequeños (360px y menores) */
 @media (max-width: 360px) {
   .videos-page .heroSection {
     height: 260px;
@@ -1657,5 +1657,171 @@
     width: 35px;
     height: 35px;
     font-size: 1.4rem;
+  }
+}
+
+
+
+/* Ajuste sin hero */
+.videos-page .mainContent { padding-top: 24px !important; }
+.videosMainSection { margin-top: 0 !important; }
+
+/* ===== Overrides: textos blancos en header ===== */
+.videos-page .videosStats h2,
+.videos-page .videosStats p {
+  color: #ffffff !important;
+}
+
+/* ===== Overrides: botones estilo "Ver más marcas" ===== */
+.videos-page .backButton,
+.videos-page .addVideoButton,
+.videos-page .categoryButton,
+.videos-page .youtubeButton,
+.videos-page .tiktokButton,
+.videos-page .retryButton,
+.videos-page .subscribeButton,
+.videos-page .viewChannelButton,
+.videos-page .subscriptionSubmitButton {
+  outline: none;
+  cursor: pointer;
+  border: 2px solid #ffffff;
+  padding: 1rem 2rem;
+  margin: 0;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  font-size: 1.05rem;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  letter-spacing: 0.05rem;
+  font-weight: 600;
+  border-radius: 500px;
+  overflow: hidden;
+  background: #ffffff;
+  color: #2a0a12;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-transform: none;
+  isolation: isolate;
+}
+
+.videos-page .categoryButton {
+  padding: 0.7rem 1.4rem;
+  font-size: 0.95rem;
+}
+
+.videos-page .backButton::before,
+.videos-page .addVideoButton::before,
+.videos-page .categoryButton::before,
+.videos-page .youtubeButton::before,
+.videos-page .tiktokButton::before,
+.videos-page .retryButton::before,
+.videos-page .subscribeButton::before,
+.videos-page .viewChannelButton::before,
+.videos-page .subscriptionSubmitButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 120%;
+  height: 100%;
+  background: linear-gradient(135deg, #2a0a12, #2b0d12);
+  left: -10%;
+  transform: skew(30deg) translateX(-100%);
+  transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
+  z-index: 0;
+}
+
+.videos-page .backButton:hover::before,
+.videos-page .addVideoButton:hover::before,
+.videos-page .categoryButton:hover::before,
+.videos-page .youtubeButton:hover::before,
+.videos-page .tiktokButton:hover::before,
+.videos-page .retryButton:hover::before,
+.videos-page .subscribeButton:hover::before,
+.videos-page .viewChannelButton:hover::before,
+.videos-page .subscriptionSubmitButton:hover::before,
+.videos-page .categoryButton.active::before {
+  transform: skew(30deg) translateX(0);
+}
+
+.videos-page .backButton:hover,
+.videos-page .addVideoButton:hover,
+.videos-page .categoryButton:hover,
+.videos-page .youtubeButton:hover,
+.videos-page .tiktokButton:hover,
+.videos-page .retryButton:hover,
+.videos-page .subscribeButton:hover,
+.videos-page .viewChannelButton:hover,
+.videos-page .subscriptionSubmitButton:hover,
+.videos-page .categoryButton.active {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+}
+
+.videos-page .backButton:active,
+.videos-page .addVideoButton:active,
+.videos-page .categoryButton:active,
+.videos-page .youtubeButton:active,
+.videos-page .tiktokButton:active,
+.videos-page .retryButton:active,
+.videos-page .subscribeButton:active,
+.videos-page .viewChannelButton:active,
+.videos-page .subscriptionSubmitButton:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.videos-page .backButton > *,
+.videos-page .addVideoButton > *,
+.videos-page .categoryButton > *,
+.videos-page .youtubeButton > *,
+.videos-page .tiktokButton > *,
+.videos-page .retryButton > *,
+.videos-page .subscribeButton > *,
+.videos-page .viewChannelButton > *,
+.videos-page .subscriptionSubmitButton > * {
+  position: relative;
+  z-index: 2;
+}
+
+.videos-page .categoryCount {
+  background: rgba(0, 0, 0, 0.12);
+  color: #2a0a12;
+}
+
+.videos-page .categoryButton:hover .categoryCount,
+.videos-page .categoryButton.active .categoryCount {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+@media (max-width: 768px) {
+  .videos-page .backButton,
+  .videos-page .addVideoButton,
+  .videos-page .categoryButton,
+  .videos-page .youtubeButton,
+  .videos-page .tiktokButton,
+  .videos-page .retryButton,
+  .videos-page .subscribeButton,
+  .videos-page .viewChannelButton,
+  .videos-page .subscriptionSubmitButton {
+    padding: 0.8rem 1.6rem;
+    font-size: 0.95rem;
+  }
+}
+/* Mobile: separar bot�n regresar de la barra superior y compactar espacio */
+@media (max-width: 768px) {
+  .videos-page .backButtonContainer {
+    margin-top: 12px;
+    margin-bottom: 8px;
+  }
+}
+@media (max-width: 480px) {
+  .videos-page .backButtonContainer {
+    margin-top: 16px;
+    margin-bottom: 6px;
   }
 }

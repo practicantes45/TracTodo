@@ -1,4 +1,4 @@
-﻿/* ===== MODAL DE IMÃGENES DEL PRODUCTO ===== */
+/* ===== MODAL DE IMÁGENES DEL PRODUCTO ===== */
 .modalOverlay {
   position: fixed;
   top: 0;
@@ -48,7 +48,7 @@
   }
 }
 
-/* ===== BOTÃ“N CERRAR OPTIMIZADO ===== */
+/* ===== BOTÓN CERRAR OPTIMIZADO ===== */
 .closeButton {
   position: absolute;
   top: 15px;
@@ -109,7 +109,7 @@
   pointer-events: none;
 }
 
-/* NUEVO: Clase para imÃ¡genes horizontales en modal */
+/* NUEVO: Clase para imágenes horizontales en modal */
 .horizontalImage {
   width: 100% !important;
   height: auto !important;
@@ -129,7 +129,7 @@
   }
 }
 
-/* ===== CONTROLES DE IMAGEN EN EL MODAL - TAMAÃ‘OS OPTIMIZADOS ===== */
+/* ===== CONTROLES DE IMAGEN EN EL MODAL - TAMAÑOS OPTIMIZADOS ===== */
 .modalImageControls {
   position: absolute;
   top: 12px;
@@ -170,7 +170,7 @@
   transition: transform 0.1s ease;
 }
 
-/* Colores especÃ­ficos para cada botÃ³n en el modal */
+/* Colores específicos para cada botón en el modal */
 .zoomInButton:hover {
   background: rgba(34, 197, 94, 0.9) !important;
   box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
@@ -241,7 +241,7 @@
   font-family: var(--font-montserrat, 'Montserrat'), sans-serif;
 }
 
-/* ===== FLECHAS DE NAVEGACIÃ“N OPTIMIZADAS ===== */
+/* ===== FLECHAS DE NAVEGACIÓN OPTIMIZADAS ===== */
 .arrowLeft,
 .arrowRight {
   position: absolute;
@@ -288,7 +288,7 @@
   transition: transform 0.1s ease;
 }
 
-/* ===== CONTENEDOR DE NAVEGACIÃ“N (INDICADORES + CONTADOR) ===== */
+/* ===== CONTENEDOR DE NAVEGACIÓN (INDICADORES + CONTADOR) ===== */
 .navigationContainer {
   display: flex;
   align-items: center;
@@ -394,7 +394,7 @@
 .keyboardInstructions span:first-child {
   font-weight: 600;
   margin-bottom: 2px;
-  color: #C30021;
+  color: var(--text-accent);
   font-size: 0.75rem;
 }
 
@@ -667,7 +667,7 @@
   }
 
   .keyboardInstructions {
-    display: none; /* Ocultar en mÃ³vil para ahorrar espacio */
+    display: none; /* Ocultar en móvil para ahorrar espacio */
   }
 }
 
@@ -824,12 +824,12 @@
   }
   
   .indicator.active {
-    background: #000000;
+    background: #1e1e1e;
     border-color: #ffffff;
   }
 
   .zoomIndicator {
-    background: #000000;
+    background: #1e1e1e;
     border: 2px solid #ffffff;
   }
 }
@@ -842,14 +842,14 @@
   height: auto;
 }
 
-/* Cuando la imagen es mÃ¡s ancha que alta */
+/* Cuando la imagen es más ancha que alta */
 .imageContainer[data-orientation="landscape"] .modalImage {
   width: 100%;
   height: auto;
   max-height: 100%;
 }
 
-/* Cuando la imagen es mÃ¡s alta que ancha */
+/* Cuando la imagen es más alta que ancha */
 .imageContainer[data-orientation="portrait"] .modalImage {
   height: 100%;
   width: auto;
@@ -883,7 +883,7 @@
   transition: transform 0.4s ease;
 }
 
-/* ===== OPTIMIZACIÃ“N DE CONTROLES SUPERPUESTOS ===== */
+/* ===== OPTIMIZACIÓN DE CONTROLES SUPERPUESTOS ===== */
 .modalImageControls {
   background: rgba(0, 0, 0, 0.1);
   padding: 6px;
@@ -892,7 +892,7 @@
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* ===== SEPARACIÃ“N MEJORADA DEL INDICADOR DE ZOOM ===== */
+/* ===== SEPARACIÓN MEJORADA DEL INDICADOR DE ZOOM ===== */
 .zoomIndicator {
   position: relative;
   z-index: 1;

@@ -1,4 +1,4 @@
-/* ===== CARRUSEL DE IMÁGENES DEL PRODUCTO PRINCIPAL ===== */
+﻿/* ===== CARRUSEL DE IMÃGENES DEL PRODUCTO PRINCIPAL ===== */
 .productImageCarousel {
   position: relative;
   width: 100%;
@@ -10,8 +10,8 @@
   height: 500px;
   border-radius: 20px;
   overflow: hidden;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  box-shadow: 0 15px 40px rgba(148, 33, 146, 0.15);
+  background: linear-gradient(135deg, #f7f2f2 0%, #efe3e4 100%);
+  box-shadow: 0 15px 40px rgba(31, 90, 166, 0.15);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -24,25 +24,25 @@
   object-fit: contain;
   transition: transform 0.3s ease;
   pointer-events: none;
-  padding: 15px; /* REDUCIDO: era 20px, ahora 15px para más espacio */
+  padding: 15px; /* REDUCIDO: era 20px, ahora 15px para mÃ¡s espacio */
   box-sizing: border-box;
 }
 
-/* MEJORADO: Clase para imágenes horizontales - MÁS GRANDES */
+/* MEJORADO: Clase para imÃ¡genes horizontales - MÃS GRANDES */
 .horizontalImage {
   width: 95% !important;
   height: 95% !important;
   max-height: 95%;
   max-width: 95%;
   object-fit: contain !important;
-  padding: 10px !important; /* REDUCIDO: menos padding para mayor tamaño */
+  padding: 10px !important; /* REDUCIDO: menos padding para mayor tamaÃ±o */
 }
 
 .productImage:hover {
   transform: scale(1.02); /* REDUCIDO: era 1.05, muy agresivo */
 }
 
-/* ===== CONTROLES DE IMAGEN (ZOOM Y ROTACIÓN) - TAMAÑOS OPTIMIZADOS ===== */
+/* ===== CONTROLES DE IMAGEN (ZOOM Y ROTACIÃ“N) - TAMAÃ‘OS OPTIMIZADOS ===== */
 .imageControls {
   position: absolute;
   top: 12px;
@@ -72,9 +72,9 @@
 }
 
 .imageControlButton:hover {
-  background: rgba(216, 58, 58, 0.9);
+  background: rgba(31, 90, 166, 0.9);
   transform: scale(1.1);
-  box-shadow: 0 4px 12px rgba(216, 58, 58, 0.4);
+  box-shadow: 0 4px 12px rgba(31, 90, 166, 0.4);
   border-color: rgba(255, 255, 255, 0.3);
 }
 
@@ -83,15 +83,15 @@
   transition: transform 0.1s ease;
 }
 
-/* Colores específicos para cada botón */
+/* Colores especÃ­ficos para cada botÃ³n */
 .zoomInButton:hover {
   background: rgba(34, 197, 94, 0.9);
   box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
 }
 
 .zoomOutButton:hover {
-  background: rgba(239, 68, 68, 0.9);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+  background: rgba(31, 90, 166, 0.9);
+  box-shadow: 0 4px 12px rgba(31, 90, 166, 0.4);
 }
 
 .rotateButton:hover {
@@ -105,8 +105,8 @@
 }
 
 .resetButton:hover {
-  background: rgba(216, 58, 58, 0.9);
-  box-shadow: 0 4px 12px rgba(216, 58, 58, 0.4);
+  background: rgba(31, 90, 166, 0.9);
+  box-shadow: 0 4px 12px rgba(31, 90, 166, 0.4);
 }
 
 /* ===== INDICADOR DE ZOOM ===== */
@@ -146,7 +146,7 @@
 }
 
 .carouselArrow:hover {
-  background: rgba(148, 33, 146, 0.9);
+  background: rgba(31, 90, 166, 0.9);
   transform: translateY(-50%) scale(1.1);
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
@@ -173,7 +173,7 @@
   height: 15px;
   border: none;
   border-radius: 50%;
-  background: rgba(148, 33, 146, 0.3);
+  background: rgba(31, 90, 166, 0.3);
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
@@ -187,7 +187,7 @@
   left: 50%;
   width: 0;
   height: 0;
-  background: var(--accent-color, #d83a3a);
+  background: var(--accent-color, #1f5aa6);
   border-radius: 50%;
   transform: translate(-50%, -50%);
   transition: all 0.3s ease;
@@ -199,8 +199,8 @@
 }
 
 .imageIndicator.active {
-  background: var(--accent-color, #d83a3a);
-  box-shadow: 0 0 10px rgba(216, 58, 58, 0.5);
+  background: var(--accent-color, #1f5aa6);
+  box-shadow: 0 0 10px rgba(31, 90, 166, 0.5);
   transform: scale(1.3);
 }
 
@@ -218,7 +218,7 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: linear-gradient(135deg, #f7f2f2 0%, #efe3e4 100%);
   color: #666;
   text-align: center;
   border: 2px dashed #ddd;
@@ -246,7 +246,7 @@
   justify-content: center;
   width: 100%;
   height: 100%;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: linear-gradient(135deg, #f7f2f2 0%, #efe3e4 100%);
   color: #666;
   text-align: center;
   border: 2px dashed #ddd;
@@ -262,7 +262,7 @@
   font-size: 0.9rem;
 }
 
-/* ===== CURSOR DINÁMICO PARA PAN ===== */
+/* ===== CURSOR DINÃMICO PARA PAN ===== */
 .productImageContainer.canPan {
   cursor: grab !important;
 }
@@ -288,7 +288,7 @@
   }
   
   .productImage {
-    padding: 12px; /* REDUCIDO: para mayor tamaño */
+    padding: 12px; /* REDUCIDO: para mayor tamaÃ±o */
   }
 
   .horizontalImage {
@@ -346,7 +346,7 @@
   }
 
   .productImage {
-    padding: 10px; /* REDUCIDO: para mayor tamaño */
+    padding: 10px; /* REDUCIDO: para mayor tamaÃ±o */
   }
 
   .horizontalImage {
@@ -410,14 +410,14 @@
   }
 }
 
-/* Móvil (480px) */
+/* MÃ³vil (480px) */
 @media (max-width: 480px) {
   .productImageContainer {
     height: 350px; /* AUMENTADO: era 300px */
   }
 
   .productImage {
-    padding: 8px; /* REDUCIDO: para mayor tamaño */
+    padding: 8px; /* REDUCIDO: para mayor tamaÃ±o */
   }
 
   .horizontalImage {
@@ -491,14 +491,14 @@
   }
 }
 
-/* Móvil muy pequeño (360px) */
+/* MÃ³vil muy pequeÃ±o (360px) */
 @media (max-width: 360px) {
   .productImageContainer {
     height: 300px; /* AUMENTADO: era 250px */
   }
 
   .productImage {
-    padding: 6px; /* REDUCIDO: para mayor tamaño */
+    padding: 6px; /* REDUCIDO: para mayor tamaÃ±o */
   }
 
   .horizontalImage {
@@ -584,7 +584,7 @@
   100% { transform: translateY(-50%) scale(1.1); }
 }
 
-/* Efectos de animación para controles de imagen */
+/* Efectos de animaciÃ³n para controles de imagen */
 @keyframes controlPulse {
   0% { transform: scale(1); }
   50% { transform: scale(1.2); }
@@ -604,7 +604,7 @@
   transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
 }
 
-/* ===== INDICADORES VISUALES DE INTERACCIÓN ===== */
+/* ===== INDICADORES VISUALES DE INTERACCIÃ“N ===== */
 .imageControls::before {
   content: '';
   position: absolute;
@@ -612,7 +612,7 @@
   left: -8px;
   right: -8px;
   bottom: -8px;
-  background: radial-gradient(circle at center, rgba(216, 58, 58, 0.1) 0%, transparent 70%);
+  background: radial-gradient(circle at center, rgba(31, 90, 166, 0.1) 0%, transparent 70%);
   border-radius: 50%;
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -648,7 +648,7 @@
   }
 }
 
-/* ===== OPTIMIZACIÓN PARA DISPOSITIVOS TÁCTILES ===== */
+/* ===== OPTIMIZACIÃ“N PARA DISPOSITIVOS TÃCTILES ===== */
 @media (hover: none) and (pointer: coarse) {
   .imageControls {
     opacity: 0.9;
@@ -662,7 +662,7 @@
 
   .imageControlButton:active {
     transform: scale(0.95);
-    background: rgba(216, 58, 58, 0.9);
+    background: rgba(31, 90, 166, 0.9);
   }
 
   .zoomIndicator {
@@ -671,7 +671,7 @@
     min-width: 40px;
   }
 
-  /* Mejorar área táctil en móviles */
+  /* Mejorar Ã¡rea tÃ¡ctil en mÃ³viles */
   .imageControlButton::before {
     content: '';
     position: absolute;
@@ -686,7 +686,7 @@
 /* ===== MODO ALTO CONTRASTE ===== */
 @media (prefers-contrast: high) {
   .imageControlButton {
-    background: #000000;
+    background: #1e1e1e;
     border: 2px solid #ffffff;
     color: #ffffff;
   }
@@ -698,7 +698,7 @@
   }
 
   .carouselArrow {
-    background: #000000;
+    background: #1e1e1e;
     border: 2px solid #ffffff;
   }
 
@@ -713,17 +713,17 @@
   }
 
   .imageIndicator.active {
-    background: #000000;
+    background: #1e1e1e;
     border-color: #ffffff;
   }
 
   .zoomIndicator {
-    background: #000000;
+    background: #1e1e1e;
     border: 2px solid #ffffff;
   }
 }
 
-/* ===== EFECTOS ESPECIALES PARA ZOOM Y ROTACIÓN ===== */
+/* ===== EFECTOS ESPECIALES PARA ZOOM Y ROTACIÃ“N ===== */
 .productImage.zooming {
   transition: transform 0.2s ease;
 }
@@ -732,7 +732,7 @@
   transition: transform 0.4s ease;
 }
 
-/* ===== GUÍAS VISUALES PARA EL PAN ===== */
+/* ===== GUÃAS VISUALES PARA EL PAN ===== */
 .productImageContainer.zoomed::after {
   content: 'Arrastra para mover';
   position: absolute;
@@ -760,7 +760,7 @@
   transform-origin: center center;
 }
 
-/* ===== PREVENCIÓN DE SELECCIÓN EN DISPOSITIVOS TÁCTILES ===== */
+/* ===== PREVENCIÃ“N DE SELECCIÃ“N EN DISPOSITIVOS TÃCTILES ===== */
 .productImageContainer,
 .productImage {
   -webkit-touch-callout: none;
@@ -772,14 +772,14 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* ===== LÍMITES VISUALES DEL PAN ===== */
+/* ===== LÃMITES VISUALES DEL PAN ===== */
 .productImageContainer.panning {
   box-shadow: 
-    inset 0 0 20px rgba(216, 58, 58, 0.1),
-    0 15px 40px rgba(148, 33, 146, 0.15);
+    inset 0 0 20px rgba(31, 90, 166, 0.1),
+    0 15px 40px rgba(31, 90, 166, 0.15);
 }
 
-/* ===== OPTIMIZACIÓN PARA IMÁGENES MÁS GRANDES ===== */
+/* ===== OPTIMIZACIÃ“N PARA IMÃGENES MÃS GRANDES ===== */
 .productImage {
   max-width: none;
   max-height: none;
@@ -792,10 +792,10 @@
   min-height: 95% !important;
 }
 
-/* ===== MEJORAR LA VISUALIZACIÓN EN PANTALLAS GRANDES ===== */
+/* ===== MEJORAR LA VISUALIZACIÃ“N EN PANTALLAS GRANDES ===== */
 @media (min-width: 1200px) {
   .productImageContainer {
-    height: 550px; /* MÁS ALTO en pantallas grandes */
+    height: 550px; /* MÃS ALTO en pantallas grandes */
   }
 
   .horizontalImage {
@@ -807,7 +807,7 @@
 
 @media (min-width: 1440px) {
   .productImageContainer {
-    height: 600px; /* INCLUSO MÁS ALTO en pantallas muy grandes */
+    height: 600px; /* INCLUSO MÃS ALTO en pantallas muy grandes */
   }
 
   .horizontalImage {
@@ -816,3 +816,5 @@
     padding: 15px !important;
   }
 }
+
+

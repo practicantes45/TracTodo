@@ -372,15 +372,6 @@ export default function EntretenimientoClient() {
         <Navbar />
 
         <main className="mainContent">
-          {/* Hero Section */}
-          <div className="heroSection">
-            <div className="heroOverlay">
-              <div className="heroContent">
-                <h1>Entretenimiento</h1>
-              </div>
-            </div>
-          </div>
-
           {/* Sección principal de contenido */}
           <section className="entertainmentMainSection">
             <div className="entertainmentContainer">
@@ -412,7 +403,7 @@ export default function EntretenimientoClient() {
                     <h3>Error al cargar videos</h3>
                     <p>{error}</p>
                     <button onClick={cargarVideosSeleccionados} className="retryButton">
-                      Intentar de nuevo
+                      <span>Intentar de nuevo</span>
                     </button>
                   </div>
                 )}
@@ -479,7 +470,7 @@ export default function EntretenimientoClient() {
                     {shortsData.length > 0 && (
                       <div className="sectionFooter">
                         <button onClick={goToVideos} className="viewMoreButton shorts" type="button">
-                          Ver más shorts
+                          <span>Ver más shorts</span>
                         </button>
                       </div>
                     )}
@@ -514,7 +505,7 @@ export default function EntretenimientoClient() {
                     <h3>Error al cargar artículos</h3>
                     <p>{blogError}</p>
                     <button onClick={cargarArticulosSeleccionados} className="retryButton">
-                      Intentar de nuevo
+                      <span>Intentar de nuevo</span>
                     </button>
                   </div>
                 )}
@@ -585,7 +576,7 @@ export default function EntretenimientoClient() {
                     {blogData.length > 0 && (
                       <div className="sectionFooter">
                         <button onClick={goToBlog} className="viewMoreButton" type="button">
-                          Ver más artículos
+                          <span>Ver más artículos</span>
                         </button>
                       </div>
                     )}
@@ -603,7 +594,7 @@ export default function EntretenimientoClient() {
               aria-label="Ver blog de TRACTODO"
             >
               <FaBook className="sticky-button-icon" />
-              Ver Blog
+              <span>Ver Blog</span>
               <FaArrowDown className="sticky-button-icon" />
             </button>
           )}
@@ -624,7 +615,7 @@ export default function EntretenimientoClient() {
                     <iframe
                       src={
                         selectedVideo.isShort
-                          ? `https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1&mute=1`
+                          ? `https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1&mute=0`
                           : `https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1`
                       }
                       title={selectedVideo.title}
@@ -639,7 +630,7 @@ export default function EntretenimientoClient() {
                         className="youtubeButton"
                         onClick={() => window.open(selectedVideo.youtubeLink, "_blank")}
                       >
-                        Ver en YouTube
+                        <span>Ver en YouTube</span>
                       </button>
                     </div>
                   )}

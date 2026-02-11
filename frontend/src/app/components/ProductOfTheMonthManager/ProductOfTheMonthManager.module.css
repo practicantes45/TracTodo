@@ -1,4 +1,4 @@
-﻿/* ProductOfTheMonthManager.module.css */
+/* ProductOfTheMonthManager.module.css */
 
 .overlay {
   position: fixed;
@@ -54,14 +54,14 @@
   content: '';
   position: absolute;
   inset: -3px;
-  background: linear-gradient(135deg, #C30021, #0096c7, #0077b6, #023047);
+  background: linear-gradient(135deg, #C30021, #1a1a1a, #1a1a1a, #2b2b2b);
   border-radius: 31px;
   z-index: -1;
 }
 
 /* ===== HEADER ===== */
 .header {
-  background: linear-gradient(135deg, #0a1021 0%, #1a2332 25%, #0096c7 50%, #0077b6 75%, #023047 100%);
+  background: linear-gradient(135deg, #2b2b2b 0%, #1a1a1a 25%, #1a1a1a 50%, #1a1a1a 75%, #2b2b2b 100%);
   color: white;
   display: flex;
   justify-content: space-between;
@@ -86,7 +86,7 @@
 
 .headerIcon {
   font-size: 24px;
-  color: #C30021;
+  color: var(--text-accent);
   filter: drop-shadow(0 0 10px rgba(195, 0, 33, 0.5));
 }
 
@@ -131,7 +131,7 @@
 }
 
 .form::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #C30021, #0096c7);
+  background: linear-gradient(135deg, #C30021, #1a1a1a);
   border-radius: 4px;
 }
 
@@ -148,7 +148,7 @@
 }
 
 .warningIcon {
-  color: #C30021;
+  color: var(--text-accent);
   font-size: 20px;
   margin-top: 2px;
   flex-shrink: 0;
@@ -173,7 +173,7 @@
   color: #a0522d;
 }
 
-/* ===== SECCIONES CON MÃS ESPACIO ===== */
+/* ===== SECCIONES CON MÁS ESPACIO ===== */
 .section {
   background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 50%, #f8fafc 100%);
   border-radius: 20px;
@@ -185,7 +185,7 @@
 
 .section h3 {
   margin: 0 0 28px 0;
-  color: #023047;
+  color: #2b2b2b;
   font-size: 20px;
   font-weight: 700;
   display: flex;
@@ -196,7 +196,7 @@
 }
 
 .sectionIcon {
-  color: #C30021;
+  color: var(--text-accent);
   font-size: 18px;
 }
 
@@ -206,17 +206,17 @@
   align-items: center;
   gap: 8px;
   font-weight: 600;
-  color: #023047;
+  color: #2b2b2b;
   margin-bottom: 12px;
   font-size: 16px;
 }
 
 .labelIcon {
-  color: #d83a3a;
+  color: var(--text-accent);
   font-size: 14px;
 }
 
-/* ===== CONTENEDORES CON MÃS ESPACIO ===== */
+/* ===== CONTENEDORES CON MÁS ESPACIO ===== */
 .searchContainer {
   margin-bottom: 28px;
 }
@@ -246,7 +246,7 @@
 
 .searchInput:focus,
 .productSelect:focus {
-  border-color: #d83a3a;
+  border-color: var(--text-accent);
   background: #ffffff;
   box-shadow: 0 0 0 4px rgba(216, 58, 58, 0.1);
   transform: translateY(-2px);
@@ -267,11 +267,11 @@
 }
 
 .countIcon {
-  color: #d83a3a;
+  color: var(--text-accent);
   font-size: 12px;
 }
 
-/* ===== INFORMACIÃ“N DEL PRODUCTO ===== */
+/* ===== INFORMACIÓN DEL PRODUCTO ===== */
 .productInfo {
   background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #f0f9ff 100%);
   border-radius: 16px;
@@ -282,7 +282,7 @@
 
 .productInfo h3 {
   margin: 0 0 16px 0;
-  color: #023047;
+  color: #2b2b2b;
   font-size: 18px;
   font-weight: 700;
   display: flex;
@@ -363,7 +363,7 @@
 }
 
 .priceInput:focus {
-  border-color: #d83a3a;
+  border-color: var(--text-accent);
   background: #ffffff;
   box-shadow: 0 0 0 4px rgba(216, 58, 58, 0.1);
   transform: translateY(-2px);
@@ -512,7 +512,7 @@
 
 .summary h3 {
   margin: 0 0 24px 0;
-  color: #023047;
+  color: #2b2b2b;
   font-size: 18px;
   font-weight: 700;
   text-align: center;
@@ -560,7 +560,7 @@
 .productItem:hover {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-color: #d83a3a;
+  border-color: var(--text-accent);
 }
 
 .productItemInfo {
@@ -581,7 +581,7 @@
 }
 
 .productItemIcon {
-  color: #d83a3a;
+  color: var(--text-accent);
   font-size: 14px;
 }
 

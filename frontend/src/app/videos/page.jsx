@@ -9,7 +9,7 @@ export async function generateMetadata() {
 
 export default function VideosPageWrapper() {
   return (
-    <Suspense fallback={<div>Cargando videos...</div>}>
+    <Suspense fallback={null}>
       <VideosClient />
     </Suspense>
   );

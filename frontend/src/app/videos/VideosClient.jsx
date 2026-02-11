@@ -258,21 +258,9 @@ export default function VideosPage() {
                 )}
                 <div className="layout videos-page">
                     <Navbar />
-                    <main className="mainContent">
-                        <div className="heroSection">
-                            <div className="heroOverlay">
-                                <div className="heroContent">
-                                    <h1>Shorts de YouTube</h1>
-                                </div>
-                            </div>
-                        </div>
+                    <main className="mainContent" aria-busy="true">
                         <section className="videosMainSection">
-                            <div className="videosContainer">
-                                <div className="loadingContainer">
-                                    <h2>Cargando videos...</h2>
-                                    <p>Por favor espera un momento</p>
-                                </div>
-                            </div>
+                            <div className="videosContainer"></div>
                         </section>
                     </main>
                     <Footer />
@@ -297,20 +285,13 @@ export default function VideosPage() {
                 <div className="layout videos-page">
                     <Navbar />
                     <main className="mainContent">
-                        <div className="heroSection">
-                            <div className="heroOverlay">
-                                <div className="heroContent">
-                                    <h1>Shorts de YouTube</h1>
-                                </div>
-                            </div>
-                        </div>
                         <section className="videosMainSection">
                             <div className="videosContainer">
                                 <div className="errorContainer">
                                     <h2>Error al cargar videos</h2>
                                     <p>{error}</p>
                                     <button onClick={cargarVideos} className="retryButton">
-                                        Intentar de nuevo
+                                        <span>Intentar de nuevo</span>
                                     </button>
                                 </div>
                             </div>
@@ -343,15 +324,6 @@ export default function VideosPage() {
                 <Navbar />
 
                 <main className="mainContent">
-                    {/* Hero Section */}
-                    <div className="heroSection">
-                        <div className="heroOverlay">
-                            <div className="heroContent">
-                                <h1>Shorts de YouTube</h1>
-                            </div>
-                        </div>
-                    </div>
-
                     {/* Sección principal de shorts */}
                     <section className="videosMainSection">
                         <div className="videosContainer">
@@ -364,7 +336,7 @@ export default function VideosPage() {
                                     aria-label="Regresar a entretenimiento"
                                 >
                                     <FaArrowLeft className="backIcon" />
-                                    Regresar a Entretenimiento
+                                    <span>Regresar a Entretenimiento</span>
                                 </button>
                             </div>
 
@@ -384,7 +356,7 @@ export default function VideosPage() {
                                             title="Agregar nuevo video"
                                         >
                                             <FaPlus className="addIcon" />
-                                            Agregar Video
+                                            <span>Agregar Video</span>
                                         </button>
                                     </div>
                                 )}
@@ -398,7 +370,7 @@ export default function VideosPage() {
                                         className={`categoryButton ${selectedCategory === category.id ? 'active' : ''}`}
                                         onClick={() => setSelectedCategory(category.id)}
                                     >
-                                        {category.label}
+                                        <span className="categoryLabel">{category.label}</span>
                                         <span className="categoryCount">
                                             {getCategoryCount(category.id)}
                                         </span>
@@ -522,7 +494,7 @@ export default function VideosPage() {
                                 <div className="videoContainer">
                                     <iframe
                                         src={selectedVideo.isShort
-                                            ? `https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1&mute=1`
+                                            ? `https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1&mute=0`
                                             : `https://www.youtube.com/embed/${selectedVideo.youtubeId}?autoplay=1`
                                         }
                                         title={selectedVideo.title}

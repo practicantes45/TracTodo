@@ -10,7 +10,7 @@ export async function generateMetadata() {
 
 export default function ProductosPageWrapper() {
   return (
-    <Suspense fallback={<div>Cargando productos...</div>}>
+    <Suspense fallback={null}>
       <ProductosOverrides>
         <ProductosClient />
       </ProductosOverrides>

@@ -18,7 +18,7 @@
   width: 100%;
   max-width: 600px;
   max-height: 85vh;
-  background: linear-gradient(145deg, #ffffff 0%, #fafbff 30%, #f0f8ff 100%);
+  background: linear-gradient(145deg, #ffffff 0%, #f7f2f2 30%, #f7f1f1 100%);
   border-radius: 28px;
   box-shadow: 
     0 30px 80px rgba(0, 0, 0, 0.2),
@@ -35,13 +35,13 @@
   content: '';
   position: absolute;
   inset: -3px;
-  background: linear-gradient(135deg, #7c3aed, #5b21b6, #4c1d95, #3730a3);
+  background: linear-gradient(135deg, #b00020, #2a0a12, #1a1a1a, #2b2b2b);
   border-radius: 31px;
   z-index: -1;
 }
 
 .header {
-  background: linear-gradient(135deg, #1e1b4b 0%, #312e81 25%, #7c3aed 50%, #5b21b6 75%, #4c1d95 100%);
+  background: linear-gradient(135deg, #2b2b2b 0%, #1a1a1a 25%, #b00020 50%, #2a0a12 75%, #1a1a1a 100%);
   color: white;
   display: flex;
   justify-content: space-between;
@@ -96,12 +96,12 @@
 }
 
 .form::-webkit-scrollbar-track {
-  background: #f0f8ff;
+  background: #f7f1f1;
   border-radius: 4px;
 }
 
 .form::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+  background: linear-gradient(135deg, #b00020 0%, #2a0a12 100%);
   border-radius: 4px;
 }
 
@@ -114,7 +114,7 @@
 
 .field label {
   font-weight: 700;
-  color: #1e1b4b;
+  color: #2b2b2b;
   font-size: 14px;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -130,7 +130,7 @@
   left: 0;
   width: 30px;
   height: 2px;
-  background: linear-gradient(90deg, #7c3aed 0%, #5b21b6 100%);
+  background: linear-gradient(90deg, #b00020 0%, #2a0a12 100%);
   border-radius: 1px;
 }
 
@@ -149,7 +149,7 @@
 
 .field input:focus,
 .field select:focus {
-  border-color: #7c3aed;
+  border-color: var(--text-accent);
   background: #ffffff;
   box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.1);
   transform: translateY(-2px);
@@ -197,7 +197,7 @@ content: '!';
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, transparent 0%, #7c3aed 50%, transparent 100%);
+  background: linear-gradient(90deg, transparent 0%, #b00020 50%, transparent 100%);
   border-radius: 2px;
 }
 
@@ -232,7 +232,7 @@ content: '!';
 }
 
 .saveButton {
-  background: linear-gradient(135deg, #7c3aed 0%, #5b21b6 50%, #4c1d95 100%);
+  background: linear-gradient(135deg, #b00020 0%, #2a0a12 50%, #1a1a1a 100%);
   color: white;
   box-shadow: 0 6px 20px rgba(124, 58, 237, 0.5);
   position: relative;

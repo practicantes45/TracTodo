@@ -4,9 +4,9 @@ import { useRouter } from 'next/navigation';
 import styles from './ContactNumbers.module.css';
 import { useWhatsAppContact } from '../../../hooks/useWhatsAppContact';
 
-const ContactNumbers = ({ pageContext = 'home', onSelected }) => {
+const ContactNumbers = ({ pageContext = 'home', onSelected, allowSelection }) => {
     const router = useRouter();
-    const allowSelection = pageContext === 'home';
+    const isSelectable = typeof allowSelection === 'boolean' ? allowSelection : pageContext === 'home';
 
     const {
         advisors,
@@ -15,7 +15,7 @@ const ContactNumbers = ({ pageContext = 'home', onSelected }) => {
         startContact: startAdvisorContact,
         isReady,
     } = useWhatsAppContact({
-        allowSelection,
+        allowSelection: isSelectable,
         onRequireSelection: () => {
             router.push('/#asesores');
         },
@@ -54,8 +54,8 @@ const ContactNumbers = ({ pageContext = 'home', onSelected }) => {
         return `${baseClass} ${contextClass || ''}`.trim();
     };
 
-    const selectorTitle = allowSelection ? 'Elige a tu asesor de confianza' : 'Asesores de contacto';
-    const selectorSubtitle = allowSelection
+    const selectorTitle = isSelectable ? 'Elige a tu asesor de confianza' : 'Asesores de contacto';
+    const selectorSubtitle = isSelectable
         ? 'Guardaremos tu eleccion para que cada compra y consulta se realice con la misma persona.'
         : 'Puedes comunicarte con tu asesor asignado, o elegir uno nuevo desde la pagina principal.';
 
@@ -71,7 +71,7 @@ const ContactNumbers = ({ pageContext = 'home', onSelected }) => {
                     const isActive = selectedAdvisor && selectedAdvisor.id === advisor.id;
                     const cardClasses = [styles.advisorCard];
                     if (isActive) cardClasses.push(styles.activeCard);
-                    if (!allowSelection) cardClasses.push(styles.readonlyCard);
+                    if (!isSelectable) cardClasses.push(styles.readonlyCard);
 
                     const content = (
                         <>
@@ -88,7 +88,7 @@ const ContactNumbers = ({ pageContext = 'home', onSelected }) => {
                         </>
                     );
 
-                    if (allowSelection) {
+                    if (isSelectable) {
                         return (
                             <button
                                 key={advisor.id}
@@ -115,7 +115,7 @@ const ContactNumbers = ({ pageContext = 'home', onSelected }) => {
                 {selectedAdvisor ? (
                     <>
                         <p className={styles.selectedMessage}>
-                            Te atendera <strong className={styles.selectedName}>{selectedAdvisor.name}</strong>, <span className={styles.selectedRole}>{selectedAdvisor.role}</span>. {allowSelection ? 'Si necesitas soporte general, escribele directamente por WhatsApp.' : 'Si deseas cambiar de asesor, hazlo desde la pagina principal.'}
+                            Te atendera <strong className={styles.selectedName}>{selectedAdvisor.name}</strong>, <span className={styles.selectedRole}>{selectedAdvisor.role}</span>. {isSelectable ? 'Si necesitas soporte general, escribele directamente por WhatsApp.' : 'Si deseas cambiar de asesor, hazlo desde la pagina principal.'}
                         </p>
                         <button
                             className={styles.primaryButton}
@@ -127,7 +127,7 @@ const ContactNumbers = ({ pageContext = 'home', onSelected }) => {
                         </button>
                     </>
                 ) : (
-                    allowSelection
+                    isSelectable
                         ? (isReady ? null : (
                             <p className={styles.pendingMessage}>Cargando asesores disponibles...</p>
                         ))

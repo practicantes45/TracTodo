@@ -26,7 +26,23 @@
     text-shadow: 2px 2px 4px rgba(0,0,0,.8), 0 0 10px rgba(0,0,0,.6) !important;
   }
   .layout.sobre-page .mainContent {
-    padding-top: calc(56px + clamp(85px, 13vh, 110px)) !important;
+    padding-top: calc(56px + env(safe-area-inset-top)) !important;
+  }
+  .aboutSection {
+    margin-top: 0 !important;
+  }
+  .aboutTextContent {
+    column-count: 1;
+  }
+  .aboutTextContent h2 {
+    font-size: 1.9rem !important;
+    white-space: nowrap;
+    text-align: center;
+    letter-spacing: 0;
+  }
+  .aboutTextContent p {
+    font-size: 0.95rem !important;
+    margin-bottom: 12px;
   }
 }
 
@@ -34,5 +50,7 @@
   .layout.sobre-page .heroSection { height: clamp(80px, 16vh, 105px) !important; }
   .layout.sobre-page .heroContent { transform: translateY(-8px); }
   .layout.sobre-page .heroContent h1 { font-size: clamp(1.1rem, 6vw, 1.6rem) !important; }
-  .layout.sobre-page .mainContent { padding-top: calc(56px + clamp(80px, 16vh, 105px)) !important; }
+  .layout.sobre-page .mainContent { padding-top: calc(56px + env(safe-area-inset-top)) !important; }
+  .aboutTextContent h2 { font-size: 1.7rem !important; }
+  .aboutTextContent p { font-size: 0.9rem !important; }
 }

@@ -1,4 +1,4 @@
-﻿.editorContainer {
+.editorContainer {
   border: 2px solid rgba(195, 0, 33, 0.2);
   border-radius: 15px;
   overflow: hidden;
@@ -8,7 +8,7 @@
 }
 
 .editorContainer:focus-within {
-  border-color: var(--accent-color);
+  border-color: var(--text-accent);
   box-shadow: 0 0 0 3px rgba(195, 0, 33, 0.1);
 }
 
@@ -40,7 +40,7 @@
   gap: 6px;
   background: white;
   border: 1px solid rgba(195, 0, 33, 0.3);
-  color: var(--primary-color);
+  color: var(--text-accent);
   padding: 8px 12px;
   border-radius: 8px;
   font-size: 0.9rem;
@@ -53,7 +53,7 @@
 .toolButton:hover {
   background: var(--accent-color);
   color: white;
-  border-color: var(--accent-color);
+  border-color: var(--text-accent);
   transform: translateY(-1px);
   box-shadow: 0 2px 8px rgba(195, 0, 33, 0.3);
 }
@@ -75,7 +75,7 @@
 }
 
 .previewButton:hover {
-  background: linear-gradient(135deg, var(--accent-color) 0%, #0077b6 100%);
+  background: linear-gradient(135deg, var(--accent-color) 0%, #1a1a1a 100%);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(195, 0, 33, 0.4);
 }
@@ -137,7 +137,7 @@
 .previewContent h2 {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--primary-color);
+  color: var(--text-accent);
   margin: 24px 0 16px 0;
   padding-bottom: 8px;
   border-bottom: 2px solid var(--accent-color);
@@ -150,7 +150,7 @@
 
 .previewContent strong {
   font-weight: 700;
-  color: var(--primary-color);
+  color: var(--text-accent);
 }
 
 .previewContent em {
@@ -180,7 +180,7 @@
 
 .characterCount {
   background: rgba(195, 0, 33, 0.1);
-  color: var(--accent-color);
+  color: var(--text-accent);
   padding: 4px 8px;
   border-radius: 8px;
   font-weight: 600;
@@ -263,7 +263,7 @@
 .previewContent :global(.previewSubtitle) {
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--primary-color);
+  color: var(--text-accent);
   margin: 24px 0 16px 0;
   padding-bottom: 8px;
   border-bottom: 2px solid var(--accent-color);

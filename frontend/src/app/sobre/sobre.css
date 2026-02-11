@@ -1,4 +1,4 @@
-﻿/* ===== SOBRE NOSOTROS - ESTILOS ESPECÃFICOS ===== */
+/* ===== SOBRE NOSOTROS - ESTILOS ESPECÍFICOS ===== */
 
 /* Importar estilos globales */
 @import url('../styles/global.css');
@@ -11,10 +11,10 @@
   /* ALTURA UNIFICADA */
   width: 100%;
   left: 0;
-  background-image: url('https://i.postimg.cc/yxYC4QM2/fondoamarillo.png');
+  background-image: url('/imgs/fondorojo.png');
   background-size: cover;
   background-position: center center;
-  /* CORREGIDO: posiciÃ³n idÃ©ntica */
+  /* CORREGIDO: posición idéntica */
   background-repeat: no-repeat;
   color: white;
   top: 90px;
@@ -34,14 +34,14 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: linear-gradient(0deg, rgba(26, 11, 46, 0.72), rgba(14, 4, 28, 0.45));
+  background: linear-gradient(0deg, rgba(10, 10, 10, 0.78), rgba(60, 0, 10, 0.45));
 
 }
 
 /* Desktop: suavizar overlay para evitar tinte morado en la imagen */
 @media (min-width: 769px) {
   .sobre-page .heroOverlay {
-    background: linear-gradient(0deg, rgba(20, 8, 36, 0.36), rgba(12, 4, 20, 0.14)) !important;
+    background: linear-gradient(0deg, rgba(10, 10, 10, 0.45), rgba(30, 0, 8, 0.18)) !important;
   }
 }
 
@@ -65,7 +65,7 @@
   text-shadow:
     2px 2px 4px rgba(0, 0, 0, 0.8),
     0 0 10px rgba(0, 0, 0, 0.6),
-    0 0 20px rgba(148, 33, 146, 0.4);
+    0 0 20px rgba(225, 6, 47, 0.35);
   opacity: 0;
   animation: fadeInUp 1s ease-out 0.5s forwards;
 }
@@ -82,7 +82,7 @@
   }
 }
 
-/* ===== MAIN CONTENT ADJUSTMENT - ESPECÃFICO PARA SOBRE ===== */
+/* ===== MAIN CONTENT ADJUSTMENT - ESPECÍFICO PARA SOBRE ===== */
 .sobre-page .mainContent {
   flex: 1;
   width: 100%;
@@ -101,7 +101,7 @@
   .aboutSection { margin-top: -55px; }
 }
 
-/* --- Ajustes móviles: hero compacto con título visible --- */
+/* --- Ajustes m�viles: hero compacto con t�tulo visible --- */
 @media (max-width: 768px) {
   .sobre-page .heroSection { height: clamp(85px, 13vh, 110px) !important; }
   .sobre-page .heroContent h1 {
@@ -118,13 +118,13 @@
   .sobre-page .mainContent { padding-top: calc(90px + clamp(80px, 16vh, 105px)) !important; }
 }
 
-/* ===== SECCIÃ“N Â¿QUIÃ‰NES SOMOS? - DISEÃ‘O DINÃMICO Y ATRACTIVO ===== */
+/* ===== SECCIÓN ¿QUIÉNES SOMOS? - DISEÑO DINÁMICO Y ATRACTIVO ===== */
 .aboutSection {
-  background: linear-gradient(145deg, #f0f8ff 0%, #e6f3ff 30%, #ffffff 70%, #f8f9fa 100%);
+  background: linear-gradient(145deg, #b32638 0%, #7a6a70 55%, #3b3f45 100%);
   padding: 20px 20px 80px 20px;
   margin: 0;
   margin-top: -50px;
-  /* AJUSTE ESPECÃFICO UNIFICADO */
+  /* AJUSTE ESPECÍFICO UNIFICADO */
   position: relative;
   overflow: hidden;
 }
@@ -133,8 +133,9 @@
   content: "";
   position: absolute;
   inset: 0;
-  background: url('/images/christmas-pattern.svg') repeat;
-  opacity: 0.16;
+  background: radial-gradient(1px 1px at 25px 35px, rgba(225, 6, 47, 0.16), transparent),
+              radial-gradient(1px 1px at 90px 90px, rgba(255, 255, 255, 0.08), transparent);
+  opacity: 0.2;
   pointer-events: none;
 }
 
@@ -145,7 +146,7 @@
   left: -40px;
   width: 200px;
   height: 200px;
-  background: radial-gradient(circle, rgba(148, 33, 146, 0.2) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(225, 6, 47, 0.25) 0%, transparent 70%);
   opacity: 0.5;
   pointer-events: none;
 }
@@ -169,8 +170,8 @@
   border-radius: 25px;
   padding: 50px;
   box-shadow:
-    0 20px 60px rgba(148, 33, 146, 0.08),
-    0 8px 25px rgba(195, 0, 33, 0.05),
+    0 20px 60px rgba(0, 0, 0, 0.28),
+    0 8px 25px rgba(225, 6, 47, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(195, 0, 33, 0.1);
   position: relative;
@@ -181,8 +182,8 @@
 .aboutContentWithImage:hover {
   transform: translateY(-5px);
   box-shadow:
-    0 30px 80px rgba(148, 33, 146, 0.12),
-    0 12px 35px rgba(195, 0, 33, 0.08),
+    0 30px 80px rgba(0, 0, 0, 0.35),
+    0 12px 35px rgba(225, 6, 47, 0.12),
     inset 0 1px 0 rgba(255, 255, 255, 0.95);
 }
 
@@ -216,13 +217,13 @@
 
 .aboutTextContent h2 {
   font-size: 3.2rem;
-  color: var(--primary-color);
+  color: var(--text-accent);
   text-align: left;
   margin-bottom: 35px;
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
   font-weight: 700;
   position: relative;
-  text-shadow: 0 2px 4px rgba(148, 33, 146, 0.1);
+  text-shadow: 0 2px 4px rgba(225, 6, 47, 0.2);
   letter-spacing: -1px;
 }
 
@@ -231,11 +232,11 @@
   display: block;
   width: 0;
   height: 4px;
-  background: linear-gradient(90deg, var(--accent-color) 0%, #00d4ff 50%, var(--accent-color) 100%);
+  background: linear-gradient(90deg, var(--accent-color) 0%, #ffffff 50%, var(--accent-color) 100%);
   margin: 20px 0 0 0;
   border-radius: 2px;
   animation: expandUnderline 1.5s ease-out 0.5s forwards;
-  box-shadow: 0 2px 8px rgba(195, 0, 33, 0.3);
+  box-shadow: 0 2px 8px rgba(225, 6, 47, 0.3);
 }
 
 @keyframes expandUnderline {
@@ -261,7 +262,7 @@
   transition: all 0.3s ease;
 }
 
-/* Indicador visual para los pÃ¡rrafos */
+/* Indicador visual para los párrafos */
 .aboutTextContent p::before {
   content: '';
   position: absolute;
@@ -311,8 +312,8 @@
   height: auto;
   border-radius: 18px;
   box-shadow:
-    0 15px 40px rgba(148, 33, 146, 0.15),
-    0 5px 15px rgba(195, 0, 33, 0.1);
+    0 15px 40px rgba(0, 0, 0, 0.35),
+    0 5px 15px rgba(225, 6, 47, 0.12);
   transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
   position: relative;
   z-index: 2;
@@ -322,14 +323,14 @@
 .aboutTruckImage:hover {
   transform: translateY(-8px) scale(1.02);
   box-shadow:
-    0 25px 60px rgba(148, 33, 146, 0.25),
-    0 10px 25px rgba(195, 0, 33, 0.15);
+    0 25px 60px rgba(0, 0, 0, 0.45),
+    0 10px 25px rgba(225, 6, 47, 0.18);
   filter: brightness(1.05) contrast(1.08);
 }
 
-/* ===== SECCIÃ“N MISIÃ“N Y VISIÃ“N ===== */
+/* ===== SECCIÓN MISIÓN Y VISIÓN ===== */
 .missionVisionSection {
-  background: linear-gradient(135deg, var(--primary-color) 0%, #4c1d95 100%);
+  background: linear-gradient(135deg, #2b2b2b 0%, var(--primary-color) 100%);
   padding: 80px 20px;
   margin: 0;
   position: relative;
@@ -394,7 +395,7 @@
 .missionCard h3,
 .visionCard h3 {
   font-size: 2.5rem;
-  color: var(--primary-color);
+  color: var(--text-accent);
   margin-bottom: 25px;
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
   font-weight: 700;
@@ -410,9 +411,9 @@
   text-align: justify;
 }
 
-/* ===== SECCIÃ“N VALORES ===== */
+/* ===== SECCIÓN VALORES ===== */
 .valuesSection {
-  background-color: #ffffff;
+  background: linear-gradient(135deg, #5b6169 0%, #4a5058 55%, #3a3f46 100%);
   padding: 80px 20px;
   margin: 0;
 }
@@ -425,7 +426,7 @@
 
 .valuesContainer h2 {
   font-size: 3rem;
-  color: var(--primary-color);
+  color: #ffffff;
   margin-bottom: 50px;
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
   font-weight: 700;
@@ -437,7 +438,7 @@
   display: block;
   width: 80px;
   height: 4px;
-  background: var(--accent-color);
+  background: #ffffff;
   margin: 15px auto 0;
   border-radius: 2px;
 }
@@ -450,7 +451,7 @@
 }
 
 .valueCard {
-  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  background: linear-gradient(135deg, #f7f1f1 0%, #ffffff 100%);
   padding: 30px;
   border-radius: 12px;
   text-align: left;
@@ -484,7 +485,7 @@
 
 .valueCard h4 {
   font-size: 1.5rem;
-  color: var(--primary-color);
+  color: var(--text-accent);
   margin-bottom: 15px;
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
   font-weight: 700;
@@ -588,7 +589,7 @@
     text-shadow:
       2px 2px 4px rgba(0, 0, 0, 0.9),
       0 0 8px rgba(0, 0, 0, 0.7),
-      0 0 16px rgba(148, 33, 146, 0.5);
+      0 0 16px rgba(225, 6, 47, 0.45);
   }
 
   .aboutSection {
@@ -602,8 +603,13 @@
 
   .aboutTextContent h2,
   .valuesContainer h2 {
-    font-size: 2.5rem;
-  }
+  font-size: 3rem;
+  color: #ffffff;
+  margin-bottom: 50px;
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+  font-weight: 700;
+  position: relative;
+}
 
   .valuesGrid {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -611,7 +617,7 @@
   }
 }
 
-/* MÃ³vil (768px) - OCULTAR TÃTULO */
+/* Móvil (768px) - OCULTAR TÍTULO */
 @media (max-width: 768px) {
   .sobre-page .heroSection {
     height: 210px;
@@ -699,7 +705,7 @@
   }
 }
 
-/* MÃ³vil pequeÃ±o (480px) */
+/* Móvil pequeño (480px) */
 @media (max-width: 480px) {
   .sobre-page .heroSection {
     height: 190px;
@@ -727,8 +733,13 @@
 
   .aboutTextContent h2,
   .valuesContainer h2 {
-    font-size: 1.8rem;
-  }
+  font-size: 3rem;
+  color: #ffffff;
+  margin-bottom: 50px;
+  font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
+  font-weight: 700;
+  position: relative;
+}
 
   .missionCard h3,
   .visionCard h3 {
@@ -758,7 +769,7 @@
   }
 }
 
-/* Ajustes para pantallas muy pequeÃ±as (360px) */
+/* Ajustes para pantallas muy pequeñas (360px) */
 @media (max-width: 360px) {
   .sobre-page .heroSection {
     height: 175px;
@@ -778,4 +789,32 @@
     margin-top: -20px;
     padding: 10px 3px;
   }
+}
+
+/* Ajuste sin hero */
+.sobre-page .mainContent { padding-top: 24px !important; }
+.aboutSection { margin-top: 0 !important; }
+
+/* Igualar tipograf�a de texto peque�o (Sobre Nosotros) */
+.sobre-page .aboutTextContent p,
+.sobre-page .missionCard p,
+.sobre-page .visionCard p,
+.sobre-page .valueCard p {
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  color: #1f2937 !important;
+  -webkit-text-fill-color: #1f2937 !important;
+  line-height: 1.6 !important;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+}
+/* Igualar estilo al texto de Referencias para ubicarnos */
+.sobre-page .aboutTextContent p,
+.sobre-page .missionCard p,
+.sobre-page .visionCard p,
+.sobre-page .valueCard p {
+  font-size: 1rem !important;
+  line-height: 1.6 !important;
+  color: var(--dark-color) !important;
+  font-weight: 400 !important;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
 }

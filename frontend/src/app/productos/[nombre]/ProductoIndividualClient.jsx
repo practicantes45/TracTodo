@@ -678,12 +678,7 @@ export default function ProductoIndividualPage({ params }) {
         return (
             <div className="layout producto-individual-page">
                 <Navbar />
-                <main className="mainContent">
-                    <div className="loadingContainer">
-                        <div className="spinner"></div>
-                        <p>Cargando producto...</p>
-                    </div>
-                </main>
+                <main className="mainContent" aria-busy="true"></main>
                 <Footer />
             </div>
         );
@@ -706,8 +701,8 @@ export default function ProductoIndividualPage({ params }) {
                             <h2>Producto no encontrado</h2>
                             <p>{error || 'El producto que buscas no existe'}</p>
                             <button className="backButton" onClick={handleBackClick}>
-                                <FaArrowLeft />
-                                Volver a productos
+                                <FaArrowLeft className="buttonIcon" />
+                                <span className="buttonText">Volver a productos</span>
                             </button>
                         </div>
                     </main>
@@ -740,8 +735,8 @@ export default function ProductoIndividualPage({ params }) {
                 <main className="mainContent">
                     <div className="backButtonContainer">
                         <button className="backButton" onClick={handleBackClick}>
-                            <FaArrowLeft />
-                            Volver a productos
+                            <FaArrowLeft className="buttonIcon" />
+                            <span className="buttonText">Volver a productos</span>
                         </button>
                     </div>
 
@@ -980,7 +975,7 @@ export default function ProductoIndividualPage({ params }) {
 
                     <section className="relatedProductsSection">
                         <div className="relatedProductsContainer">
-                            <h2>PRODUCTOS RELACIONADOS</h2>
+                            <h2>TAMBIÉN TE PUEDE INTERESAR</h2>
 
                             {productosParaMostrar.length > 0 && (
                                 <div className="relatedCarouselWrapper">

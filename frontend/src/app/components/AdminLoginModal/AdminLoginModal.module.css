@@ -1,4 +1,4 @@
-﻿.overlay {
+.overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -104,7 +104,7 @@
   transform: translateY(-50%);
   background: transparent;
   border: 2px solid #C30021;
-  color: #C30021;
+  color: var(--text-accent);
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -126,7 +126,7 @@
 
 .title {
   font-size: 1.5em;
-  color: #C30021;
+  color: var(--text-accent);
   text-align: center;
   margin: 0;
   font-family: var(--font-montserrat);
@@ -188,7 +188,7 @@
 }
 
 .input:focus {
-  border-color: #C30021;
+  border-color: var(--text-accent);
   box-shadow: 
     0 0 0 3px rgba(216, 58, 58, 0.2),
     0 0 20px rgba(216, 58, 58, 0.1);
@@ -201,7 +201,7 @@
   font-size: 0.8em;
   background: linear-gradient(90deg, #1f0a30, #271046);
   padding: 0 8px;
-  color: #C30021;
+  color: var(--text-accent);
   border-radius: 4px;
   transform: translateY(0) scale(1);
 }
@@ -224,7 +224,7 @@
   transform: translateY(-50%);
   background: transparent;
   border: none;
-  color: #C30021;
+  color: var(--text-accent);
   cursor: pointer;
   font-size: 16px;
   transition: all 0.3s ease;

@@ -1,0 +1,181 @@
+/* Overrides de tema general para Productos (rojo/negro) */
+
+/* Controles móviles: marcas (checkbox) */
+.productos-page .mobileMarcaCheckbox:hover .mobileCheckmark {
+  border-color: var(--accent-color) !important;
+  background: rgba(31, 90, 166, 0.12) !important;
+}
+.productos-page .mobileMarcaCheckbox input:checked ~ .mobileCheckmark {
+  background: var(--accent-color) !important;
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 10px rgba(31, 90, 166, 0.5) !important;
+}
+
+/* Controles móviles: ordenamiento (radio) */
+.productos-page .mobileOrdenamientoRadio:hover {
+  color: var(--accent-color) !important;
+  background: rgba(31, 90, 166, 0.12) !important;
+}
+.productos-page .mobileOrdenamientoRadio:hover .mobileRadiomark {
+  border-color: var(--accent-color) !important;
+  background: rgba(31, 90, 166, 0.12) !important;
+}
+.productos-page .mobileOrdenamientoRadio input:checked ~ .mobileRadiomark {
+  background: var(--accent-color) !important;
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 10px rgba(31, 90, 166, 0.5) !important;
+}
+
+/* Botones de filtros móviles */
+.productos-page .clearMobileFilters:hover {
+  background: rgba(31, 90, 166, 0.12) !important;
+  border-color: var(--accent-color) !important;
+  color: var(--accent-color) !important;
+}
+.productos-page .applyMobileFilters {
+  background: var(--accent-color) !important;
+  border-color: var(--accent-color) !important;
+}
+.productos-page .applyMobileFilters:hover {
+  box-shadow: 0 4px 15px rgba(31, 90, 166, 0.3) !important;
+}
+
+/* Desktop: marcas (checkbox) y radios */
+.productos-page .marcaCheckbox:hover .checkmark,
+.productos-page .ordenamientoRadio:hover .radiomark {
+  border-color: var(--accent-color) !important;
+  background: rgba(31, 90, 166, 0.12) !important;
+}
+.productos-page .marcaCheckbox input:checked ~ .checkmark,
+.productos-page .ordenamientoRadio input:checked ~ .radiomark {
+  background: var(--accent-color) !important;
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 10px rgba(31, 90, 166, 0.5) !important;
+}
+
+/* CTA "Ver más" y banner */
+.productos-page .allProductsBannerBox,
+.productos-page .featuredTitle {
+  background: linear-gradient(135deg, #2b2b2b 0%, var(--accent-color, #C30021) 100%) !important;
+  border-color: rgba(31, 90, 166, 0.2) !important;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25), 0 4px 15px rgba(31, 90, 166, 0.12) !important;
+}
+.productos-page .verMasBtn,
+.productos-page .advisorQuickButton {
+  background: #ffffff !important;
+  color: #2a0a12 !important;
+  border: 2px solid #ffffff !important;
+  border-radius: 500px !important;
+  letter-spacing: 0.05rem !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+}
+.productos-page .verMasBtn::before,
+.productos-page .advisorQuickButton::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -10%;
+  width: 120% !important;
+  height: 100% !important;
+  background: linear-gradient(135deg, #2a0a12, #2b0d12) !important;
+  transform: skew(30deg) translateX(-100%);
+  transition: transform 0.4s cubic-bezier(0.3, 1, 0.8, 1);
+  z-index: 0;
+  pointer-events: none;
+  border-radius: 0 !important;
+}
+.productos-page .verMasBtn:hover,
+.productos-page .advisorQuickButton:hover {
+  color: #ffffff !important;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3) !important;
+}
+.productos-page .verMasBtn:hover::before,
+.productos-page .advisorQuickButton:hover::before {
+  transform: skew(30deg) translateX(0);
+}
+.productos-page .verMasBtn:active,
+.productos-page .advisorQuickButton:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2) !important;
+}
+.productos-page .verMasBtn > *,
+.productos-page .advisorQuickButton > * {
+  position: relative;
+  z-index: 1;
+}
+.productos-page .verMasBtn .buttonText,
+.productos-page .advisorQuickButton .buttonText {
+  position: relative;
+  z-index: 1;
+  transition: color 0.4s cubic-bezier(0.3, 1, 0.8, 1);
+}
+.productos-page .verMasBtn svg,
+.productos-page .advisorQuickButton svg {
+  color: inherit;
+  fill: currentColor;
+  stroke: currentColor;
+}
+.productos-page .verMasBtn:hover svg,
+.productos-page .advisorQuickButton:hover svg {
+  transform: none !important;
+  animation: none !important;
+}
+
+/* Paginación info box */
+.productos-page .paginacionInfo {
+  border-color: rgba(31, 90, 166, 0.2) !important;
+  box-shadow: 0 4px 15px rgba(31, 90, 166, 0.06) !important;
+}
+
+/* Botones y enlaces principales en Productos */
+.productos-page .limpiarFiltrosBtn,
+.productos-page .clearSearchButton,
+.productos-page .clearSearchButtonMobile,
+.productos-page .advisorChangeButton,
+.productos-page .advisorChooseButton {
+  border-color: rgba(0, 0, 0, 0.2) !important;
+  color: #1b1b1b !important;
+}
+.productos-page .limpiarFiltrosBtn:hover,
+.productos-page .clearSearchButton:hover,
+.productos-page .clearSearchButtonMobile:hover,
+.productos-page .advisorChangeButton:hover,
+.productos-page .advisorChooseButton:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18) !important;
+  border-color: rgba(0, 0, 0, 0.3) !important;
+}
+
+.productos-page .cartButton:hover {
+  box-shadow: 0 24px 48px rgba(31, 90, 166, 0.4) !important;
+}
+
+/* Estados de foco: contornos y halos a rojo */
+.productos-page :is(button, [role="button"], a, input, select, textarea):focus {
+  outline-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 3px rgba(31, 90, 166, 0.18) !important;
+}
+.productos-page :is(button, [role="button"], a, input, select, textarea):focus-visible {
+  outline-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 3px rgba(31, 90, 166, 0.22) !important;
+}
+
+/* Badges/tags con tintado rojo */
+.productos-page [class*="tag"],
+.productos-page [class*="badge"] {
+  background: rgba(31, 90, 166, 0.12) !important;
+  color: var(--accent-color) !important;
+  border-color: var(--accent-color) !important;
+}
+
+/* Fix: texto blanco en Borrar busqueda (mobile) */
+.productos-page .clearSearchButtonMobile,
+.productos-page .clearSearchButtonMobile * {
+  color: #ffffff !important;
+}

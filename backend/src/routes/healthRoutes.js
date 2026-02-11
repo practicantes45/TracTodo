@@ -9,7 +9,7 @@ router.get("/health", (req, res) => {
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || "development",
     version: "1.0.0",
-    port: process.env.PORT || "3000",
+    port: process.env.PORT || "8080",
     urls: {
       frontend: "https://tractodo.com",
       backend: "https://tractodo-production.up.railway.app"

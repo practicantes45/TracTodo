@@ -38,7 +38,7 @@ export default function AdvisorPickerModal({ isOpen, onClose }) {
         </div>
         <div className={styles.content}>
           <p className={styles.hint}>Selecciona un asesor para continuar con tu compra y agregar productos al carrito.</p>
-          <ContactNumbers pageContext="home" onSelected={() => onClose?.()} />
+          <ContactNumbers pageContext="modal" allowSelection onSelected={() => onClose?.()} />
         </div>
       </div>
     </div>,

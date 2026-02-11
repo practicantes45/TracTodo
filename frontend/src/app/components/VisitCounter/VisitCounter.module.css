@@ -1,17 +1,46 @@
-﻿/* VisitCounter.module.css - VersiÃ³n con visibilidad controlada por scroll */
+/* VisitCounter.module.css - Versión con visibilidad controlada por scroll */
+
+.counterWrapper {
+  --wa-size: 55px;
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  z-index: 9908;
+}
+
+.floatingWrapper {
+  position: fixed;
+  top: 240px;
+  left: 25px;
+  --wa-size: 65px;
+  z-index: 9908;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+.floatingWrapper.hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-100px);
+  pointer-events: none;
+}
+
+.mobileWrapper {
+  position: relative;
+  --wa-size: 56px;
+}
 
 .visitCounter {
   position: relative;
   display: flex;
   align-items: center;
-  background: linear-gradient(135deg, 
-    rgba(195, 0, 33, 0.2) 0%, 
-    rgba(148, 33, 146, 0.25) 30%, 
-    rgba(26, 26, 46, 0.3) 70%, 
-    rgba(195, 0, 33, 0.15) 100%
-  );
+  --visit-base: #c7771f;
+  --visit-deep: #a86216;
+  --visit-text: #fff7e8;
+  background: var(--visit-base);
   backdrop-filter: blur(15px);
-  border: 2px solid rgba(195, 0, 33, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.25);
   border-radius: 30px;
   padding: 12px 20px;
   min-width: 160px;
@@ -20,9 +49,9 @@
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
   box-shadow: 
-    0 8px 25px rgba(195, 0, 33, 0.3),
-    0 4px 15px rgba(0, 0, 0, 0.1),
-    inset 0 2px 0 rgba(255, 255, 255, 0.2);
+    0 8px 22px rgba(199, 119, 31, 0.35),
+    0 4px 14px rgba(0, 0, 0, 0.15),
+    inset 0 2px 0 rgba(255, 255, 255, 0.25);
   z-index: 2;
 }
 
@@ -61,94 +90,173 @@
 
 .visitCounter:hover {
   transform: translateY(-3px) scale(1.05);
-  background: linear-gradient(135deg, 
-    rgba(195, 0, 33, 0.3) 0%, 
-    rgba(148, 33, 146, 0.35) 30%, 
-    rgba(26, 26, 46, 0.4) 70%, 
-    rgba(195, 0, 33, 0.25) 100%
-  );
-  border-color: rgba(195, 0, 33, 0.6);
+  background: var(--visit-deep);
+  border-color: rgba(255, 255, 255, 0.45);
   box-shadow: 
-    0 15px 40px rgba(195, 0, 33, 0.4),
-    0 8px 25px rgba(0, 0, 0, 0.15),
-    inset 0 2px 0 rgba(255, 255, 255, 0.3);
+    0 15px 38px rgba(199, 119, 31, 0.45),
+    0 8px 24px rgba(0, 0, 0, 0.2),
+    inset 0 2px 0 rgba(255, 255, 255, 0.35);
 }
 
-/* ===== VERSIÃ“N FLOTANTE - VISIBLE POR DEFECTO ===== */
+/* ===== VERSIÓN FLOTANTE - VISIBLE POR DEFECTO ===== */
 .floatingCounter {
-  position: fixed !important;
-  top: 180px;
-  left: 25px;
-  z-index: 9908 !important;
   min-width: 180px;
   height: 65px;
   padding: 15px 25px;
-  background: linear-gradient(135deg, 
-    rgba(195, 0, 33, 0.25) 0%, 
-    rgba(148, 33, 146, 0.3) 30%, 
-    rgba(26, 26, 46, 0.35) 70%, 
-    rgba(195, 0, 33, 0.2) 100%
-  );
+  background: var(--visit-base);
   backdrop-filter: blur(20px);
-  border: 3px solid rgba(195, 0, 33, 0.6);
+  border: 3px solid rgba(255, 255, 255, 0.3);
   box-shadow: 
-    0 15px 45px rgba(195, 0, 33, 0.4),
-    0 8px 30px rgba(0, 0, 0, 0.2),
-    inset 0 3px 0 rgba(255, 255, 255, 0.25);
+    0 15px 40px rgba(199, 119, 31, 0.45),
+    0 8px 28px rgba(0, 0, 0, 0.25),
+    inset 0 3px 0 rgba(255, 255, 255, 0.3);
   border-radius: 35px;
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(0);
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
-}
-
-/* ===== ESTADO OCULTO ===== */
-.floatingCounter.hidden {
-  opacity: 0;
-  visibility: hidden;
-  transform: translateX(-100px);
-  pointer-events: none;
 }
 
 .floatingCounter:hover {
-  background: linear-gradient(135deg, 
-    rgba(216, 58, 58, 0.4) 0%, 
-    rgba(148, 33, 146, 0.45) 30%, 
-    rgba(26, 26, 46, 0.5) 70%, 
-    rgba(216, 58, 58, 0.35) 100%
-  );
-  border-color: rgba(216, 58, 58, 0.8);
+  background: var(--visit-deep);
+  border-color: rgba(255, 255, 255, 0.5);
   box-shadow: 
-    0 20px 50px rgba(216, 58, 58, 0.5),
-    0 12px 35px rgba(0, 0, 0, 0.25),
-    inset 0 3px 0 rgba(255, 255, 255, 0.35);
+    0 20px 50px rgba(199, 119, 31, 0.55),
+    0 12px 35px rgba(0, 0, 0, 0.3),
+    inset 0 3px 0 rgba(255, 255, 255, 0.4);
   transform: translateX(5px) scale(1.02);
 }
 
-/* No aplicar hover cuando estÃ¡ oculto */
-.floatingCounter.hidden:hover {
-  transform: translateX(-100px);
-  background: linear-gradient(135deg, 
-    rgba(216, 58, 58, 0.25) 0%, 
-    rgba(148, 33, 146, 0.3) 30%, 
-    rgba(26, 26, 46, 0.35) 70%, 
-    rgba(216, 58, 58, 0.2) 100%
-  );
-  border-color: rgba(216, 58, 58, 0.6);
-  box-shadow: 
-    0 15px 45px rgba(216, 58, 58, 0.4),
-    0 8px 30px rgba(0, 0, 0, 0.2),
-    inset 0 3px 0 rgba(255, 255, 255, 0.25);
+.actionRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
 }
 
-/* Ocultar contador del navbar cuando hay versiÃ³n flotante */
+.whatsappUnderButton {
+  width: var(--wa-size);
+  height: var(--wa-size);
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: linear-gradient(135deg, #4fe28f 0%, #1f8f4a 45%, #6bffb0 70%, #1a6c3a 100%);
+  background-size: 200% 200%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #f3fff8;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.25), inset 0 2px 6px rgba(255, 255, 255, 0.25);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-position 0.6s ease;
+}
+
+.whatsappUnderButton svg {
+  font-size: 1.7rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.35));
+}
+
+.whatsappUnderButton::before {
+  content: "";
+  position: absolute;
+  top: -60%;
+  left: -120%;
+  width: 60%;
+  height: 220%;
+  background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.75) 50%, transparent 100%);
+  transform: skewX(-12deg);
+  transition: left 0.6s ease;
+  opacity: 0;
+  animation: whatsappSheen 6.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.whatsappUnderButton:hover {
+  transform: translateY(-1px) scale(1.03);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.28), inset 0 2px 6px rgba(255, 255, 255, 0.35);
+  background-position: 100% 0%;
+}
+
+.whatsappUnderButton:hover::before {
+  left: 140%;
+  opacity: 0.9;
+  animation: none;
+}
+
+.whatsappUnderButton:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.9);
+  outline-offset: 2px;
+}
+
+.shareUnderButton {
+  width: var(--wa-size);
+  height: var(--wa-size);
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: linear-gradient(135deg, #f2f2f2 0%, #c9c9c9 35%, #fbfbfb 55%, #9a9a9a 100%);
+  background-size: 200% 200%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #1b1b1b;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.22), inset 0 2px 6px rgba(255, 255, 255, 0.35);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-position 0.6s ease;
+}
+
+.shareUnderButton svg {
+  font-size: 1.6rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+}
+
+.shareUnderButton::before {
+  content: "";
+  position: absolute;
+  top: -60%;
+  left: -120%;
+  width: 60%;
+  height: 220%;
+  background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.75) 50%, transparent 100%);
+  transform: skewX(-12deg);
+  transition: left 0.6s ease;
+  opacity: 0;
+  animation: whatsappSheen 6.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.shareUnderButton:hover {
+  transform: translateY(-1px) scale(1.03);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.26), inset 0 2px 6px rgba(255, 255, 255, 0.4);
+  background-position: 100% 0%;
+}
+
+.shareUnderButton:hover::before {
+  left: 140%;
+  opacity: 0.9;
+  animation: none;
+}
+
+.shareUnderButton:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.9);
+  outline-offset: 2px;
+}
+
+@keyframes whatsappSheen {
+  0% { left: -140%; opacity: 0; }
+  10% { opacity: 0; }
+  22% { opacity: 0.8; }
+  40% { left: 140%; opacity: 0.8; }
+  60% { opacity: 0; }
+  100% { left: 140%; opacity: 0; }
+}
+
+/* Ocultar contador del navbar cuando hay versión flotante */
 @media (min-width: 769px) {
   .visitCounter:not(.floatingCounter):not(.mobileVersion) {
     display: none !important;
   }
 }
 
-/* Ajustes para la versiÃ³n flotante */
+/* Ajustes para la versión flotante */
 .floatingCounter .counterContainer {
   gap: 12px;
 }
@@ -156,20 +264,16 @@
 .floatingCounter .iconContainer {
   width: 32px;
   height: 32px;
-  background: linear-gradient(135deg, 
-    var(--accent-color, #C30021) 0%, 
-    #00d4ff 50%,
-    #ffffff 100%
-  );
+  background: rgba(255, 255, 255, 0.25);
   box-shadow: 
-    0 0 20px rgba(195, 0, 33, 0.6),
-    inset 0 3px 6px rgba(255, 255, 255, 0.4);
+    0 0 18px rgba(199, 119, 31, 0.5),
+    inset 0 3px 6px rgba(255, 255, 255, 0.5);
   border-radius: 50%;
 }
 
 .floatingCounter .eyeIcon {
   font-size: 1.1rem;
-  color: white;
+  color: var(--visit-text);
   filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.5));
 }
 
@@ -190,8 +294,8 @@
   width: 28px;
   height: 28px;
   font-size: 0.9rem;
-  color: rgba(216, 58, 58, 0.9);
-  filter: drop-shadow(0 0 5px rgba(216, 58, 58, 0.4));
+  color: rgba(255, 247, 232, 0.95);
+  filter: drop-shadow(0 0 5px rgba(199, 119, 31, 0.45));
 }
 
 /* Resto del CSS permanece igual... */
@@ -211,19 +315,16 @@
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: linear-gradient(135deg, 
-    var(--accent-color, #C30021) 0%, 
-    #00d4ff 100%
-  );
+  background: rgba(255, 255, 255, 0.25);
   box-shadow: 
-    0 0 15px rgba(216, 58, 58, 0.5),
-    inset 0 2px 4px rgba(255, 255, 255, 0.3);
+    0 0 12px rgba(199, 119, 31, 0.45),
+    inset 0 2px 4px rgba(255, 255, 255, 0.4);
   position: relative;
   overflow: hidden;
 }
 
 .eyeIcon {
-  color: white;
+  color: var(--visit-text);
   font-size: 0.9rem;
   animation: eyeBlink 4s ease-in-out infinite;
   filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.4));
@@ -248,7 +349,7 @@
 
 .counterLabel {
   font-size: 0.7rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 247, 232, 0.95);
   font-weight: 600;
   font-family: var(--font-montserrat), 'Montserrat', sans-serif;
   text-transform: uppercase;
@@ -288,11 +389,11 @@
   font-size: 1.1rem;
   font-weight: 700;
   font-family: var(--font-ubuntu), 'Ubuntu', sans-serif;
-  color: white;
+  color: var(--visit-text);
   line-height: 1;
   text-shadow: 
     0 2px 4px rgba(0, 0, 0, 0.6),
-    0 0 10px rgba(216, 58, 58, 0.4);
+    0 0 10px rgba(199, 119, 31, 0.45);
   min-height: 18px;
   display: flex;
   align-items: center;
@@ -300,25 +401,17 @@
 }
 
 .number {
-  background: linear-gradient(135deg, 
-    #ffffff 0%, 
-    var(--accent-color, #C30021) 40%, 
-    #00d4ff 70%,
-    #ffffff 100%
-  );
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--visit-text);
   animation: numberGlow 3s ease-in-out infinite alternate;
   font-weight: 800;
 }
 
 @keyframes numberGlow {
   0% { 
-    filter: brightness(1) drop-shadow(0 0 4px rgba(216, 58, 58, 0.4)); 
+    filter: brightness(1) drop-shadow(0 0 4px rgba(199, 119, 31, 0.45)); 
   }
   100% { 
-    filter: brightness(1.3) drop-shadow(0 0 8px rgba(216, 58, 58, 0.7)); 
+    filter: brightness(1.2) drop-shadow(0 0 8px rgba(199, 119, 31, 0.7)); 
   }
 }
 
@@ -328,11 +421,11 @@
   justify-content: center;
   width: 24px;
   height: 24px;
-  color: rgba(216, 58, 58, 0.8);
+  color: rgba(255, 247, 232, 0.9);
   font-size: 0.8rem;
   animation: usersFloat 5s ease-in-out infinite;
   transition: all 0.4s ease;
-  filter: drop-shadow(0 0 3px rgba(216, 58, 58, 0.3));
+  filter: drop-shadow(0 0 3px rgba(199, 119, 31, 0.35));
 }
 
 @keyframes usersFloat {
@@ -345,9 +438,9 @@
 }
 
 .visitCounter:hover .usersIcon {
-  color: var(--accent-color, #C30021);
+  color: #fff7e8;
   transform: scale(1.15) rotate(5deg);
-  filter: drop-shadow(0 0 8px rgba(216, 58, 58, 0.6));
+  filter: drop-shadow(0 0 8px rgba(199, 119, 31, 0.6));
 }
 
 .loading {
@@ -359,10 +452,10 @@
 .loadingDot {
   width: 4px;
   height: 4px;
-  background: var(--accent-color, #C30021);
+  background: rgba(255, 247, 232, 0.95);
   border-radius: 50%;
   animation: loadingPulse 1.6s ease-in-out infinite both;
-  box-shadow: 0 0 6px rgba(216, 58, 58, 0.5);
+  box-shadow: 0 0 6px rgba(199, 119, 31, 0.55);
 }
 
 .loadingDot:nth-child(1) { animation-delay: -0.32s; }
@@ -377,7 +470,7 @@
   40% { 
     transform: scale(1.3);
     opacity: 1;
-    box-shadow: 0 0 10px rgba(216, 58, 58, 0.8);
+    box-shadow: 0 0 10px rgba(199, 119, 31, 0.8);
   }
 }
 
@@ -390,7 +483,7 @@
   border-radius: inherit;
   background: linear-gradient(45deg, 
     transparent 30%, 
-    rgba(216, 58, 58, 0.15) 50%, 
+    rgba(199, 119, 31, 0.18) 50%, 
     transparent 70%
   );
   opacity: 0;
@@ -419,7 +512,7 @@
   left: 50%;
   width: 100%;
   height: 100%;
-  border: 3px solid rgba(216, 58, 58, 0.4);
+  border: 3px solid rgba(199, 119, 31, 0.45);
   border-radius: inherit;
   transform: translate(-50%, -50%);
   opacity: 0;
@@ -441,26 +534,31 @@
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
-  /* Desactivar completamente la versiÃ³n flotante */
+  /* Desactivar completamente la versión flotante */
   .floatingCounter {
     display: none !important;
   }
   
-  /* Mostrar contador normal solo en versiÃ³n mÃ³vil del menÃº */
+  /* Mostrar contador normal solo en versión móvil del menú */
   .visitCounter:not(.mobileVersion) {
     display: none;
   }
+
+  .counterWrapper:not(.mobileWrapper) {
+    display: none !important;
+  }
 }
 
-/* ===== VERSIÃ“N MÃ“VIL ===== */
+@media (max-width: 480px) {
+  .mobileWrapper { --wa-size: 52px; }
+  .whatsappUnderButton svg,
+  .shareUnderButton svg { font-size: 1.4rem; }
+}
+
+/* ===== VERSIÓN MÓVIL ===== */
 .mobileVersion {
-  background: linear-gradient(135deg, 
-    rgba(195, 0, 33, 0.25) 0%, 
-    rgba(148, 33, 146, 0.3) 30%, 
-    rgba(26, 26, 46, 0.35) 70%, 
-    rgba(216, 58, 58, 0.2) 100%
-  );
-  border: 2px solid rgba(216, 58, 58, 0.5);
+  background: var(--visit-base);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-radius: 20px;
   padding: 18px 25px;
   min-width: 220px;
@@ -468,23 +566,18 @@
   margin: 20px 0;
   backdrop-filter: blur(20px);
   box-shadow: 
-    0 12px 35px rgba(216, 58, 58, 0.4),
-    inset 0 2px 0 rgba(255, 255, 255, 0.2);
+    0 12px 35px rgba(199, 119, 31, 0.45),
+    inset 0 2px 0 rgba(255, 255, 255, 0.3);
 }
 
 .mobileVersion:hover {
   transform: translateY(-4px) scale(1.03);
-  background: linear-gradient(135deg, 
-    rgba(216, 58, 58, 0.35) 0%, 
-    rgba(148, 33, 146, 0.4) 30%, 
-    rgba(26, 26, 46, 0.45) 70%, 
-    rgba(216, 58, 58, 0.3) 100%
-  );
-  border-color: rgba(216, 58, 58, 0.7);
+  background: var(--visit-deep);
+  border-color: rgba(255, 255, 255, 0.5);
   box-shadow: 
-    0 18px 45px rgba(216, 58, 58, 0.5),
-    0 8px 25px rgba(0, 0, 0, 0.2),
-    inset 0 2px 0 rgba(255, 255, 255, 0.3);
+    0 18px 45px rgba(199, 119, 31, 0.55),
+    0 8px 25px rgba(0, 0, 0, 0.25),
+    inset 0 2px 0 rgba(255, 255, 255, 0.35);
 }
 
 .mobileVersion .counterContainer {
@@ -494,14 +587,10 @@
 .mobileVersion .iconContainer {
   width: 36px;
   height: 36px;
-  background: linear-gradient(135deg, 
-    var(--accent-color, #C30021) 0%, 
-    #00d4ff 50%,
-    #ffffff 100%
-  );
+  background: rgba(255, 255, 255, 0.25);
   box-shadow: 
-    0 0 20px rgba(195, 0, 33, 0.6),
-    inset 0 3px 6px rgba(255, 255, 255, 0.4);
+    0 0 20px rgba(199, 119, 31, 0.55),
+    inset 0 3px 6px rgba(255, 255, 255, 0.5);
 }
 
 .mobileVersion .eyeIcon {
@@ -520,7 +609,7 @@
 
 .mobileVersion .counterLabel {
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.95);
+  color: rgba(255, 247, 232, 0.98);
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -541,36 +630,27 @@
   font-weight: 800;
   text-shadow: 
     0 3px 6px rgba(0, 0, 0, 0.7),
-    0 0 15px rgba(216, 58, 58, 0.5);
+    0 0 15px rgba(199, 119, 31, 0.55);
 }
 
 .mobileVersion .number {
-  background: linear-gradient(135deg, 
-    #ffffff 0%, 
-    var(--accent-color, #C30021) 25%,
-    #00d4ff 50%,
-    #ffffff 75%,
-    var(--accent-color, #C30021) 100%
-  );
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: var(--visit-text);
   animation: numberGlowMobile 2.5s ease-in-out infinite alternate;
 }
 
 @keyframes numberGlowMobile {
   0% { 
-    filter: brightness(1) drop-shadow(0 0 5px rgba(216, 58, 58, 0.5)); 
+    filter: brightness(1) drop-shadow(0 0 5px rgba(199, 119, 31, 0.55)); 
   }
   100% { 
-    filter: brightness(1.4) drop-shadow(0 0 12px rgba(216, 58, 58, 0.8)); 
+    filter: brightness(1.25) drop-shadow(0 0 12px rgba(199, 119, 31, 0.8)); 
   }
 }
 
 .mobileVersion .usersIcon {
   width: 32px;
   height: 32px;
-  color: rgba(195, 0, 33, 0.9);
+  color: rgba(255, 247, 232, 0.95);
   font-size: 1rem;
   animation: usersFloatMobile 4s ease-in-out infinite;
 }
@@ -585,12 +665,12 @@
 }
 
 .mobileVersion:hover .usersIcon {
-  color: var(--accent-color, #C30021);
+  color: #fff7e8;
   transform: scale(1.4) rotate(8deg);
 }
 
 .mobileVersion .pulse {
-  border: 3px solid rgba(216, 58, 58, 0.5);
+  border: 3px solid rgba(199, 119, 31, 0.55);
   border-radius: 20px;
   animation: counterPulseMobile 3s ease-in-out infinite;
 }
@@ -610,7 +690,7 @@
   border-radius: 20px;
   background: linear-gradient(45deg, 
     transparent 25%, 
-    rgba(216, 58, 58, 0.2) 50%, 
+    rgba(199, 119, 31, 0.22) 50%, 
     transparent 75%
   );
 }
@@ -631,7 +711,7 @@
 
 /* Accesibilidad y optimizaciones */
 @media (prefers-reduced-motion: reduce) {
-  .visitCounter, .eyeIcon, .usersIcon, .number, .loadingDot, .glowEffect, .pulse, .floatingCounter {
+  .visitCounter, .eyeIcon, .usersIcon, .number, .loadingDot, .glowEffect, .pulse, .floatingCounter, .whatsappUnderButton::before, .shareUnderButton::before {
     animation: none !important;
     transition: none !important;
   }
@@ -644,7 +724,7 @@
 /* Modo de alto contraste */
 @media (prefers-contrast: high) {
   .visitCounter, .floatingCounter, .mobileVersion {
-    background: #000000;
+    background: #1e1e1e;
     border: 3px solid #ffffff;
     color: #ffffff;
   }

@@ -1,0 +1,102 @@
+.loadingScreen {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: radial-gradient(circle at top, #f2f6ff 0%, #d9e5f7 50%, #c5d7f2 100%);
+  color: #1b1b1b;
+  text-align: center;
+  padding: 24px;
+}
+
+.logoWrap {
+  width: 220px;
+  height: 220px;
+  display: grid;
+  place-items: center;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(6px);
+}
+
+.loadingText {
+  font-family: var(--font-ubuntu), "Ubuntu", sans-serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.dots {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #1b1b1b;
+  opacity: 0.35;
+  animation: dotPulse 1.2s ease-in-out infinite;
+}
+
+.dots span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.dots span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+@keyframes dotPulse {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.35;
+  }
+  50% {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 640px) {
+  .loadingScreen {
+    min-height: 100svh;
+    height: 100svh;
+    padding: 16px;
+    padding-top: calc(16px + env(safe-area-inset-top));
+    padding-bottom: calc(16px + env(safe-area-inset-bottom));
+    box-sizing: border-box;
+    gap: 10px;
+  }
+
+  .logoWrap {
+    width: 140px;
+    height: 140px;
+  }
+
+  .loadingText {
+    font-size: 1.05rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .logoWrap {
+    width: 125px;
+    height: 125px;
+  }
+  .loadingText {
+    font-size: 1rem;
+  }
+}
+
+.logoWrap :global(img) {
+  width: 100%;
+  height: auto;
+}
